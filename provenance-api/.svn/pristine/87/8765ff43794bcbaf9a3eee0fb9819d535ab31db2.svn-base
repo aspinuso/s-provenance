@@ -1,1 +1,0 @@
-mongo -u verce -p verce22 verce-prov solverscript.js

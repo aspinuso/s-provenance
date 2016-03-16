@@ -1,4 +1,0 @@
-
-filter id on anchestros:
-curl -H "Content-Type:application/x-www-form-urlencoded" -d @filterIds http://localhost:8082/entities/filterOnAnchestorsMeta >outcurl.html
-
