@@ -1063,8 +1063,11 @@ class ProvenanceStore(object):
     def getActivitiesSummaries(self,**kwargs): 
         obj=[]
         runId=None
-        groupby=kwargs['groupby'][0]
-        print groupby
+        groupby=None
+        if 'groupby' in kwargs:
+            groupby=kwargs['groupby'][0]
+            
+       
         if 'runId' in kwargs : runId = kwargs['runId'][0]
         
         if 'level' in kwargs and kwargs['level'][0]=='prospective':
@@ -1141,8 +1144,9 @@ class ProvenanceStore(object):
             
             
             for t in triggers:
-                t['iterationId']=t['_id']
-                del t['_id']
+                if '_id' in t:
+                    t['iterationId']=t['_id']
+                    del t['_id']
                 
                 
             #print "triggers "+str(x['_id'])+" "+json.dumps(triggers)+" "+str(add)
