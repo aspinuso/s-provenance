@@ -234,12 +234,35 @@ function mouseouted(d) {
 
 d3.select(self.frameElement).style("height", diameter + "px");
 
+// Lazily construct the basic hierarchy from PE names.
+function packageHierarchyPE(classes) {
+  var map = {};
+
+  function find(name, data) {
+    var node = map[name], i;
+    if (!node) {
+      node = map[name] = data || {name: name, children: []};
+      if (name.length) {
+        node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
+        node.parent.children.push(node);
+        node.key = name.substring(i + 1);
+      }
+    }
+    return node;
+  }
+
+  classes.forEach(function(d) {
+    find(d.name, d);
+  });
+  //console.log(map)
+  return map[""];
+}
   
 // Lazily construct the basic hierarchy from Instances ids .
 function packageHierarchyInstances(classes,gb) {
  var map = {};
  var parent
- console.log(gb)
+ //console.log(gb)
  var root = {name: 'process', children: []};
  classes.forEach(function(d) {
 //    find(d.name, d);
@@ -293,7 +316,7 @@ function packageHierarchyProspective(classes,gb) {
    
  });
  
- console.log(root)
+ //console.log(root)
  return root
 }
 
@@ -329,9 +352,37 @@ function packageHierarchyIterations(classes,gb) {
    
  });
  
- console.log(root)
+ //console.log(root)
  return root
 }
+
+
+
+// Return a list of imports for the given array of nodes.
+function packageConnlistPEs(nodes) {
+  var map = {},
+      connlist = [];
+
+  // Compute a map from name to node.
+  nodes.forEach(function(d) {
+    map[d.name] = d;
+  });
+
+  // For each import, construct a link from the source to target node.
+ 
+  nodes.forEach(function(d) {
+    if (d.connlist) d.connlist.forEach(function(i) { 
+     
+      if (map[i]!=undefined){
+      	   //console.log(map[d.name].name+" "+map[i])
+	      connlist.push({source: map[d.name], target: map[i]});
+	      }
+    });
+  });
+
+  return connlist;
+}
+
 
 
 function packageConnlistInstances(nodes) {
