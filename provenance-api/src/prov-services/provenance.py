@@ -1064,22 +1064,29 @@ class ProvenanceStore(object):
         obj=[]
         runId=None
         groupby=None
+        clusters=None
         if 'groupby' in kwargs:
             groupby=kwargs['groupby'][0]
+        if 'clusters' in kwargs:
+            memory_file = StringIO.StringIO(kwargs['clusters'][0]);
+            clusters = csv.reader(memory_file).next()
+            
             
        
         if 'runId' in kwargs : runId = kwargs['runId'][0]
         
+        matchdic=clean_empty({'runId':runId, 'prov_cluster':{'$in':clusters} })
+        print matchdic
         if 'level' in kwargs and kwargs['level'][0]=='prospective':
-            obj=self.lineage.aggregate(pipeline=[{'$match':{'runId':runId}},{'$unwind': "$streams"},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf','name':'$name', str(groupby):'$'+str(groupby) }, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
+            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf','name':'$name', str(groupby):'$'+str(groupby) }, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
         elif 'level' in kwargs and kwargs['level'][0]=='iterations':
-            obj=self.lineage.aggregate(pipeline=[{'$match':{'runId':runId,'iterationIndex':{'$gte':int(kwargs['minidx'][0]) ,'$lt':int(kwargs['maxidx'][0])}}},{'$unwind': "$streams"},{'$group':{'_id':{'iterationId':'$iterationId','instanceId':'$instanceId','worker':'$worker',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
+            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$match':{'iterationIndex':{'$gte':int(kwargs['minidx'][0]) ,'$lt':int(kwargs['maxidx'][0])}}},{'$unwind': "$streams"},{'$group':{'_id':{'iterationId':'$iterationId','instanceId':'$instanceId','worker':'$worker',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
         elif 'level' in kwargs and kwargs['level'][0]=='instances':
-            obj=self.lineage.aggregate(pipeline=[{'$match':{'runId':runId}},{'$unwind': "$streams"},{'$group':{'_id':{'instanceId':'$instanceId','actedOnBehalfOf':'$actedOnBehalfOf','worker':'$worker',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
+            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'instanceId':'$instanceId','actedOnBehalfOf':'$actedOnBehalfOf','worker':'$worker',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
         elif 'level' in kwargs and kwargs['level'][0]=='pid':
-            obj=self.lineage.aggregate(pipeline=[{'$match':{'runId':runId}},{'$group':{'_id':{'name':'$name','worker':'$worker','pid':'$pid'}}}])['result']
+            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$group':{'_id':{'name':'$name','worker':'$worker','pid':'$pid'}}}])['result']
         elif 'level' in kwargs and kwargs['level'][0]=='workers':
-            obj=self.lineage.aggregate(pipeline=[{'$match':{'runId':runId}},{'$group':{'_id':{'name':'$name','worker':'$worker'}}}])['result']
+            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$group':{'_id':{'name':'$name','worker':'$worker'}}}])['result']
        # elif 'level' in kwargs and kwargs['level'][0]=='terms':
        #      obj=self.lineage.aggregate(pipeline=[{'$match':{'runId':runId}},{'$group':{'_id':{'instanceId':'$instanceId'}}}])['result']
         elif 'level' in kwargs and kwargs['level'][0]=='vrange':
@@ -1102,7 +1109,7 @@ class ProvenanceStore(object):
         else:
             obj=self.lineage.aggregate(pipeline=[{'$match':{'runId':runId}},{'$group':{'_id':{'name':'$name'}}},{'$project':{'_id':1}}])['result']
        
-        print "OBJ: "+str(obj)
+        #print "OBJ: "+str(obj)
         connections=[]
         
        
