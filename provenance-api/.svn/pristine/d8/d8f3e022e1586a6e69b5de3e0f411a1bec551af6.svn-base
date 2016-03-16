@@ -1,0 +1,15 @@
+run as daemon
+
+escience7
+numactl --interleave=all ./bin/mongod --dbpath /usr/local/dir-backup/prov/ --rest --auth --fork --logpath /home/iraklis/mongologs/mongodb.log
+access db
+
+
+production verce
+numactl --interleave=all /usr/bin/mongod --dbpath /opt/verce_mongo/ --rest --auth --fork --logpath /opt/mongologs/mongodb.log
+./bin/mongo -u verce -p verce verce-prov
+
+
+start webservices
+
+nohup python webserver.py "mongodb://verce:verce@127.0.0.1:27017/verce-prov"

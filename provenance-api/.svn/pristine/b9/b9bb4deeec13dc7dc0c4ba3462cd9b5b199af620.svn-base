@@ -1,0 +1,238 @@
+from twisted.web import server, resource, http
+import provenance
+import json
+import csv
+import StringIO
+ 
+class RootResource(resource.Resource):
+
+    def __init__(self, provenanceStore):
+        self.provenanceStore = provenanceStore
+        resource.Resource.__init__(self)
+        self.putChild('run', RunHandler(self.provenanceStore))
+        self.putChild('workflow', WorkflowHandler(self.provenanceStore))
+        self.putChild('trace', TraceHandler(self.provenanceStore))
+        self.putChild('artifacts', ArtifactsHandler(self.provenanceStore))
+        
+              
+ 
+    def getChild(self, path, request):
+        return ShowRun(self.provenanceStore, "")
+
+
+class ArtifactsHandler(resource.Resource):
+
+    def __init__(self, provenanceStore):
+        self.provenanceStore = provenanceStore
+        resource.Resource.__init__(self)
+ 
+    def getChild(self, path, request):
+        return ShowArtifacts(self.provenanceStore, path)
+
+
+class WorkflowHandler(resource.Resource):
+
+    def __init__(self, provenanceStore):
+        self.provenanceStore = provenanceStore
+        resource.Resource.__init__(self)
+ 
+    def getChild(self, path, request):
+        return ShowWorkflowInfo(self.provenanceStore, path)
+
+
+ 
+ 
+    
+class RunHandler(resource.Resource):
+
+    def __init__(self, provenanceStore):
+        self.provenanceStore = provenanceStore
+        resource.Resource.__init__(self)
+        self.putChild('insert', insertData(self.provenanceStore))
+ 
+    def getChild(self, path, request):
+        
+        return ShowRun(self.provenanceStore, path)
+
+class insertData(resource.Resource):
+
+    def __init__(self, provenanceStore):
+        self.provenanceStore = provenanceStore
+        resource.Resource.__init__(self)
+    
+    def render_POST(self, request):
+        request.setHeader('Content-type', 'application/json')
+        res = self.provenanceStore.insertData(json.loads(str(request.args["prov"].pop(0))))
+        
+         
+        return json.dumps(res)  
+    
+    def getChild(self, path, request):
+        
+        return EmptyChild(path)  
+         
+ 
+     
+
+
+    
+class TraceHandler(resource.Resource):
+
+    def __init__(self, provenanceStore):
+        self.provenanceStore = provenanceStore
+        resource.Resource.__init__(self)
+ 
+    def getChild(self, path, request):
+        return ShowTrace(self.provenanceStore, path)
+ 
+
+class EmptyChild(resource.Resource):
+    def __init__(self, path):
+        self.path = path
+        resource.Resource.__init__(self)
+ 
+    def render_GET(self, request):
+	    return ""
+ 
+    def render_POST(self, request):
+    	return ""
+ 
+    def getChild(self, path, request):
+        
+        return EmptyChild(path)
+ 
+ 
+ 
+class ShowRun(resource.Resource):
+    def __init__(self, provenanceStore, path):
+        self.provenanceStore = provenanceStore
+        self.path = path
+        resource.Resource.__init__(self)
+ 
+    def render_GET(self, request):
+        request.setHeader('Content-type', 'application/json')
+        id = request.args['id'][0]
+        limit = request.args['limit'][0]
+        start = request.args['start'][0]
+         
+        return json.dumps(self.provenanceStore.getRun(id,int(start),int(limit)))
+
+    def render_POST(self, request):
+        return ""
+    
+    def getChild(self, path, request):
+        return EmptyChild(path)
+    
+    
+class ShowArtifacts(resource.Resource):
+    def __init__(self, provenanceStore, path):
+        self.provenanceStore = provenanceStore
+        self.path = path
+        resource.Resource.__init__(self)
+ 
+    def render_GET(self, request):
+        request.setHeader('Content-type', 'application/json')
+        keylist = None
+        valuelist= None
+        
+        limit = request.args['limit'][0]
+        start = request.args['start'][0]
+        
+        try:
+            memory_file = StringIO.StringIO(request.args['keys'][0]);
+            keylist = csv.reader(memory_file).next()
+            memory_file2 = StringIO.StringIO(request.args['values'][0]);
+            valuelist = csv.reader(memory_file2).next()
+           
+        except Exception, err:
+            None
+        
+        try:
+            runid=  request.args['runid'][0]
+        except Exception, err:
+            runid=None
+            
+        try:
+            dataid=  request.args['dataid'][0]
+        except Exception, err:
+            dataid=None
+        
+        try:
+            iterationid = request.args['iterationid'][0]
+        except Exception, err:
+            iterationid=None
+        
+        
+        
+         
+        return json.dumps(self.provenanceStore.getArtifactsBy(self.path,keylist,valuelist,int(start),int(limit),runid,iterationid,dataid))
+    
+    
+    
+    
+    def getChild(self, path, request):
+        return EmptyChild(path)    
+    
+class ShowWorkflowInfo(resource.Resource):
+    def __init__(self, provenanceStore, path):
+        self.provenanceStore = provenanceStore
+        self.path = path
+        resource.Resource.__init__(self)
+ 
+    def render_GET(self, request):
+        request.setHeader('Content-type', 'application/json')
+        
+        limit = request.args['limit'][0]
+        start = request.args['start'][0]
+         
+        return json.dumps(self.provenanceStore.getWorkflowInfo(self.path,int(start),int(limit)))
+        
+    def getChild(self, path, request):
+        return EmptyChild(path)
+
+ 
+
+
+class ShowTrace(resource.Resource):
+    def __init__(self, provenanceStore, path):
+        self.provenanceStore = provenanceStore
+        self.path = path
+        resource.Resource.__init__(self)
+ 
+    def render_GET(self, request):
+        request.setHeader('Content-type', 'application/json')
+        level = request.args['level'][0]
+         
+        return json.dumps(self.provenanceStore.getTrace(self.path,int(level)))
+        
+    def getChild(self, path, request):
+        return EmptyChild(path)
+    
+ 
+
+class ShowStreamChunk(resource.Resource):
+    def __init__(self, provenanceStore, path):
+        self.provenanceStore = provenanceStore
+        self.path = path
+        resource.Resource.__init__(self)
+ 
+    def render_GET(self, request):
+        request.setHeader('Content-type', 'application/json')
+        runid = request.args['runid'][0]
+        id = request.args['id'][0]
+        
+   
+        return json.dumps(self.provenanceStore.getStreamChunk(runid,id))
+        
+    def getChild(self, path, request):
+        return EmptyChild(path)
+    
+ 
+ 
+if __name__ == "__main__":
+    import sys
+    from twisted.internet import reactor
+    provStore = provenance.ProvenanceStore(sys.argv[1])
+    reactor.listenTCP(8082, server.Site(RootResource(provStore)))
+    print "Server running...."
+    reactor.run()

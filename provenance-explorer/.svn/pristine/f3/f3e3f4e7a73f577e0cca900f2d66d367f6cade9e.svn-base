@@ -1,0 +1,27 @@
+
+Ext.define('CF.model.Network', {
+  extend : 'Ext.data.Model',
+  modelID: 'Network',
+ // requires:['CF.model.Station'],
+  fields : [
+          {name: 'network', type: 'string', mapping:'@code'},
+          {name: 'latitude', type: 'string'}, // custom mapping
+          {name: 'longitude', type: 'string'}, // custom mapping
+          {name: 'elevation', type: 'string' } // custom mapping
+         
+  ]
+  
+  
+  
+  /*,
+  hasMany : {
+    model: 'CF.model.Station',
+    name: 'stations',
+    associationKey:'stations',
+    reader: {
+   									          type: 'xml',
+   									          record:'Station'
+ 										       }
+    }*/
+}); 
+ 

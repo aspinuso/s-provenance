@@ -1,0 +1,98 @@
+{
+ "fields" :[ {
+   			 "name":"model",
+   			 "xtype" : "textfield",
+   			 "desc": "",
+   			 "req":"true"
+   			 },
+   			 {
+   			 "name": "mesh",
+   			 "xtype": "textfield",
+   			 "desc" : "",
+   			 "req":"true"
+   			 },
+   			 {
+   			 "name": "max_time",
+   			 "xtype": "textfield",
+   			 "desc" : "",
+   			 "req":"true"
+   			 },
+   			 {
+   			 "name": "number_of_processors",
+   			 "xtype": "numberfield",
+   			 "desc" : "",
+   			 "req":"true"
+   			 },
+   			 {
+   			 "name":"working_directory",
+   			 "xtype" : "textfield",
+   			 "desc": "",
+   			 "value": "",
+   			 "req":"true"
+   			 },
+   			 {
+   			 "name":"version",
+   			 "xtype" : "textfield",
+   			 "desc": "",
+   			 "value": "18",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"dimension",
+   			 "xtype" : "numberfield",
+   			 "desc": "",
+   			 "value": 11,
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"advection_velocity",
+   			 "xtype" : "textfield",
+   			 "desc": "",
+   			 "value": "(1.0, 1.0, 1.0)",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"anisotropy",
+   			 "xtype" : "numberfield",
+   			 "desc": "",
+   			 "value": 0,
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"anelasticity",
+   			 "xtype" : "numberfield",
+   			 "desc": "",
+   			 "value": "0",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"poroelasticity",
+   			 "xtype" : "numberfield",
+   			 "desc": "",
+   			 "value": "0",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"adjoint",
+   			 "xtype" : "numberfield",
+   			 "desc": " ",
+   			 "value": "0",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"material_reference_values",
+   			 "xtype" : "textfield",
+   			 "desc": " ",
+   			 "value": "(3600, 9.0e10, 1.11e11)",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"randomfield",
+   			 "xtype" : "numberfield",
+   			 "desc": " ",
+   			 "value": "0",
+   			 "req":"false"
+   			 }
+   		
+   			 ]
+   		}

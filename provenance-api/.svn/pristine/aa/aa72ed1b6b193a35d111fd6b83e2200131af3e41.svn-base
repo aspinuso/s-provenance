@@ -1,0 +1,84 @@
+from twisted.web import server, resource, http
+import provenance
+
+ 
+class RootResource(resource.Resource):
+
+    def __init__(self, provenanceStore):
+        self.provenanceStore = provenanceStore
+        resource.Resource.__init__(self)
+        self.putChild('run', RunHandler(self.provenanceStore))
+        self.putChild('trace', TraceHandler(self.provenanceStore))
+              
+ 
+    def getChild(self, path, request):
+        return ShowRun(self.provenanceStore, "")
+ 
+class RunHandler(resource.Resource):
+
+    def __init__(self, provenanceStore):
+        self.provenanceStore = provenanceStore
+        resource.Resource.__init__(self)
+ 
+    def getChild(self, path, request):
+        return ShowRun(self.provenanceStore, path)
+    
+class TraceHandler(resource.Resource):
+
+    def __init__(self, provenanceStore):
+        self.provenanceStore = provenanceStore
+        resource.Resource.__init__(self)
+ 
+    def getChild(self, path, request):
+        return ShowTrace(self.provenanceStore, path)
+ 
+
+class EmptyChild(resource.Resource):
+    def __init__(self, path):
+        self.path = path
+        resource.Resource.__init__(self)
+ 
+    def render_GET(self, request):
+	    return ""
+ 
+    def render_POST(self, request):
+    	return ""
+ 
+    def getChild(self, path, request):
+        return EmptyChild(path)
+ 
+class ShowRun(resource.Resource):
+    def __init__(self, provenanceStore, path):
+        self.provenanceStore = provenanceStore
+        self.path = path
+        resource.Resource.__init__(self)
+ 
+    def render_GET(self, request):
+    	request.setHeader('Content-type', 'application/json')
+    	return self.provenanceStore.getRun(self.path)
+        
+    def getChild(self, path, request):
+        return EmptyChild(path)
+    
+
+class ShowTrace(resource.Resource):
+    def __init__(self, provenanceStore, path):
+        self.provenanceStore = provenanceStore
+        self.path = path
+        resource.Resource.__init__(self)
+ 
+    def render_GET(self, request):
+        request.setHeader('Content-type', 'application/json')
+        l = list()
+        return self.provenanceStore.getTrace(self.path,l)
+        
+    def getChild(self, path, request):
+        return EmptyChild(path)
+ 
+if __name__ == "__main__":
+    import sys
+    from twisted.internet import reactor
+    provStore = provenance.ProvenanceStore(sys.argv[1])
+    reactor.listenTCP(8082, server.Site(RootResource(provStore)))
+    print "Server running...."
+    reactor.run()

@@ -1,0 +1,13 @@
+run as daemon
+
+ON dir-irods.epcc.ed.ac.uk
+
+export LANGUAGE=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+sudo numactl --interleave=all /usr/bin/mongod --dbpath /disk2/verce_mongo/ --fork --auth --rest  --logpath /disk2/mongologs/mongodb.log
+
+
+start webservices
+
+nohup python webserver.py "mongodb://verce:verce@127.0.0.1:27017/verce-prov"

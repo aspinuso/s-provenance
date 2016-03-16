@@ -1,0 +1,1264 @@
+velocityModels = {
+"Italia": {
+    "name": "Italia",
+    "details": "utm zone\n" +
+      "33\n" +
+      "\n" +
+      "model corners utm (meters)\n" +
+      "y_min                    = 3983948.0 \n" +
+      "y_max                    = 5364884.0 \n" +
+      "x_min                    = -402690.0\n" +
+      "x_max                    = 950816.0\n" +
+      "z_min                    = -80000.0\n" +
+      "z_max                    = 3828.0\n" +
+      "\n" +
+      "wavespeed limits (m/s)\n" +
+      "P velocity min,max =    767.5093       8806.250\n" +
+      "S velocity min,max =    428.3887       4725.295\n" +
+      "\n" +
+      "technique used to construct the model\n" +
+      "travel time tomography"
+  },
+  
+  "NordItalia2": {
+	    "name": "NordItalia2",
+	    "details": "utm zone\n" +
+	      "33\n" +
+	      "\n" +
+	      "model corners utm (meters)\n" +
+	      "y_min                    = 4037259.0 \n" +
+	      "y_max                    = 5317843.0 \n" +
+	      "x_min                    = -206444.0\n" +
+	      "x_max                    = 1317634.0\n" +
+	      "z_min                    = -80000.0\n" +
+	      "z_max                    = 3828.0\n" +
+	      "\n" +
+	      "wavespeed limits (m/s)\n" +
+	      "P velocity min,max =    727.432439673   8811.8\n" +
+	      "S velocity min,max =    405.377316272   4725.3\n" +
+	      "\n" +
+	      "technique used to construct the model\n" +
+	      "travel time tomography"
+	  },
+
+    "LR_VVfast_tomo": {
+    "name": "LR_VVfast_tomo",
+    "details": "utm zone\n" +
+      "33\n" +
+      "\n" +
+      "model corners utm (meters)\n" +
+      "y_min                    = 4551257.50051\n" +
+      "y_max                    = 4751257.50051\n" +
+      "x_min                    = 255066.763887\n" +
+      "x_max                    = 455066.763887\n" +
+      "z_min                    = -32000.0\n" +
+      "z_max                    = 2717.0\n" +
+      "\n" +
+      "wavespeed limits (m/s)\n" +
+      "P velocity min,max =    1782.000       8000.000\n" +
+      "S velocity min,max =    999.9999       4444.400\n" +
+      "\n" +
+      "technique used to construct the model\n" +
+      "travel time tomography"
+  },
+  "NordItalia": {
+    "name": "NordItalia",
+    "details": "utm zone\n" +
+      "32\n" +
+      "\n" +
+      "model corners utm (meters)\n" +
+      "y_min                    = 3997718.0 \n" +
+      "y_max                    = 5317546.0 \n" +
+      "x_min                    = 141185.0\n" +
+      "x_max                    = 1491013.0\n" +
+      "z_min                    = -80000.0\n" +
+      "z_max                    = 4341.53320312\n" +
+      "\n" +
+      "wavespeed limits (m/s)\n" +
+      "P velocity min,max =    1039.200       8609.054\n" +
+      "S velocity min,max =    600.0000       4970.584\n" +
+      "\n" +
+      "technique used to construct the model\n" +
+      "travel time tomography"
+  },
+  "SudItalia": {
+    "name": "SudItalia",
+    "details": "utm zone\n" +
+      "33\n" +
+      "\n" +
+      "model corners utm (meters)\n" +
+      "y_min                    = 4036819 \n" +
+      "y_max                    = 5358295 \n" +
+      "x_min                    = -400492\n" +
+      "x_max                    = 948961\n" +
+      "z_min                    = -80000\n" +
+      "z_max                    = 3618.71020508\n" +
+      "\n" +
+      "wavespeed limits (m/s)\n" +
+      "P velocity min,max =    1732.000       8245.415\n" +
+      "S velocity min,max =    1000.000       4760.632\n" +
+      "\n" +
+      "technique used to construct the model\n" +
+      "travel time tomography"
+  },
+  "SHicksGRL2012": {
+    "name": "SHicksGRL2012",
+    "details": "TBD"
+  }
+};
+
+meshes = [{
+  "name": "Abruzzo",
+  "details": "number of spectral elements  \n" +
+    "194400\n" +
+    "\n" +
+    "utm zone  \n" +
+    "33\n" +
+    "\n" +
+    "mesh corners utm (meters)\n" +
+    "y_min                    = 4550009.18192\n" +
+    "y_max                    = 4753961.35732\n" +
+    "x_min                   = 251420.888333\n" +
+    "x_max                   = 454281.316507\n" +
+    "z_min                   = -60000\n" +
+    "z_max                   = 2792.539492\n" +
+    "\n" +
+    "honored surfaces\n" +
+    "topography,moho",
+  "geo_minLat": 41.1,
+  "geo_maxLat": 42.9,
+  "geo_minLon": 12.04,
+  "geo_maxLon": 14.45,
+  "geo_projection": "std",
+  "velmod": [velocityModels["LR_VVfast_tomo"]],
+  "values": [{
+    "NPROC": 64
+  }, {
+    "NSTEP": "60000"
+  }, {
+    "DT": "5e-3"
+  }, {
+    "UTM_PROJECTION_ZONE": "33"
+  }]
+}, {
+  "name": "NordItalia",
+  "details": "number of spectral elements\n" +
+    "1562400\n" +
+    "\n" +
+    "utm zone\n" +
+    "32\n" +
+    "\n" +
+    "mesh corners utm (meters)\n" +
+    "y_min       = 4870650.8702\n" +
+    "y_max       = 5098388\n" +
+    "x_min      = 479070\n" +
+    "x_max      = 827581 \n" +
+    "z_min      = -60000\n" +
+    "z_max      = 2699.566378\n" +
+    "\n" +
+    "honored surfaces\n" +
+    "topography",
+  "geo_minLat": 43.9886998626,
+  "geo_maxLat": 45.9608014109,
+  "geo_minLon": 8.73899272607,
+  "geo_maxLon": 13.2276879661,
+  "geo_projection": "std",
+  "velmod": [
+    velocityModels["NordItalia"],velocityModels["NordItalia2"]
+    
+  ],
+  "values": [{
+    "NPROC": "400"
+  }, {
+    "NSTEP": "60000"
+  }, {
+    "DT": "4e-3"
+  }, {
+    "UTM_PROJECTION_ZONE": "32"
+  }]
+}, {
+  "name": "SudItalia",
+  "details": "number of spectral elements\n" +
+    "1796586\n" +
+    "\n" +
+    "utm zone\n" +
+    "33\n" +
+    "\n" +
+    "mesh corners utm (meters)\n" +
+    "y_min          = 4427756.9083\n" +
+    "y_max          = 4652132\n" +
+    "x_min         = 243900\n" +
+    "x_max         = 713411 \n" +
+    "z_min         = -60000\n" +
+    "z_max         = 2160.320787\n" +
+    "\n" +
+    "honored surfaces\n" +
+    "topography",
+  "geo_minLat": 39.9612014922,
+  "geo_maxLat": 41.9922938686,
+  "geo_minLon": 12.0016936934,
+  "geo_maxLon": 17.5764757446,
+  "geo_projection": "std",
+  "velmod": [
+    velocityModels["SudItalia"]
+  ],
+  "values": [{
+    "NPROC": "256"
+  }, {
+    "NSTEP": "60000"
+  }, {
+    "DT": "5.0e-3"
+  }, {
+    "UTM_PROJECTION_ZONE": "18"
+  }]
+}, {
+  "name": "Maule",
+  "details": "TBD",
+  "geo_minLat": -39.120328,
+  "geo_maxLat": -31.885757,
+  "geo_minLon": -76.086899,
+  "geo_maxLon": -69.512103,
+  "geo_projection": "std",
+  "velmod": [
+    velocityModels["SHicksGRL2012"]
+  ],
+  "values": [{
+    "NPROC": "256"
+  }, {
+    "NSTEP": "60000"
+  }, {
+    "DT": "1e-2"
+  }, {
+    "UTM_PROJECTION_ZONE": "-19"
+  }, {
+    "MODEL": "default"
+  }]
+
+},
+{
+  "name": "Italia",
+  "details": "number of spectral elements\n" +
+    "5759488\n" +
+    "\n" +
+    "utm zone\n" +
+    "33\n" +
+    "\n" +
+    "mesh corners utm (meters)\n" +
+    "y_min       = 4025075\n" +
+    "y_max       = 5229075\n" +
+    "x_min      = -207637\n" +
+    "x_max      = 1040363 \n" +
+    "z_min      = -80000\n" +
+    "z_max      = 4255.101534\n" +
+    "\n" +
+    "honored surfaces\n" +
+    "topography",
+  "geo_minLat": 36.11209613062,
+  "geo_maxLat": 46.994042538,
+  "geo_minLon": 5.71753976499,
+  "geo_maxLon": 22.10814344997,
+  "geo_projection": "std",
+  "velmod": [
+    velocityModels["Italia"]
+  ],
+  "values": [{
+    "NPROC": "256"
+  }, {
+    "NSTEP": "60000"
+  }, {
+    "DT": "1e-2"
+  }, {
+    "UTM_PROJECTION_ZONE": "33"
+  }, {
+    "MODEL": "default"
+  }]
+}
+];
+
+db.solver.remove({
+  "_id": "SPECFEM3D_CARTESIAN_21447"
+})
+
+db.solver.remove({
+  "_id": "SPECFEM3D_CARTESIAN_202_DEV"
+})
+
+db.solver.insert({
+  "_id": "SPECFEM3D_CARTESIAN_21447",
+  "doc": "https://github.com/geodynamics/specfem3d/raw/devel/doc/USER_MANUAL/manual_SPECFEM3D_Cartesian.pdf",
+  "meshes": meshes,
+  "fields": [{
+    "name": "NPROC",
+    "desc": "number of MPI processors",
+    "value": "4",
+    "req": "true",
+    "editable": true,
+    "group": "0 - Basic",
+    "type": "int",
+    "step": 1,
+    "minValue": 1
+  }, {
+    "name": "NSTEP",
+    "desc": "The number of time steps",
+    "value": "500",
+    "req": "true",
+    "editable": true,
+    "group": "0 - Basic",
+    "type": "int",
+    "step": 100
+  }, {
+    "name": "DT",
+    "desc": "The time increment in seconds",
+    "value": "1e-3",
+    "req": "true",
+    "editable": true,
+    "group": "0 - Basic",
+    "type": "float",
+    "step": 0.001
+  }, {
+    "name": "SIMULATION_TYPE",
+    "desc": "forward or adjoint simulation, 1 = forward, 2 = adjoint, 3 = both simultaneously",
+    "value": 1,
+    "req": "true",
+    "editable": true,
+    "group": "1 - Inverse problem",
+    "type": "option",
+    "options": [
+      [1, "forward"],
+      [2, "adjoint"],
+      [3, "forward & adjoint"]
+    ]
+  }, {
+    "name": "NOISE_TOMOGRAPHY",
+    "desc": "noise tomography simulation, 0 = earthquake simulation, 1\/2\/3 = three steps in noise simulation",
+    "value": 0,
+    "req": "false",
+    "editable": true,
+    "group": "1 - Inverse problem",
+    "type": "option",
+    "options": [
+      [0, "earthquake simulation"],
+      [1, "1"],
+      [2, "2"],
+      [3, "3"]
+    ]
+  }, {
+    "name": "SAVE_FORWARD",
+    "desc": "save forward wavefield",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "1 - Inverse problem",
+    "type": "bool"
+  }, {
+    "name": "UTM_PROJECTION_ZONE",
+    "desc": "set up the utm zone, if SUPPRESS_UTM_PROJECTION is false",
+    "value": "33",
+    "req": "false",
+    "editable": false,
+    "group": "2 - UTM Projection",
+    "type": "int",
+    "step": 1
+  }, {
+    "name": "SUPPRESS_UTM_PROJECTION",
+    "desc": "suppress the utm projection",
+    "value": "false",
+    "req": "false",
+    "editable": false,
+    "group": "2 - UTM Projection",
+    "type": "bool"
+  }, {
+    "name": "NGNOD",
+    "desc": "number of nodes for 2D and 3D shape functions for hexahedral,we use either 8-node mesh elements (bricks) or 27-node elements.If you use our internal mesher, the only option is 8-node bricks (27-node elements are not supported)",
+    "value": "8",
+    "req": "false",
+    "editable": true,
+    "group": "7 - Advanced",
+    "type": "option",
+    "options": [8, 27]
+  }, {
+    "name": "MODEL",
+    "desc": "setup the geological models, options are: default (model parameters described by mesh properties), 1d_prem, 1d_socal,1d_cascadia,aniso,external,gll,salton_trough,tomo",
+    "value": "default",
+    "req": "false",
+    "editable": true,
+    "group": "0 - Basic",
+    "type": "option",
+    "options": [
+      "default",
+      "1d_prem",
+      "1d_socal",
+      "1d_cascadia",
+      "aniso",
+      "external",
+      "gll",
+      "salton_trough",
+      "tomo"
+    ]
+  }, {
+    "name": "OCEANS",
+    "desc": "see SPECFEM3D_CARTESIAN manual",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "7 - Advanced",
+    "type": "bool"
+  }, {
+    "name": "TOPOGRAPHY",
+    "desc": "see SPECFEM3D_CARTESIAN manual",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "7 - Advanced",
+    "type": "bool"
+  }, {
+    "name": "ATTENUATION",
+    "desc": "see SPECFEM3D_CARTESIAN manual",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "3 - Attenuation",
+    "type": "bool"
+  }, {
+    "name": "ANISOTROPY",
+    "desc": "see SPECFEM3D_CARTESIAN manual",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "7 - Advanced",
+    "type": "bool"
+  }, {
+    "name": "GRAVITY",
+    "desc": "see SPECFEM3D_CARTESIAN manual",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "7 - Advanced",
+    "type": "bool"
+  }, {
+    "name": "TOMOGRAPHY_PATH",
+    "desc": "path for external tomographic models files",
+    "value": "..\/velocity\/",
+    "req": "false",
+    "editable": false,
+    "group": "7 - Advanced",
+    "type": "text"
+  }, {
+    "name": "USE_OLSEN_ATTENUATION",
+    "desc": "use the Olsen attenuation, Q_mu = constant * v_s attenuation rule",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "3 - Attenuation",
+    "type": "bool"
+  }, {
+    "name": "OLSEN_ATTENUATION_RATIO",
+    "desc": "see SPECFEM3D_CARTESIAN manual",
+    "value": "0.05",
+    "req": "false",
+    "editable": true,
+    "group": "3 - Attenuation",
+    "type": "float",
+    "step": 0.05
+  }, {
+    "name": "PML_CONDITIONS",
+    "desc": "C-PML boundary conditions for a regional simulation",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "4 - CPML absorbing condition",
+    "type": "bool"
+  }, {
+    "name": "PML_INSTEAD_OF_FREE_SURFACE",
+    "desc": "see SPECFEM3D_CARTESIAN manual",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "4 - CPML absorbing condition",
+    "type": "bool"
+  }, {
+    "name": "f0_FOR_PML",
+    "desc": "C-PML dominant frequency,see manual",
+    "value": "12.7",
+    "req": "false",
+    "editable": true,
+    "group": "4 - CPML absorbing condition",
+    "type": "float",
+    "step": 0.1
+  }, {
+    "name": "PML_WIDTH_MIN",
+    "desc": "C-PML thickness min",
+    "value": "10000.0",
+    "req": "false",
+    "editable": true,
+    "group": "4 - CPML absorbing condition",
+    "type": "float",
+    "step": 1000
+  }, {
+    "name": "PML_WIDTH_MAX",
+    "desc": "C-PML thickness max",
+    "value": "25000.0",
+    "req": "false",
+    "editable": true,
+    "group": "4 - CPML absorbing condition",
+    "type": "float",
+    "step": 1000
+  }, {
+    "name": "ABSORBING_CONDITIONS",
+    "desc": "Stacey absorbing boundary conditions for a regional simulation",
+    "value": "true",
+    "req": "false",
+    "editable": true,
+    "group": "0 - Basic",
+    "type": "bool"
+  }, {
+    "name": "ABSORB_INSTEAD_OF_FREE_SURFACE",
+    "desc": "Stacey absorbing top surface (defined in mesh as 'free_surface_file')",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "7 - Advanced",
+    "type": "bool"
+  }, {
+    "name": "CREATE_SHAKEMAP",
+    "desc": "save shakemap files",
+    "value": "false",
+    "req": "false",
+    "editable": false,
+    "group": "7 - Advanced",
+    "type": "bool"
+  }, {
+    "name": "MOVIE_SURFACE",
+    "desc": "save velocity snapshot files only for surfaces",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "5 - Movie",
+    "type": "bool"
+  }, {
+    "name": "MOVIE_TYPE",
+    "desc": "Set this flag to 1 to show the top surface only, to 2 to show all external faces of the mesh  in shakemaps and surface movies.",
+    "value": 1,
+    "req": "false",
+    "editable": true,
+    "group": "5 - Movie",
+    "type": "option",
+    "options": [
+      [1, "Show top surface only"],
+      [2, "Show all external faces"]
+    ]
+  }, {
+    "name": "MOVIE_VOLUME",
+    "desc": "save the entire volumetric velocity snapshot files ",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "5 - Movie",
+    "type": "bool"
+  }, {
+    "name": "SAVE_DISPLACEMENT",
+    "desc": "save displacement instead velocity in the snapshot files",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "7 - Advanced",
+    "type": "bool"
+  }, {
+    "name": "USE_HIGHRES_FOR_MOVIES",
+    "desc": "save high resolution snapshot files (all GLL points)",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "5 - Movie",
+    "type": "bool"
+  }, {
+    "name": "NTSTEP_BETWEEN_FRAMES",
+    "desc": "number of timesteps between 2 consecutive snapshots",
+    "value": "200",
+    "req": "false",
+    "editable": true,
+    "group": "5 - Movie",
+    "type": "int",
+    "step": 1
+  }, {
+    "name": "HDUR_MOVIE",
+    "desc": "half duration for snapshot files",
+    "value": "1.0",
+    "req": "false",
+    "editable": true,
+    "group": "5 - Movie",
+    "type": "float",
+    "step": .1
+  }, {
+    "name": "SAVE_MESH_FILES",
+    "desc": "Set this flag to true to save ParaView mesh files for subsequent viewing.",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "7 - Advanced",
+    "type": "bool"
+  }, {
+    "name": "LOCAL_PATH",
+    "desc": "path to store the local database file on each node",
+    "value": "..\/OUTPUT_FILES\/DATABASES_MPI",
+    "req": "false",
+    "editable": false,
+    "group": "7 - Advanced",
+    "type": "text"
+  }, {
+    "name": "NTSTEP_BETWEEN_OUTPUT_INFO",
+    "desc": "interval at which we output time step info and max of norm of displacement",
+    "value": "500",
+    "req": "false",
+    "editable": true,
+    "group": "7 - Advanced",
+    "type": "int",
+    "step": 100
+  }, {
+    "name": "NTSTEP_BETWEEN_OUTPUT_SEISMOS",
+    "desc": "interval in time steps for writing of seismograms",
+    "value": "10000",
+    "req": "false",
+    "editable": true,
+    "group": "7 - Advanced",
+    "type": "int",
+    "step": 1000
+  }, {
+    "name": "NTSTEP_BETWEEN_READ_ADJSRC",
+    "desc": "interval in time steps for reading adjoint traces,0 = read the whole adjoint sources at the same time",
+    "value": "0",
+    "req": "false",
+    "editable": true,
+    "group": "7 - Advanced",
+    "type": "int",
+    "step": 1
+  }, {
+    "name": "USE_FORCE_POINT_SOURCE",
+    "desc": "# use a (tilted) FORCESOLUTION force point source (or several) instead of a CMTSOLUTION moment-tensor source. If this flag is turned on, the FORCESOLUTION file must be edited by precising:\n- the corresponding time-shift parameter,\n - the half duration parameter of the source,\n - the coordinates of the source,\n - the magnitude of the force source,\n - the components of a (non-unitary) direction vector for the force source in the E\/N\/Z_UP basis.\n The direction vector is made unitary internally in the code and thus only its direction matters here \n its norm is ignored and the norm of the force used is the factor force source times the source time function.",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "6 - Point source",
+    "type": "bool"
+  }, {
+    "name": "USE_RICKER_TIME_FUNCTION",
+    "desc": "set to true to use a Ricker source time function instead of the source time functions set by default to represent a (tilted) FORCESOLUTION force point source or a CMTSOLUTION moment-tensor source.",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "6 - Point source",
+    "type": "bool"
+  }, {
+    "name": "GPU_MODE",
+    "desc": "set .true. for GPU support",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "0 - Basic",
+    "type": "bool"
+  }, {
+    "name": "ROTATE_PML_ACTIVATE",
+    "desc": "",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "4 - CPML absorbing condition",
+    "type": "bool"
+  }, {
+    "name": "ROTATE_PML_ANGLE",
+    "desc": "",
+    "value": "0.0",
+    "req": "false",
+    "editable": true,
+    "group": "4 - CPML absorbing condition",
+    "type": "float",
+    "step": .1
+  }, {
+    "name": "PRINT_SOURCE_TIME_FUNCTION",
+    "desc": "",
+    "value": "false",
+    "req": "false",
+    "editable": true,
+    "group": "7 - Advanced",
+    "type": "bool"
+  }]})
+  
+  
+  db.solver.insert({
+  "_id": "SPECFEM3D_CARTESIAN_202_DEV",
+  "doc": "https://github.com/geodynamics/specfem3d/raw/devel/doc/USER_MANUAL/manual_SPECFEM3D_Cartesian.pdf",
+  "meshes": meshes,
+  "fields": [
+             {
+                 "name": "NPROC",
+                 "desc": "number of MPI processors",
+                 "value": "16",
+                 "req": "true",
+                 "editable": true,
+                 "group": "0 - Basic",
+                 "type": "int",
+                 "step": 1,
+                 "minValue": 1
+             },
+             {
+                 "name": "NSTEP",
+                 "desc": "The number of time steps",
+                 "value": "500",
+                 "req": "true",
+                 "editable": true,
+                 "group": "0 - Basic",
+                 "type": "int",
+                 "step": 100
+             },
+             {
+                 "name": "DT",
+                 "desc": "The time increment in seconds",
+                 "value": "1e-3",
+                 "req": "true",
+                 "editable": true,
+                 "group": "0 - Basic",
+                 "type": "float",
+                 "step": 0.001
+             },
+             {
+                 "name": "SIMULATION_TYPE",
+                 "desc": "forward or adjoint simulation, 1 = forward, 2 = adjoint, 3 = both simultaneously",
+                 "value": 1,
+                 "req": "true",
+                 "editable": true,
+                 "group": "1 - Inverse problem",
+                 "type": "option",
+                 "options": [
+                     [
+                         1,
+                         "forward"
+                     ],
+                     [
+                         2,
+                         "adjoint"
+                     ],
+                     [
+                         3,
+                         "forward & adjoint"
+                     ]
+                 ]
+             },
+             {
+                 "name": "NOISE_TOMOGRAPHY",
+                 "desc": "noise tomography simulation, 0 = earthquake simulation, 1/2/3 = three steps in noise simulation",
+                 "value": 0,
+                 "req": "false",
+                 "editable": true,
+                 "group": "1 - Inverse problem",
+                 "type": "option",
+                 "options": [
+                     [
+                         0,
+                         "earthquake simulation"
+                     ],
+                     [
+                         1,
+                         "1"
+                     ],
+                     [
+                         2,
+                         "2"
+                     ],
+                     [
+                         3,
+                         "3"
+                     ]
+                 ]
+             },
+             {
+                 "name": "SAVE_FORWARD",
+                 "desc": "save forward wavefield",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "1 - Inverse problem",
+                 "type": "bool"
+             },
+             {
+                 "name": "UTM_PROJECTION_ZONE",
+                 "desc": "set up the utm zone, if SUPPRESS_UTM_PROJECTION is false",
+                 "value": "33",
+                 "req": "false",
+                 "editable": false,
+                 "group": "2 - UTM Projection",
+                 "type": "int",
+                 "step": 1
+             },
+             {
+                 "name": "SUPPRESS_UTM_PROJECTION",
+                 "desc": "suppress the utm projection",
+                 "value": "false",
+                 "req": "false",
+                 "editable": false,
+                 "group": "2 - UTM Projection",
+                 "type": "bool"
+             },
+             {
+                 "name": "NGNOD",
+                 "desc": "number of nodes for 2D and 3D shape functions for hexahedral,we use either 8-node mesh elements (bricks) or 27-node elements.If you use our internal mesher, the only option is 8-node bricks (27-node elements are not supported)",
+                 "value": "8",
+                 "req": "false",
+                 "editable": true,
+                 "group": "7 - Advanced",
+                 "type": "option",
+                 "options": [
+                     8,
+                     27
+                 ]
+             },
+             {
+                 "name": "MODEL",
+                 "desc": "setup the geological models, options are: default (model parameters described by mesh properties), 1d_prem, 1d_socal,1d_cascadia,aniso,external,gll,salton_trough,tomo",
+                 "value": "default",
+                 "req": "false",
+                 "editable": true,
+                 "group": "0 - Basic",
+                 "type": "option",
+                 "options": [
+                     "default",
+                     "1d_prem",
+                     "1d_socal",
+                     "1d_cascadia",
+                     "aniso",
+                     "external",
+                     "gll",
+                     "salton_trough",
+                     "tomo"
+                 ]
+             },
+             {
+                 "name": "APPROXIMATE_OCEAN_LOAD",
+                 "desc": "see SPECFEM3D_CARTESIAN manual",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             },
+             {
+                 "name": "TOPOGRAPHY",
+                 "desc": "see SPECFEM3D_CARTESIAN manual",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             },
+             {
+                 "name": "ATTENUATION",
+                 "desc": "see SPECFEM3D_CARTESIAN manual",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "3 - Attenuation",
+                 "type": "bool"
+             },
+             {
+                 "name": "FULL_ATTENUATION_SOLID",
+                 "desc": "see SPECFEM3D_CARTESIAN manual",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "3 - Attenuation",
+                 "type": "bool"
+             },
+             {
+                 "name": "ANISOTROPY",
+                 "desc": "see SPECFEM3D_CARTESIAN manual",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             },
+             {
+                 "name": "GRAVITY",
+                 "desc": "see SPECFEM3D_CARTESIAN manual",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             },
+             {
+                 "name": "TOMOGRAPHY_PATH",
+                 "desc": "path for external tomographic models files",
+                 "value": "./velocity/",
+                 "req": "false",
+                 "editable": false,
+                 "group": "7 - Advanced",
+                 "type": "text"
+             },
+             {
+                 "name": "USE_OLSEN_ATTENUATION",
+                 "desc": "use the Olsen attenuation, Q_mu = constant * v_s attenuation rule",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "3 - Attenuation",
+                 "type": "bool"
+             },
+             {
+                 "name": "OLSEN_ATTENUATION_RATIO",
+                 "desc": "see SPECFEM3D_CARTESIAN manual",
+                 "value": "0.05",
+                 "req": "false",
+                 "editable": true,
+                 "group": "3 - Attenuation",
+                 "type": "float",
+                 "step": 0.05
+             },
+             {
+                 "name": "PML_CONDITIONS",
+                 "desc": "C-PML boundary conditions for a regional simulation",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "4 - CPML absorbing condition",
+                 "type": "bool"
+             },
+             {
+                 "name": "PML_INSTEAD_OF_FREE_SURFACE",
+                 "desc": "see SPECFEM3D_CARTESIAN manual",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "4 - CPML absorbing condition",
+                 "type": "bool"
+             },
+             {
+                 "name": "f0_FOR_PML",
+                 "desc": "C-PML dominant frequency,see manual",
+                 "value": "12.7",
+                 "req": "false",
+                 "editable": true,
+                 "group": "4 - CPML absorbing condition",
+                 "type": "float",
+                 "step": 0.1
+             },
+             {
+                 "name": "PML_WIDTH_MIN",
+                 "desc": "C-PML thickness min",
+                 "value": "10000.0",
+                 "req": "false",
+                 "editable": true,
+                 "group": "4 - CPML absorbing condition",
+                 "type": "float",
+                 "step": 1000
+             },
+             {
+                 "name": "PML_WIDTH_MAX",
+                 "desc": "C-PML thickness max",
+                 "value": "25000.0",
+                 "req": "false",
+                 "editable": true,
+                 "group": "4 - CPML absorbing condition",
+                 "type": "float",
+                 "step": 1000
+             },
+             {
+                 "name": "STACEY_ABSORBING_CONDITIONS",
+                 "desc": "Stacey absorbing boundary conditions for a regional simulation",
+                 "value": "true",
+                 "req": "false",
+                 "editable": true,
+                 "group": "0 - Basic",
+                 "type": "bool"
+             },
+             {
+                 "name": "STACEY_INSTEAD_OF_FREE_SURFACE",
+                 "desc": "Stacey absorbing top surface (defined in mesh as 'free_surface_file')",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             },
+             {
+                 "name": "CREATE_SHAKEMAP",
+                 "desc": "save shakemap files",
+                 "value": "false",
+                 "req": "false",
+                 "editable": false,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             },
+             {
+                 "name": "MOVIE_SURFACE",
+                 "desc": "save velocity snapshot files only for surfaces",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "5 - Movie",
+                 "type": "bool"
+             },
+             {
+                 "name": "MOVIE_TYPE",
+                 "desc": "Set this flag to 1 to show the top surface only, to 2 to show all external faces of the mesh  in shakemaps and surface movies.",
+                 "value": 1,
+                 "req": "false",
+                 "editable": true,
+                 "group": "5 - Movie",
+                 "type": "option",
+                 "options": [
+                     [
+                         1,
+                         "Show top surface only"
+                     ],
+                     [
+                         2,
+                         "Show all external faces"
+                     ]
+                 ]
+             },
+             {
+                 "name": "MOVIE_VOLUME",
+                 "desc": "save the entire volumetric velocity snapshot files ",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "5 - Movie",
+                 "type": "bool"
+             },
+             {
+                 "name": "SAVE_DISPLACEMENT",
+                 "desc": "save displacement instead velocity in the snapshot files",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             },
+             {
+                 "name": "USE_HIGHRES_FOR_MOVIES",
+                 "desc": "save high resolution snapshot files (all GLL points)",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "5 - Movie",
+                 "type": "bool"
+             },
+             {
+                 "name": "NTSTEP_BETWEEN_FRAMES",
+                 "desc": "number of timesteps between 2 consecutive snapshots",
+                 "value": "200",
+                 "req": "false",
+                 "editable": true,
+                 "group": "5 - Movie",
+                 "type": "int",
+                 "step": 1
+             },
+             {
+                 "name": "HDUR_MOVIE",
+                 "desc": "half duration for snapshot files",
+                 "value": "1.0",
+                 "req": "false",
+                 "editable": true,
+                 "group": "5 - Movie",
+                 "type": "float",
+                 "step": 0.1
+             },
+             {
+                 "name": "SAVE_MESH_FILES",
+                 "desc": "Set this flag to true to save ParaView mesh files for subsequent viewing.",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             },
+             {
+                 "name": "LOCAL_PATH",
+                 "desc": "path to store the local database file on each node",
+                 "value": "./OUTPUT_FILES/DATABASES_MPI",
+                 "req": "false",
+                 "editable": false,
+                 "group": "7 - Advanced",
+                 "type": "text"
+             },
+             {
+                 "name": "NTSTEP_BETWEEN_OUTPUT_INFO",
+                 "desc": "interval at which we output time step info and max of norm of displacement",
+                 "value": "500",
+                 "req": "false",
+                 "editable": true,
+                 "group": "7 - Advanced",
+                 "type": "int",
+                 "step": 100
+             },
+             {
+                 "name": "NTSTEP_BETWEEN_OUTPUT_SEISMOS",
+                 "desc": "interval in time steps for writing of seismograms",
+                 "value": "10000",
+                 "req": "false",
+                 "editable": true,
+                 "group": "7 - Advanced",
+                 "type": "int",
+                 "step": 1000
+             },
+             {
+                 "name": "NTSTEP_BETWEEN_READ_ADJSRC",
+                 "desc": "interval in time steps for reading adjoint traces,0 = read the whole adjoint sources at the same time",
+                 "value": "0",
+                 "req": "false",
+                 "editable": true,
+                 "group": "7 - Advanced",
+                 "type": "int",
+                 "step": 1
+             },
+             {
+                 "name": "USE_FORCE_POINT_SOURCE",
+                 "desc": "# use a (tilted) FORCESOLUTION force point source (or several) instead of a CMTSOLUTION moment-tensor source. If this flag is turned on, the FORCESOLUTION file must be edited by precising:\n- the corresponding time-shift parameter,\n - the half duration parameter of the source,\n - the coordinates of the source,\n - the magnitude of the force source,\n - the components of a (non-unitary) direction vector for the force source in the E/N/Z_UP basis.\n The direction vector is made unitary internally in the code and thus only its direction matters here \n its norm is ignored and the norm of the force used is the factor force source times the source time function.",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "6 - Point source",
+                 "type": "bool"
+             },
+             {
+                 "name": "USE_RICKER_TIME_FUNCTION",
+                 "desc": "set to true to use a Ricker source time function instead of the source time functions set by default to represent a (tilted) FORCESOLUTION force point source or a CMTSOLUTION moment-tensor source.",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "6 - Point source",
+                 "type": "bool"
+             },
+             {
+                 "name": "GPU_MODE",
+                 "desc": "set .true. for GPU support",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "0 - Basic",
+                 "type": "bool"
+             },
+             {
+                 "name": "ROTATE_PML_ACTIVATE",
+                 "desc": "",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "4 - CPML absorbing condition",
+                 "type": "bool"
+             },
+             {
+                 "name": "ROTATE_PML_ANGLE",
+                 "desc": "",
+                 "value": "0.0",
+                 "req": "false",
+                 "editable": true,
+                 "group": "4 - CPML absorbing condition",
+                 "type": "float",
+                 "step": 0.1
+             },
+             {
+                 "name": "PRINT_SOURCE_TIME_FUNCTION",
+                 "desc": "",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             },
+             {
+                 "name": "COUPLE_WITH_EXTERNAL_CODE",
+                 "desc": "",
+                 "value": "false",
+                 "req": "false",
+                 "editable": true,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             },
+             {
+                 "name": "EXTERNAL_CODE_TYPE",
+                 "desc": "1 = DSM, 2 = AxiSEM, 3 = FK",
+                 "value": 1,
+                 "req": "false",
+                 "editable": true,
+                 "group": "7 - Advanced",
+                 "type": "int",
+                 "options": [
+                     [
+                         1,
+                         "DSM"
+                     ],
+                     [
+                         2,
+                         "AxiSEM"
+                     ],
+                     [
+                         3,
+                         "FK"
+                     ]
+                 ]
+             },
+             {
+                 "name": "TRACTION_PATH",
+                 "desc": "",
+                 "value": "./DATA/DSM_tractions_for_specfem3D/",
+                 "req": "false",
+                 "editable": false,
+                 "group": "7 - Advanced",
+                 "type": "str"
+             },
+             {
+                 "name": "ADIOS_ENABLED",
+                 "desc": "",
+                 "value": "false",
+                 "req": "false",
+                 "editable": false,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             },
+             {
+                 "name": "ADIOS_FOR_DATABASES",
+                 "desc": "",
+                 "value": "false",
+                 "req": "false",
+                 "editable": false,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             },
+             {
+                 "name": "ADIOS_FOR_MESH",
+                 "desc": "",
+                 "value": "true",
+                 "req": "false",
+                 "editable": false,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             },
+             {
+                 "name": "ADIOS_FOR_FORWARD_ARRAYS",
+                 "desc": "",
+                 "value": "true",
+                 "req": "false",
+                 "editable": false,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             },
+             {
+                 "name": "ADIOS_FOR_KERNELS",
+                 "desc": "",
+                 "value": "true",
+                 "req": "false",
+                 "editable": false,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             },
+             {
+                 "name": "MESH_A_CHUNK_OF_THE_EARTH",
+                 "desc": "",
+                 "value": "true",
+                 "req": "false",
+                 "editable": false,
+                 "group": "7 - Advanced",
+                 "type": "bool"
+             }
+         ]})

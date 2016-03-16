@@ -1,0 +1,152 @@
+from twisted.web import server, resource, http
+import provenance
+import json
+
+ 
+class RootResource(resource.Resource):
+
+    def __init__(self, provenanceStore):
+        self.provenanceStore = provenanceStore
+        resource.Resource.__init__(self)
+        self.putChild('run', RunHandler(self.provenanceStore))
+        self.putChild('streamchunk', StreamChunkHandler(self.provenanceStore))
+        self.putChild('activityproducts', ActivityProductsHandler(self.provenanceStore))
+        self.putChild('trace', TraceHandler(self.provenanceStore))
+              
+ 
+    def getChild(self, path, request):
+        return ShowRun(self.provenanceStore, "")
+
+class StreamChunkHandler(resource.Resource):
+
+    def __init__(self, provenanceStore):
+        self.provenanceStore = provenanceStore
+        resource.Resource.__init__(self)
+ 
+    def getChild(self, path, request):
+        return ShowStreamChunk(self.provenanceStore, path)
+    
+class ActivityProductsHandler(resource.Resource):
+
+    def __init__(self, provenanceStore):
+        self.provenanceStore = provenanceStore
+        resource.Resource.__init__(self)
+ 
+    def getChild(self, path, request):
+        return ShowActivityProducts(self.provenanceStore, path)
+    
+class RunHandler(resource.Resource):
+
+    def __init__(self, provenanceStore):
+        self.provenanceStore = provenanceStore
+        resource.Resource.__init__(self)
+ 
+    def getChild(self, path, request):
+        return ShowRun(self.provenanceStore, path)
+    
+class TraceHandler(resource.Resource):
+
+    def __init__(self, provenanceStore):
+        self.provenanceStore = provenanceStore
+        resource.Resource.__init__(self)
+ 
+    def getChild(self, path, request):
+        return ShowTrace(self.provenanceStore, path)
+ 
+
+class EmptyChild(resource.Resource):
+    def __init__(self, path):
+        self.path = path
+        resource.Resource.__init__(self)
+ 
+    def render_GET(self, request):
+	    return ""
+ 
+    def render_POST(self, request):
+    	return ""
+ 
+    def getChild(self, path, request):
+        return EmptyChild(path)
+ 
+ 
+ 
+class ShowRun(resource.Resource):
+    def __init__(self, provenanceStore, path):
+        self.provenanceStore = provenanceStore
+        self.path = path
+        resource.Resource.__init__(self)
+ 
+    def render_GET(self, request):
+    	request.setHeader('Content-type', 'application/json')
+        id = request.args['id'][0]
+        limit = request.args['limit'][0]
+        start = request.args['start'][0]
+         
+    	return json.dumps(self.provenanceStore.getRun(id,int(start),int(limit)))
+        
+    def getChild(self, path, request):
+        return EmptyChild(path)
+    
+
+class ShowTrace(resource.Resource):
+    def __init__(self, provenanceStore, path):
+        self.provenanceStore = provenanceStore
+        self.path = path
+        resource.Resource.__init__(self)
+ 
+    def render_GET(self, request):
+        request.setHeader('Content-type', 'application/json')
+        level = request.args['level'][0]
+        print level
+        return json.dumps(self.provenanceStore.getTrace(self.path,int(level)))
+        
+    def getChild(self, path, request):
+        return EmptyChild(path)
+    
+ 
+
+class ShowStreamChunk(resource.Resource):
+    def __init__(self, provenanceStore, path):
+        self.provenanceStore = provenanceStore
+        self.path = path
+        resource.Resource.__init__(self)
+ 
+    def render_GET(self, request):
+        request.setHeader('Content-type', 'application/json')
+        runid = request.args['runid'][0]
+        id = request.args['id'][0]
+        
+   
+        return json.dumps(self.provenanceStore.getStreamChunk(runid,id))
+        
+    def getChild(self, path, request):
+        return EmptyChild(path)
+    
+    
+    
+class ShowActivityProducts(resource.Resource):
+    def __init__(self, provenanceStore, path):
+        self.provenanceStore = provenanceStore
+        self.path = path
+        resource.Resource.__init__(self)
+ 
+    def render_GET(self, request):
+        request.setHeader('Content-type', 'application/json')
+        id = request.args['invocationId'][0]
+        limit = request.args['limit'][0]
+        start = request.args['start'][0]
+         
+        
+   
+        return json.dumps(self.provenanceStore.getActivityProducts(id,int(start),int(limit)))
+        
+    def getChild(self, path, request):
+        return EmptyChild(path)
+ 
+if __name__ == "__main__":
+    import sys
+    from twisted.internet import reactor
+    provStore = provenance.ProvenanceStore(sys.argv[1])
+    reactor.listenTCP(8082, server.Site(RootResource(provStore)))
+    print "Server running...."
+    reactor.run()

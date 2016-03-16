@@ -1,0 +1,816 @@
+from pymongo import *
+import exceptions
+import traceback
+from prov.model import ProvDocument, Namespace, Literal, PROV, Identifier
+import datetime
+import uuid
+import traceback
+import os
+import socket
+import json
+import httplib, urllib
+
+
+ 
+
+
+
+def toW3Cprov(prov):
+        g = ProvDocument()
+        vc = Namespace("verce", "http://verce.eu")  # namespaces do not need to be explicitly added to a document
+        g.add_namespace("dcterms", "http://purl.org/dc/terms/")
+        
+        
+        'specifing user'
+        ag=g.agent(vc["ag_"+prov["username"]],other_attributes={"dcterms:author":prov["username"]})  # first time the ex namespace was used, it is added to the document automatically
+        
+        
+        'specify bundle'
+         
+        if 'runId' not in prov and prov['type']=='workflow_run':
+            
+            prov.update({'runId':prov['_id']})
+
+        g.entity(vc["run_"+prov["runId"]], {'prov:type': PROV['Bundle']})
+        g.wasAttributedTo(vc[prov["runId"]], vc["ag_"+prov["username"]],identifier=vc["run_"+prov["runId"]])
+        bundle=g.bundle(vc[prov["runId"]])
+        
+        'specifing creator of the activity (to be collected from the registy)'
+        
+        if 'creator' in prov:
+            g.agent(vc["ag_"+prov["creator"]],other_attributes={"dcterms:creator":prov["creator"]})  # first time the ex namespace was used, it is added to the document automatically
+            g.wasAssociatedWith('process_'+prov["_id"],vc["ag_"+prov["creator"]])
+            g.wasAttributedTo(vc[prov["runId"]], vc["ag_"+prov["creator"]])
+    
+    
+    
+    
+        if prov['type']=='workflow_run':
+            dic={}
+            i=0
+            for y in prov['input']:
+                for key in y:
+                    if ':' in key:
+                        dic.update({key: y[key]})
+                    else:
+                        dic.update({vc[key]: y[key]})
+                dic.update({'prov:type': 'worklfow_input'})
+                bundle.entity(vc["data_"+prov["_id"]+"_"+str(i)], dic)
+                bundle.wasGeneratedBy(vc["data_"+prov["_id"]+"_"+str(i)], identifier=vc["wgb_"+prov["_id"]+"_"+str(i)])
+                
+                 
+                i=i+1
+            return json.loads(g.serialize(indent=4))
+                
+           
+            
+        
+        
+        'adding activity information for lineage'
+        for key in prov:
+            dic={}
+            if type(prov[key])!=list:
+                if ':' in key:
+                    dic.update({key: prov[key]})
+                else:
+                    if key=='location':
+                        dic.update({"prov:location": prov[key]})    
+                    else:
+                        dic.update({vc[key]: prov[key]})
+            
+        bundle.activity(vc["process_"+prov["_id"]], prov["startTime"], prov["endTime"], dic.update({'prov:type': prov["name"]}))
+        
+        'adding parameters to the document as input entities'
+        dic={}
+        for x in prov["parameters"]:
+            if ':' in x["key"]:
+                dic.update({x["key"]: x["val"]})
+            else:
+                dic.update({vc[x["key"]]: x["val"]})
+                
+        dic.update({'prov:type':'parameters'})        
+        bundle.entity(vc["parameters_"+prov["_id"]], dic)
+        bundle.used(vc['process_'+prov["_id"]], vc["parameters_"+prov["_id"]], identifier=vc["used_"+prov["_id"]])
+
+        'adding entities to the document as output metadata'
+        for x in prov["streams"]:
+            i=0
+            parent_dic={}
+            for key in x:
+                    
+                    if type(x[key])!=list:
+                        if ':' in key:
+                            parent_dic.update({key: x[key]})
+                        else:
+                            if key=='location':
+                                parent_dic.update({"prov:location": x[key]})    
+                            else:
+                                parent_dic.update({vc[key]: x[key]})    
+            
+            
+            c1=bundle.collection(vc[x["id"]],other_attributes=parent_dic)
+            bundle.wasGeneratedBy(vc[x["id"]], vc["process_"+prov["_id"]], identifier=vc["wgb_"+x["id"]])
+            
+            for d in prov['derivationIds']:
+                    bundle.wasDerivedFrom(vc[x["id"]], vc[d['DerivedFromDatasetID']],identifier=vc["wdf_"+x["id"]])
+        
+            for y in x["content"]:
+                
+                dic={}
+                for key in y:
+                    if ':' in key:
+                        dic.update({key: y[key]})
+                    else:
+                        dic.update({vc[key]: y[key]})
+                
+                
+                
+                dic.update({"verce:parent_entity": vc["data_"+x["id"]]})
+                e1=bundle.entity(vc["data_"+x["id"]+"_"+str(i)], dic)
+                
+                bundle.hadMember(c1, e1)
+                bundle.wasGeneratedBy(vc["data_"+x["id"]+"_"+str(i)], vc["process_"+prov["_id"]], identifier=vc["wgb_"+x["id"]+"_"+str(i)])
+                
+                for d in prov['derivationIds']:
+                    bundle.wasDerivedFrom(vc["data_"+x["id"]+"_"+str(i)], vc[d['DerivedFromDatasetID']],identifier=vc["wdf_"+"data_"+x["id"]+"_"+str(i)])
+        
+                i=i+1
+            
+    
+         
+        
+        return json.loads(g.serialize(indent=4))
+
+class ProvenanceStore(object):
+
+    def __init__(self, url):
+ 
+        self.conection = MongoClient(host=url)
+        self.db = self.conection["verce-prov"]
+        self.lineage = self.db['lineage']
+        self.workflow = self.db['workflow']
+        
+        'too specific here, have to be migrated to gateway-api'
+        self.solver = self.db['solver']
+        
+    'extract information about a list of workflow runs starting from start to limit'    
+    
+    def exportRunProvenance(self, id,start,limit,format='w3c-prov'):
+        
+        cursorsList=list()
+        cursorsList.append(self.lineage.find({'runId':id})[start:start+limit].sort("endTime",direction=-1))
+        totalCount=self.lineage.find({'runId':id}).count()
+        exportDocList = list()
+        
+        
+        
+        if start==0:
+            cursorsList.append(self.workflow.find({"_id":id}).sort("startTime",direction=-1)[start:start+limit])
+        
+        
+        for cursor in cursorsList:    
+            for x in cursor:
+                if format=='w3c-prov':
+                    
+                    exportDocList.append(toW3Cprov(x))
+        
+        output = {"w3c-prov":exportDocList};
+        output.update({"totalCount": totalCount})
+        return  output
+    
+    def getSolverConf(self,path,request):
+        try:
+            solver = self.solver.find_one({"_id":path})
+            if (solver!=None):
+                solver.update({"success":True})
+                userId = request.args["userId"][0] if "userId" in request.args else False
+                def userFilter(item): return (not "users" in item) or (userId and userId in item["users"])
+                def velmodFilter(item):
+                    item["velmod"] = filter(userFilter, item["velmod"])
+                    return item
+                solver["meshes"] = map(velmodFilter, filter(userFilter, solver["meshes"]))
+                return solver
+            else:
+                return {"success":False, "error":"Solver "+path+" not Found"}
+            
+        except Exception, e:
+            return {"success":False, "error":str(e)}
+    
+    
+    
+    
+    
+    
+    def getUserRunsValuesRange(self,path,keylist,maxvaluelist,minvaluelist,start,limit):
+        elementsDict ={}
+        output=None
+        runids=[]
+        uniques=None
+        
+        if "mime-type" in keylist:
+            values=list((set(minvaluelist).union(set(maxvaluelist))))
+            uniques=self.lineage.find({'username':path,'streams.format':{'$in':values}}).distinct("runId")
+            
+            i = keylist.index('mime-type')
+            minvaluelist.pop(i)
+            maxvaluelist.pop(i)
+            keylist.remove('mime-type')
+            
+        for x in keylist:
+            maxval=maxvaluelist.pop(0)
+            minval=minvaluelist.pop(0)
+            try: 
+                maxval =self.num(maxval)
+                minval =self.num(minval)
+            except Exception,e:
+                None
+            
+            objdata=self.lineage.find({'username':path,'streams.content':{'$elemMatch':{x:{"$lte":maxval,"$gte":minval }}}}).distinct("runId")
+            objpar=self.lineage.find({'username':path,'parameters':{'$elemMatch':{'key':x,'val':{"$lte":maxval,"$gte":minval }}}}).distinct("runId")            
+            
+            object_union=list(set(objdata).union(set(objpar)))
+            
+            
+            if (uniques!=None):
+                uniques=list(set(uniques).intersection(set(object_union)))
+                 
+            else:
+                
+                uniques=object_union
+                
+            
+        
+        totalCount=len(uniques)
+        
+        obj=self.workflow.find({"_id":{"$in":uniques}},{"startTime":-1,"system_id":1,"description":1,"name":1}).sort("startTime",direction=-1)[start:start+limit]
+        for x in obj:
+            runids.append(x)
+        
+            
+        output = {"runIds":runids};
+        output.update({"totalCount": totalCount})
+        
+        return output
+    
+    
+    def getEntitiesByValuesRange(self,path,keylist,mtype,start,limit,runId=None,iterationId=None,dataId=None,maxvaluelist=None,minvaluelist=None,valuelist=None):
+         
+        elementsDict ={}
+        output=None
+        runids=[]
+        uniques=None
+        
+        for x in keylist:
+            maxval=maxvaluelist.pop(0)
+            minval=minvaluelist.pop(0)
+            try: 
+                maxval =self.num(maxval)
+                minval =self.num(minval)
+            except Exception,e:
+                None
+             
+            if runId!=Nonex:
+                
+                objdata=self.lineage.find({'runId':runId,'streams.format':mtype,'streams.content':{'$elemMatch':{x:{"$lte":maxval,"$gte":minval }}}},{"runId":1,"streams.content.$":1,'streams':1,'endTime':1,'errors':1,"parameters":1}) 
+                objpar=self.lineage.find({'runId':runId,'streams.format':mtype,'parameters':{'$elemMatch':{'key':x,'val':{"$lte":maxval,"$gte":minval }}}},{"runId":1,"streams.content.$":1,'streams':1,'endTime':1,'errors':1,"parameters":1}) 
+                
+                object_union=list(set(objdata).union(set(objpar)))
+                
+                
+            else:
+                
+                objdata=self.lineage.find({'runId':runId,'streams.format':mtype,'streams.content':{'$elemMatch':{x:{"$lte":maxval,"$gte":minval }}}},{"runId":1,"streams.content.$":1,'streams':1,'endTime':1,'errors':1,"parameters":1}) 
+                objpar=self.lineage.find({'runId':runId,'streams.format':mtype,'parameters':{'$elemMatch':{'key':x,'val':{"$lte":maxval,"$gte":minval }}}},{"runId":1,"streams.content.$":1,'streams':1,'endTime':1,'errors':1,"parameters":1})            
+                object_union=list(set(objdata).union(set(objpar)))
+                
+            if (uniques!=None):
+                uniques=list(set(uniques).intersection(set(object_union)))
+                
+            else:
+           
+                uniques=object_union
+                
+        
+        totalCount=len(uniques)
+          
+        
+               
+        
+        
+                    
+        artifacts = list()
+
+        
+        for x in  uniques:
+            
+            for s in x["streams"]:
+                totalCount=totalCount+1
+                s["wasGeneratedBy"]=x["_id"]
+                s["parameters"]=x["parameters"]
+                s["endTime"]=x["endTime"]
+                s["runId"]=x["runId"]
+                s["errors"]=x["errors"]
+                artifacts.append(s)
+                    
+        
+                
+        output = {"entities":artifacts};
+        output.update({"totalCount": totalCount})
+        return  output
+        
+        
+    
+    def getRunInfo(self, path):
+        
+         obj = self.workflow.find_one({"_id":path})
+         return obj
+
+         
+     
+    def getUserRuns(self, path, start,limit):
+        
+        obj=None
+        totalCount=None
+        output=None
+        
+        
+        obj = self.workflow.find({"username":path},{"startTime":-1,"system_id":1,"description":1,"workflowName":1}).sort("startTime",direction=-1)[start:start+limit]
+
+        totalCount=self.workflow.find({"username":path}).count()
+        runids = list()
+        
+        for x in obj:
+                
+            runids.append(x)
+            
+        output = {"runIds":runids};
+        output.update({"totalCount": totalCount})
+    
+        return  output
+    
+    
+    def num(self,s):
+        try:
+            return int(s)
+        except exceptions.ValueError:
+            return float(s)
+
+     
+    
+    
+    def getEntitiesBy(self,path,keylist,mtype,start,limit,runId=None,iterationId=None,dataId=None,maxvaluelist=None,minvaluelist=None,valuelist=None):
+        totalCount=0;
+        cursorsList=list()
+        obj=None
+        i=0
+        ' extract data by annotations either from the whole archive or for a specific runId'
+         
+        
+        if path=="annotations":
+            if runId!=None:
+                for x in keylist:
+                    cursorsList.append(self.lineage.find({'streams.annotations':{'$elemMatch':{'key': x,'val':{'$in':valuelist}}},'runId':runId},{"runId":1,"streams.annotations.$":1,'streams':1,'endTime':1,'errors':1,"parameters":1,})[start:start+limit].sort("endTime",direction=-1))
+                    totalCount = totalCount + self.lineage.find({'streams.annotations':{'$elemMatch':{'key': x,'val':{'$in':valuelist}}},'runId':runId},).count()
+            else:
+                for x in keylist:
+                    cursorsList.append(self.lineage.find({'streams.annotations':{'$elemMatch':{'key': x,'val':{'$in':valuelist}}}},{"runId":1,"streams.annotations.$":1,'streams':1,'endTime':1,'errors':1,"parameters":1})[start:start+limit].sort("endTime",direction=-1))
+                    totalCount = totalCount + self.lineage.find({'streams.annotations':{'$elemMatch':{'key': x,'val':{'$in':valuelist}}}},).count()
+        
+        ' extract all the dataset produced by a certain process'
+        if path=="generatedby":
+            cursorsList.append(self.lineage.find({'_id':iterationId},{"runId":1,"streams":1,"parameters":1,'endTime':1,'errors':1}))
+            
+            totalCount = totalCount + self.lineage.find({'_id':iterationId},{"streams":1,"parameters":1,'endTime':1}).count()
+        
+        ' extract a dataset produced by a certain run '            
+        if path=="run":        
+            cursorsList.append(self.lineage.find({'runId':runId,'streams.id':dataId},{"runId":1,"streams":{"$elemMatch": { "id": dataId}},"parameters":1,'endTime':1,'errors':1}))
+            totalCount = totalCount + self.lineage.find({'runId':runId,'streams.id':dataId}).count()
+        
+        ' extract a dataset containing a certain metadata value over the whole archive '
+        if path=="contentmatch-eachtomany":
+            if runId!=None:
+                for x in keylist:
+                
+                    cursorsList.append(self.lineage.find({'runId':runId,'streams.content':{'$elemMatch':{x :{'$in':valuelist}}}},{"runId":1,"streams.content.$":1,'streams':1,'endTime':1,'errors':1,"parameters":1})[start:start+limit].sort("endTime",direction=-1))
+                    totalCount = totalCount + self.lineage.find({'runId':runId,'streams.content':{'$elemMatch':{x :{'$in':valuelist}}}},).count()
+                    cursorsList.append(self.lineage.find({'runId':runId,'streams.content.'+x :{'$in':valuelist}},{"runId":1,"streams.content.$":1,'streams':1,'endTime':1,'errors':1,"parameters":1})[start:start+limit].sort("endTime",direction=-1))
+                    totalCount = totalCount + self.lineage.find({'runId':runId,'streams.content.'+x :{'$in':valuelist}}).count()
+            else:
+                for x in keylist:
+                
+                    cursorsList.append(self.lineage.find({'streams.content':{'$elemMatch':{x :{'$in':valuelist}}}},{"runId":1,"streams.content.$":1,'streams':1,'endTime':1,'errors':1,"parameters":1})[start:start+limit].sort("endTime",direction=-1))
+                    totalCount = totalCount + self.lineage.find({'streams.content':{'$elemMatch':{x :{'$in':valuelist}}}},).count()
+                    cursorsList.append(self.lineage.find({'streams.content.'+x :{'$in':valuelist}},{"runId":1,"streams.content.$":1,'streams':1,'endTime':1,'errors':1,"parameters":1})[start:start+limit].sort("endTime",direction=-1))
+                    totalCount = totalCount + self.lineage.find({'streams.content.'+x :{'$in':valuelist}}).count()
+        
+        if path=="contentmatch-eachtoone":
+            if runId!=None:
+                elementsDict ={}
+                for x in keylist:
+                    val=valuelist.pop(0)
+                    try: 
+                        val =self.num(val)
+                    except Exception,e:
+                        None
+
+                    elementsDict.update({x:val})
+                
+                cursorsList.append(self.lineage.find({'runId':runId,'streams.format':mtype,'streams.content':{'$elemMatch':elementsDict}},{"runId":1,"streams.content.$":1,'streams':1,'endTime':1,'errors':1,"parameters":1})[start:start+limit].sort("endTime",direction=-1))
+                totalCount = totalCount + self.lineage.find({'runId':runId,'streams.format':mtype,'streams.content':{'$elemMatch':elementsDict}},).count()
+            else:
+                elementsDict ={}
+                for x in keylist:
+                    for y in valuelist:
+                        elementsDict.update({x:y})
+                cursorsList.append(self.lineage.find({'streams.content':{'$elemMatch':elementsDict}},{"runId":1,"streams.content.$":1,'streams':1,'endTime':1,'errors':1,"parameters":1})[start:start+limit].sort("endTime",direction=-1))
+                totalCount = totalCount + self.lineage.find({'streams.content':{'$elemMatch':elementsDict}},).count()
+
+
+        if path=="values-range":
+            
+            elementsDict ={}
+            if keylist==None:
+                if runId!=None:
+                    
+                    cursorsList.append(self.lineage.find({'runId':runId,'streams.format':mtype},{"runId":1,"streams.content":1,'streams':1,'endTime':1,'errors':1,"parameters":1})[start:start+limit].sort("endTime",direction=-1))
+                    totalCount=totalCount+self.lineage.find({'runId':runId,'streams.format':mtype}).count()
+                    
+                else:
+                    cursorsList.append(self.lineage.find({'streams.format':mtype},{"runId":1,"streams.content.$":1,'streams':1,'endTime':1,'errors':1,"parameters":1})[start:start+limit].sort("endTime",direction=-1))
+            else:
+                
+                for x in keylist:
+                    maxval=maxvaluelist.pop(0)
+                    minval=minvaluelist.pop(0)
+                    try: 
+                        maxval =self.num(maxval)
+                        minval =self.num(minval)
+                    except Exception,e:
+                        None
+
+                
+                    elementsDict.update({x:{"$lte":maxval,"$gte":minval }})
+                    # this h
+                    if runId!=None:
+                        cursorsList.append(self.lineage.find({'runId':runId,'streams.format':mtype,'streams.content':{'$elemMatch':elementsDict}},{"runId":1,"streams.content.$":1,'streams':1,'endTime':1,'errors':1,"parameters":1})[start:start+limit].sort("endTime",direction=-1))
+                        totalCount=totalCount+self.lineage.find({'runId':runId,'streams.format':mtype,'streams.content':{'$elemMatch':elementsDict}},{"runId":1}).count()
+                    else:
+                        cursorsList.append(self.lineage.find({'streams.format':mtype,'streams.content':{'$elemMatch':elementsDict}},{"runId":1,"streams.content.$":1,'streams':1,'endTime':1,'errors':1,"parameters":1})[start:start+limit].sort("endTime",direction=-1))
+                 
+        artifacts = list()
+
+        for cursor in cursorsList:
+            for x in cursor:
+                
+                for s in x["streams"]:
+                     
+                    if (mtype==None or mtype=="") or (s["format"]==mtype or s["format"]==None or s["format"]==""):
+                        totalCount=totalCount+1
+                        s["wasGeneratedBy"]=x["_id"]
+                        s["parameters"]=x["parameters"]
+                        s["endTime"]=x["endTime"]
+                        s["runId"]=x["runId"]
+                        s["errors"]=x["errors"]
+                        artifacts.append(s)
+                    
+        
+                
+        output = {"entities":artifacts};
+        output.update({"totalCount": totalCount})
+        return  output
+         
+    def getActivities(self, id,start,limit):
+        obj = self.lineage.find({'runId':id},{"runId":1,"instanceId":1,"parameters":1,"endTime":-1,"errors":1,"iterationIndex":1})[start:start+limit].sort("endTime",direction=-1)
+        totalCount=self.lineage.find({'runId':id},{"instanceId":1}).count()
+        activities = list()
+        
+        for x in obj:
+            activities.append(x)
+        output = {"activities":activities};
+        output.update({"totalCount": totalCount})
+        return  output
+    
+    def editRun(self, id,doc):
+        ret=[]
+        response={}
+        
+        try:
+            
+            self.workflow.update({"_id":id},{'$set':doc})
+        
+            response={"success":True}
+            response.update({"edit":id}) 
+        
+        except Exception, err:
+            response={"success":False}
+            response.update({"error":str(err)})
+            traceback.print_exc()
+        finally:
+            return response
+        
+        
+    def deleteRun(self, id):
+        ret=[]
+        response={}
+        
+        try:
+            if (self.workflow.find_one({"_id":id})!=None):
+                self.lineage.remove({"runId":id})
+                self.workflow.remove({"_id":id})
+            
+                response={"success":True}
+                response.update({"delete":id}) 
+            else:
+                response={"success":False}
+                response.update({"error":"Workflow run "+id+" does not exist!"}) 
+            
+        except Exception, err:
+            response={"success":False}
+            response.update({"error":str(err)})
+            traceback.print_exc()
+        finally:
+            return response
+    
+    def insertWorkflow(self, json):
+        ret=[]
+        response={}
+        
+        try:
+            if type(json) =='list':
+        
+                for x in json:
+                    
+                    ret.append(self.workflow.insert(x))
+            else:
+                ret.append(self.workflow.insert(json))
+        
+            response={"success":True}
+            response.update({"inserts":ret}) 
+        
+        except Exception, err:
+            response={"success":False}
+            response.update({"error":str(err)}) 
+        finally:
+            return response
+    
+    
+    ' insert new data in different collections depending from the document type'
+
+    def updateCollections(self, prov):
+        try:
+            if prov["type"]=="lineage":
+                if prov["type"]=="lineage":
+                    return self.lineage.insert(prov)
+                # if(self.workflow.find_one({"_id":prov["runId"]})!=None):
+                #     return self.lineage.insert(prov)
+                # else: 
+                #     raise Exception("Workflow Run not found")
+
+            if prov["type"]=="workflow_run":
+             
+                return self.workflow.insert(prov)
+        
+        except Exception, err:
+            raise
+            
+    def insertData(self, prov):
+        ret=[]
+        response={}
+        
+        
+        try:
+            if type(prov).__name__ =='list':
+                 
+                for x in prov:
+                   try:
+                       ret.append(self.updateCollections(x))
+                   except Exception, err:
+                       ret.append({"error":str(err)})
+            else:
+                try:
+                 
+                    ret.append(self.updateCollections(prov))
+                except Exception, err:
+                       ret.append({"error":str(err)})
+        
+            response={"success":True}
+            response.update({"inserts":ret}) 
+        
+        except Exception, err:
+            
+            response={"success":False}
+            response.update({"error":str(err)}) 
+            
+        finally:
+            return response
+    
+    
+    def getDerivedDataTrace(self, id,level):
+         
+        xx = self.lineage.find_one({"streams.id":id},{"runId":1});
+        xx.update({"dataId":id})
+        cursor=self.lineage.find({"derivationIds":{'$elemMatch':{"DerivedFromDatasetID":id}}},{"runId":1,"streams":1});
+         
+        
+        if level>0:
+            derivedData=[]
+            
+            i=0
+            for d in cursor:
+                i+=1
+                if (i<25):
+                 
+                 
+                 
+                    for str in d["streams"]:
+                     
+                        try:
+                            derivedData.append(self.getDerivedDataTrace(str["id"],level-1))
+                        
+                        except Exception, err:
+                            None
+                 
+                 
+                
+            xx.update({"derivedData":derivedData})
+                
+            
+         
+        
+      
+        return xx
+        
+    def getTrace(self, id,level):
+         
+        xx = self.lineage.find_one({"streams.id":id},{"runId":1,"derivationIds":1});
+         
+         
+        xx.update({"id":id})
+        if level>=0:
+            for derid in xx["derivationIds"]:
+                try:
+                    derid["wasDerivedFrom"] = self.getTrace(derid["DerivedFromDatasetID"],level-1)
+                except Exception, err:
+                    None
+            return xx
+        
+    
+    
+    def filterOnAncestorsValuesRange(self,idlist,keylist,minvaluelist,maxvaluelist):
+        filteredIds=[]
+        for x in idlist:
+            test=self.hasAncestorWithValuesRange(x,keylist,minvaluelist,maxvaluelist)
+         #   print test
+            if test["hasAncestorWith"]==True:
+                filteredIds.append(x)
+        
+        return filteredIds
+    
+    def filterOnAncestorsMeta(self,idlist,keylist,valuelist):
+        filteredIds=[]
+        for x in idlist:
+            test=self.hasAncestorWith(x,keylist,valuelist)
+         #   print test
+            if test["hasAncestorWith"]==True:
+                filteredIds.append(x)
+        
+        return filteredIds
+    
+    def filterOnMeta(self,idlist,keylist,valuelist):
+        filteredIds=[]
+        for x in idlist:
+            test=self.hasMeta(x,keylist,valuelist)
+        #   print test
+            if test["hasMeta"]==True:
+                filteredIds.append(x)
+        
+        return filteredIds
+            
+    
+    def hasMeta(self, id, keylist,valuelist):
+         
+        elementsDict ={}
+        
+        k=0
+        for x in keylist:
+            val=valuelist[k]
+            k+=1
+            try: 
+                val =self.num(val)
+            except Exception,e:
+                None
+
+            elementsDict.update({x:val})
+        
+        xx = self.lineage.find_one({"streams":{"$elemMatch":{"id":id,'content':{'$elemMatch':elementsDict}}}},{"streams.id":1});
+        if (xx!=None):    
+            
+            return {"hasMeta":True}
+                    
+                  
+        else:
+            return {"hasMeta":False}
+    
+                
+    def hasAncestorWithValuesRange(self, id, keylist,minvaluelist,maxvaluelist):
+         
+        elementsDict ={}
+        k=0
+        for x in keylist:
+            maxval=maxvaluelist[k]
+            minval=minvaluelist[k]
+            k+=1
+            try: 
+                maxval =self.num(maxval)
+                minval =self.num(minval)
+            except Exception,e:
+                None
+                
+
+            elementsDict.update({x:{"$lte":maxval,"$gte":minval }})
+        
+        xx = self.lineage.find_one({"streams.id":id},{"runId":1,"derivationIds":1});
+        if len(xx["derivationIds"])>0:    
+            for derid in xx["derivationIds"]:
+                try:
+                #    print derid["DerivedFromDatasetID"]
+                    anchestor = self.lineage.find_one({"streams":{"$elemMatch":{"id":derid["DerivedFromDatasetID"],'content':{'$elemMatch':elementsDict}}}},{"streams.id":1});
+                    
+                    if anchestor!=None:
+                        return {"hasAncestorWith":True}
+                    else:
+                        return self.hasAncestorWithValuesRange(derid["DerivedFromDatasetID"],keylist,minvaluelist,maxvaluelist)
+                except Exception,e: 
+                   traceback.print_exc()
+        else:
+            return {"hasAncestorWith":False}
+        
+    
+    def hasAncestorWith(self, id, keylist,valuelist):
+         
+        elementsDict ={}
+        
+        k=0
+        for x in keylist:
+            val=valuelist[k]
+            k+=1
+            try: 
+                val =self.num(val)
+            except Exception,e:
+                None
+
+            elementsDict.update({x:val})
+        
+        xx = self.lineage.find_one({"streams.id":id},{"runId":1,"derivationIds":1});
+        if len(xx["derivationIds"])>0:    
+            for derid in xx["derivationIds"]:
+                try:
+                #    print derid["DerivedFromDatasetID"]
+                    anchestor = self.lineage.find_one({"streams":{"$elemMatch":{"id":derid["DerivedFromDatasetID"],'content':{'$elemMatch':elementsDict}}}},{"streams.id":1});
+                    
+                    if anchestor!=None:
+                        return {"hasAncestorWith":True}
+                    else:
+                        return self.hasAncestorWith(derid["DerivedFromDatasetID"],keylist,valuelist)
+                except Exception,e: 
+                   traceback.print_exc()
+        else:
+            return {"hasAncestorWith":False}
+       
+        
+        
+    def getTraceConditonalX(self, id, keylist,valuelist):
+         
+        elementsDict ={}
+        
+        k=0
+        for x in keylist:
+            val=valuelist[k]
+            k+=1
+            try: 
+                val =self.num(val)
+            except Exception,e:
+                None
+
+            elementsDict.update({x:val})
+        
+        xx = self.lineage.find_one({"streams.id":id,'streams.content':{'$elemMatch':elementsDict}},{"runId":1,"derivationIds":1});
+        
+        if xx==None:
+            xx = self.lineage.find_one({"streams.id":id},{"runId":1,"derivationIds":1});
+             
+            xx.update({"id":id})
+            
+            for derid in xx["derivationIds"]:
+                try:
+                    val = self.getTraceConditonal(derid["DerivedFromDatasetID"],keylist,valuelist)
+                     
+                    if val!=None:
+                        return {"hasAnchestor":True}
+                    
+                except Exception, err:
+                    traceback.print_exc()
+            
+        else:
+            return xx

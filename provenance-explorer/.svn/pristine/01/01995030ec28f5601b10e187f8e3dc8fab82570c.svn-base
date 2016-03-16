@@ -1,0 +1,15 @@
+Ext.define('CF.model.Station', {
+    extend: 'Ext.data.Model',
+    requires:['CF.model.Network'],
+ 
+  fields : [
+            {name: 'station', type: 'string', mapping:'@code'},
+            
+        	{name: 'latitude', type: 'string' , mapping:'Latitude'}, // custom mapping
+            {name: 'longitude', type: 'string' , mapping:'Longitude'}, // custom mapping
+            {name: 'elevation', type: 'float' , mapping:'Elevation'} // custom mapping
+            
+        	],
+        	
+        	belongsTo : 'CF.model.Network'
+});
