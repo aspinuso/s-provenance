@@ -1,13 +1,52 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <meta charset="utf-8">
 <style>
 
+ 
+ .my-legend .legend-title {
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 120%;
+    
+    }
+  .my-legend .legend-scale ul {
+    margin: 0;
+    padding: 0;
+    float: left;
+    list-style: none;
+    }
+  .my-legend .legend-scale ul li {
+    display: block;
+    float: left;
+    width: 50px;
+    margin-bottom: 6px;
+    text-align: center;
+    font-size: 80%;
+    list-style: none;
+    }
+  .my-legend ul.legend-labels li span {
+    display: block;
+    float: left;
+    height: 15px;
+    width: 50px;
+    }
+  .my-legend .legend-source {
+    font-size: 120%;
+    clear: both;
+    }
+  .my-legend a {
+    color: #777;
+    }
+    
 .node {
   font: 300 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
   fill: #bbb;
 }
 
- body{ text-align:center}
+ body{ text-align:center;
+ 	   font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+ }
  
 .node:hover {
   fill: #000;
@@ -49,7 +88,8 @@
 }
 
 </style>
-<body><center>
+<body>
+<center>
 
 <script src="//d3js.org/d3.v3.min.js"></script>
 <script>
@@ -57,6 +97,7 @@ PROV_SERVICE_BASEURL="/j2ep-1.0/prov/"
 RAD_MODE='<%= request.getParameter("level") %>'
 RAD_GB='<%= request.getParameter("groupby") %>'
 qstring='<%= request.getQueryString() %>'
+RUN_ID='<%= request.getParameter("runId") %>'
 var diameter = 960,
     radius = diameter / 2,
     innerRadius = radius - 120;
@@ -83,7 +124,7 @@ var svg = d3.select("body").append("svg")
     .attr("height", diameter*1.5)
     .attr("margin-left", 200)
   .append("g")
-    .attr("transform", "translate(" + radius*1.5 + "," + radius*1.5 + ")");
+    .attr("transform", "translate(" + radius*1.5 + "," + radius*1.3 + ")");
 
 var link = svg.append("g").selectAll(".link"),
     node = svg.append("g").selectAll(".node");
@@ -118,15 +159,19 @@ d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, cl
       .attr("class", "link")
       .attr("d", line)
       .attr("stroke", function(d) { var size=bundlesmap[d.source.name.instanceId+"_"+d.target.name.instanceId]
-      								
+      								  
       								if (size<100)
-      									return 'rgb('+0+','+Math.trunc(256-size*256/maxval)+','+0+')'
-									if (size>=100 && size<1000)
-										return 'rgb('+Math.trunc(256-256/maxval)+','+0+','+0+')'	
-									if (size>=1000)
-										{console.log(size)	
-										return 'rgb('+0+','+0+','+Math.trunc(size*256/maxval)+')'	
-										}
+      									return 'rgb(255,0,0)'
+									if (size>=100 && size<500)
+										return 'rgb(255,204,0)'	
+									if (size>=500 && size<1000)
+										return 'rgb(59,230,0)'	
+									if (size>=1000 && size<5000)
+										return 'rgb(0,102,255)'	
+									if (size>=5000 && size<10000)
+										return 'rgb(119,0,255)'	
+									if (size>=10000)
+										return 'rgb(247,0,255)'	
 									});
   
   } 
@@ -143,7 +188,7 @@ d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, cl
       .attr("d", line)
       .attr("stroke", function(d) { var size=bundlesmap[d.source.name.iterationId+"_"+d.target.name.iterationId]
       								
-      								if (size<100)
+      						/*		if (size<100)
       									return 'rgb('+0+','+Math.trunc(256-size*256/maxval)+','+0+')'
 									if (size>=100 && size<1000)
 										return 'rgb('+Math.trunc(256-256/maxval)+','+0+','+0+')'	
@@ -151,6 +196,20 @@ d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, cl
 										{console.log(size)	
 										return 'rgb('+0+','+0+','+Math.trunc(size*256/maxval)+')'	
 										}
+									});*/
+									
+   									if (size<100)
+      									return 'rgb(255,0,0)'
+									if (size>=100 && size<500)
+										return 'rgb(255,204,0)'	
+									if (size>=500 && size<1000)
+										return 'rgb(59,230,0)'	
+									if (size>=1000 && size<5000)
+										return 'rgb(0,102,255)'	
+									if (size>=5000 && size<10000)
+										return 'rgb(119,0,255)'	
+									if (size>=10000)
+										return 'rgb(247,0,255)'	
 									});
   
   } 
@@ -168,13 +227,17 @@ d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, cl
       .attr("stroke", function(d) { var size=bundlesmap[d.source.name.actedOnBehalfOf+"_"+d.target.name.actedOnBehalfOf]
       								
       								if (size<100)
-      									return 'rgb('+0+','+Math.trunc(256-size*256/maxval)+','+0+')'
-									if (size>=100 && size<1000)
-										return 'rgb('+Math.trunc(256-256/maxval)+','+0+','+0+')'	
-									if (size>=1000)
-										{console.log(size)	
-										return 'rgb('+0+','+0+','+Math.trunc(size*256/maxval)+')'	
-										}
+      									return 'rgb(255,0,0)'
+									if (size>=100 && size<500)
+										return 'rgb(255,204,0)'	
+									if (size>=500 && size<1000)
+										return 'rgb(59,230,0)'	
+									if (size>=1000 && size<5000)
+										return 'rgb(0,102,255)'	
+									if (size>=5000 && size<10000)
+										return 'rgb(119,0,255)'	
+									if (size>=10000)
+										return 'rgb(247,0,255)'	
 									});
   
   } 
@@ -455,6 +518,122 @@ function packageConnlistProspective(nodes) {
   return connlist;
 }
 
+function UpdateQueryString(key, value, url) {
+    if (!url) url = window.location.href;
+    var re = new RegExp("([?&])" + key + "=.*?(&|#|$)(.*)", "gi"),
+        hash;
+
+    if (re.test(url)) {
+        if (typeof value !== 'undefined' && value !== null)
+            return url.replace(re, '$1' + key + "=" + value + '$2$3');
+        else {
+            hash = url.split('#');
+            url = hash[0].replace(re, '$1$3').replace(/(&|\?)$/, '');
+            if (typeof hash[1] !== 'undefined' && hash[1] !== null) 
+                url += '#' + hash[1];
+            return url;
+        }
+    }
+    else {
+        if (typeof value !== 'undefined' && value !== null) {
+            var separator = url.indexOf('?') !== -1 ? '&' : '?';
+            hash = url.split('#');
+            url = hash[0] + separator + key + '=' + value;
+            if (typeof hash[1] !== 'undefined' && hash[1] !== null) 
+                url += '#' + hash[1];
+            return url;
+        }
+        else
+            return url;
+    }
+}
+
+function updateURLParameter(url, param, paramVal){
+    var newAdditionalURL = "";
+    var tempArray = url.split("?");
+    var baseURL = tempArray[0];
+    var additionalURL = tempArray[1];
+    var temp = "";
+    if (additionalURL) {
+        tempArray = additionalURL.split("&");
+        for (i=0; i<tempArray.length; i++){
+            if(tempArray[i].split('=')[0] != param){
+                newAdditionalURL += temp + tempArray[i];
+                temp = "&";
+            }
+        }
+    }
+
+    var rows_txt = temp + "" + param + "=" + paramVal;
+    return baseURL + "?" + newAdditionalURL + rows_txt;
+}
+
+function reload(par,sel){
+  var myselect = document.getElementById(sel);
+  url=window.location+""
+  if (sel=='setrange'){
+  	
+  	url=updateURLParameter(url,'mindx',document.forms[0].minidx.value)
+  	url=updateURLParameter(url,'maxidx',document.forms[0].maxidx.value)
+  	window.location=url
+  
+  	}
+  	else
+  	
+  		window.location=updateURLParameter(url,par,myselect.value)
+  
+  
+}
+
+
 </script>
+<h2>Radial Provenance Analysis for '<%= request.getParameter("runId") %>'</h2>
+<div class='my-legend'>
+<div class='legend-title'>Data Transfer (bytes)</div>
+<div class='legend-scale'>
+  <ul class='legend-labels'>
+    <li><span style='background:rgb(255,0,0)'></span>100</li>
+     <li><span style='background:rgb(255,204,0)'></span>500</li>
+    <li><span style='background:rgb(59,230,0)'></span>1000</li>
+    <li><span style='background:rgb(0,102,255)'></span>5000</li>
+     <li><span style='background:rgb(119,0,255)'></span>10000</li>
+      <li><span style='background:rgb(247,0,255)'></span>>10000</li>
+      
+  </ul>
+</div>
+
+
+<div class='legend-source'>Level: <strong><%= request.getParameter("level") %></strong></div>
+
+ <select onchange="reload('level','selectLevel')" id="selectLevel">
+  <option value="xx">Select Level</option>
+  <option value="prospective">prospective</option>
+  <option value="instances">instances</option>
+  <option value="iterations">iterations</option>
+</select> 
+<form name="indexrange">
+<% if (request.getParameter("level").equals("iterations")) { %>
+<strong>Iteration Range:</strong> 
+  minidx
+  <input type="number" name="minidx" min="0" value="<%= request.getParameter("minidx") %>">
+  maxidx
+  <input type="number" name="maxidx" min="1" value="<%= request.getParameter("maxidx") %>">
+  
+  <input type="button" name="setrange" value="change range" onclick="reload('','setrange')" />
+<% 
+}
+%>
+</form>
+<br/><br/>
+<div class='legend-source'>Grouping: <strong><%= request.getParameter("groupby") %></strong></div>
+
+ <select onchange="reload('groupby','selectGroup')" id="selectGroup">
+  <option value="xx">Select Grouping</option>
+  <option value="pid">pid</option>
+  <option value="worker">worker</option>
+  <option value="instanceId">instanceId</option>
+  <option value="actedOnBehalfOf">actedOnBehalfOf</option>
+</select> 
+</div>
 </center>
 </body>
