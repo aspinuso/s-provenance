@@ -126,17 +126,16 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + radius*1.5 + "," + radius*1.3 + ")");
 
-var link = svg.append("g").selectAll(".link"),
-    node = svg.append("g").selectAll(".node");
+var link = svg.append("g").selectAll(".link"), node = svg.append("g").selectAll(".node");
 
 d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, classes) {
   if (error) throw error;
 
-   
-  
+    
   if (RAD_MODE=='vrange') 
   {
    nodes = cluster.nodes(packageHierarchyPE(classes));
+  
    links = packageConnlistPEs(nodes);
    link = link
       .data(bundle(links))
@@ -152,6 +151,8 @@ d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, cl
   
   nodes = cluster.nodes(packageHierarchyInstances(classes,RAD_GB));
   links = packageConnlistInstances(nodes);
+   
+  	
   link = link
       .data(bundle(links))
     .enter().append("path")
@@ -163,7 +164,7 @@ d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, cl
       								if (size<100)
       									return 'rgb(255,0,0)'
 									if (size>=100 && size<500)
-										return 'rgb(255,204,0)'	
+										return 'rgb(245,182,10)'	
 									if (size>=500 && size<1000)
 										return 'rgb(59,230,0)'	
 									if (size>=1000 && size<5000)
@@ -180,6 +181,7 @@ d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, cl
   
   nodes = cluster.nodes(packageHierarchyIterations(classes,RAD_GB));
   links = packageConnlistIterations(nodes);
+  
   link = link
       .data(bundle(links))
     .enter().append("path")
@@ -201,7 +203,7 @@ d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, cl
    									if (size<100)
       									return 'rgb(255,0,0)'
 									if (size>=100 && size<500)
-										return 'rgb(255,204,0)'	
+										return 'rgb(245,182,10)'	
 									if (size>=500 && size<1000)
 										return 'rgb(59,230,0)'	
 									if (size>=1000 && size<5000)
@@ -229,7 +231,7 @@ d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, cl
       								if (size<100)
       									return 'rgb(255,0,0)'
 									if (size>=100 && size<500)
-										return 'rgb(255,204,0)'	
+										return 'rgb(245,182,10)'	
 									if (size>=500 && size<1000)
 										return 'rgb(59,230,0)'	
 									if (size>=1000 && size<5000)
@@ -264,6 +266,7 @@ d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, cl
       .attr("class", "node")
       .attr("dy", ".31em")
       .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
+      .style("fill", function(d) { if (d.name.mapping == "multi") return "#A17A8E"; if (d.name.mapping == "mpi") return "#216880"; if (d.name.mapping == "simple") return "#bbb" ;})
       .style("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
       .text(function(d) { return d.key; })
       .on("mouseover", mouseovered)
@@ -589,11 +592,11 @@ function reload(par,sel){
 </script>
 <h2>Radial Provenance Analysis for '<%= request.getParameter("runId") %>'</h2>
 <div class='my-legend'>
-<div class='legend-title'>Data Transfer (bytes)</div>
+<div class='legend-title'>Edges: Data Transfer (bytes)</div>
 <div class='legend-scale'>
   <ul class='legend-labels'>
     <li><span style='background:rgb(255,0,0)'></span>100</li>
-     <li><span style='background:rgb(255,204,0)'></span>500</li>
+     <li><span style='background:rgb(245,182,10)'></span>500</li>
     <li><span style='background:rgb(59,230,0)'></span>1000</li>
     <li><span style='background:rgb(0,102,255)'></span>5000</li>
      <li><span style='background:rgb(119,0,255)'></span>10000</li>
@@ -601,6 +604,25 @@ function reload(par,sel){
       
   </ul>
 </div>
+</div>
+
+<br/>
+
+<br/>
+<div class='my-legend'>
+<div class='legend-title'>Nodes: Mappings</div>
+<div class='legend-scale'>
+  <ul class='legend-labels'>
+    <li><span style='background:#bbb'></span>simple</li>
+     <li><span style='background:#A17A8E'></span>multi</li>
+    <li><span style='background:#216880'></span>mpi</li>
+  </ul>
+</div>  
+</div>
+
+<br/>
+<br/>
+
 
 
 <div class='legend-source'>Level: <strong><%= request.getParameter("level") %></strong></div>
@@ -635,5 +657,6 @@ function reload(par,sel){
   <option value="actedOnBehalfOf">actedOnBehalfOf</option>
 </select> 
 </div>
+
 </center>
 </body>

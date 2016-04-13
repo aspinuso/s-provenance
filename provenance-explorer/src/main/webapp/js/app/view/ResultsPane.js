@@ -2,8 +2,7 @@
 delete Ext.tip.Tip.prototype.minWidth;
 
 
-iDROP='http://iren-web.renci.org/idrop-release/idrop.jnlp'   
-RADIAL='d3js.jsp?minidx=0&maxidx=10&level=prospective&groupby=actedOnBehalfOf'	      	                    
+iDROP='http://iren-web.renci.org/idrop-release/idrop.jnlp'   	      	                    
 PROV_SERVICE_BASEURL="/j2ep-1.0/prov/"
 var IRODS_URL = "http://dir-irods.epcc.ed.ac.uk/irodsweb/rodsproxy/"+userSN+".UEDINZone@dir-irods.epcc.ed.ac.uk:1247/UEDINZone"
 var IRODS_URL_GSI = "gsiftp://dir-irods.epcc.ed.ac.uk/"
@@ -631,15 +630,6 @@ Ext.define('CF.view.ActivityMonitor', {
   	    id: 'idrop',
         handler: function() {
          window.open(iDROP, 'Download')
-          
-        }
-      },
-      {
-        tooltip: "Radial Provenance Analysis",
-        text: 'Radial',
-  	    id: 'Radial',
-        handler: function() {
-         window.open(RADIAL+'&runId='+currentRun, 'radial')
           
         }
       }
