@@ -92,7 +92,7 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
         
             if 'creator' in trace:
                 bundle.agent(vc["ag_"+trace["creator"]],other_attributes={"dcterms:creator":trace["creator"]})  # first time the ex namespace was used, it is added to the document automatically
-                bundle.wasAssociatedWith('process_'+trace["_id"],vc["ag_"+trace["creator"]])
+                bundle.wasAssociatedWith('process_'+trace["iterationId"],vc["ag_"+trace["creator"]])
                 bundle.wasAttributedTo(vc[trace["runId"]], vc["ag_"+trace["creator"]])
     
             'adding activity information for lineage'
@@ -109,7 +109,7 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                             dic.update({"prov:location": trace[key]})    
                         else:
                             dic.update({vc[key]: trace[key]})
-            bundle.activity(vc["process_"+trace["_id"]], trace["startTime"], trace["endTime"], dic.update({'prov:type': trace["name"]}))
+            bundle.activity(vc["process_"+trace["iterationId"]], trace["startTime"], trace["endTime"], dic.update({'prov:type': trace["name"]}))
         
             'adding parameters to the document as input entities'
             dic={}
@@ -120,8 +120,17 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                     dic.update({vc[x["key"]]: x["val"]})
                 
             dic.update({'prov:type':'parameters'})        
-            bundle.entity(vc["parameters_"+trace["_id"]], dic)
-            bundle.used(vc['process_'+trace["_id"]], vc["parameters_"+trace["_id"]], identifier=vc["used_"+trace["_id"]])
+            bundle.entity(vc["parameters_"+trace["instanceId"]], dic)
+            bundle.used(vc['process_'+trace["iterationId"]], vc["parameters_"+trace["instanceId"]], identifier=vc["used_"+trace["iterationId"]])
+
+            'adding input dependencies to the document as input entities'
+            dic={}
+        
+            for x in trace["derivationIds"]:
+                'state could be added'   
+            #dic.update({'prov:type':'parameters'})        
+                bundle.used(vc['process_'+trace["iterationId"]], vc[x["DerivedFromDatasetID"]], identifier=vc["used_"+x["DerivedFromDatasetID"]])
+
 
             'adding entities to the document as output metadata'
             for x in trace["streams"]:
@@ -141,7 +150,7 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
             
             
                 c1=bundle.collection(vc[x["id"]],other_attributes=parent_dic)
-                bundle.wasGeneratedBy(vc[x["id"]], vc["process_"+trace["_id"]], identifier=vc["wgb_"+x["id"]])
+                bundle.wasGeneratedBy(vc[x["id"]], vc["process_"+trace["iterationId"]], identifier=vc["wgb_"+x["id"]])
             
                 for d in trace['derivationIds']:
                       bundle.wasDerivedFrom(vc[x["id"]], vc[d['DerivedFromDatasetID']],identifier=vc["wdf_"+x["id"]])
@@ -173,7 +182,7 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                     e1=bundle.entity(vc["data_"+x["id"]+"_"+str(i)], dic)
                 
                     bundle.hadMember(c1, e1)
-                    bundle.wasGeneratedBy(vc["data_"+x["id"]+"_"+str(i)], vc["process_"+trace["_id"]], identifier=vc["wgb_"+x["id"]+"_"+str(i)])
+                    bundle.wasGeneratedBy(vc["data_"+x["id"]+"_"+str(i)], vc["process_"+trace["iterationId"]], identifier=vc["wgb_"+x["id"]+"_"+str(i)])
                 
                     for d in trace['derivationIds']:
                         bundle.wasDerivedFrom(vc["data_"+x["id"]+"_"+str(i)], vc[d['DerivedFromDatasetID']],identifier=vc["wdf_"+"data_"+x["id"]+"_"+str(i)])
@@ -286,7 +295,8 @@ class ProvenanceStore(object):
             #if iterationId!=None:
             
             if keylist==None:
-                return self.lineage.find(activ_searchDic,{"runId":1,"streams":1,"parameters":1,'endTime':1,'errors':1})[start:start+limit].sort("endTime",direction=-1)
+               
+                return self.lineage.find(activ_searchDic,{"runId":1,"streams":1,"parameters":1,'endTime':1,'errors':1,'derivationIds':1})[start:start+limit].sort("endTime",direction=-1)
             else:
                 
                 for x in keylist:
@@ -445,18 +455,20 @@ class ProvenanceStore(object):
             return self.getUserRuns(userid, **kwargs)
         
         if 'activities' in kwargs:
-            #print str(kwargs)
+             
             values=str(kwargs['activities'][0]).split(',')
             intersect=False
             for y in values:
-                #totalCount=totalCount+len(self.lineage.find({'username':userid,'name':y}).distinct("runId"))
                 uniques_act=self.lineage.aggregate(pipeline=[{'$match':{'username':userid,'name':y}},
                                                     {'$group':{'_id':'$runId','startTime':{ '$first': '$startTime' }}},
                                                     {'$sort':{'startTime':-1}},
                                                     {'$project':{'_id':1}}
                                                     ])['result'] 
+                                                    
                 
+               
                 uniques_act=makeHashableList(uniques_act,'_id')
+                
                 if intersect==True:
                     uniques=list(set(uniques).intersection(set(uniques_act)))
                 else:
@@ -464,7 +476,7 @@ class ProvenanceStore(object):
                     intersect=True
                 
          
-        
+         
         if len(keylist)!=0 and "mime-type" in keylist:
             values=list((set(minvaluelist).union(set(maxvaluelist))))
             #totalCount=totalCount+len(self.lineage.find({'username':userid,'streams.format':{'$in':values}}).distinct("runId"))
@@ -691,7 +703,7 @@ class ProvenanceStore(object):
         if meth=="generatedby":
             cursorsList.append(self.getEntitiesFilter(activ_searchDic,keylist,mxvaluelist,mnvaluelist,start,limit))
         elif meth=="run":        
-            cursorsList.append(self.lineage.find({'runId':runId,'streams.id':dataId},{"runId":1,"streams":{"$elemMatch": { "id": dataId}},"parameters":1,'endTime':1,'errors':1}))
+            cursorsList.append(self.lineage.find({'runId':runId,'streams.id':dataId},{"runId":1,"streams":{"$elemMatch": { "id": dataId}},"parameters":1,'endTime':1,'errors':1,'derivationIds':1}))
             totalCount = totalCount + self.lineage.find({'runId':runId,'streams.id':dataId}).count()
         elif meth=="values-range":
             cursorsList.append(self.getEntitiesFilter(activ_searchDic,keylist,mxvaluelist,mnvaluelist,start,limit))
@@ -714,6 +726,7 @@ class ProvenanceStore(object):
                         s["endTime"]=x["endTime"]
                         s["runId"]=x["runId"]
                         s["errors"]=x["errors"]
+                        s["derivationIds"]=x['derivationIds']
                         artifacts.append(s)
                     
         
@@ -852,7 +865,7 @@ class ProvenanceStore(object):
     
     def getDerivedDataTrace(self, id,level):
          
-        xx = self.lineage.find_one({"streams.id":id},{"runId":1});
+        xx = self.lineage.find_one({"streams.id":id},{"runId":1,"derivationIds":1,'streams.port':1});
         xx.update({"dataId":id})
         cursor=self.lineage.find({"derivationIds":{'$elemMatch':{"DerivedFromDatasetID":id}}},{"runId":1,"streams":1});
          
@@ -887,9 +900,7 @@ class ProvenanceStore(object):
         
     def getTrace(self, id,level):
          
-        xx = self.lineage.find_one({"streams.id":id},{"runId":1,"derivationIds":1});
-         
-         
+        xx = self.lineage.find_one({"streams.id":id},{"runId":1,"derivationIds":1,'streams.port':1});
         xx.update({"id":id})
         if level>=0:
             for derid in xx["derivationIds"]:
@@ -1076,13 +1087,18 @@ class ProvenanceStore(object):
         if 'runId' in kwargs : runId = kwargs['runId'][0]
         
         matchdic=clean_empty({'runId':runId, 'prov_cluster':{'$in':clusters} })
+        
+        
+        start=int(kwargs['starttime'][0]) if 'starttime' in kwargs and kwargs['starttime'][0]!='null' else None
+        matchdic.update({'startTime':{'$gt':start},'iterationIndex':{'$gte':int(kwargs['minidx'][0]) ,'$lt':int(kwargs['maxidx'][0])}})
+        matchdic=clean_empty(matchdic)
         print matchdic
         if 'level' in kwargs and kwargs['level'][0]=='prospective':
-            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf','name':'$name', str(groupby):'$'+str(groupby) }, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
+            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf','mapping':'$mapping', str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
         elif 'level' in kwargs and kwargs['level'][0]=='iterations':
-            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$match':{'iterationIndex':{'$gte':int(kwargs['minidx'][0]) ,'$lt':int(kwargs['maxidx'][0])}}},{'$unwind': "$streams"},{'$group':{'_id':{'iterationId':'$iterationId','instanceId':'$instanceId','worker':'$worker',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
+            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'iterationId':'$iterationId','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
         elif 'level' in kwargs and kwargs['level'][0]=='instances':
-            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'instanceId':'$instanceId','actedOnBehalfOf':'$actedOnBehalfOf','worker':'$worker',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
+            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'instanceId':'$instanceId','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
         elif 'level' in kwargs and kwargs['level'][0]=='pid':
             obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$group':{'_id':{'name':'$name','worker':'$worker','pid':'$pid'}}}])['result']
         elif 'level' in kwargs and kwargs['level'][0]=='workers':
@@ -1103,13 +1119,13 @@ class ProvenanceStore(object):
             for y in searchDic['streams.content']['$elemMatch']:
                 #print " searchdic "+json.dumps(searchDic['streams.content']['$elemMatch'][y])+"\n"
                 obj = obj + self.lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':{'$elemMatch':{y:searchDic['streams.content']['$elemMatch'][y]}}}},
-                                                    {'$group':{'_id': '$runId'}},
+                                                    {'$group':{'_id': {'runId':'$runId','username':'$username', str(groupby):'$'+str(groupby)}}},
                                                     ])['result']
                 
         else:
             obj=self.lineage.aggregate(pipeline=[{'$match':{'runId':runId}},{'$group':{'_id':{'name':'$name'}}},{'$project':{'_id':1}}])['result']
        
-        #print "OBJ: "+str(obj)
+        print "OBJ: "+str(obj)
         connections=[]
         
        
@@ -1122,7 +1138,7 @@ class ProvenanceStore(object):
             if 'level' in kwargs and kwargs['level'][0]=='vrange':
                 try:
                     
-                    triggers=self.workflow.aggregate(pipeline=[{'$match':{'_id':x['_id']}},{'$unwind':'$input'},{'$match':{'$or':[{'input.prov:type':'wfrun'},{'input.prov-type':'wfrun'}]}},{'$project':{'input.url':1,'_id':0}}])['result']
+                    triggers=self.workflow.aggregate(pipeline=[{'$match':{'_id':x['_id']['runId']}},{'$unwind':'$input'},{'$match':{'$or':[{'input.prov:type':'wfrun'},{'input.prov-type':'wfrun'}]}},{'$project':{'input.url':1,'_id':0}}])['result']
                     #print 'TRIG '+x['_id']+' '+ json.dumps(triggers)
                 except:
                     traceback.print_exc()
@@ -1130,11 +1146,11 @@ class ProvenanceStore(object):
                 
                     #print "wf ID "+str(x['_id'])
                 try:
-                    wfitem=self.workflow.find({'_id':x['_id']},{'workflowName':1})[0]
-                    x['_id']=wfitem['workflowName']+'.'+x['_id'] 
+                    wfitem=self.workflow.find({'_id':x['_id']['runId']},{'workflowName':1,'grid':1})[0]
+                    x['_id'].update(wfitem) 
                         #print "wfname"+str(wfitem['workflowName'])
                 except:
-                    #print "wf ID "+str(x['_id'])+" not found inf workflow collection"
+                    print "wf ID "+str(x['_id']['runId'])+" not found inf workflow collection"
                     add=not add
                      
                      
@@ -1142,47 +1158,51 @@ class ProvenanceStore(object):
             elif 'level' in kwargs and kwargs['level'][0]=='pid':
                 triggers=self.lineage.aggregate(pipeline=[{'$match':x['_id']},{'$unwind':'$derivationIds'},{'$group':{'_id':'$derivationIds.TriggeredByProcessIterationID'}}])['result']
             elif 'level' in kwargs and (kwargs['level'][0]=='instances' or kwargs['level'][0]=='iterations' or kwargs['level'][0]=='prospective'):
-                triggers=self.lineage.aggregate(pipeline=[{'$match':x['_id']},{'$sort':{'startTime':1}},{'$unwind':'$derivationIds'},{'$group':{'_id':'$derivationIds.TriggeredByProcessIterationID'}}])['result']
+                triggers=self.lineage.aggregate(pipeline=[{'$match':x['_id']},{'$sort':{'startTime':1}},{'$unwind':'$derivationIds'},{'$group':{'_id':'$derivationIds.DerivedFromDatasetID'}}])['result']
             elif 'level' in kwargs and kwargs['level'][0]=='workers':
                 triggers=self.lineage.aggregate(pipeline=[{'$match':x['_id']},{'$unwind':'$derivationIds'},{'$group':{'_id':'$derivationIds.TriggeredByProcessIterationID'}}])['result']
-           
-            else:
-                triggers=self.lineage.aggregate(pipeline=[{'$match':{'runId':runId,'name':x['_id']}},{'$unwind':'$derivationIds'},{'$group':{'_id':'$derivationIds.TriggeredByProcessIterationID'}}])['result']
-            
+            #elif 'level' in kwargs and kwargs['level'][0]=='vrange':
+            #    triggers=self.lineage.aggregate(pipeline=[{'$match':x['_id']},{'$unwind':'$derivationIds'},{'$group':{'_id':'$derivationIds.TriggeredByProcessIterationID'}}])['result']
             
             for t in triggers:
                 if '_id' in t:
-                    t['iterationId']=t['_id']
+                    t.update({'streams.id':t['_id']})
                     del t['_id']
                 
                 
-            #print "triggers "+str(x['_id'])+" "+json.dumps(triggers)+" "+str(add)
+            print "triggers "+str(x['_id'])+" "+str(triggers)
+            
+            #json.dumps(triggers)+" "+str(add)
             if add and len(triggers)>0:
                 pes=[]
-                
+                print "DOING CONN"
                 if 'level' in kwargs and kwargs['level'][0]=='prospective':
-                    pes=self.lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$sort':{'startTime':1}},{'$unwind':'$streams'},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf','rundId':'$runId','name':'$name'},'size':{'$sum':'$streams.size'}}}])['result']
-                elif 'level' in kwargs and kwargs['level'][0]=='pid':
-                    pes=self.lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$project':{'name':1,'worker':1,'_id':0,'pid':1}}])['result']
+                    pes=self.lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$sort':{'startTime':1}},{'$unwind':'$streams'},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf'},'size':{'$sum':'$streams.size'}}}])['result']
                 elif 'level' in kwargs and kwargs['level'][0]=='iterations':
-                    pes=self.lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$sort':{'startTime':1}},{'$unwind':'$streams'},{'$group':{'_id':{'instanceId':'$instanceId','worker':'$worker','iterationId':'$iterationId'},'size':{'$sum':'$streams.size'}}}])['result']
+                    pes=self.lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$sort':{'startTime':1}},{'$unwind':'$streams'},{'$group':{'_id':{'iterationId':'$iterationId'},'size':{'$sum':'$streams.size'}}}])['result']
                 elif 'level' in kwargs and kwargs['level'][0]=='instances':
-                    pes=self.lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$sort':{'startTime':1}},{'$unwind':'$streams'},{'$group':{'_id':{'instanceId':'$instanceId','worker':'$worker','actedOnBehalfOf':'$actedOnBehalfOf'},'size':{'$sum':'$streams.size'}}}])['result']
+                    pes=self.lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$sort':{'startTime':1}},{'$unwind':'$streams'},{'$group':{'_id':{'instanceId':'$instanceId'},'size':{'$sum':'$streams.size'}}}])['result']
                 elif 'level' in kwargs and kwargs['level'][0]=='workers':
                     pes=self.lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$project':{'name':1,'worker':1,'_id':0}}])['result']
+                elif 'level' in kwargs and kwargs['level'][0]=='pid':
+                    pes=self.lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$project':{'name':1,'worker':1,'_id':0,'pid':1}}])['result']
                 elif 'level' in kwargs and kwargs['level'][0]=='vrange':
                     for w in triggers:
                         up=urlparse(w['input']['url']).path
                         up=up[up.rfind('/')+1:len(up)+1]
-                        #print up
+                        
                         curs=self.workflow.find({'_id':up})
                         if (curs.count()>0):
-                            pes.append(curs[0]['workflowName']+'.'+up)
+                            print up
+                            pes.append(up)
                 else:
                     pes=self.lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$project':{'name':1,"_id":0}}])['result']
                 
                 x.update({'name':x['_id'], 'connlist':pes})
-                #print "conections done for: "+str(x['_id'])
+                
+                print "conections done for: "+str(x['_id'])+" PES:"+str(pes)
+                #print "size for: "+str(x['_id'])+" PES:"+str(len(pes))
+                
                 
                 del x['_id']
                 connections.append(x)

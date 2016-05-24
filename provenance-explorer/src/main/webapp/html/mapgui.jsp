@@ -16,6 +16,7 @@
              <script type="text/javascript" charset="utf-8" src="<%=request.getContextPath()%>/js/app.js"></script>
             
 			<style>
+			
 			#search-results a {
             color: #385F95;
             font:bold 11px tahoma, arial, helvetica, sans-serif;
