@@ -686,7 +686,7 @@ Ext.define('CF.view.ActivityMonitor', {
         text: 'Radial',
   	    id: 'Radial',
         handler: function() {
-         window.open(RADIAL+'&runId='+currentRun, 'radial')
+         window.open(RADIAL+'&runId='+currentRun,'_blank')
           
         }
       }
