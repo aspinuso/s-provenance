@@ -1073,9 +1073,21 @@ class ProvenanceStore(object):
         
     def getActivitiesSummaries(self,**kwargs): 
         obj=[]
-        runId=None
+        runId=[]
         groupby=None
         clusters=None
+        tags=None
+        if 'tags' in kwargs : 
+            memory_file = StringIO.StringIO(kwargs['tags'][0]);
+            tags = csv.reader(memory_file).next()
+            runIdlist=self.workflow.aggregate(pipeline=[{'$match':{'tags':{'$in':tags}}},{'$project':{'_id':1}}])['result']
+            print runId
+            for y in runIdlist:
+                 
+                runId.append(y['_id'])
+                 
+        else:
+            if 'runId' in kwargs : runId = [kwargs['runId'][0]]
         if 'groupby' in kwargs:
             groupby=kwargs['groupby'][0]
         if 'clusters' in kwargs:
@@ -1084,9 +1096,9 @@ class ProvenanceStore(object):
             
             
        
-        if 'runId' in kwargs : runId = kwargs['runId'][0]
+        #print runId
         
-        matchdic=clean_empty({'runId':runId, 'prov_cluster':{'$in':clusters} })
+        matchdic=clean_empty({'runId':{'$in':runId}, 'prov_cluster':{'$in':clusters} })
         
         
         start=int(kwargs['starttime'][0]) if 'starttime' in kwargs and kwargs['starttime'][0]!='null' else None
@@ -1123,17 +1135,18 @@ class ProvenanceStore(object):
                                                     ])['result']
                 
         else:
-            obj=self.lineage.aggregate(pipeline=[{'$match':{'runId':runId}},{'$group':{'_id':{'name':'$name'}}},{'$project':{'_id':1}}])['result']
+            obj=self.lineage.aggregate(pipeline=[{'$match':{'runId':{'$in':runId}}},{'$group':{'_id':{'name':'$name'}}},{'$project':{'_id':1}}])['result']
        
-        print "OBJ: "+str(obj)
+        #print "OBJ: "+str(obj)
         connections=[]
         
        
         for x in obj:
             add=True
             if runId:
-                x['_id'].update({'runId':runId})
+                x['_id'].update({'runId':{'$in':runId}})
             
+            print runId
             triggers=None
             if 'level' in kwargs and kwargs['level'][0]=='vrange':
                 try:
@@ -1170,7 +1183,7 @@ class ProvenanceStore(object):
                     del t['_id']
                 
                 
-            print "triggers "+str(x['_id'])+" "+str(triggers)
+            #print "triggers "+str(x['_id'])+" "+str(triggers)
             
             #json.dumps(triggers)+" "+str(add)
             if add and len(triggers)>0:
