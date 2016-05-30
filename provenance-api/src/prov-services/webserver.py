@@ -84,6 +84,7 @@ class WorkflowHandler(resource.Resource):
         self.putChild('insert', insertData(self.provenanceStore))
         self.putChild('user', getUserRuns(self.provenanceStore))
         self.putChild('export', exportRunProvenance(self.provenanceStore))
+        
         self.putChild('summaries', getSummaries(self.provenanceStore))
         
     #suport for rest query call on workflow resources   
@@ -387,12 +388,41 @@ class getSummaries(resource.Resource):
     def getChild(self, path, request):
         return EmptyChild(path)
 
+class exportDataProvenance(resource.Resource):
+    def __init__(self, provenanceStore,path=None):
+        self.provenanceStore = provenanceStore
+        self.id=path
+        resource.Resource.__init__(self)
+        
+    def render_GET(self, request):
+        
+        id = self.id
+        
+        if logging == True : log.msg(str(datetime.datetime.now().time())+":GET exportDataTraces - "+self.id);
+        
+       
+        out,count=self.provenanceStore.exportDataProvenance(id,**request.args)
+            
+        if 'format' in request.args and (request.args['format'][0]=='w3c-prov-xml' or request.args['format'][0]=='w3c-prov-json'):
+            request.setHeader('Content-type', 'application/octet-stream')#   
+                 
+        elif 'format' in request.args and request.args['format'][0]=='png':
+            request.setHeader('Content-type', 'image/png')
+                
+        else:
+            request.setHeader('Content-type', 'application/octet-stream')
+            
+        return str(out)
+    
+    def getChild(self, path, request):
+        return exportDataProvenance(self.provenanceStore, path)
 
 class exportRunProvenance(resource.Resource):
     def __init__(self, provenanceStore,path=None):
         self.provenanceStore = provenanceStore
         self.id=path
         resource.Resource.__init__(self)
+        self.putChild('data', exportDataProvenance(self.provenanceStore))
  
     def render_GET(self, request):
         

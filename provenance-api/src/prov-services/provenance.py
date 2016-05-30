@@ -54,14 +54,17 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                 for key in trace:
                     
                 
-                    if key != "input": 
+                    if key != "input":
                         if ':' in key:
                             dic.update({key: trace[key]})
                         else:
                             dic.update({vc[key]: trace[key]})
-                    
+                    if key == "tags":
+                        dic.update({vc[key]: str(trace[key])})
+                        
             
                 dic.update({'prov:type': PROV['Bundle']})
+                print dic
                 g.entity(vc[trace["runId"]], dic)
                 
                 dic={}
@@ -140,13 +143,14 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                         if key=='con:immediateAccess':
                             
                             parent_dic.update({vc['immediateAccess']: x[key]}) 
-                            
-                    
                         elif key=='location':
-                             
-                            parent_dic.update({"prov:location": str(x[key])})    
+                            parent_dic.update({"prov:location": str(x[key])})
+                        elif key == 'content':
+                            None
                         else:
-                            parent_dic.update({vc[key]: str(x[key])})    
+                            parent_dic.update({vc[key]: str(x[key])})
+                            
+                           
             
             
                 c1=bundle.collection(vc[x["id"]],other_attributes=parent_dic)
@@ -177,7 +181,7 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                         dic={vc['text']:y}
                 
                  
-                    dic.update({"verce:parent_entity": vc["data_"+x["id"]]})
+                    #dic.update({"verce:parent_entity": vc["data_"+x["id"]]})
                
                     e1=bundle.entity(vc["data_"+x["id"]+"_"+str(i)], dic)
                 
@@ -198,7 +202,6 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
             output = StringIO.StringIO()
             g.plot('test.png')
             return output
-            
         else:
             return g.serialize(format='xml')
 
@@ -334,6 +337,33 @@ class ProvenanceStore(object):
             
             
             
+    
+    
+    
+    
+    def exportDataProvenance(self, id,**kwargs):
+        
+        
+        
+        
+        
+        totalCount=self.lineage.find({'runId':id}).count()
+        
+        tracelist=[]
+        if 'all' in kwargs and kwargs['all'][0].upper()=='TRUE':
+            print "SFFD"
+            self.getTraceList(id, 1000,tracelist) 
+        elif 'level' in kwargs:  
+            self.getTraceList(id, self.num(kwargs['level'][0]),tracelist) 
+            
+              #lineage.find({'runId':id}).sort("endTime",direction=-1)
+            
+        bundle=self.workflow.find({"_id":tracelist[0]['runId']}).sort("startTime",direction=-1)
+            
+        if 'format' in kwargs:
+            return toW3Cprov(tracelist,bundle,format = kwargs['format'][0]),0
+        else:
+            return toW3Cprov(tracelist,bundle),0
             
             
     
@@ -709,7 +739,7 @@ class ProvenanceStore(object):
             cursorsList.append(self.getEntitiesFilter(activ_searchDic,keylist,mxvaluelist,mnvaluelist,start,limit))
         
         else:
-            cursorsList.append(self.lineage.find({'streams.id':meth},{"runId":1,"streams":{"$elemMatch": { "id": meth}},"parameters":1,'endTime':1,'errors':1}))
+            cursorsList.append(self.lineage.find({'streams.id':meth}))
                 
             
         artifacts = list()
@@ -900,7 +930,7 @@ class ProvenanceStore(object):
         
     def getTrace(self, id,level):
          
-        xx = self.lineage.find_one({"streams.id":id},{"runId":1,"derivationIds":1,'streams.port':1});
+        xx = self.lineage.find_one({"streams.id":id});
         xx.update({"id":id})
         if level>=0:
             for derid in xx["derivationIds"]:
@@ -909,6 +939,27 @@ class ProvenanceStore(object):
                 except Exception, err:
                     None
             return xx
+        
+        
+    def getTraceList(self, id,level,ll):
+         
+        xx = self.lineage.find_one({"streams.id":id});
+        xx.update({"id":id})
+        ll.append(xx)
+        if level>=0:
+            for derid in xx["derivationIds"]:
+                try:
+                    
+                    self.getTraceList(derid["DerivedFromDatasetID"],level-1,ll)
+                    
+                except Exception, err:
+                    traceback.print_exc()
+                 
+            return xx
+        
+        
+        
+  
         
     
     
@@ -1077,13 +1128,17 @@ class ProvenanceStore(object):
         groupby=None
         clusters=None
         tags=None
+        users=None
+        if 'users' in kwargs :
+            memory_file = StringIO.StringIO(kwargs['users'][0]);
+            users = csv.reader(memory_file).next()
+            
         if 'tags' in kwargs : 
             memory_file = StringIO.StringIO(kwargs['tags'][0]);
             tags = csv.reader(memory_file).next()
             runIdlist=self.workflow.aggregate(pipeline=[{'$match':{'tags':{'$in':tags}}},{'$project':{'_id':1}}])['result']
             print runId
             for y in runIdlist:
-                 
                 runId.append(y['_id'])
                  
         else:
@@ -1098,7 +1153,7 @@ class ProvenanceStore(object):
        
         #print runId
         
-        matchdic=clean_empty({'runId':{'$in':runId}, 'prov_cluster':{'$in':clusters} })
+        matchdic=clean_empty({'username':{'$in':users},'runId':{'$in':runId}, 'prov_cluster':{'$in':clusters} })
         
         
         start=int(kwargs['starttime'][0]) if 'starttime' in kwargs and kwargs['starttime'][0]!='null' else None
@@ -1106,11 +1161,11 @@ class ProvenanceStore(object):
         matchdic=clean_empty(matchdic)
         print matchdic
         if 'level' in kwargs and kwargs['level'][0]=='prospective':
-            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf','mapping':'$mapping', str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
+            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf','mapping':'$mapping','run':'$runId', str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
         elif 'level' in kwargs and kwargs['level'][0]=='iterations':
-            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'iterationId':'$iterationId','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
+            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'iterationId':'$iterationId','run':'$runId','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
         elif 'level' in kwargs and kwargs['level'][0]=='instances':
-            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'instanceId':'$instanceId','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
+            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'instanceId':'$instanceId','run':'$runId','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
         elif 'level' in kwargs and kwargs['level'][0]=='pid':
             obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$group':{'_id':{'name':'$name','worker':'$worker','pid':'$pid'}}}])['result']
         elif 'level' in kwargs and kwargs['level'][0]=='workers':
@@ -1126,6 +1181,9 @@ class ProvenanceStore(object):
             mnvaluelist = csv.reader(memory_file).next()
             memory_file = StringIO.StringIO(kwargs['users'][0]);
             users = csv.reader(memory_file).next()
+            memory_file = StringIO.StringIO(kwargs['tags'][0]);
+            tags = csv.reader(memory_file).next()
+            
             searchDic = self.makeElementsSearchDic(keylist,mnvaluelist,mxvaluelist)
             
             for y in searchDic['streams.content']['$elemMatch']:
@@ -1143,10 +1201,13 @@ class ProvenanceStore(object):
        
         for x in obj:
             add=True
+#            run=None
             if runId:
+                run=x['_id']['run']
                 x['_id'].update({'runId':{'$in':runId}})
+                del x['_id']['run']
             
-            print runId
+            #print runId
             triggers=None
             if 'level' in kwargs and kwargs['level'][0]=='vrange':
                 try:
@@ -1211,6 +1272,7 @@ class ProvenanceStore(object):
                 else:
                     pes=self.lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$project':{'name':1,"_id":0}}])['result']
                 
+                x['_id']['runId']=run
                 x.update({'name':x['_id'], 'connlist':pes})
                 
                 print "conections done for: "+str(x['_id'])+" PES:"+str(pes)
@@ -1223,6 +1285,7 @@ class ProvenanceStore(object):
                  
                 
             elif add:
+                x['_id']['runId']=run
                 x.update({'name':x['_id'], 'connlist':[]})
                 del x['_id']
                 connections.append(x)
