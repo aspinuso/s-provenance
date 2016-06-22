@@ -1128,6 +1128,7 @@ class ProvenanceStore(object):
         groupby=None
         clusters=None
         tags=None
+        run=None
         users=None
         if 'users' in kwargs :
             memory_file = StringIO.StringIO(kwargs['users'][0]);
@@ -1157,12 +1158,13 @@ class ProvenanceStore(object):
         
         
         start=int(kwargs['starttime'][0]) if 'starttime' in kwargs and kwargs['starttime'][0]!='null' else None
-        matchdic.update({'startTime':{'$gt':start},'iterationIndex':{'$gte':int(kwargs['minidx'][0]) ,'$lt':int(kwargs['maxidx'][0])}})
         matchdic=clean_empty(matchdic)
         print matchdic
         if 'level' in kwargs and kwargs['level'][0]=='prospective':
             obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf','mapping':'$mapping','run':'$runId', str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
         elif 'level' in kwargs and kwargs['level'][0]=='iterations':
+            matchdic.update({'startTime':{'$gt':start},'iterationIndex':{'$gte':int(kwargs['minidx'][0]) ,'$lt':int(kwargs['maxidx'][0])}})
+            matchdic=clean_empty(matchdic)
             obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'iterationId':'$iterationId','run':'$runId','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
         elif 'level' in kwargs and kwargs['level'][0]=='instances':
             obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'instanceId':'$instanceId','run':'$runId','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
@@ -1181,15 +1183,15 @@ class ProvenanceStore(object):
             mnvaluelist = csv.reader(memory_file).next()
             memory_file = StringIO.StringIO(kwargs['users'][0]);
             users = csv.reader(memory_file).next()
-            memory_file = StringIO.StringIO(kwargs['tags'][0]);
-            tags = csv.reader(memory_file).next()
+            #memory_file = StringIO.StringIO(kwargs['tags'][0]);
+            #tags = csv.reader(memory_file).next()
             
             searchDic = self.makeElementsSearchDic(keylist,mnvaluelist,mxvaluelist)
             
             for y in searchDic['streams.content']['$elemMatch']:
                 #print " searchdic "+json.dumps(searchDic['streams.content']['$elemMatch'][y])+"\n"
                 obj = obj + self.lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':{'$elemMatch':{y:searchDic['streams.content']['$elemMatch'][y]}}}},
-                                                    {'$group':{'_id': {'runId':'$runId','username':'$username', str(groupby):'$'+str(groupby)}}},
+                                                    {'$group':{'_id': {'run':'$runId','username':'$username', str(groupby):'$'+str(groupby)}}},
                                                     ])['result']
                 
         else:
@@ -1203,16 +1205,17 @@ class ProvenanceStore(object):
             add=True
 #            run=None
             if runId:
+                #print "DADADA:"
                 run=x['_id']['run']
-                x['_id'].update({'runId':{'$in':runId}})
+                x['_id'].update({'runId':run})
                 del x['_id']['run']
             
-            #print runId
+            
             triggers=None
             if 'level' in kwargs and kwargs['level'][0]=='vrange':
                 try:
                     
-                    triggers=self.workflow.aggregate(pipeline=[{'$match':{'_id':x['_id']['runId']}},{'$unwind':'$input'},{'$match':{'$or':[{'input.prov:type':'wfrun'},{'input.prov-type':'wfrun'}]}},{'$project':{'input.url':1,'_id':0}}])['result']
+                    triggers=self.workflow.aggregate(pipeline=[{'$match':{'_id':x['_id']['run']}},{'$unwind':'$input'},{'$match':{'$or':[{'input.prov:type':'wfrun'},{'input.prov-type':'wfrun'}]}},{'$project':{'input.url':1,'_id':0}}])['result']
                     #print 'TRIG '+x['_id']+' '+ json.dumps(triggers)
                 except:
                     traceback.print_exc()
@@ -1220,11 +1223,12 @@ class ProvenanceStore(object):
                 
                     #print "wf ID "+str(x['_id'])
                 try:
-                    wfitem=self.workflow.find({'_id':x['_id']['runId']},{'workflowName':1,'grid':1})[0]
+                    wfitem=self.workflow.find({'_id':x['_id']['run']},{'workflowName':1,'grid':1})[0]
                     x['_id'].update(wfitem) 
                         #print "wfname"+str(wfitem['workflowName'])
                 except:
-                    print "wf ID "+str(x['_id']['runId'])+" not found inf workflow collection"
+                    traceback.print_exc()
+#                    print "wf ID "+str(x['_id']['run'])+" not found inf workflow collection"
                     add=not add
                      
                      
@@ -1249,7 +1253,7 @@ class ProvenanceStore(object):
             #json.dumps(triggers)+" "+str(add)
             if add and len(triggers)>0:
                 pes=[]
-                print "DOING CONN"
+                #print "DOING CONN"
                 if 'level' in kwargs and kwargs['level'][0]=='prospective':
                     pes=self.lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$sort':{'startTime':1}},{'$unwind':'$streams'},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf'},'size':{'$sum':'$streams.size'}}}])['result']
                 elif 'level' in kwargs and kwargs['level'][0]=='iterations':
@@ -1272,7 +1276,7 @@ class ProvenanceStore(object):
                 else:
                     pes=self.lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$project':{'name':1,"_id":0}}])['result']
                 
-                x['_id']['runId']=run
+                #x['_id']['runId']=run
                 x.update({'name':x['_id'], 'connlist':pes})
                 
                 print "conections done for: "+str(x['_id'])+" PES:"+str(pes)
@@ -1285,7 +1289,7 @@ class ProvenanceStore(object):
                  
                 
             elif add:
-                x['_id']['runId']=run
+                #x['_id']['runId']=run
                 x.update({'name':x['_id'], 'connlist':[]})
                 del x['_id']
                 connections.append(x)
