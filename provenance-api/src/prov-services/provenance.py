@@ -326,10 +326,10 @@ class ProvenanceStore(object):
                                                     {"$unwind": "$streams" },
                                                     #{ "$unwind": "$streams.content" },
                                                     {'$match':searchDic},
-                                                    {'$group':{'_id':'$_id', 'parameters': { '$first': '$parameters' },'runId': { '$first': '$runId' },'endTime': { '$first': '$endTime' },'errors': { '$first': '$errors' },'streams':{ '$push':{'content' :'$streams.content','format':'$streams.format','location':'$streams.location','id':'$streams.id'}}}},
+                                                    {'$group':{'_id':'$_id', 'derivationIds':{ '$first': '$derivationIds' },'parameters': { '$first': '$parameters' },'runId': { '$first': '$runId' },'endTime': { '$first': '$endTime' },'startTime': { '$first': '$startTime' },'errors': { '$first': '$errors' },'streams':{ '$push':{'content' :'$streams.content','format':'$streams.format','location':'$streams.location','id':'$streams.id'}}}},
                                                     
                                                     ])['result'] 
-                #print "DDD :"+json.dumps(obj)
+                print "DDD :"+json.dumps(obj)
                     
                 return obj#totalCount=totalCount+self.lineage.find(activ_searchDic,{"runId":1}).count()
                     
