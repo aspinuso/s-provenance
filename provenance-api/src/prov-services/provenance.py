@@ -325,7 +325,7 @@ class ProvenanceStore(object):
                 obj= self.lineage.aggregate(pipeline=[{'$match':activ_searchDic},
                                                     {"$unwind": "$streams" },
                                                     #{ "$unwind": "$streams.content" },
-                                                    {'$match':searchDic},
+                                                    
                                                     {'$group':{'_id':'$_id', 'derivationIds':{ '$first': '$derivationIds' },'parameters': { '$first': '$parameters' },'runId': { '$first': '$runId' },'endTime': { '$first': '$endTime' },'startTime': { '$first': '$startTime' },'errors': { '$first': '$errors' },'streams':{ '$push':{'content' :'$streams.content','format':'$streams.format','location':'$streams.location','id':'$streams.id'}}}},
                                                     
                                                     ])['result'] 
