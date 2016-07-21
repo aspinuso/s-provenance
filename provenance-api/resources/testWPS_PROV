@@ -1,0 +1,227 @@
+<?xml version='1.0' encoding='ASCII'?>
+<prov:document xmlns:prov="http://www.w3.org/ns/prov#" xmlns:verce="http://verce.eu" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <prov:agent prov:id="verce:andrej">
+    <dcterms:author>andrej</dcterms:author>
+  </prov:agent>
+  <prov:bundle prov:id="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec">
+    <verce:_id>RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec</verce:_id>
+    <verce:description>Povenance using D4P for KNMI WPS Process: CLIPC Combine.</verce:description>
+    <verce:mapping>simple</verce:mapping>
+    <verce:name>knmi_combine</verce:name>
+    <verce:runId>RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec</verce:runId>
+    <verce:startTime>2016-07-20 11:57:45.614780</verce:startTime>
+    <verce:tag>clipc,d4py</verce:tag>
+    <verce:tags>[u'ale']</verce:tags>
+    <verce:type>workflow_run</verce:type>
+    <verce:username>andrej</verce:username>
+    <verce:workflowName>test_knmi_wps</verce:workflowName>
+  </prov:bundle>
+  <prov:bundleContent prov:id="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec">
+    <prov:actedOnBehalfOf>
+      <prov:delegate prov:ref="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec"/>
+      <prov:responsible prov:ref="verce:andrej"/>
+    </prov:actedOnBehalfOf>
+    <prov:entity prov:id="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_0">
+      <prov:type xsi:type="xsd:string">worklfow_input</prov:type>
+      <verce:mime-type>application/x-netcdf</verce:mime-type>
+      <verce:name>netcdf_source1</verce:name>
+      <verce:url>COPY_JAN.nc</verce:url>
+    </prov:entity>
+    <prov:used prov:id="verce:used_RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_0">
+      <prov:activity prov:ref="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec"/>
+      <prov:entity prov:ref="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_0"/>
+    </prov:used>
+    <prov:entity prov:id="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_1">
+      <prov:type xsi:type="xsd:string">worklfow_input</prov:type>
+      <verce:mime-type>application/x-netcdf</verce:mime-type>
+      <verce:name>netcdf_source2</verce:name>
+      <verce:url>COPY_JUL.nc</verce:url>
+    </prov:entity>
+    <prov:used prov:id="verce:used_RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_1">
+      <prov:activity prov:ref="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec"/>
+      <prov:entity prov:ref="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_1"/>
+    </prov:used>
+    <prov:entity prov:id="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_2">
+      <prov:type xsi:type="xsd:string">worklfow_input</prov:type>
+      <verce:mime-type>application/x-netcdf</verce:mime-type>
+      <verce:name>netcdf_target</verce:name>
+      <verce:url>COPY_COMBINE_YEAR.nc</verce:url>
+    </prov:entity>
+    <prov:used prov:id="verce:used_RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_2">
+      <prov:activity prov:ref="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec"/>
+      <prov:entity prov:ref="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_2"/>
+    </prov:used>
+    <prov:entity prov:id="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_3">
+      <prov:type xsi:type="xsd:string">worklfow_input</prov:type>
+      <verce:mime-type>application/x-netcdf</verce:mime-type>
+      <verce:name>variable1</verce:name>
+      <verce:url>vDTR</verce:url>
+    </prov:entity>
+    <prov:used prov:id="verce:used_RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_3">
+      <prov:activity prov:ref="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec"/>
+      <prov:entity prov:ref="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_3"/>
+    </prov:used>
+    <prov:entity prov:id="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_4">
+      <prov:type xsi:type="xsd:string">worklfow_input</prov:type>
+      <verce:mime-type>application/x-netcdf</verce:mime-type>
+      <verce:name>variable2</verce:name>
+      <verce:url>vDTR</verce:url>
+    </prov:entity>
+    <prov:used prov:id="verce:used_RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_4">
+      <prov:activity prov:ref="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec"/>
+      <prov:entity prov:ref="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_4"/>
+    </prov:used>
+    <prov:entity prov:id="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_5">
+      <prov:type xsi:type="xsd:string">worklfow_input</prov:type>
+      <verce:mime-type>application/x-netcdf</verce:mime-type>
+      <verce:name>operation</verce:name>
+      <verce:url>subtract</verce:url>
+    </prov:entity>
+    <prov:used prov:id="verce:used_RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_5">
+      <prov:activity prov:ref="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec"/>
+      <prov:entity prov:ref="verce:RDWD_knmi_combine-7f6c9f0e-476f-47ea-b55a-7530485c74ec_5"/>
+    </prov:used>
+    <prov:activity prov:id="verce:process_knmi_combine-write-2adcb051-b2a5-4da7-b4a6-f6b4958bf3a3">
+      <prov:startTime>2016-07-20T11:57:45.615000</prov:startTime>
+      <prov:endTime>2016-07-20T11:57:47.146736</prov:endTime>
+    </prov:activity>
+    <prov:entity prov:id="verce:parameters_knmi_combine-wps_instance-pc150396.knmi.nl-24353-2be61810-4e71-11e6-8745-901b0e877023">
+      <prov:type xsi:type="xsd:string">parameters</prov:type>
+      <verce:netcdf_source1>COPY_JAN.nc</verce:netcdf_source1>
+      <verce:netcdf_source2>COPY_JUL.nc</verce:netcdf_source2>
+      <verce:netcdf_target>COPY_COMBINE_YEAR.nc</verce:netcdf_target>
+      <verce:operation>subtract</verce:operation>
+      <verce:variable1>vDTR</verce:variable1>
+      <verce:variable2>vDTR</verce:variable2>
+    </prov:entity>
+    <prov:used prov:id="verce:used_knmi_combine-write-2adcb051-b2a5-4da7-b4a6-f6b4958bf3a3">
+      <prov:activity prov:ref="verce:process_knmi_combine-write-2adcb051-b2a5-4da7-b4a6-f6b4958bf3a3"/>
+      <prov:entity prov:ref="verce:parameters_knmi_combine-wps_instance-pc150396.knmi.nl-24353-2be61810-4e71-11e6-8745-901b0e877023"/>
+    </prov:used>
+    <prov:used prov:id="verce:used_243533a9bc5e7-64b6-4b5e-ae69-7caf69aea081">
+      <prov:activity prov:ref="verce:process_knmi_combine-write-2adcb051-b2a5-4da7-b4a6-f6b4958bf3a3"/>
+      <prov:entity prov:ref="verce:243533a9bc5e7-64b6-4b5e-ae69-7caf69aea081"/>
+    </prov:used>
+    <prov:used prov:id="verce:used_24353804390ff-4609-4a13-9f13-72849259bd0a">
+      <prov:activity prov:ref="verce:process_knmi_combine-write-2adcb051-b2a5-4da7-b4a6-f6b4958bf3a3"/>
+      <prov:entity prov:ref="verce:24353804390ff-4609-4a13-9f13-72849259bd0a"/>
+    </prov:used>
+    <prov:collection prov:id="verce:243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd">
+      <prov:location xsi:type="xsd:string">COPY_COMBINE_YEAR.nc</prov:location>
+      <verce:annotations>[]</verce:annotations>
+      <verce:format>json</verce:format>
+      <verce:id>243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd</verce:id>
+      <verce:port>output</verce:port>
+      <verce:size>666</verce:size>
+    </prov:collection>
+    <prov:wasGeneratedBy prov:id="verce:wgb_243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd">
+      <prov:entity prov:ref="verce:243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd"/>
+      <prov:activity prov:ref="verce:process_knmi_combine-write-2adcb051-b2a5-4da7-b4a6-f6b4958bf3a3"/>
+    </prov:wasGeneratedBy>
+    <prov:wasDerivedFrom prov:id="verce:wdf_243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd">
+      <prov:generatedEntity prov:ref="verce:243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd"/>
+      <prov:usedEntity prov:ref="verce:243533a9bc5e7-64b6-4b5e-ae69-7caf69aea081"/>
+    </prov:wasDerivedFrom>
+    <prov:wasDerivedFrom prov:id="verce:wdf_243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd">
+      <prov:generatedEntity prov:ref="verce:243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd"/>
+      <prov:usedEntity prov:ref="verce:24353804390ff-4609-4a13-9f13-72849259bd0a"/>
+    </prov:wasDerivedFrom>
+    <prov:entity prov:id="verce:data_243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd_0">
+      <verce:Conventions>CF-1.6</verce:Conventions>
+      <verce:Conventions2>CF-1.6</verce:Conventions2>
+      <verce:DODS_EXTRA_Unlimited_Dimension>time</verce:DODS_EXTRA_Unlimited_Dimension>
+      <verce:DODS_EXTRA_Unlimited_Dimension2>time</verce:DODS_EXTRA_Unlimited_Dimension2>
+      <verce:DODS_strlen>0</verce:DODS_strlen>
+      <verce:DODS_strlen2>0</verce:DODS_strlen2>
+      <verce:activity>CLIP-C project</verce:activity>
+      <verce:activity2>CLIP-C project</verce:activity2>
+      <verce:cdm_datatype>Grid</verce:cdm_datatype>
+      <verce:cdm_datatype2>Grid</verce:cdm_datatype2>
+      <verce:contact_email_1>christian.page@cerfacs.fr</verce:contact_email_1>
+      <verce:contact_email_12>christian.page@cerfacs.fr</verce:contact_email_12>
+      <verce:contact_email_2>milka.radojevic@cerfacs.fr</verce:contact_email_2>
+      <verce:contact_email_22>milka.radojevic@cerfacs.fr</verce:contact_email_22>
+      <verce:description>Tier 1: vDTR. Multi-year period of records.</verce:description>
+      <verce:description2>Tier 1: vDTR. Multi-year period of records.</verce:description2>
+      <verce:domain>EUR-11</verce:domain>
+      <verce:domain2>EUR-11</verce:domain2>
+      <verce:geospatial_increment>0.11 degree lat-lon</verce:geospatial_increment>
+      <verce:geospatial_increment2>0.11 degree lat-lon</verce:geospatial_increment2>
+      <verce:geospatial_lat_max>72.585</verce:geospatial_lat_max>
+      <verce:geospatial_lat_max2>72.585</verce:geospatial_lat_max2>
+      <verce:geospatial_lat_min>21.9878</verce:geospatial_lat_min>
+      <verce:geospatial_lat_min2>21.9878</verce:geospatial_lat_min2>
+      <verce:geospatial_lon_max>64.9644</verce:geospatial_lon_max>
+      <verce:geospatial_lon_max2>64.9644</verce:geospatial_lon_max2>
+      <verce:geospatial_lon_min>-44.5939</verce:geospatial_lon_min>
+      <verce:geospatial_lon_min2>-44.5939</verce:geospatial_lon_min2>
+      <verce:history>weightNetCDF knmi: COPY_NORM1.ncweight of normminmax to http://opendap.knmi.nl/knmi/thredds/dodsC/CLIPC/cerfacs/vDTR/MPI-M-MPI-ESM-LR_rcp85_r1i1p1_SMHI-RCA4_v1/vDTR_JAN_MPI-M-MPI-ESM-LR_rcp85_r1i1p1_SMHI-RCA4_v1_EUR-11_2006-2100.nc
+weightNetCDF knmi: COPY_JAN.ncweight of 0.5 to COPY_NORM1.nc
+COMBINE NetCDF knmi: COPY_COMBINE_YEAR.ncweight of COPY_JAN.nc to COPY_JUL.nc</verce:history>
+      <verce:history2>weightNetCDF knmi: COPY_NORM2.ncweight of normstndrd to http://opendap.knmi.nl/knmi/thredds/dodsC/CLIPC/cerfacs/vDTR/MPI-M-MPI-ESM-LR_rcp85_r1i1p1_SMHI-RCA4_v1/vDTR_JUL_MPI-M-MPI-ESM-LR_rcp85_r1i1p1_SMHI-RCA4_v1_EUR-11_2006-2100.nc
+weightNetCDF knmi: COPY_JUL.ncweight of 0.5 to COPY_NORM2.nc</verce:history2>
+      <verce:in_var_domain>EUR-11</verce:in_var_domain>
+      <verce:in_var_domain2>EUR-11</verce:in_var_domain2>
+      <verce:in_var_driving_ensemble_member>r1i1p1</verce:in_var_driving_ensemble_member>
+      <verce:in_var_driving_ensemble_member2>r1i1p1</verce:in_var_driving_ensemble_member2>
+      <verce:in_var_driving_experiment_id>rcp85</verce:in_var_driving_experiment_id>
+      <verce:in_var_driving_experiment_id2>rcp85</verce:in_var_driving_experiment_id2>
+      <verce:in_var_driving_model_id>MPI-M-MPI-ESM-LR</verce:in_var_driving_model_id>
+      <verce:in_var_driving_model_id2>MPI-M-MPI-ESM-LR</verce:in_var_driving_model_id2>
+      <verce:in_var_institution_id>SMHI</verce:in_var_institution_id>
+      <verce:in_var_institution_id2>SMHI</verce:in_var_institution_id2>
+      <verce:in_var_model_version_id>v1</verce:in_var_model_version_id>
+      <verce:in_var_model_version_id2>v1</verce:in_var_model_version_id2>
+      <verce:in_var_project_id>CORDEX</verce:in_var_project_id>
+      <verce:in_var_project_id2>CORDEX</verce:in_var_project_id2>
+      <verce:in_var_reference>http://www.smhi.se/en/research/research-departments/climate-research-rossby-centre2-552</verce:in_var_reference>
+      <verce:in_var_reference2>http://www.smhi.se/en/research/research-departments/climate-research-rossby-centre2-552</verce:in_var_reference2>
+      <verce:institution>CERFACS</verce:institution>
+      <verce:institution2>CERFACS</verce:institution2>
+      <verce:institution_url>http://www.cerfacs.fr/globc</verce:institution_url>
+      <verce:institution_url2>http://www.cerfacs.fr/globc</verce:institution_url2>
+      <verce:keywords>CLIP-C,Tier 1,vDTR,rcp85,SMHI-RCA4</verce:keywords>
+      <verce:keywords2>CLIP-C,Tier 1,vDTR,rcp85,SMHI-RCA4</verce:keywords2>
+      <verce:method>CLIVAR panel ETCCDI</verce:method>
+      <verce:method2>CLIVAR panel ETCCDI</verce:method2>
+      <verce:software>ICCLIM 3.0.1 library</verce:software>
+      <verce:software2>ICCLIM 3.0.1 library</verce:software2>
+      <verce:software_platform>Python 2.7 on x86_64 GNU/Linux</verce:software_platform>
+      <verce:software_platform2>Python 2.7 on x86_64 GNU/Linux</verce:software_platform2>
+      <verce:software_project>IS-ENES: climate for impact web portal</verce:software_project>
+      <verce:software_project2>IS-ENES: climate for impact web portal</verce:software_project2>
+      <verce:software_reference>ICCLIM Documentation 3.0: https://media.readthedocs.org/pdf/icclim/latest/icclim.pdf</verce:software_reference>
+      <verce:software_reference2>ICCLIM Documentation 3.0: https://media.readthedocs.org/pdf/icclim/latest/icclim.pdf</verce:software_reference2>
+      <verce:summary>CLIPC Tier 1: vDTR. Multi-year period of records.</verce:summary>
+      <verce:summary2>CLIPC Tier 1: vDTR. Multi-year period of records.</verce:summary2>
+      <verce:time_coverage_end>2100-01-16T00:00:00</verce:time_coverage_end>
+      <verce:time_coverage_end2>2100-07-16T00:00:00</verce:time_coverage_end2>
+      <verce:time_coverage_start>2006-01-16T00:00:00</verce:time_coverage_start>
+      <verce:time_coverage_start2>2006-07-16T00:00:00</verce:time_coverage_start2>
+      <verce:time_number_gaps>0.0</verce:time_number_gaps>
+      <verce:time_number_gaps2>0.0</verce:time_number_gaps2>
+      <verce:time_number_steps>95.0</verce:time_number_steps>
+      <verce:time_number_steps2>95.0</verce:time_number_steps2>
+      <verce:uuid>243533a9bc5e7-64b6-4b5e-ae69-7caf69aea081</verce:uuid>
+      <verce:uuid2>24353804390ff-4609-4a13-9f13-72849259bd0a</verce:uuid2>
+      <verce:version>2015-06</verce:version>
+      <verce:version2>2015-06</verce:version2>
+    </prov:entity>
+    <prov:hadMember>
+      <prov:collection prov:ref="verce:243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd"/>
+      <prov:entity prov:ref="verce:data_243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd_0"/>
+    </prov:hadMember>
+    <prov:wasGeneratedBy prov:id="verce:wgb_243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd_0">
+      <prov:entity prov:ref="verce:data_243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd_0"/>
+      <prov:activity prov:ref="verce:process_knmi_combine-write-2adcb051-b2a5-4da7-b4a6-f6b4958bf3a3"/>
+    </prov:wasGeneratedBy>
+    <prov:wasDerivedFrom prov:id="verce:wdf_data_243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd_0">
+      <prov:generatedEntity prov:ref="verce:data_243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd_0"/>
+      <prov:usedEntity prov:ref="verce:243533a9bc5e7-64b6-4b5e-ae69-7caf69aea081"/>
+    </prov:wasDerivedFrom>
+    <prov:wasDerivedFrom prov:id="verce:wdf_data_243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd_0">
+      <prov:generatedEntity prov:ref="verce:data_243530bbe4557-ab0b-4b60-9ec8-651eca6fb2cd_0"/>
+      <prov:usedEntity prov:ref="verce:24353804390ff-4609-4a13-9f13-72849259bd0a"/>
+    </prov:wasDerivedFrom>
+  </prov:bundleContent>
+</prov:document>
