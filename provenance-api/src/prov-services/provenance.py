@@ -125,13 +125,15 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                 ac=bundle.activity(vc["Invocation_"+trace["iterationId"]], trace["startTime"], trace["endTime"], dic.update({'prov:type': trace["name"]}))
                 entities["Invocation_"+trace["iterationId"]]=ac
                 bundle.actedOnBehalfOf(vc['Invocation_'+trace["iterationId"]],vc["ComponentInstance_"+trace["instanceId"]])
-            elif (ac.get_endTime()<parse_date(trace["endTime"])):
+            else:
                 ac=entities["Invocation_"+trace["iterationId"]]
-                ac.set_time(ac.get_startTime(), trace["endTime"])
+                if (ac.get_endTime()<parse_date(trace["endTime"])):
+                   ac=entities["Invocation_"+trace["iterationId"]]
+                   ac.set_time(ac.get_startTime(), trace["endTime"])
             
             
             if "ComponentInstance_"+trace["instanceId"] not in entities:
-                ag=bundle.agent(vc["ComponentInstance_"+trace["instanceId"]], other_attributes={"prov:type":"ComponentInstance"})
+                ag=bundle.agent(vc["ComponentInstance_"+trace["instanceId"]], other_attributes={"prov:type":"ComponentInstance",vc["worker"]:trace['worker'],vc["pid"]:trace['pid']})
                 entities["ComponentInstance_"+trace["instanceId"]]=1
                 bundle.actedOnBehalfOf(vc["ComponentInstance_"+trace["instanceId"]],vc["Component_"+trace["actedOnBehalfOf"]])
             
@@ -983,12 +985,13 @@ class ProvenanceStore(object):
         ll.append(xx)
         if level>=0:
             for derid in xx["derivationIds"]:
-                try:
+                if derid["DerivedFromDatasetID"]!=xx["id"]:
+                    try:
                     
-                    self.getTraceList(derid["DerivedFromDatasetID"],level-1,ll)
+                        self.getTraceList(derid["DerivedFromDatasetID"],level-1,ll)
                     
-                except Exception, err:
-                    traceback.print_exc()
+                    except Exception, err:
+                        traceback.print_exc()
                  
             return xx
         
@@ -1157,7 +1160,7 @@ class ProvenanceStore(object):
             return xx
         
         
-def getActivitiesSummaries(self,**kwargs): 
+    def getActivitiesSummaries(self,**kwargs): 
         obj=[]
         runId=[]
         groupby=None
@@ -1191,7 +1194,8 @@ def getActivitiesSummaries(self,**kwargs):
         matchdic=clean_empty(matchdic)
          
         if 'level' in kwargs and kwargs['level'][0]=='prospective':
-            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf','mapping':'$mapping','run':'$runId', str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])['result']
+            obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf','mapping':'$mapping','run':'$runId', str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}]) 
+            print(obj)
         elif 'level' in kwargs and kwargs['level'][0]=='iterations':
             matchdic.update({'startTime':{'$gt':start},'iterationIndex':{'$gte':int(kwargs['minidx'][0]) ,'$lt':int(kwargs['maxidx'][0])}})
             matchdic=clean_empty(matchdic)
