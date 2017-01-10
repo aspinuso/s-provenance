@@ -74,6 +74,17 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
             
                 dic.update({'prov:type': PROV['Bundle']})
                 
+                for x in dic:
+                     
+                    if type(dic[x])==list:
+                        dic[x]=str(dic[x])
+                
+                if vc['source'] in dic:
+                    del dic[vc['source']]
+                
+                
+                        
+                #print(dic)
                 g.entity(vc[trace["runId"]], dic)
                 
                 dic={}
