@@ -79,30 +79,37 @@ Ext.define('CF.view.Viewport', {
 			   		                     			,
 			   		                     			Ext.create('CF.view.ArtifactView')
 			   		                     			]
-			   		                     	}
-			                        	
+			   		                     	},
+			   		                     	
+			   		                     	Ext.create("Ext.Window",{
+    title : 'User',
+    id:'username_win',
+    width : 350,
+    height: 150,
+    modal:true,
+    items : [{
+          xtype: 'textfield',
+          fieldLabel: 'Username: ',
+          labelAlign: 'right',
+          name: 'username',
+          anchor: '80%',
+          id: 'userSN',
+          allowBlank: false,
+          margin: '10 10 10 0'
+        }
+    ],
+    buttons: [{
+    text: 'Go!',
+    handler: function() {
+      userSN=Ext.getCmp('userSN').getValue();
+      Ext.getCmp("activitymonitor").setTitle(userSN+' - Run activity monitor')
+      Ext.getCmp('username_win').close();
+    }}]
+}).show()			                        	
 			                               
 			                              ]
-			                    },
-			                    {
-      xtype: 'panel',
-      title: 'iRods',
-      region: 'center',
-      border: false,
-      autoScroll: true,
-      layout: 'border',
-      defaults: {},
-      items: [{
-        xtype: "component",
-        autoEl: {
-          tag: "iframe",
-          seamless: "seamless",
-          src: ((navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) ? "/j2ep-1.0/dir-irods/" : "http://dir-irods.epcc.ed.ac.uk/") + "irodsweb/browse.php?ruri=" + (userSN ? userSN + "@" : "") + "dir-irods.epcc.ed.ac.uk%3A1247/UEDINZone/home/" + (userSN ? userSN + "/verce" : "")
-        },
-        region: 'center',
-        border: false
-      }]
-    }
+			                    }
+			                    
             ]
           
           }]
@@ -186,3 +193,4 @@ function selectFile(e)
 	$(e).css('background-color', '#CED9E7');
 }
   
+

@@ -150,8 +150,14 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
    col = colour.lightgrey
   }
   
+  if (!(data.feedbackIteration===undefined) && data.feedbackIteration)
+  {
+   edgecol=colour.lightblue
+   col = colour.red
+  }
+ 
   	if (data.streams[0].port=='_d4p_state')
-  	{
+  	{     console.log(data.streams[0].port)
   		col = colour.lightblue
   		edgecol=colour.lightblue
  	 }
@@ -480,7 +486,7 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
   }],
 
   buttons: [{
-    text: 'Clear',
+    text: 'Refresh',
     handler: function() {
       this.up('form').getForm().reset();
       workflowStore.getProxy().api.read = PROV_SERVICE_BASEURL + 'workflow/user/' + userSN;
@@ -546,7 +552,7 @@ Ext.define('CF.view.WorkFlowSelectionWindow', {
 var onStoreLoad = function(store) {
   Ext.getCmp('viewworkflowinput').enable()
   Ext.getCmp('exportrun').enable();;
-  Ext.getCmp("activitymonitor").setTitle('Run activity monitor - ' + currentRun)
+  Ext.getCmp("activitymonitor").setTitle(userSN+' - Run activity monitor - ' + currentRun)
 }
 
 var renderActivityID = function(value, p, record) {
@@ -782,6 +788,7 @@ var is_image = function(url, callback, errorcallback) {
     }
   }
   img.src = url;
+  
 };
 
 
@@ -1191,6 +1198,22 @@ var searchartifactspane = Ext.create('Ext.window.Window', {
   }]
 });
 
+
+var insertusername = Ext.create('Ext.window.Window', {
+  title: 'Search Data',
+  height: 230,
+  width: 500,
+  layout: 'fit',
+  closeAction: 'hide',
+  items: [{
+    xtype: 'tabpanel',
+    items: [
+      Ext.create('CF.view.StreamValuesRangeSearch'),
+      Ext.create('CF.view.AnnotationSearch')
+    ]
+  }]
+});
+
 var filterOnAncestorspane = Ext.create('Ext.window.Window', {
   title: 'Filter Current View',
   height: 230,
@@ -1539,6 +1562,7 @@ Ext.define('CF.view.provenanceGraphsViewer', {
     	  //'<li><span style="background:'+colour.red+'"></span>expanded</li>'+
      	  '<li><span style="background:'+colour.lightgrey+'"></span>stateful</li>'+
    		  '<li><span style="background:'+colour.lightblue+'"></span>no-data-flow</li>'+
+   		  '<li><span style="background:'+colour.red+'"></span>steering</li>'+
    		  '</ul></div></div>'+
 		  '<center> <div style="width:100%" height="700"><canvas id="viewportprov" width="1200" height="500"></canvas></div></center>'
   }],
@@ -1622,3 +1646,4 @@ Ext.define('CF.view.ResultsPane', {
   extend: 'Ext.panel.Panel',
   alias: 'widget.resultspane'
 });
+
