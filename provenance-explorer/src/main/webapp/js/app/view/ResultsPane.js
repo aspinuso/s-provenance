@@ -115,6 +115,8 @@ var graphMode = ""
 
 var currentRun
 
+var deriv_run
+
 var level = 1;
 
 var colour = {
@@ -130,11 +132,26 @@ var colour = {
   black:"#000000"
 }
 
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+
+
+var edgecol= colour.darkblue
+
+
 var wasDerivedFromDephtree = function(data, graph, parent) {
   var col = colour.darkblue;
-  var edgecol= colour.darkblue
-   
   
+
+   
   if (!parent) {
     //col = colour.red
 
@@ -143,7 +160,7 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
   if (data.streams)
   { 
  
-   console.log(data)
+   
   if (data.streams[0].port==null && !(data.streams[0].port===undefined))
   {
    edgecol=colour.lightblue
@@ -157,10 +174,12 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
   }
  
   	if (data.streams[0].port=='_d4p_state')
-  	{     console.log(data.streams[0].port)
+  	{     //console.log(data.streams[0].port)
   		col = colour.lightblue
-  		edgecol=colour.lightblue
+  		
  	 }
+ 	 
+ 	 
   }
   //var node = graph.addNode(data["id"],{label:data["_id"].substring(0,5),'color':col, 'shape':'dot', 'radius':19,'alpha':1,mass:2})
   //node.runId=data["runId"]
@@ -175,16 +194,32 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
     'shape': 'dot',
     'radius': 19,
     'alpha': 1,
+    'data': {'runId':data.runId},
     mass: 2
   });
 
   if (parent) {
-
+    
+  var edgecolour
+    if(nodea.data.data.runId!=parent.data.data.runId)
+	{    	 
+			deriv_run=nodea.data.data.runId
+    		edgecolour=colour.red
+    		 
+    		
+    }
+    else
+	{     
+			deriv_run=nodea.data.data.runId
+			edgecolour=colour.darkblue
+    		 
+    }
+    //console.log(parent.data.data.runId)
     graph.addEdge(parent, nodea, {
       length: 0.75,
       directed: true,
       weight: 4,
-      color:edgecol
+      color:edgecolour
     });
 
   }
@@ -202,7 +237,7 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
 
 var derivedDataDephtree = function(data, graph, parent) {
   var col = colour.darkblue;
-  var edgecol= colour.darkblue
+   
    if (!parent) {
     //col = colour.red
 
@@ -230,17 +265,30 @@ var derivedDataDephtree = function(data, graph, parent) {
     'shape': 'dot',
     'radius': 19,
     'alpha': 1,
+     'data': {'runId':data.runId},
     mass: 2
   });
    
-  
 
   if (parent) {
+   if(nodea.data.data.runId!=parent.data.data.runId)
+	{    	 
+			deriv_run=nodea.data.data.runId
+    		edgecolour=colour.red
+    		 
+    		
+    }
+    else
+	{     
+			deriv_run=nodea.data.data.runId
+			edgecolour=colour.purple
+    		 
+    }
     graph.addEdge(parent, nodea, {
       length: 0.75,
       directed: true,
       weight: 4,
-      color:edgecol
+      color:edgecolour
     });
   }
 
@@ -408,6 +456,7 @@ Ext.define('CF.view.WorkflowOpenByRunID', {
         activityStore.load({
           callback: function() {
             currentRun = form.findField("runId").getValue(false).trim()
+            deriv_run= currentRun
             owner = form.findField("usename").getValue(false).trim()
             Ext.getCmp('filtercurrent').enable();
             Ext.getCmp('searchartifacts').enable();
@@ -420,6 +469,7 @@ Ext.define('CF.view.WorkflowOpenByRunID', {
         });
 
         currentRun = form.findField("runId").getValue(false).trim();
+        deriv_run= currentRun
       };
 
       activityStore.load();
@@ -1234,7 +1284,7 @@ var filterOnAncestorspane = Ext.create('Ext.window.Window', {
 var renderStream = function(value, p, record) {
   var location = "</br>"
   var contenthtm = ""
-  var prov='<a href=\"'+PROV_SERVICE_BASEURL + 'workflow/export/data/'+record.data.ID+'?all=true\" target=\"_blank">Download</a><br/>'
+  var prov='<a href=\"'+PROV_SERVICE_BASEURL + 'workflow/export/data/'+record.data.ID+'?all=true\" target=\"_blank">Download Provenance</a><br/>'
 
   if (record.data.location != "") {
     location = '<a href="javascript:viewData(\'' + record.data.location + '\'.split(\',\'),true)">Open</a><br/>'
@@ -1255,8 +1305,8 @@ var renderStream = function(value, p, record) {
     '<div class="search-item" style="border:2px solid; box-shadow: 10px 10px 5px #888888;"><br/>' +
     '<strong>Data ID: {0} </strong> <br/> <br/></strong><hr/>' +
     '<strong>Lineage:</strong><br/><br/>' +
-    '<strong><a href="javascript:wasDerivedFromNewGraph(\'' + PROV_SERVICE_BASEURL + 'wasDerivedFrom/{0}?level=' + level + '\')">Backwards</a><br/><br/></strong>' +
-    '<strong><a href="javascript:derivedDataNewGraph(\'' + PROV_SERVICE_BASEURL + 'derivedData/{0}?level=' + level + '\')">Forward</a><br/><br/></strong>' +
+    '<strong><a href="javascript:wasDerivedFromNewGraph(\'' + PROV_SERVICE_BASEURL + 'wasDerivedFrom/{0}?level=' + level + '\')">Trace Backwards</a><br/><br/></strong>' +
+    '<strong><a href="javascript:derivedDataNewGraph(\'' + PROV_SERVICE_BASEURL + 'derivedData/{0}?level=' + level + '\')">Trace Forward</a><br/><br/></strong>' +
     '<strong>{10}</strong><br/><hr/><br/>' +
     '<strong>Generated By :</strong> {1} <br/> <br/>' +
     '<strong>Run Id :</strong> {6} <br/> <br/>' +
@@ -1294,8 +1344,8 @@ var renderStreamSingle = function(value, p, record) {
     '<div class="search-item" style="border:2px solid; box-shadow: 10px 10px 5px #888888;"><br/>' +
     '<strong>Data ID: {0} </strong> <br/> <br/></strong><hr/>' +
     '<strong>Lineage:</strong><br/><br/>' +
-    '<strong><a href="javascript:wasDerivedFromNewGraph(\'' + PROV_SERVICE_BASEURL + 'wasDerivedFrom/{0}?level=' + level + '\')">Backwards</a><br/><br/></strong>' +
-    '<strong><a href="javascript:derivedDataNewGraph(\'' + PROV_SERVICE_BASEURL + 'derivedData/{0}?level=' + level + '\')">Forward</a><br/><br/><hr/></strong>' +
+    '<strong><a href="javascript:wasDerivedFromNewGraph(\'' + PROV_SERVICE_BASEURL + 'wasDerivedFrom/{0}?level=' + level + '\')">Trace Backwards</a><br/><br/></strong>' +
+    '<strong><a href="javascript:derivedDataNewGraph(\'' + PROV_SERVICE_BASEURL + 'derivedData/{0}?level=' + level + '\')">Trace Forward</a><br/><br/><hr/></strong>' +
     '<strong>Generated By :</strong> {1} <br/> <br/>' +
     '<strong>Run Id :</strong> {6} <br/> <br/>' +
     '<strong>Start Time Iteration :</strong>{10}<br/> <br/>' +
@@ -1558,11 +1608,11 @@ Ext.define('CF.view.provenanceGraphsViewer', {
 		  '<div class="legend-title"></div>'+
 		  '<div class="legend-scale">'+
           '<ul class="legend-labels">'+
-    	  '<li><span style="background:'+colour.darkblue+'"></span>data-flow</li>'+
+    	  '<li><span style="background:'+colour.darkblue+'"></span>trace-bw</li>'+
+    	  '<li><span style="background:'+colour.purple+'"></span>trace-fw</li>'+
     	  //'<li><span style="background:'+colour.red+'"></span>expanded</li>'+
-     	  '<li><span style="background:'+colour.lightgrey+'"></span>stateful</li>'+
-   		  '<li><span style="background:'+colour.lightblue+'"></span>no-data-flow</li>'+
-   		  '<li><span style="background:'+colour.red+'"></span>steering</li>'+
+     	  '<li><span style="background:'+colour.lightblue+'"></span>stateful</li>'+
+   		  '<li><span style="background:'+colour.red+'"></span>cross-run</li>'+
    		  '</ul></div></div>'+
 		  '<center> <div style="width:100%" height="700"><canvas id="viewportprov" width="1200" height="500"></canvas></div></center>'
   }],

@@ -104,6 +104,12 @@ Ext.define('CF.view.Viewport', {
       userSN=Ext.getCmp('userSN').getValue();
       Ext.getCmp("activitymonitor").setTitle(userSN+' - Run activity monitor')
       Ext.getCmp('username_win').close();
+      Ext.create('CF.view.WorkFlowSelectionWindow').show()
+      if (!workflowStore.isLoaded()) {
+          workflowStore.getProxy().api.read = PROV_SERVICE_BASEURL + 'workflow/user/' + userSN;
+
+          workflowStore.load();
+          }
     }}]
 }).show()			                        	
 			                               
