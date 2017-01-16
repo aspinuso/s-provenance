@@ -98,6 +98,27 @@ RAD_MODE='<%= request.getParameter("level") %>'
 RAD_GB='<%= request.getParameter("groupby") %>'
 qstring='<%= request.getQueryString() %>'
 RUN_ID='<%= request.getParameter("runId") %>'
+USERS='<%= request.getParameter("users") %>'
+
+
+USERS=USERS.split(',');
+
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+usrclmap={}
+USERS.forEach(function(d) {
+							usrclmap[d]=getRandomColor()
+	 						}
+	 		 );
+
 var diameter = 960,
     radius = diameter / 2,
     innerRadius = radius - 120;
@@ -131,10 +152,41 @@ var link = svg.append("g").selectAll(".link"), node = svg.append("g").selectAll(
 d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, classes) {
   if (error) throw error;
 
+if (RAD_MODE=='data') 
+  {
+   nodes = cluster.nodes(packageHierarchyData(classes,RAD_GB));
+  
+   links = packageConnlistData(nodes);
+   //console.log(nodes)
+   link = link
+      .data(bundle(links))
+    .enter().append("path")
+      .each(function(d) {  d.source = d[0], d.target = d[d.length - 1];})
+      .attr("class", "link")
+      .attr("d", line)
+      .attr("stroke", 'rgb(0,0,150)');
+      
+      
+      
+       node = node
+      .data(nodes.filter(function(n) { return !n.children; }))
+    .enter().append("text")
+      .attr("class", "node")
+      .attr("dy", ".31em")
+      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
+      .style("fill", function(d) { return usrclmap[d.name.username]})
+      .style("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+      .text(function(d) { return d.key; })
+      .on("mouseover", mouseovered)
+      .on("mouseout", mouseouted);
+
+   
+   }
+   else
     
   if (RAD_MODE=='vrange') 
   {
-   nodes = cluster.nodes(packageHierarchyPE(classes));
+   nodes = cluster.nodes(packageHierarchyPE(classes,RAD_GB));
   
    links = packageConnlistPEs(nodes);
    link = link
@@ -144,8 +196,24 @@ d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, cl
       .attr("class", "link")
       .attr("d", line)
       .attr("stroke", 'rgb(0,0,150)');
+      
+      
+      
+       node = node
+      .data(nodes.filter(function(n) { return !n.children; }))
+    .enter().append("text")
+      .attr("class", "node")
+      .attr("dy", ".31em")
+      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (d.y + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
+      .style("fill", function(d) { return usrclmap[d.name.username]})
+      .style("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+      .text(function(d) { return d.key; })
+      .on("mouseover", mouseovered)
+      .on("mouseout", mouseouted);
+
    
    }
+   else
    
   if (RAD_MODE=='instances') {
   
@@ -160,11 +228,11 @@ d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, cl
       .attr("class", "link")
       .attr("d", line)
       .attr("stroke", function(d) { var size=bundlesmap[d.source.name.instanceId+"_"+d.target.name.instanceId]
-      								  
+      								//console.log(d.source.name.instanceId+" "+size) 
       								if (size<100)
       									return 'rgb(255,0,0)'
 									if (size>=100 && size<500)
-										return 'rgb(245,182,10)'	
+										return '#FF8621'	
 									if (size>=500 && size<1000)
 										return 'rgb(59,230,0)'	
 									if (size>=1000 && size<5000)
@@ -189,13 +257,13 @@ d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, cl
       .attr("class", "link")
       .attr("d", line)
       .attr("stroke", function(d) { var size=bundlesmap[d.source.name.iterationId+"_"+d.target.name.iterationId]
-      								
+      								//console.log(d.source.name.iterationId+" "+size) 
       						/*		if (size<100)
       									return 'rgb('+0+','+Math.trunc(256-size*256/maxval)+','+0+')'
 									if (size>=100 && size<1000)
 										return 'rgb('+Math.trunc(256-256/maxval)+','+0+','+0+')'	
 									if (size>=1000)
-										{console.log(size)	
+										{//console.log(size)	
 										return 'rgb('+0+','+0+','+Math.trunc(size*256/maxval)+')'	
 										}
 									});*/
@@ -203,7 +271,7 @@ d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, cl
    									if (size<100)
       									return 'rgb(255,0,0)'
 									if (size>=100 && size<500)
-										return 'rgb(245,182,10)'	
+										return '#FF8621'	
 									if (size>=500 && size<1000)
 										return 'rgb(59,230,0)'	
 									if (size>=1000 && size<5000)
@@ -227,11 +295,11 @@ d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, cl
       .attr("class", "link")
       .attr("d", line)
       .attr("stroke", function(d) { var size=bundlesmap[d.source.name.actedOnBehalfOf+"_"+d.target.name.actedOnBehalfOf]
-      								
+      								//console.log(d.source.name.actedOnBehalfOf+" "+size) 
       								if (size<100)
       									return 'rgb(255,0,0)'
 									if (size>=100 && size<500)
-										return 'rgb(245,182,10)'	
+										return '#FF8621'		
 									if (size>=500 && size<1000)
 										return 'rgb(59,230,0)'	
 									if (size>=1000 && size<5000)
@@ -301,29 +369,70 @@ function mouseouted(d) {
 d3.select(self.frameElement).style("height", diameter + "px");
 
 // Lazily construct the basic hierarchy from PE names.
-function packageHierarchyPE(classes) {
-  var map = {};
 
-  function find(name, data) {
-    var node = map[name], i;
-    if (!node) {
-      node = map[name] = data || {name: name, children: []};
-      if (name.length) {
-        node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
-        node.parent.children.push(node);
-        node.key = name.substring(i + 1);
-      }
-    }
-    return node;
-  }
 
-  classes.forEach(function(d) {
-    find(d.name, d);
-  });
-  //console.log(map)
-  return map[""];
+
+function packageHierarchyData(classes,gb) {
+ var map = {};
+ var parent
+ //console.log(gb)
+ var root = {name: 'process', children: []};
+ classes.forEach(function(d) {
+//    find(d.name, d);
+	//if(!d.name.worker) d.name.worker="login";
+	
+    if (!map[d.name[gb]])
+    	{//console.log(d.name[gb])
+    	 parent = {name: { name: d.name[gb]}, children: []};
+    	 parent.parent=root
+    	 parent.parent.children.push(parent)
+    	 map[d.name[gb]]=parent
+    	}
+    
+    var node = d
+    //console.log(root) 
+  	node.parent= map[d.name[gb]]
+    node.parent.children.push(node)
+    node.key=d.name.id.substring(0,45)
+    
+   
+ });
+
+ //console.log(root)
+ return root
 }
-  
+
+
+function packageHierarchyPE(classes,gb) {
+ var map = {};
+ var parent
+ //console.log(gb)
+ var root = {name: 'process', children: []};
+ classes.forEach(function(d) {
+//    find(d.name, d);
+	//if(!d.name.worker) d.name.worker="login";
+	
+    if (!map[d.name[gb]])
+    	{//console.log(d.name[gb])
+    	 parent = {name: { name: d.name[gb]}, children: []};
+    	 parent.parent=root
+    	 parent.parent.children.push(parent)
+    	 map[d.name[gb]]=parent
+    	}
+    
+    var node = d
+    //console.log(root) 
+  	node.parent= map[d.name[gb]]
+    node.parent.children.push(node)
+    node.key=d.name.run.substring(0,45)
+    
+   
+ });
+
+ //console.log(root)
+ return root
+}
+
 // Lazily construct the basic hierarchy from Instances ids .
 function packageHierarchyInstances(classes,gb) {
  var map = {};
@@ -335,7 +444,7 @@ function packageHierarchyInstances(classes,gb) {
 	//if(!d.name.worker) d.name.worker="login";
 	
     if (!map[d.name[gb]])
-    	{console.log(d.name[gb])
+    	{//console.log(d.name[gb])
     	 parent = {name: { name: d.name[gb]}, children: []};
     	 parent.parent=root
     	 parent.parent.children.push(parent)
@@ -375,8 +484,11 @@ function packageHierarchyProspective(classes,gb) {
     var node = d 
   	node.parent= map[d.name[gb]]
     node.parent.children.push(node)
+    try {
     node.key=d.name.actedOnBehalfOf.substring(0,20)
-    
+    }catch (e){
+    node.key=d.name.name
+    }
     
     
    
@@ -408,12 +520,7 @@ function packageHierarchyIterations(classes,gb) {
     node.parent.children.push(node)
     if (d.name.iterationId)
 	    node.key=d.name.iterationId.substring(0,45)
-    else
-    {
-    	
-    	node.key=d.name.instanceId.substring(0,45)
-    	d.name.iterationId=d.name.instanceId
-   	 }
+    
     
    
  });
@@ -431,17 +538,18 @@ function packageConnlistPEs(nodes) {
 
   // Compute a map from name to node.
   nodes.forEach(function(d) {
-    map[d.name] = d;
+    map[d.name.run] = d;
   });
 
   // For each import, construct a link from the source to target node.
- 
+  
   nodes.forEach(function(d) {
+    //console.log(map[d.name.run].connlist) 
     if (d.connlist) d.connlist.forEach(function(i) { 
-     
+    
       if (map[i]!=undefined){
-      	   //console.log(map[d.name].name+" "+map[i])
-	      connlist.push({source: map[d.name], target: map[i]});
+      	  //console.log(map[d.name.run].name.run+" "+map[i])
+	      connlist.push({source: map[d.name.run], target: map[i]});
 	      }
     });
   });
@@ -449,6 +557,32 @@ function packageConnlistPEs(nodes) {
   return connlist;
 }
 
+
+
+function packageConnlistData(nodes) {
+  var map = {},
+      connlist = [];
+
+  // Compute a map from name to node.
+  nodes.forEach(function(d) {
+    map[d.name.id] = d;
+  });
+
+  // For each import, construct a link from the source to target node.
+  
+  nodes.forEach(function(d) {
+    //console.log(map[d.name.id].connlist) 
+    if (d.connlist) d.connlist.forEach(function(i) { 
+    //console.log(d.connlist) 
+      if (map[i.id]!=undefined){
+      	  console.log(map[d.name.id].name.id+" "+map[i.id].name.id)
+	      connlist.push({source: map[d.name.id], target: map[i.id]});
+	      }
+    });
+  });
+
+  return connlist;
+}
 
 
 function packageConnlistInstances(nodes) {
@@ -464,10 +598,10 @@ function packageConnlistInstances(nodes) {
   
   nodes.forEach(function(d) {
     if (d.connlist) d.connlist.forEach(function(i) { 
-      
+      if (map[i._id.instanceId]){
       connlist.push({source: map[d.name.instanceId], target: map[i._id.instanceId]});
       bundlesmap[d.name.instanceId+"_"+i._id.instanceId]=i.size
-      if (i.size>maxval) maxval=i.size
+      if (i.size>maxval) maxval=i.size}
     });
   });
 
@@ -576,7 +710,7 @@ function reload(par,sel){
   url=window.location+""
   if (sel=='setrange'){
   	
-  	url=updateURLParameter(url,'mindx',document.forms[0].minidx.value)
+  	url=updateURLParameter(url,'minidx',document.forms[0].minidx.value)
   	url=updateURLParameter(url,'maxidx',document.forms[0].maxidx.value)
   	window.location=url
   
@@ -590,13 +724,13 @@ function reload(par,sel){
 
 
 </script>
-<h2>Radial Provenance Analysis for '<%= request.getParameter("runId") %>'</h2>
+<h2>Radial Provenance Analysis for '<%= request.getParameter("runId") %>' with tags '<%= request.getParameter("tags") %>'</h2>
 <div class='my-legend'>
 <div class='legend-title'>Edges: Data Transfer (bytes)</div>
 <div class='legend-scale'>
   <ul class='legend-labels'>
     <li><span style='background:rgb(255,0,0)'></span>100</li>
-     <li><span style='background:rgb(245,182,10)'></span>500</li>
+     <li><span style='background:#FF8621'></span>500</li>
     <li><span style='background:rgb(59,230,0)'></span>1000</li>
     <li><span style='background:rgb(0,102,255)'></span>5000</li>
      <li><span style='background:rgb(119,0,255)'></span>10000</li>
@@ -655,8 +789,15 @@ function reload(par,sel){
   <option value="worker">worker</option>
   <option value="instanceId">instanceId</option>
   <option value="actedOnBehalfOf">actedOnBehalfOf</option>
+  <option value="runId">runId</option>
+  <option value="name">name</option>
 </select> 
-</div>
+<br/><br/>
+<div class='legend-source'>Tags: <strong><%= request.getParameter("tags") %></strong></div>
 
+ <input type="text" id="mytags" placeholder="Insert tags..."/>
+ <button type="button" onclick="reload('tags','mytags')">Go!</button>
+</div>
+<br/><br/>
 </center>
 </body>

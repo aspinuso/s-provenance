@@ -66,21 +66,29 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                     if key != "input":
                         if ':' in key:
                             dic.update({key: trace[key]})
+                        
+                        if key == "modules" or key == "source":
+                                continue
+                        
+                        elif key == "tags":
+                            dic.update({vc[key]: str(trace[key])})
                         else:
                             dic.update({vc[key]: trace[key]})
-                    if key == "tags":
-                        dic.update({vc[key]: str(trace[key])})
+                    
+                    
+                        
+                    
+                
                         
             
                 dic.update({'prov:type': PROV['Bundle']})
                 
-                for x in dic:
+                #for x in dic:
                      
-                    if type(dic[x])==list:
-                        dic[x]=str(dic[x])
+                #    if type(dic[x])==list:
+                #        del dic[x]
                 
-                if vc['source'] in dic:
-                    del dic[vc['source']]
+                
                 
                 
                         
@@ -147,12 +155,12 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
             if "ComponentInstance_"+trace["instanceId"] not in entities:
                 ag=bundle.agent(vc["ComponentInstance_"+trace["instanceId"]], other_attributes={"prov:type":"ComponentInstance",vc["worker"]:trace['worker'],vc["pid"]:trace['pid']})
                 entities["ComponentInstance_"+trace["instanceId"]]=1
-                bundle.actedOnBehalfOf(vc["ComponentInstance_"+trace["instanceId"]],vc["Component_"+trace["actedOnBehalfOf"]])
+                bundle.actedOnBehalfOf(vc["ComponentInstance_"+trace["instanceId"]],vc["Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"]])
             
             
-            if "Component_"+trace["actedOnBehalfOf"] not in entities:
-                ag=bundle.agent(vc["Component_"+trace["actedOnBehalfOf"]], other_attributes={"prov:type":"Component"})
-                entities["Component_"+trace["actedOnBehalfOf"]]=1
+            if "Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"] not in entities:
+                ag=bundle.agent(vc["Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"]], other_attributes={"prov:type":"Component"})
+                entities["Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"]]=1
                 
               
                
