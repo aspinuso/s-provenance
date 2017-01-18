@@ -17,6 +17,45 @@
             
 			<style>
 			
+			
+			
+			 
+.my-legend .legend-title {
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 120%;
+    
+    }
+  .my-legend .legend-scale ul {
+    margin: 0;
+    padding: 0;
+    float: left;
+    list-style: none;
+    }
+  .my-legend .legend-scale ul li {
+    display: block;
+    float: left;
+    width: 50px;
+    margin-bottom: 6px;
+    text-align: center;
+    font-size: 80%;
+    list-style: none;
+    }
+  .my-legend ul.legend-labels li span {
+    display: block;
+    float: left;
+    height: 15px;
+    width: 50px;
+    }
+  .my-legend .legend-source {
+    font-size: 120%;
+    clear: both;
+    }
+  .my-legend a {
+    color: #777;
+    }
+
 			#search-results a {
             color: #385F95;
             font:bold 11px tahoma, arial, helvetica, sans-serif;

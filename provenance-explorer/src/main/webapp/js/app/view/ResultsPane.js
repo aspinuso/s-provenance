@@ -4,7 +4,7 @@ delete Ext.tip.Tip.prototype.minWidth;
 
 iDROP='http://iren-web.renci.org/idrop-release/idrop.jnlp'   
 RADIAL='d3js.jsp?minidx=0&maxidx=10&level=prospective&groupby=actedOnBehalfOf'	      	                    
-PROV_SERVICE_BASEURL="/j2ep-1.0/prov/"
+PROV_SERVICE_BASEURL="/prov/"
 var IRODS_URL = "http://dir-irods.epcc.ed.ac.uk/irodsweb/rodsproxy/"+userSN+".UEDINZone@dir-irods.epcc.ed.ac.uk:1247/UEDINZone"
 var IRODS_URL_GSI = "gsiftp://dir-irods.epcc.ed.ac.uk/"
 var IRODS_URI=userSN+".UEDINZone@dir-irods.epcc.ed.ac.uk:1247/UEDINZone/home/"+userSN+"/verce/"

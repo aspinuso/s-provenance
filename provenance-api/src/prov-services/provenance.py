@@ -13,7 +13,6 @@ import csv
 import StringIO
 from urlparse import urlparse
 from itertools import chain
-from dateutil.parser import parse as parse_date
 
 def makeHashableList(listobj,field):
      listobj=[x[field] for x in listobj]
@@ -114,7 +113,7 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
         'specify lineage'
         for trace in ling:
             try:
-                bundle=g.bundle(vc[trace["runId"]])
+             #   bundle=g.bundle(vc[trace["runId"]])
                 bundle.wasAttributedTo(vc[trace["runId"]], vc["ag_"+trace["username"]],identifier=vc["attr_"+trace["runId"]])
                 # bundle.agent(vc["ComponentInstance_"+trace["InstanceId"]], other_attributes={"prov:type":"ComponentInstance"})
                 
@@ -183,8 +182,18 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
         
             for x in trace["derivationIds"]:
                 'state could be added'   
-            #dic.update({'prov:type':'parameters'})        
+            #dic.update({'prov:type':'parameters'})
+            
                 if 'DerivedFromDatasetID' in x and x['DerivedFromDatasetID']:
+                
+                    #if "Data_"+x["DerivedFromDatasetID"] not in entities:
+                    #    c1=bundle.collection(vc["Data_"+x["DerivedFromDatasetID"]])
+                    #    entities["Data_"+x["DerivedFromDatasetID"]]=c1
+                    #    print "USED"
+                    #else:
+                    #    print "EXisTS"
+                    #    c1=entities["Data_"+x["DerivedFromDatasetID"]] 
+                           
                     bundle.used(vc['Invocation_'+trace["iterationId"]], vc["Data_"+x["DerivedFromDatasetID"]], identifier=vc["used_"+trace["iterationId"]+"_"+x["DerivedFromDatasetID"]])
 
 
@@ -207,7 +216,15 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                 parent_dic.update({'prov:type':vc['Data']})           
             
             
+                
+                #if "Data_"+x["id"] not in entities:
                 c1=bundle.collection(vc["Data_"+x["id"]],other_attributes=parent_dic)
+                #    entities["Data_"+x["id"]]=c1
+                #    print "DADADADADAD"
+                #else:
+                #    print "EXisTS"
+                #    c1=entities["Data_"+x["id"]]
+                    
                 bundle.wasGeneratedBy(vc["Data_"+x["id"]], vc["Invocation_"+trace["iterationId"]], identifier=vc["wgb_"+x["id"]])
                 
                 dd=0
@@ -415,7 +432,7 @@ class ProvenanceStore(object):
               #lineage.find({'runId':id}).sort("endTime",direction=-1)
             
         bundle=self.workflow.find({"_id":tracelist[0]['runId']}).sort("startTime",direction=-1)
-            
+        
         if 'format' in kwargs:
             return toW3Cprov(tracelist,bundle,format = kwargs['format'][0]),0
         else:
