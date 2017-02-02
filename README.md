@@ -18,3 +18,8 @@ Provenance framework for data-intensive streaming. It offers a a web API and a r
 - pymongo >= v3.4.0
 - Mongodb >= v2.4.4
 
+### Related Projects
+
+- WPS-WORKFLOWS: https://github.com/KNMI/wps_workflow
+- dispel4py: https://github.com/akrause2014/dispel4py
+- VERCE: https://github.com/KNMI/VERCE
