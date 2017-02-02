@@ -20,6 +20,6 @@ Provenance framework for data-intensive streaming. It offers a a web API and a r
 
 ### Related Projects
 
-- WPS-WORKFLOWS: https://github.com/KNMI/wps_workflow
+- WPS-WORKFLOW: https://github.com/KNMI/wps_workflow
 - dispel4py: https://github.com/akrause2014/dispel4py
 - VERCE: https://github.com/KNMI/VERCE
