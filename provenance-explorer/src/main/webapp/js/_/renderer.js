@@ -44,7 +44,11 @@
           if (node.data.color=='none') ctx.fillStyle = "white"
 
           if (node.data.shape=='dot'){
-            gfx.oval(pt.x-w/2, pt.y-w/2, w,w, {fill:ctx.fillStyle})
+            if (node.data.data.location && node.data.data.location!="" && node.data.data.location!="undefined")
+              gfx.oval(pt.x-w/2, pt.y-w/2, w,w, {fill:ctx.fillStyle, stroke:"orange", width:3})
+            else
+              gfx.oval(pt.x-w/2, pt.y-w/2, w,w, {fill:ctx.fillStyle})
+            
             nodeBoxes[node.name] = [pt.x-w/2, pt.y-w/2, w,w]
           }else{
             gfx.rect(pt.x-w/2, pt.y-10, w,20, 4, {fill:ctx.fillStyle})
@@ -53,7 +57,10 @@
 
           // draw the text
           if (label){
-            ctx.font = "12px Helvetica"
+            if (node.data.data.location && node.data.data.location!="" && node.data.data.location!="undefined")
+           	    ctx.font = "Italic 12px Helvetica" 
+            else
+            	ctx.font = "12px Helvetica"
             ctx.textAlign = "center"
             ctx.fillStyle = "white"
             if (node.data.color=='none') ctx.fillStyle = '#333333'

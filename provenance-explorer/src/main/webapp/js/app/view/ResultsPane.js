@@ -4,7 +4,7 @@ delete Ext.tip.Tip.prototype.minWidth;
 
 iDROP='http://iren-web.renci.org/idrop-release/idrop.jnlp'   
 RADIAL='d3js.jsp?minidx=0&maxidx=10&level=prospective&groupby=actedOnBehalfOf'	      	                    
-PROV_SERVICE_BASEURL="/prov/"
+PROV_SERVICE_BASEURL="/j2ep-1.0/prov/"
 var IRODS_URL = "http://dir-irods.epcc.ed.ac.uk/irodsweb/rodsproxy/"+userSN+".UEDINZone@dir-irods.epcc.ed.ac.uk:1247/UEDINZone"
 var IRODS_URL_GSI = "gsiftp://dir-irods.epcc.ed.ac.uk/"
 var IRODS_URI=userSN+".UEDINZone@dir-irods.epcc.ed.ac.uk:1247/UEDINZone/home/"+userSN+"/verce/"
@@ -187,14 +187,14 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
   
  // if (!data.streams.port or data.streams.port=='')
   
-  
+ 
   var nodea = graph.addNode(data["id"], {
     label: data["_id"].substring(0, 8),
     'color': col,
     'shape': 'dot',
     'radius': 19,
     'alpha': 1,
-    'data': {'runId':data.runId},
+    'data': {'runId':data.runId,'location':data.streams[0].location},
     mass: 2
   });
 
@@ -258,14 +258,14 @@ var derivedDataDephtree = function(data, graph, parent) {
   }
   }
   //var node = graph.addNode(data["id"],{label:data["_id"].substring(0,5),'color':col, 'shape':'dot', 'radius':19,'alpha':1,mass:2})
-  //console.log(data['derivedData'])
+  console.log(data.streams[0].location)
   var nodea = graph.addNode(data["dataId"], {
     label: data["_id"].substring(0, 8),
     'color': col,
     'shape': 'dot',
     'radius': 19,
     'alpha': 1,
-     'data': {'runId':data.runId},
+     'data': {'runId':data.runId, 'location':data.streams[0].location},
     mass: 2
   });
    
@@ -1613,6 +1613,7 @@ Ext.define('CF.view.provenanceGraphsViewer', {
     	  //'<li><span style="background:'+colour.red+'"></span>expanded</li>'+
      	  '<li><span style="background:'+colour.lightblue+'"></span>stateful</li>'+
    		  '<li><span style="background:'+colour.red+'"></span>cross-run</li>'+
+   		  '<li><span style="background:'+colour.orange+'"></span>file</li>'+
    		  '</ul></div></div>'+
 		  '<center> <div style="width:100%" height="700"><canvas id="viewportprov" width="1200" height="500"></canvas></div></center>'
   }],
