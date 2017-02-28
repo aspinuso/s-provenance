@@ -284,7 +284,7 @@ class ProvenanceStore(object):
 
     def __init__(self, url):
  
-        self.conection = MongoClient(host=url)
+        self.conection = MongoClient(url, 27017, maxPoolSize=None)
         self.db = self.conection["verce-prov"]
         self.lineage = self.db['lineage']
         self.workflow = self.db['workflow']
