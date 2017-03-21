@@ -6,9 +6,10 @@ Provenance framework for storage and access of data-intensive streaming lineage.
 - A collection of services including a WEB-API (provenance-api) and a front-end GUI (provenance-explorer) allowing acquisition and exploration of provenance data which is produced at a run-time by a computational engine.
 ![alt tag](https://raw.githubusercontent.com/aspinuso/s-provenance/master/resources/totalv.png)
 
-- Currently manages provenance traces provided by data-intesive systems such has dispel4py and WPS (Web Processing Services) services, implemented with the PyWPS framework. 
 
-- This is the provenance framework integrated within the VERCE Earthquakes Simulation portal (http://portal.verce.eu) and the climate services portal (http://climate4impact.eu).
+- S-ProvFlow manages provenance traces provided by data-intesive systems such has dispel4py and its integration within the WPS (Web Processing Services), implemented with the PyWPS framework, is currently ongoing (https://github.com/KNMI/wps_workflow). 
+
+- S-ProvFlow is the provenance framework integrated within the VERCE Earthquakes Simulation portal (http://portal.verce.eu) and the climate services portal (http://climate4impact.eu).
 
 ## Requirements and dependencies
 
