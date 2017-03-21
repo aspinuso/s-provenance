@@ -1,4 +1,4 @@
-# s-provenance
+# S-ProvFlow
 
 Provenance framework for data-intensive streaming. It offers a a web API and a range of dedicated visualisation tools. The API exports data in W3C-PROV format. 
 
