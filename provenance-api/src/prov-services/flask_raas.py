@@ -9,8 +9,10 @@ from flask import Flask
 from flask import request
 from flask import Response
 from twisted.python import log
-app = Flask("s-prov")
-global provStore
+app = Flask(__name__)
+app.config['DEBUG'] = True
+provStore = provenance.ProvenanceStore("mongodb://127.0.0.1/verce-prov")
+logging=True
  
 
 @app.route("/")
@@ -19,11 +21,12 @@ def hello():
 
 @app.route("/activities/<runId>")
 def activitiesHandler(runId):
-    
     limit = request.args['limit'] 
     start = request.args['start']
    
     #if logging == True : log.msg(str(datetime.datetime.now().time())+":GET activities - "+runId);
+    #time.sleep(10)
+    #response = Response()
     response = Response(json.dumps(provStore.getActivities(runId,int(start),int(limit))))
     response.headers['Content-type'] = 'application/json'    
     return response
@@ -44,17 +47,17 @@ def getUserRuns(user):
         mxvaluelist= None
         mnvaluelist= None
        
-        limit = request.args['limit'][0]
-        start = request.args['start'][0]
+        limit = request.args['limit']
+        start = request.args['start']
        
          
         try:
-            memory_file = StringIO.StringIO(request.args['keys'][0]);
+            memory_file = StringIO.StringIO(request.args['keys']);
             keylist = csv.reader(memory_file).next()
             
-            memory_file = StringIO.StringIO(request.args['maxvalues'][0]);
+            memory_file = StringIO.StringIO(request.args['maxvalues']);
             mxvaluelist = csv.reader(memory_file).next()
-            memory_file = StringIO.StringIO(request.args['minvalues'][0]);
+            memory_file = StringIO.StringIO(request.args['minvalues']);
             mnvaluelist = csv.reader(memory_file).next()
         
         except Exception, err:
@@ -62,17 +65,17 @@ def getUserRuns(user):
             
          
         if (keylist==None and 'activities' not in request.args):
-            print("A")
+             
             if logging == True : log.msg(str(datetime.datetime.now().time())+":GET getUserRuns - "+user);
             response = Response(json.dumps(provStore.getUserRuns(user,**request.args)))
             response.headers['Content-type'] = 'application/json'
             return response
         else:
-            print("B")
-            if logging == True : log.msg(str(datetime.datetime.now().time())+":GET getUserRunsValuesRange - "+self.path);
-            response = Response(provStore.getUserRunsValuesRange(user,keylist,mxvaluelist,mnvaluelist,**request.args))
+             
+            if logging == True : log.msg(str(datetime.datetime.now().time())+":GET getUserRunsValuesRange - "+user);
+            response = Response(json.dumps(provStore.getUserRunsValuesRange(user,keylist,mxvaluelist,mnvaluelist,**request.args)))
             response.headers['Content-type'] = 'application/json'
-            return json.dumps(response)
+            return response
         
 
 @app.route("/workflow/edit/<runid>", methods=['POST'])
@@ -126,7 +129,7 @@ def workflowInfoHandler(runid):
 def summariesHandler():
         
         
-        #if logging == True : log.msg(str(datetime.datetime.now().time())+":GET getSummaries - level="+request.args['level'][0]);
+        #if logging == True : log.msg(str(datetime.datetime.now().time())+":GET getSummaries - level="+request.args['level']);
         response = Response(json.dumps(provStore.getActivitiesSummaries(**request.args)))
         response.headers['Content-type'] = 'application/json'    
         return response
@@ -147,6 +150,12 @@ def derivedData(id):
     response.headers['Content-type'] = 'application/json'       
     return response
 
+@app.route("/entities/<id>")
+def getEntity(id):
+        response = Response(json.dumps(provStore.getEntitiesBy(id,None,None,None,None,**request.args)))
+        response.headers['Content-type'] = 'application/json'
+        return response
+    
 @app.route("/entities/generatedby")
 def generatedBy():
         keylist = None
@@ -193,20 +202,20 @@ def generatedBy():
  
 if __name__ == "__main__":
     import sys
-    provStore = provenance.ProvenanceStore(sys.argv[1])
+    #provStore = provenance.ProvenanceStore("mongodb://127.0.0.1/verce-prov")
     logging=False;
     try:
-        if (sys.argv[2]=="True"):
+        if (True):
             logging=True
-            #print("Logging to webserver.out")
-            #log.startLogging(open("webserver.out", 'a'))
+            print("Logging to webserver.out")
+            log.startLogging(open("webserver.out", 'a'))
         else:
             logging=True
-            #print("Logging to stdout")
-            #log.startLogging(sys.stdout)
+            print("Logging to stdout")
+            log.startLogging(sys.stdout)
     except:
        logging=False
     
-    app.run(debug=True,threaded=True,port=8082)
+    app.run()
     #log.msg("Server running....")
     
