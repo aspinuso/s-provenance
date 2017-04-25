@@ -3,6 +3,7 @@ import exceptions
 import traceback
 from prov.model import ProvDocument, Namespace, Literal, PROV, Identifier
 import datetime
+import dateutil.parser
 import uuid
 import traceback
 import os
@@ -137,7 +138,7 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                 bundle.actedOnBehalfOf(vc['Invocation_'+trace["iterationId"]],vc["ComponentInstance_"+trace["instanceId"]])
             else:
                 ac=entities["Invocation_"+trace["iterationId"]]
-                if (ac.get_endTime()<parse_date(trace["endTime"])):
+                if (ac.get_endTime()<dateutil.parser.parse(trace["endTime"])):
                    ac=entities["Invocation_"+trace["iterationId"]]
                    ac.set_time(ac.get_startTime(), trace["endTime"])
             

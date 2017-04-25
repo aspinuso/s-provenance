@@ -201,7 +201,7 @@ def exportRunProvenance(runid):
             if logging == True : log.msg(str(datetime.datetime.now().time())+":GET exportAllTraces - "+runid);
         
         out,count=provStore.exportRunProvenance(runid,**request.args)
-        response=Response(json.dumps(out))
+        response=Response(out)
             
         if 'format' in request.args and (request.args['format']=='w3c-prov-xml' or request.args['format']=='w3c-prov-json'):
             response.headers['Content-type']= 'application/octet-stream'#   
@@ -221,7 +221,7 @@ def exportDataProvenance(id):
         if logging == True : log.msg(str(datetime.datetime.now().time())+":GET exportDataTraces - "+id);
         
         out,count=provStore.exportDataProvenance(id,**request.args)
-        response=Response(json.dumps(out))  
+        response=Response(out) 
         
         if 'format' in request.args and (request.args['format']=='w3c-prov-xml' or request.args['format'][0]=='w3c-prov-json'):
             response.headers['Content-type']='application/octet-stream'   
