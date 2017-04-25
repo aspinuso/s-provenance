@@ -23,7 +23,7 @@ def hello():
 def activitiesHandler(runId):
     limit = request.args['limit'] 
     start = request.args['start']
-   
+     
     #if logging == True : log.msg(str(datetime.datetime.now().time())+":GET activities - "+runId);
     #time.sleep(10)
     #response = Response()
@@ -150,26 +150,21 @@ def derivedData(id):
     response.headers['Content-type'] = 'application/json'       
     return response
 
-@app.route("/entities/<id>")
-def getEntity(id):
-        response = Response(json.dumps(provStore.getEntitiesBy(id,None,None,None,None,**request.args)))
-        response.headers['Content-type'] = 'application/json'
-        return response
-    
-@app.route("/entities/generatedby")
-def generatedBy():
+
+
+# the <method> can indicate value-range, hasAncherstorWith or the id of the resource
+@app.route("/entities/<method>")
+def getEntitiesByMethod(method):
         keylist = None
         vluelist= None
         mxvaluelist= None
         mnvaluelist= None
         
         response = Response()
-        
+         
         try:
             memory_file = StringIO.StringIO(request.args['keys']);
             keylist = csv.reader(memory_file).next()
-            
-            
             #if (self.path=="values-range"):
             memory_file = StringIO.StringIO(request.args['maxvalues']) if 'maxvalues' in request.args else None
             mxvaluelist = csv.reader(memory_file).next()
@@ -177,13 +172,14 @@ def generatedBy():
             mnvaluelist = csv.reader(memory_file2).next()
             memory_file2 = StringIO.StringIO(request.args['values']) if 'values' in request.args else None
             vluelist = csv.reader(memory_file2).next()
-        
+            dataid =StringIO.StringIO(request.args['dataid']) if 'dataid' in request.args else None
         except Exception, err:
-            None
+             None
         
         
     
         # BEGIN kept for backwards compatibility
+        
         if logging == True : log.msg(str(datetime.datetime.now().time())+":GET generatedBy - ");
         ' test http://localhost:8082/entities/hasAnchestor?dataId=lxa88-9865-09df5b44-8f1c-11e3-9f3a-bcaec52d20a2&keys=magnitude&values=3.49&_dc=&page=1&start=0&limit=300'        
         
@@ -191,13 +187,52 @@ def generatedBy():
         #    response = Response(json.dumps(self.provenanceStore.hasAncestorWith(dataid,keylist,valuelist)))
         # END kept for backwards compatibility
         
-        
-        response = Response(json.dumps(provStore.getEntitiesBy("generatedby",keylist,mxvaluelist,mnvaluelist,vluelist,**request.args)))
+        if (method=="hasAncestorWith"):
+            response = Response(json.dumps(provStore.hasAncestorWith(dataid,keylist,valuelist)))
+        else:
+            response = Response(json.dumps(provStore.getEntitiesBy(method,keylist,mxvaluelist,mnvaluelist,vluelist,**request.args)))
+        response.headers['Content-type'] = 'application/json'       
         return response
     
-    
-     
+@app.route("/workflow/export/<runid>")
+def exportRunProvenance(runid):
+ 
+        if 'all' in request.args and request.args['all'].upper()=='TRUE':
+            if logging == True : log.msg(str(datetime.datetime.now().time())+":GET exportAllTraces - "+runid);
+        
+        out,count=provStore.exportRunProvenance(runid,**request.args)
+        response=Response(out)
+            
+        if 'format' in request.args and (request.args['format']=='w3c-prov-xml' or request.args['format']=='w3c-prov-json'):
+            response.headers['Content-type']= 'application/octet-stream'#   
+                 
+        elif 'format' in request.args and request.args['format']=='png':
+            response.headers['Content-type']= 'image/png'
                 
+        else:
+            response.headers['Content-type']= 'application/octet-stream'
+            
+        return response
+        #return NOT_DONE_YET
+   
+
+@app.route("/workflow/export/data/<id>")
+def exportDataProvenance(id):
+        if logging == True : log.msg(str(datetime.datetime.now().time())+":GET exportDataTraces - "+id);
+        
+        out,count=provStore.exportDataProvenance(id,**request.args)
+        response=Response(out) 
+        
+        if 'format' in request.args and (request.args['format']=='w3c-prov-xml' or request.args['format'][0]=='w3c-prov-json'):
+            response.headers['Content-type']='application/octet-stream'   
+                 
+        elif 'format' in request.args and request.args['format']=='png':
+            response.headers['Content-type']='image/png'
+                
+        else:
+            response.headers['Content-type']='application/octet-stream'
+            
+        return response             
         
  
 if __name__ == "__main__":
