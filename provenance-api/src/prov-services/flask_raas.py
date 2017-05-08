@@ -8,12 +8,16 @@ from prov.model import ProvDocument, Namespace, Literal, PROV, Identifier
 from flask import Flask
 from flask import request
 from flask import Response
-from twisted.python import log
+import logging
+import sys
+import os
 app = Flask(__name__)
 app.config['DEBUG'] = True
-provStore = provenance.ProvenanceStore("mongodb://127.0.0.1/verce-prov")
-logging=True
+provStore = provenance.ProvenanceStore(os.environ['RAAS_REPO'])
+logging=os.environ['RAAS_LOGGING']
+
  
+
 
 @app.route("/")
 def hello():
@@ -49,7 +53,7 @@ def getUserRuns(user):
        
         limit = request.args['limit']
         start = request.args['start']
-       
+         
          
         try:
             memory_file = StringIO.StringIO(request.args['keys']);
@@ -59,20 +63,20 @@ def getUserRuns(user):
             mxvaluelist = csv.reader(memory_file).next()
             memory_file = StringIO.StringIO(request.args['minvalues']);
             mnvaluelist = csv.reader(memory_file).next()
-        
+            
         except Exception, err:
             None
             
          
         if (keylist==None and 'activities' not in request.args):
-             
-            if logging == True : log.msg(str(datetime.datetime.now().time())+":GET getUserRuns - "+user);
+            
+            if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET getUserRuns - "+user);
             response = Response(json.dumps(provStore.getUserRuns(user,**request.args)))
             response.headers['Content-type'] = 'application/json'
             return response
         else:
              
-            if logging == True : log.msg(str(datetime.datetime.now().time())+":GET getUserRunsValuesRange - "+user);
+            if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET getUserRunsValuesRange - "+user);
             response = Response(json.dumps(provStore.getUserRunsValuesRange(user,keylist,mxvaluelist,mnvaluelist,**request.args)))
             response.headers['Content-type'] = 'application/json'
             return response
@@ -81,7 +85,7 @@ def getUserRuns(user):
 @app.route("/workflow/edit/<runid>", methods=['POST'])
 def workflowInfoHandlerEdit(runid):
         
-        #if logging == True : log.msg(str(datetime.datetime.now().time())+":POST WorkflowRunInfo - "+runid);
+        #if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":POST WorkflowRunInfo - "+runid);
         print(request.form)
         response = Response(json.dumps(provStore.editRun(runid,json.loads(str(request.form["doc"])))))
         response.headers['Content-type'] = 'application/json'
@@ -91,7 +95,7 @@ def workflowInfoHandlerEdit(runid):
 @app.route("/workflow/delete/<runid>", methods=['POST'])
 def workflowInfoHandlerDelete(runid):
          
-        if logging == True : log.msg(str(datetime.datetime.now().time())+":POST WorkflowRunInfo - "+runid);
+        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":POST WorkflowRunInfo - "+runid);
         print(request.form)
         response = Response(json.dumps(provStore.deleteRun(runid)))
         response.headers['Content-type'] = 'application/json'
@@ -103,7 +107,7 @@ def insertData():
         payload = json.loads(str(payload))
         response = Response(json.dumps(provStore.insertData(payload)))
         response.headers['Content-type'] = 'application/json'
-        if logging == True : log.msg(str(datetime.datetime.now().time())+":POST insertData  - ")
+        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":POST insertData  - ")
         return response  
     
     
@@ -120,7 +124,7 @@ def workflowInfoHandler(runid):
              else: 
                   response = {'success':False, 'error':'Invalid Run Id'}
             
-                  if logging == True : log.msg(str(datetime.datetime.now().time())+":DELETE WorkflowRunInfo - "+self.path);
+                  if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":DELETE WorkflowRunInfo - "+self.path);
         response.headers['Content-type'] = 'application/json'   
         return response
 
@@ -129,7 +133,7 @@ def workflowInfoHandler(runid):
 def summariesHandler():
         
         
-        #if logging == True : log.msg(str(datetime.datetime.now().time())+":GET getSummaries - level="+request.args['level']);
+        #if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET getSummaries - level="+request.args['level']);
         response = Response(json.dumps(provStore.getActivitiesSummaries(**request.args)))
         response.headers['Content-type'] = 'application/json'    
         return response
@@ -137,7 +141,7 @@ def summariesHandler():
 @app.route("/wasDerivedFrom/<id>")
 def wasDerivedFrom(id):
     level = request.args['level']
-    if logging == True : log.msg(str(datetime.datetime.now().time())+":GET wasDerivedFrom - "+id);
+    if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET wasDerivedFrom - "+id);
     response = Response(json.dumps(provStore.getTrace(id,int(level))))
     response.headers['Content-type'] = 'application/json'       
     return response
@@ -145,7 +149,7 @@ def wasDerivedFrom(id):
 @app.route("/derivedData/<id>")    
 def derivedData(id):
     level = request.args['level']
-    if logging == True : log.msg(str(datetime.datetime.now().time())+":GET derivedData - "+id);
+    if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET derivedData - "+id);
     response = Response(json.dumps(provStore.getDerivedDataTrace(id,int(level))))
     response.headers['Content-type'] = 'application/json'       
     return response
@@ -180,7 +184,7 @@ def getEntitiesByMethod(method):
     
         # BEGIN kept for backwards compatibility
         
-        if logging == True : log.msg(str(datetime.datetime.now().time())+":GET generatedBy - ");
+        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET generatedBy - ");
         ' test http://localhost:8082/entities/hasAnchestor?dataId=lxa88-9865-09df5b44-8f1c-11e3-9f3a-bcaec52d20a2&keys=magnitude&values=3.49&_dc=&page=1&start=0&limit=300'        
         
        # if (self.path=="hasAncestorWith"):
@@ -197,8 +201,8 @@ def getEntitiesByMethod(method):
 @app.route("/workflow/export/<runid>")
 def exportRunProvenance(runid):
  
-        if 'all' in request.args and request.args['all'].upper()=='TRUE':
-            if logging == True : log.msg(str(datetime.datetime.now().time())+":GET exportAllTraces - "+runid);
+        if 'all' in request.args and request.args['all'].upper()=='"True"':
+            if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET exportAllTraces - "+runid);
         
         out,count=provStore.exportRunProvenance(runid,**request.args)
         response=Response(out)
@@ -218,7 +222,7 @@ def exportRunProvenance(runid):
 
 @app.route("/workflow/export/data/<id>")
 def exportDataProvenance(id):
-        if logging == True : log.msg(str(datetime.datetime.now().time())+":GET exportDataTraces - "+id);
+        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET exportDataTraces - "+id);
         
         out,count=provStore.exportDataProvenance(id,**request.args)
         response=Response(out) 
@@ -239,18 +243,9 @@ if __name__ == "__main__":
     import sys
     #provStore = provenance.ProvenanceStore("mongodb://127.0.0.1/verce-prov")
     logging=False;
-    try:
-        if (True):
-            logging=True
-            print("Logging to webserver.out")
-            log.startLogging(open("webserver.out", 'a'))
-        else:
-            logging=True
-            print("Logging to stdout")
-            log.startLogging(sys.stdout)
-    except:
-       logging=False
-    
+    stream_handler = logging.StreamHandler()
+    stream_handler.setLevel(logging.DEBUG)
+    app.logger.addHandler(stream_handler)
     app.run()
-    #log.msg("Server running....")
+    # app.logger.info("Server running....")
     
