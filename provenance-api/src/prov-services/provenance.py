@@ -72,8 +72,8 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                         
                         elif key == "tags":
                             dic.update({vc[key]: str(trace[key])})
-                        else:
-                            dic.update({vc[key]: trace[key]})
+                        #else:
+                        #    dic.update({vc[key]: trace[key]})
                     
                     
                         
@@ -131,7 +131,14 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                             dic.update({"prov:location": trace[key]})    
                         else:
                             dic.update({vc[key]: trace[key]})
-                          
+            
+            if "iterationId" not in trace:
+                trace["iterationId"]=trace["instanceId"]
+            if "worker" not in trace:
+                trace["worker"]="NaN"
+            if "actedOnBehalfOf" not in trace:
+                trace["actedOnBehalfOf"]=trace["name"]
+                
             if "Invocation_"+trace["iterationId"] not in entities:
                 ac=bundle.activity(vc["Invocation_"+trace["iterationId"]], trace["startTime"], trace["endTime"], other_attributes=dic.update({'prov:type': vc["Invocation"]}))
                 entities["Invocation_"+trace["iterationId"]]=ac
@@ -259,10 +266,6 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                     #    bundle.wasDerivedFrom(vc["DataGranule_"+x["id"]+"_"+str(i)], vc[d['DerivedFromDatasetID']],identifier=vc["wdf_"+"DataGranule_"+x["id"]+"_"+str(i)])
         
                     i=i+1
-            
-    
-         
-        
         if format =='w3c-prov-json':
             return str(g.serialize(format='json'))
         elif format=='png':
