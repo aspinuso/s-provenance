@@ -30,5 +30,5 @@ Provenance framework for storage and access of data-intensive streaming lineage.
 ### Related Projects
 
 - WPS-WORKFLOW: https://github.com/KNMI/wps_workflow
-- dispel4py: https://github.com/akrause2014/dispel4py
+- dispel4py: https://github.com/dispel4py/dispel4py
 - VERCE: https://github.com/KNMI/VERCE
