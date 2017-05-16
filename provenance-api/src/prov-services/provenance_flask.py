@@ -3,7 +3,6 @@ import exceptions
 import traceback
 from prov.model import ProvDocument, Namespace, Literal, PROV, Identifier
 import datetime
-import dateutil.parser
 import uuid
 import traceback
 import os
@@ -34,15 +33,7 @@ def formatArtifactDic(dic):
          dic[x]=str(dic[x])
  return dic
      
-
-def resolveMissingTerms(trace):
-    if "iterationId" not in trace:
-            trace["iterationId"]=trace["instanceId"]
-    if "worker" not in trace:
-            trace["worker"]="NaN"
-    if "actedOnBehalfOf" not in trace:
-            trace["actedOnBehalfOf"]=trace["name"]
-    return trace
+     
      
      
 def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
@@ -80,8 +71,8 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                         
                         elif key == "tags":
                             dic.update({vc[key]: str(trace[key])})
-                        #else:
-                        #    dic.update({vc[key]: trace[key]})
+                        else:
+                            dic.update({vc[key]: trace[key]})
                     
                     
                         
@@ -91,7 +82,16 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
             
                 dic.update({'prov:type': PROV['Bundle']})
                 
-               
+                #for x in dic:
+                     
+                #    if type(dic[x])==list:
+                #        del dic[x]
+                
+                
+                
+                
+                        
+                #print(dic)
                 g.entity(vc[trace["runId"]], dic)
                 
                 dic={}
@@ -112,8 +112,6 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                     
         'specify lineage'
         for trace in ling:
-            trace = resolveMissingTerms(trace)
-            
             try:
              #   bundle=g.bundle(vc[trace["runId"]])
                 bundle.wasAttributedTo(vc[trace["runId"]], vc["ag_"+trace["username"]],identifier=vc["attr_"+trace["runId"]])
@@ -141,16 +139,14 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                             dic.update({"prov:location": trace[key]})    
                         else:
                             dic.update({vc[key]: trace[key]})
-            
-            
-                
+                          
             if "Invocation_"+trace["iterationId"] not in entities:
                 ac=bundle.activity(vc["Invocation_"+trace["iterationId"]], trace["startTime"], trace["endTime"], other_attributes=dic.update({'prov:type': vc["Invocation"]}))
                 entities["Invocation_"+trace["iterationId"]]=ac
                 bundle.actedOnBehalfOf(vc['Invocation_'+trace["iterationId"]],vc["ComponentInstance_"+trace["instanceId"]])
             else:
                 ac=entities["Invocation_"+trace["iterationId"]]
-                if (ac.get_endTime()<dateutil.parser.parse(trace["endTime"])):
+                if (ac.get_endTime()<parse_date(trace["endTime"])):
                    ac=entities["Invocation_"+trace["iterationId"]]
                    ac.set_time(ac.get_startTime(), trace["endTime"])
             
@@ -271,6 +267,10 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
                     #    bundle.wasDerivedFrom(vc["DataGranule_"+x["id"]+"_"+str(i)], vc[d['DerivedFromDatasetID']],identifier=vc["wdf_"+"DataGranule_"+x["id"]+"_"+str(i)])
         
                     i=i+1
+            
+    
+         
+        
         if format =='w3c-prov-json':
             return str(g.serialize(format='json'))
         elif format=='png':
@@ -284,7 +284,7 @@ class ProvenanceStore(object):
 
     def __init__(self, url):
  
-        self.conection = MongoClient(url, 27017)
+        self.conection = MongoClient(url, 27017, maxPoolSize=100)
         #db = self.conection["verce-prov"]
         #self.lineage = db['lineage']
         #workflow = db['workflow']
@@ -302,28 +302,28 @@ class ProvenanceStore(object):
             maxvaluelist=None
             minvaluelist=None
             if 'idlist' in kwargs:
-                memory_file = StringIO.StringIO(kwargs['idlist'][0])
+                memory_file = StringIO.StringIO(kwargs['idlist'])
                 idlist = csv.reader(memory_file).next()
                 
-                return self.getUserRunbyIds(kwargs['username'][0],idlist,**kwargs)
+                return self.getUserRunbyIds(kwargs['username'],idlist,**kwargs)
             else:
                try:
-                    memory_file = StringIO.StringIO(kwargs['keys'][0]) if 'keys' in kwargs else None
+                    memory_file = StringIO.StringIO(kwargs['keys']) if 'keys' in kwargs else None
                     keylist = csv.reader(memory_file).next() 
-                    memory_file = StringIO.StringIO(kwargs['maxvalues'][0]); 
+                    memory_file = StringIO.StringIO(kwargs['maxvalues']); 
                     maxvaluelist = csv.reader(memory_file).next()
-                    memory_file2 = StringIO.StringIO(kwargs['minvalues'][0]);
+                    memory_file2 = StringIO.StringIO(kwargs['minvalues']);
                     minvaluelist = csv.reader(memory_file2).next()
                except:
                     None;
                  #return {'success':False, 'error':'Invalid Query Parameters'}
                
-               return self.getUserRunsValuesRange(kwargs['username'][0],keylist,maxvaluelist,minvaluelist,**kwargs)
+               return self.getUserRunsValuesRange(kwargs['username'],keylist,maxvaluelist,minvaluelist,**kwargs)
   
         except Exception:
             traceback.print_exc()
             raise 
-        #self.getUserRuns(kwargs['username'][0],**kwargs)
+        #self.getUserRuns(kwargs['username'],**kwargs)
         
 #suport for rest call on entities resources         
     def getEntities(self,**kwargs):
@@ -332,21 +332,21 @@ class ProvenanceStore(object):
         minvaluelist=None
         vluelist=None
         try:
-            memory_file = StringIO.StringIO(kwargs['keys'][0]) if 'keys' in kwargs else None
+            memory_file = StringIO.StringIO(kwargs['keys']) if 'keys' in kwargs else None
             keylist = csv.reader(memory_file).next()
-            memory_file = StringIO.StringIO(kwargs['maxvalues'][0]);
+            memory_file = StringIO.StringIO(kwargs['maxvalues']);
             maxvaluelist = csv.reader(memory_file).next()
-            memory_file = StringIO.StringIO(kwargs['minvalues'][0]);
+            memory_file = StringIO.StringIO(kwargs['minvalues']);
             minvaluelist = csv.reader(memory_file).next()
-            memory_file = StringIO.StringIO(request.args['values'][0]) if 'values' in kwargs else None
+            memory_file = StringIO.StringIO(request.args['values']) if 'values' in kwargs else None
             vluelist = csv.reader(memory_file).next() if memory_file != None else None
             
-            return self.getEntitiesBy(kwargs['method'][0],keylist,maxvaluelist,minvaluelist,vluelist,**kwargs)
+            return self.getEntitiesBy(kwargs['method'],keylist,maxvaluelist,minvaluelist,vluelist,**kwargs)
   
         except Exception:
              
             traceback.print_exc()
-            return self.getEntitiesBy(kwargs['method'][0],keylist,maxvaluelist,minvaluelist,vluelist,**kwargs)
+            return self.getEntitiesBy(kwargs['method'],keylist,maxvaluelist,minvaluelist,vluelist,**kwargs)
             
         
     def makeElementsSearchDic(self,keylist,mnvaluelist,mxvaluelist):
@@ -425,18 +425,18 @@ class ProvenanceStore(object):
         totalCount=lineage.find({'runId':id}).count()
         
         tracelist=[]
-        if 'all' in kwargs and kwargs['all'][0].upper()=='TRUE':
+        if 'all' in kwargs and kwargs['all'].upper()=='TRUE':
              
             self.getTraceList(id, 1000,tracelist) 
         elif 'level' in kwargs:  
-            self.getTraceList(id, self.num(kwargs['level'][0]),tracelist) 
+            self.getTraceList(id, self.num(kwargs['level']),tracelist) 
             
               #lineage.find({'runId':id}).sort("endTime",direction=-1)
             
         bundle=workflow.find({"_id":tracelist[0]['runId']}).sort("startTime",direction=-1)
         
         if 'format' in kwargs:
-            return toW3Cprov(tracelist,bundle,format = kwargs['format'][0]),0
+            return toW3Cprov(tracelist,bundle,format = kwargs['format']),0
         else:
             return toW3Cprov(tracelist,bundle),0
             
@@ -452,14 +452,14 @@ class ProvenanceStore(object):
         totalCount=lineage.find({'runId':id}).count()
         cursorsList=list()
         
-        if 'all' in kwargs and kwargs['all'][0].upper()=='TRUE':
+        if 'all' in kwargs and kwargs['all'].upper()=='TRUE':
             
             lineage=lineage.find({'runId':id}).sort("endTime",direction=-1)
              
             bundle=workflow.find({"_id":id}).sort("startTime",direction=-1)
             
             if 'format' in kwargs:
-                return toW3Cprov(lineage,bundle,format = kwargs['format'][0]),0
+                return toW3Cprov(lineage,bundle,format = kwargs['format']),0
             else:
                 return toW3Cprov(lineage,bundle),0
             
@@ -479,16 +479,16 @@ class ProvenanceStore(object):
         totalCount=lineage.find({'runId':id}).count()+1
         cursorsList=list()
         
-        if ('start' in kwargs and int(kwargs['start'][0])==0):
+        if ('start' in kwargs and int(kwargs['start'])==0):
             cursorsList.append(workflow.find({"_id":id}))
         
         
-        if 'all' in kwargs and kwargs['all'][0].upper()=='TRUE':
+        if 'all' in kwargs and kwargs['all'].upper()=='TRUE':
             
-            cursorsList.append(lineage.find({'runId':id})[int(kwargs['start'][0]):int(kwargs['start'][0])+int(kwargs['limit'][0])].sort("endTime",direction=-1))
+            cursorsList.append(lineage.find({'runId':id})[int(kwargs['start']):int(kwargs['start'])+int(kwargs['limit'])].sort("endTime",direction=-1))
              
         else:
-            cursorsList.append(lineage.find({'runId':id})[int(kwargs['start'][0]):int(kwargs['start'][0])+int(kwargs['limit'][0])].sort("endTime",direction=-1))
+            cursorsList.append(lineage.find({'runId':id})[int(kwargs['start']):int(kwargs['start'])+int(kwargs['limit'])].sort("endTime",direction=-1))
 
         exportDocList = list()
         
@@ -498,9 +498,9 @@ class ProvenanceStore(object):
         
         for cursor in cursorsList:    
             for x in cursor:
-                if 'format' not in kwargs or kwargs['format'][0].find('w3c-prov')!=-1:
+                if 'format' not in kwargs or kwargs['format'].find('w3c-prov')!=-1:
                     
-                    exportDocList.app(x,format = kwargs['format'][0] if 'format' in kwargs else 'w3c-prov-json')
+                    exportDocList.app(x,format = kwargs['format'] if 'format' in kwargs else 'w3c-prov-json')
         
         output = exportDocList
         
@@ -514,7 +514,7 @@ class ProvenanceStore(object):
             solver = solver.find_one({"_id":path})
             if (solver!=None):
                 solver.update({"success":True})
-                userId = request.args["userId"][0] if "userId" in request.args else False
+                userId = request.args["userId"] if "userId" in request.args else False
                 def userFilter(item): return (not "users" in item) or (userId and userId in item["users"])
                 def velmodFilter(item):
                     item["velmod"] = filter(userFilter, item["velmod"])
@@ -557,8 +557,8 @@ class ProvenanceStore(object):
         runids=[]
         uniques=None
         totalCount=0
-        start=int(kwargs['start'][0])
-        limit=int(kwargs['limit'][0])
+        start=int(kwargs['start'])
+        limit=int(kwargs['limit'])
         if keylist==None: 
             keylist=[]
         
@@ -567,7 +567,7 @@ class ProvenanceStore(object):
         
         if 'activities' in kwargs:
              
-            values=str(kwargs['activities'][0]).split(',')
+            values=str(kwargs['activities']).split(',')
             intersect=False
             
             for y in values:
@@ -748,12 +748,13 @@ class ProvenanceStore(object):
         obj=None
         totalCount=None
         output=None
-        start=int(kwargs['start'][0])
-        limit=int(kwargs['limit'][0])
+        print kwargs['start']
+        start=int(kwargs['start'])
+        limit=int(kwargs['limit'])
         
         
         if 'activities' in kwargs:
-            return self.getUserRunsValuesRange(kwargs['username'][0],None,None,None,**kwargs)
+            return self.getUserRunsValuesRange(kwargs['username'],None,None,None,**kwargs)
         else:
             obj = workflow.find({"username":path},{"_id":-1,"startTime":-1,"system_id":1,"description":1,"name":1,"workflowName":1,"grid":1,"resourceType":1,"resource":1,"queue":1}).sort("startTime",direction=-1)[start:start+limit]
 
@@ -786,24 +787,23 @@ class ProvenanceStore(object):
         cursorsList=list()
         obj=None
         
-        start=int(kwargs['start'][0]) if 'start' in kwargs and kwargs['start'][0]!='null' else None
-        limit=int(kwargs['limit'][0]) if 'limit' in kwargs and kwargs['limit'][0]!='null' else None
-        runId=kwargs['runId'][0].strip() if 'runId' in kwargs and kwargs['runId'][0]!='null' else None
-        dataId=kwargs['dataId'][0].strip() if 'dataId' in kwargs and kwargs['dataId'][0]!='null' else None
-        iterationId=kwargs['iterationId'][0].strip() if 'iterationId' in kwargs and kwargs['iterationId'][0]!='null' else None
-        mtype=kwargs['mime-type'][0].strip() if 'mime-type' in kwargs and kwargs['mime-type'][0]!='null' else None
+        start=int(kwargs['start']) if 'start' in kwargs and kwargs['start']!='null' else None
+        limit=int(kwargs['limit']) if 'limit' in kwargs and kwargs['limit']!='null' else None
+        runId=kwargs['runId'].strip() if 'runId' in kwargs and kwargs['runId']!='null' else None
+        dataId=kwargs['dataId'].strip() if 'dataId' in kwargs and kwargs['dataId']!='null' else None
+        iterationId=kwargs['iterationId'].strip() if 'iterationId' in kwargs and kwargs['iterationId']!='null' else None
+        mtype=kwargs['mime-type'].strip() if 'mime-type' in kwargs and kwargs['mime-type']!='null' else None
         activities=None
         
         if 'activities' in kwargs:
-            activities=str(kwargs['activities'][0]).split(',')
+            activities=str(kwargs['activities']).split(',')
             
         i=0
         ' extract data by annotations either from the whole archive or for a specific runId'
          
         activ_searchDic={'_id':iterationId,'name':{'$in':activities},'runId':runId,'streams.format':mtype}
-        
         activ_searchDic=clean_empty(activ_searchDic)
-        
+        #print activ_searchDic
     
         
         
@@ -886,7 +886,7 @@ class ProvenanceStore(object):
         except Exception, err:
             response={"success":False}
             response.update({"error":str(err)})
-            
+            traceback.print_exc()
         finally:
             return response
         
@@ -1047,7 +1047,6 @@ class ProvenanceStore(object):
         
         
     def getTraceList(self, id,level,ll):
-        db = self.conection["verce-prov"]
         lineage = db['lineage']
         xx = lineage.find_one({"streams.id":id});
         xx.update({"id":id})
@@ -1243,64 +1242,64 @@ class ProvenanceStore(object):
         run=None
         users=None
         if 'users' in kwargs :
-            memory_file = StringIO.StringIO(kwargs['users'][0]);
+            memory_file = StringIO.StringIO(kwargs['users']);
             users = csv.reader(memory_file).next()
             
         if 'tags' in kwargs : 
-            memory_file = StringIO.StringIO(kwargs['tags'][0]);
+            memory_file = StringIO.StringIO(kwargs['tags']);
             tags = csv.reader(memory_file).next()
             runIdlist=workflow.aggregate(pipeline=[{'$match':{'tags':{'$in':tags}}},{'$project':{'_id':1}}])
             for y in runIdlist:
                 runId.append(y['_id'])
                  
         else:
-            if 'runId' in kwargs : runId = [kwargs['runId'][0]]
+            if 'runId' in kwargs : runId = [kwargs['runId']]
         if 'groupby' in kwargs:
-            groupby=kwargs['groupby'][0]
+            groupby=kwargs['groupby']
         if 'clusters' in kwargs:
-            memory_file = StringIO.StringIO(kwargs['clusters'][0]);
+            memory_file = StringIO.StringIO(kwargs['clusters']);
             clusters = csv.reader(memory_file).next()
        
         matchdic=clean_empty({'username':{'$in':users},'runId':{'$in':runId}, 'prov_cluster':{'$in':clusters} })
         
         
-        start=int(kwargs['starttime'][0]) if 'starttime' in kwargs and kwargs['starttime'][0]!='null' else None
+        start=int(kwargs['starttime']) if 'starttime' in kwargs and kwargs['starttime']!='null' else None
         matchdic=clean_empty(matchdic)
         
-        if 'level' in kwargs and kwargs['level'][0]=='prospective':
+        if 'level' in kwargs and kwargs['level']=='prospective':
             obj=lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf','mapping':'$mapping','run':'$runId', str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}]) 
             
-        elif 'level' in kwargs and kwargs['level'][0]=='iterations':
-            matchdic.update({'startTime':{'$gt':start},'iterationIndex':{'$gte':int(kwargs['minidx'][0]) ,'$lt':int(kwargs['maxidx'][0])}})
+        elif 'level' in kwargs and kwargs['level']=='iterations':
+            matchdic.update({'startTime':{'$gt':start},'iterationIndex':{'$gte':int(kwargs['minidx']) ,'$lt':int(kwargs['maxidx'])}})
             matchdic=clean_empty(matchdic)
             obj=lineage.aggregate(pipeline=[{'$match':matchdic},{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'iterationId':'$iterationId','run':'$runId','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])
-        elif 'level' in kwargs and kwargs['level'][0]=='instances':
+        elif 'level' in kwargs and kwargs['level']=='instances':
             obj=lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'instanceId':'$instanceId','run':'$runId','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])
-        elif 'level' in kwargs and kwargs['level'][0]=='pid':
+        elif 'level' in kwargs and kwargs['level']=='pid':
             obj=lineage.aggregate(pipeline=[{'$match':matchdic},{'$group':{'_id':{'name':'$name','worker':'$worker','pid':'$pid'}}}]) 
-        elif 'level' in kwargs and kwargs['level'][0]=='workers':
+        elif 'level' in kwargs and kwargs['level']=='workers':
             obj=lineage.aggregate(pipeline=[{'$match':matchdic},{'$group':{'_id':{'name':'$name','worker':'$worker'}}}]) 
-       # elif 'level' in kwargs and kwargs['level'][0]=='terms':
+       # elif 'level' in kwargs and kwargs['level']=='terms':
        #      obj=lineage.aggregate(pipeline=[{'$match':{'runId':runId}},{'$group':{'_id':{'instanceId':'$instanceId'}}}])['result']
-        elif 'level' in kwargs and (kwargs['level'][0]=='vrange' or kwargs['level'][0]=='data'):
-            memory_file = StringIO.StringIO(kwargs['keys'][0]);
+        elif 'level' in kwargs and (kwargs['level']=='vrange' or kwargs['level']=='data'):
+            memory_file = StringIO.StringIO(kwargs['keys']);
             keylist = csv.reader(memory_file).next()
-            memory_file = StringIO.StringIO(kwargs['maxvalues'][0]);
+            memory_file = StringIO.StringIO(kwargs['maxvalues']);
             mxvaluelist = csv.reader(memory_file).next()
-            memory_file = StringIO.StringIO(kwargs['minvalues'][0]);
+            memory_file = StringIO.StringIO(kwargs['minvalues']);
             mnvaluelist = csv.reader(memory_file).next()
-            memory_file = StringIO.StringIO(kwargs['users'][0]);
+            memory_file = StringIO.StringIO(kwargs['users']);
             users = csv.reader(memory_file).next()
-            #memory_file = StringIO.StringIO(kwargs['tags'][0]);
+            #memory_file = StringIO.StringIO(kwargs['tags']);
             #tags = csv.reader(memory_file).next()
             
             searchDic = self.makeElementsSearchDic(keylist,mnvaluelist,mxvaluelist)
             
             for y in searchDic['streams.content']['$elemMatch']:
                 #print " searchdic "+json.dumps(searchDic['streams.content']['$elemMatch'][y])+"\n"
-                if kwargs['level'][0]=='vrange':
+                if kwargs['level']=='vrange':
                     obj = obj + lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':{'$elemMatch':{y:searchDic['streams.content']['$elemMatch'][y]}}}},{'$group':{'_id': {'run':'$runId','username':'$username', str(groupby):'$'+str(groupby)}}}]) 
-                elif kwargs['level'][0]=='data':
+                elif kwargs['level']=='data':
                     obj = obj + lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':{'$elemMatch':{y:searchDic['streams.content']['$elemMatch'][y]}}}},{'$unwind': "$streams"},{'$group':{'_id': {'id':'$streams.id','username':'$username', str(groupby):'$'+str(groupby)}}}]) 
                 
         else:
@@ -1320,7 +1319,7 @@ class ProvenanceStore(object):
                 del x['_id']['run']
             
             triggers=None
-            if 'level' in kwargs and kwargs['level'][0]=='vrange':
+            if 'level' in kwargs and kwargs['level']=='vrange':
                 try:
                     
                     triggers=workflow.aggregate(pipeline=[{'$match':{'_id':x['_id']['run']}},{'$unwind':'$input'},{'$match':{'$or':[{'input.prov:type':'wfrun'},{'input.prov-type':'wfrun'}]}},{'$project':{'input.url':1,'_id':0}}])
@@ -1340,13 +1339,13 @@ class ProvenanceStore(object):
                     add=not add
                      
                      
-            elif 'level' in kwargs and kwargs['level'][0]=='pid':
+            elif 'level' in kwargs and kwargs['level']=='pid':
                 trigger_cursor=lineage.aggregate(pipeline=[{'$match':x['_id']},{'$unwind':'$derivationIds'},{'$group':{'_id':'$derivationIds.TriggeredByProcessIterationID'}}]) 
-            elif 'level' in kwargs and (kwargs['level'][0]=='instances' or kwargs['level'][0]=='iterations' or kwargs['level'][0]=='prospective'):
+            elif 'level' in kwargs and (kwargs['level']=='instances' or kwargs['level']=='iterations' or kwargs['level']=='prospective'):
                 trigger_cursor=lineage.aggregate(pipeline=[{'$match':x['_id']},{'$sort':{'startTime':1}},{'$unwind':'$derivationIds'},{'$group':{'_id':'$derivationIds.DerivedFromDatasetID'}}])  
-            elif 'level' in kwargs and kwargs['level'][0]=='workers':
+            elif 'level' in kwargs and kwargs['level']=='workers':
                 trigger_cursor=lineage.aggregate(pipeline=[{'$match':x['_id']},{'$unwind':'$derivationIds'},{'$group':{'_id':'$derivationIds.TriggeredByProcessIterationID'}}]) 
-            elif 'level' in kwargs and kwargs['level'][0]=='data':
+            elif 'level' in kwargs and kwargs['level']=='data':
                 trigger_cursor=lineage.aggregate(pipeline=[{'$match':{'streams.id':x['_id']['id']}},{'$unwind':'$derivationIds'},{'$project':{'_id':0,'id':'$derivationIds.DerivedFromDatasetID'}}]) 
             
             triggers=[]
@@ -1367,17 +1366,17 @@ class ProvenanceStore(object):
                 pes=[]
                 #print "DOING CONN"
                  
-                if 'level' in kwargs and kwargs['level'][0]=='prospective':
+                if 'level' in kwargs and kwargs['level']=='prospective':
                     pes=lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$sort':{'startTime':1}},{'$unwind':'$streams'},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf'},'size':{'$sum':'$streams.size'}}}]) 
-                elif 'level' in kwargs and kwargs['level'][0]=='iterations':
+                elif 'level' in kwargs and kwargs['level']=='iterations':
                     pes=lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$sort':{'startTime':1}},{'$unwind':'$streams'},{'$group':{'_id':{'iterationId':'$iterationId'},'size':{'$sum':'$streams.size'}}}]) 
-                elif 'level' in kwargs and kwargs['level'][0]=='instances':
+                elif 'level' in kwargs and kwargs['level']=='instances':
                     pes=lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$sort':{'startTime':1}},{'$unwind':'$streams'},{'$group':{'_id':{'instanceId':'$instanceId'},'size':{'$sum':'$streams.size'}}}]) 
-                elif 'level' in kwargs and kwargs['level'][0]=='workers':
+                elif 'level' in kwargs and kwargs['level']=='workers':
                     pes=lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$project':{'name':1,'worker':1,'_id':0}}]) 
-                elif 'level' in kwargs and kwargs['level'][0]=='pid':
+                elif 'level' in kwargs and kwargs['level']=='pid':
                     pes=lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$project':{'name':1,'worker':1,'_id':0,'pid':1}}]) 
-                elif 'level' in kwargs and kwargs['level'][0]=='vrange':
+                elif 'level' in kwargs and kwargs['level']=='vrange':
                     for w in triggers:
                         up=urlparse(w['input']['url']).path
                         up=up[up.rfind('/')+1:len(up)+1]
@@ -1386,7 +1385,7 @@ class ProvenanceStore(object):
                         if (curs.count()>0):
                             
                             pes.append(up)
-                elif 'level' in kwargs and kwargs['level'][0]=='data':
+                elif 'level' in kwargs and kwargs['level']=='data':
                     pes=triggers
                 else:
                     pes=lineage.aggregate(pipeline=[{'$match':{'$or':triggers}},{'$project':{'name':1,"_id":0}}]) 
