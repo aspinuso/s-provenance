@@ -376,7 +376,7 @@ class ProvenanceStore(object):
             
             if keylist==None:
                 print "Filter Query: "+str(activ_searchDic)
-                return lineage.find(activ_searchDic,{"runId":1,"streams":1,"parameters":1,'startTime':1,'endTime':1,'errors':1,'derivationIds':1})[start:start+limit].sort("endTime",direction=-1)
+                return lineage.find(activ_searchDic,{"runId":1,"streams":1,"parameters":1,'startTime':1,'endTime':1,'errors':1,'derivationIds':1,'iterationId':1})[start:start+limit].sort("endTime",direction=-1)
             else:
                 
                 for x in keylist:
@@ -1419,5 +1419,35 @@ class ProvenanceStore(object):
         return connections
     
     
+    ' methods for the updated API'
     
+    def getEntitiesGeneratedBy(self,runid,invocationid,start,limit):
+        cursorsList=[]
+        activ_searchDic={'iterationId':invocationid,'runId':runid}
+        cursorsList.append(self.getEntitiesFilter(activ_searchDic,None,None,None,start,limit))
+        entities=[]
+        
+        totalCount=0
+        for cursor in cursorsList:
+            for x in cursor:
+                print x
+                for s in x["streams"]:
+                     
+                    totalCount=totalCount+1
+                    s["wasGeneratedBy"]=x["iterationId"]
+                    s["parameters"]=x["parameters"]
+                    s["endTime"]=x["endTime"]
+                    s["startTime"]=x["startTime"]
+                    s["runId"]=x["runId"]
+                    s["errors"]=x["errors"]
+                    s["derivationIds"]=x['derivationIds']
+                    entities.append(s)
+                    
+        
+                
+        output = {"entities":entities};
+        output.update({"totalCount": totalCount})
+       
+        return  output
+        
     
