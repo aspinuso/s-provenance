@@ -1430,7 +1430,7 @@ class ProvenanceStore(object):
         totalCount=0
         for cursor in cursorsList:
             for x in cursor:
-                print x
+                 
                 for s in x["streams"]:
                      
                     totalCount=totalCount+1
