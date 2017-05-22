@@ -41,6 +41,7 @@ def getInvovocations(runid):
 def getEntitiesByInvocation(runid,invocid):
         limit = int(request.args['limit']) 
         start = int(request.args['start'])
+        if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET entities by invocation - "+invocid+" PID:"+str(os.getpid()));
         response = Response()
         response = Response(json.dumps(app.db.getEntitiesGeneratedBy(runid,invocid,start,limit)))
         response.headers['Content-type'] = 'application/json'       
