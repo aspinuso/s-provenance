@@ -4,7 +4,7 @@ Provenance framework for storage and access of data-intensive streaming lineage.
 
 ![alt tag](https://raw.githubusercontent.com/aspinuso/s-provenance/master/resources/template.png)
 
-- A collection of services including a WEB-API (provenance-api) and a front-end GUI (provenance-explorer) allowing acquisition and exploration of provenance data which is produced at a run-time by a computational engine. Below a schematic representatio of the architecture and interaction with external resources.
+- A collection of services including a WEB-API (provenance-api) and a front-end GUI (provenance-explorer) allowing acquisition and exploration of provenance data which is produced at a run-time by a computational engine. Below a schematic representation of the architecture and interaction with external resources, followed by screenshots of the interactive tools.
 
 ![alt tag](https://raw.githubusercontent.com/aspinuso/s-provenance/master/resources/sprovflowpnf.png)
 ![alt tag](https://raw.githubusercontent.com/aspinuso/s-provenance/master/resources/totalv.png)
