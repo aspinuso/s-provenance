@@ -37,9 +37,9 @@ def activitiesHandler(runId):
     return response
 
 
-@app.route("/workflow")
-def workflowsHandler(runid):
-        
+@app.route("/workflow/")
+def workflowsHandler():
+        print "ADA"
         response = Response(json.dumps(app.db.getWorkflows(**request.args)))
         response.headers['Content-type'] = 'application/json'
         return response
@@ -238,8 +238,9 @@ def exportDataProvenance(id):
             response.headers['Content-type']='application/octet-stream'
             
         return response             
-        
- 
+    
+    
+
 if __name__ == "__main__":
     import sys
     #app.db = provenance.ProvenanceStore("mongodb://127.0.0.1/verce-prov")
