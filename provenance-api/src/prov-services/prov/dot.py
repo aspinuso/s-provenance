@@ -1,11 +1,11 @@
 """Graphical visualisation support for prov.model.
 
 This module produces graphical visualisation for provenanve graphs.
-Requires pydot module and Graphviz.
+Requires pydotplus module and Graphviz.
 
 References:
 
-* pydot Homepage: http://code.google.com/p/pydot/
+* pydotplus homepage: http://pydotplus.readthedocs.io/
 * Graphviz:       http://www.graphviz.org/
 * DOT Language:   http://www.graphviz.org/doc/info/lang.html
 
@@ -17,7 +17,10 @@ from __future__ import (absolute_import, division, print_function,
 __author__ = 'Trung Dong Huynh'
 __email__ = 'trungdong@donggiang.com'
 
-import cgi
+try:
+    from html import escape
+except ImportError:
+    from cgi import escape
 from datetime import datetime
 import pydotplus as pydot
 import six
@@ -136,6 +139,7 @@ def htlm_link_if_uri(value):
 
 
 def prov_to_dot(bundle, show_nary=True, use_labels=False,
+                direction='BT',
                 show_element_attributes=True, show_relation_attributes=True):
     """
     Convert a provenance bundle/document into a DOT graphical representation.
@@ -144,16 +148,19 @@ def prov_to_dot(bundle, show_nary=True, use_labels=False,
     :type name: :class:`ProvBundle`
     :param show_nary: shows all elements in n-ary relations.
     :type show_nary: bool
-    :param use_labels: uses the prov:label property of an element as its name
-    (instead of its identifier).
+    :param use_labels: uses the prov:label property of an element as its name (instead of its identifier).
     :type use_labels: bool
+    :param direction: specifies the direction of the graph. Valid values are "BT" (default), "TB", "LR", "RL".
     :param show_element_attributes: shows attributes of elements.
     :type show_element_attributes: bool
     :param show_relation_attributes: shows attributes of relations.
     :type show_relation_attributes: bool
     :returns:  :class:`pydot.Dot` -- the Dot object.
     """
-    maindot = pydot.Dot(graph_type='digraph', rankdir='BT', charset='utf-8')
+    if direction not in {'BT', 'TB', 'LR', 'RL'}:
+        # Invalid direction is provided
+        direction = 'BT'  # reset it to the default value
+    maindot = pydot.Dot(graph_type='digraph', rankdir=direction, charset='utf-8')
 
     node_map = {}
     count = [0, 0, 0, 0]  # counters for node ids
@@ -175,12 +182,12 @@ def prov_to_dot(bundle, show_nary=True, use_labels=False,
             ann_rows = [ANNOTATION_START_ROW]
             ann_rows.extend(
                 ANNOTATION_ROW_TEMPLATE % (
-                    attr.uri, cgi.escape(six.text_type(attr)),
+                    attr.uri, escape(six.text_type(attr)),
                     ' href=\"%s\"' % value.uri if isinstance(value, Identifier)
                     else '',
-                    cgi.escape(six.text_type(value)
-                               if not isinstance(value, datetime) else
-                               six.text_type(value.isoformat())))
+                    escape(six.text_type(value)
+                           if not isinstance(value, datetime) else
+                           six.text_type(value.isoformat())))
                 for attr, value in attributes
             )
             ann_rows.append(ANNOTATION_END_ROW)
