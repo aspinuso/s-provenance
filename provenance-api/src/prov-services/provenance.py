@@ -45,10 +45,10 @@ def resolveMissingTerms(trace):
     return trace
      
      
-def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
+def toW3Cprov(ling,bundl,format='xml'):
         entities={}
         g = ProvDocument()
-        vc = Namespace("s-prov", "http://s-prov")  # namespaces do not need to be explicitly added to a document
+        vc = Namespace("s-prov", "http://s-prov/ns/#")  # namespaces do not need to be explicitly added to a document
         
         con = Namespace("con", "http://verce.eu/control")
         g.add_namespace("dcterms", "http://purl.org/dc/terms/")
@@ -59,6 +59,9 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
             'specifing user'
             ag=g.agent(vc[trace["username"]],other_attributes={"dcterms:author":trace["username"]})  # first time the ex namespace was used, it is added to the document automatically
             
+            for x in trace['ns']:
+                g.add_namespace(x,trace['ns'][x])
+                
             if trace['type']=='workflow_run':
                 
                 trace.update({'runId':trace['_id']})
@@ -278,7 +281,7 @@ def toW3Cprov(ling,bundl,format='w3c-prov-xml'):
             g.plot('test.png')
             return output
         else:
-            return g.serialize(format='xml')
+            return g.serialize(format=format)
 
 class ProvenanceStore(object):
 
@@ -1264,15 +1267,16 @@ class ProvenanceStore(object):
         matchdic=clean_empty({'username':{'$in':users},'runId':{'$in':runId}, 'prov_cluster':{'$in':clusters} })
         
         
-        start=int(kwargs['starttime'][0]) if 'starttime' in kwargs and kwargs['starttime'][0]!='null' else None
+        start=dateutil.parser.parse(kwargs['starttime'][0]) if 'starttime' in kwargs and kwargs['starttime'][0]!='null' else None
         matchdic=clean_empty(matchdic)
         
         if 'level' in kwargs and kwargs['level'][0]=='prospective':
             obj=lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf','mapping':'$mapping','run':'$runId', str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}]) 
             
         elif 'level' in kwargs and kwargs['level'][0]=='iterations':
-            matchdic.update({'startTime':{'$gt':start},'iterationIndex':{'$gte':int(kwargs['minidx'][0]) ,'$lt':int(kwargs['maxidx'][0])}})
+            matchdic.update({'startTime':{'$gt':str(start)},'iterationIndex':{'$gte':int(kwargs['minidx'][0]) ,'$lt':int(kwargs['maxidx'][0])}})
             matchdic=clean_empty(matchdic)
+             
             obj=lineage.aggregate(pipeline=[{'$match':matchdic},{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'iterationId':'$iterationId','run':'$runId','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])
         elif 'level' in kwargs and kwargs['level'][0]=='instances':
             obj=lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'instanceId':'$instanceId','run':'$runId','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])
@@ -1295,13 +1299,15 @@ class ProvenanceStore(object):
             #tags = csv.reader(memory_file).next()
             
             searchDic = self.makeElementsSearchDic(keylist,mnvaluelist,mxvaluelist)
-            
-            for y in searchDic['streams.content']['$elemMatch']:
-                #print " searchdic "+json.dumps(searchDic['streams.content']['$elemMatch'][y])+"\n"
-                if kwargs['level'][0]=='vrange':
-                    obj = obj + lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':{'$elemMatch':{y:searchDic['streams.content']['$elemMatch'][y]}}}},{'$group':{'_id': {'run':'$runId','username':'$username', str(groupby):'$'+str(groupby)}}}]) 
-                elif kwargs['level'][0]=='data':
-                    obj = obj + lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':{'$elemMatch':{y:searchDic['streams.content']['$elemMatch'][y]}}}},{'$unwind': "$streams"},{'$group':{'_id': {'id':'$streams.id','username':'$username', str(groupby):'$'+str(groupby)}}}]) 
+             
+            #print " searchdic "+json.dumps(searchDic['streams.content']['$elemMatch'][y])+"\n"
+            if kwargs['level'][0]=='vrange':
+                if kwargs['mode'][0]=="AND":
+                    obj=lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':searchDic['streams.content']}},{'$group':{'_id': {'run':'$runId','username':'$username', str(groupby):'$'+str(groupby)}}}])
+                elif kwargs['mode'][0]=="OR":
+                    for y in searchDic['streams.content']['$elemMatch']:
+                        for c in lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':{'$elemMatch':{y:searchDic['streams.content']['$elemMatch'][y]}}}},{'$group':{'_id': {'run':'$runId','username':'$username', str(groupby):'$'+str(groupby)}}}]):
+                            obj.append(c)
                 
         else:
             obj=lineage.aggregate(pipeline=[{'$match':{'runId':{'$in':runId}}},{'$group':{'_id':{'name':'$name'}}},{'$project':{'_id':1}}]) 
@@ -1319,15 +1325,16 @@ class ProvenanceStore(object):
                 x['_id'].update({'runId':run})
                 del x['_id']['run']
             
-            triggers=None
+            trigger_cursor=None
+            tringgers=[]
             if 'level' in kwargs and kwargs['level'][0]=='vrange':
                 try:
                     
-                    triggers=workflow.aggregate(pipeline=[{'$match':{'_id':x['_id']['run']}},{'$unwind':'$input'},{'$match':{'$or':[{'input.prov:type':'wfrun'},{'input.prov-type':'wfrun'}]}},{'$project':{'input.url':1,'_id':0}}])
+                    trigger_cursor=workflow.aggregate(pipeline=[{'$match':{'_id':x['_id']['run']}},{'$unwind':'$input'},{'$match':{'$or':[{'input.prov:type':'wfrun'},{'input.prov-type':'wfrun'}]}},{'$project':{'input.url':1,'_id':0}}])
                     #print 'TRIG '+x['_id']+' '+ json.dumps(triggers)
                 except:
                     traceback.print_exc()
-                    trigger_cursor=[]
+                    triggers=[]
                 
                     #print "wf ID "+str(x['_id'])
                 try:
@@ -1350,6 +1357,7 @@ class ProvenanceStore(object):
                 trigger_cursor=lineage.aggregate(pipeline=[{'$match':{'streams.id':x['_id']['id']}},{'$unwind':'$derivationIds'},{'$project':{'_id':0,'id':'$derivationIds.DerivedFromDatasetID'}}]) 
             
             triggers=[]
+            
             for t in trigger_cursor:
                 #print(t)
                 if '_id' in t and t['_id']!=None:
