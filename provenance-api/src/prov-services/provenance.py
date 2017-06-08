@@ -49,7 +49,7 @@ def toW3Cprov(ling,bundl,format='xml'):
         entities={}
         g = ProvDocument()
         vc = Namespace("s-prov", "http://s-prov/ns/#")  # namespaces do not need to be explicitly added to a document
-        
+        knmi = Namespace("knmi", "http://knmi.nl/ns/#")
         con = Namespace("con", "http://verce.eu/control")
         g.add_namespace("dcterms", "http://purl.org/dc/terms/")
         
@@ -57,16 +57,17 @@ def toW3Cprov(ling,bundl,format='xml'):
         bundle=None
         for trace in bundl:
             'specifing user'
-            ag=g.agent(vc[trace["username"]],other_attributes={"dcterms:author":trace["username"]})  # first time the ex namespace was used, it is added to the document automatically
+            ag=g.agent(knmi[trace["username"]],other_attributes={"dcterms:author":trace["username"]})  # first time the ex namespace was used, it is added to the document automatically
             
-            for x in trace['ns']:
-                g.add_namespace(x,trace['ns'][x])
+            if 'ns' in trace:
+                for x in trace['ns']:
+                    g.add_namespace(x,trace['ns'][x])
                 
             if trace['type']=='workflow_run':
                 
                 trace.update({'runId':trace['_id']})
-                bundle=g.bundle(vc[trace["runId"]])
-                bundle.actedOnBehalfOf(vc[trace["runId"]], vc[trace["username"]])
+                bundle=g.bundle(knmi[trace["runId"]])
+                bundle.wasAttributedTo(knmi[trace["runId"]], knmi[trace["username"]])
                 
                 dic={}
                 i=0
@@ -82,20 +83,11 @@ def toW3Cprov(ling,bundl,format='xml'):
                                 continue
                         
                         elif key == "tags":
-                            dic.update({vc[key]: str(trace[key])})
+                            dic.update({knmi[key]: str(trace[key])})
                         #else:
-                        #    dic.update({vc[key]: trace[key]})
-                    
-                    
-                        
-                    
-                
-                        
-            
+                        #    dic.update({knmi[key]: trace[key]})
                 dic.update({'prov:type': PROV['Bundle']})
-                
-               
-                g.entity(vc[trace["runId"]], dic)
+                g.entity(knmi[trace["runId"]], dic)
                 
                 dic={}
                 i=0
@@ -106,10 +98,10 @@ def toW3Cprov(ling,bundl,format='xml'):
                         if ':' in key:
                             dic.update({key: y[key]})
                         else:
-                            dic.update({vc[key]: y[key]})
-                    dic.update({'prov:type': 'worklfow_input'})
-                    bundle.entity(vc[trace["_id"]+"_"+str(i)], formatArtifactDic(dic))
-                    bundle.used(vc[trace["_id"]], vc[trace["_id"]+"_"+str(i)], identifier=vc["used_"+trace["_id"]+"_"+str(i)])
+                            dic.update({knmi[key]: y[key]})
+                    dic.update({'prov:type': vc['WFExecutionParameters']})
+                    bundle.entity(knmi[trace["_id"]+"_"+str(i)], formatArtifactDic(dic))
+                    bundle.used(knmi[trace["_id"]], knmi[trace["_id"]+"_"+str(i)], identifier=knmi["used_"+trace["_id"]+"_"+str(i)])
                     i=i+1
                     
                     
@@ -117,18 +109,12 @@ def toW3Cprov(ling,bundl,format='xml'):
         for trace in ling:
             trace = resolveMissingTerms(trace)
             
-            try:
-             #   bundle=g.bundle(vc[trace["runId"]])
-                bundle.wasAttributedTo(vc[trace["runId"]], vc["ag_"+trace["username"]],identifier=vc["attr_"+trace["runId"]])
-                # bundle.agent(vc["ComponentInstance_"+trace["InstanceId"]], other_attributes={"prov:type":"ComponentInstance"})
-                
-            except:
-                pass
+           
             'specifing creator of the activity (to be collected from the registy)'
         
             if 'creator' in trace:
-                bundle.agent(vc["ag_"+trace["creator"]],other_attributes={"dcterms:creator":trace["creator"]})  # first time the ex namespace was used, it is added to the document automatically
-                bundle.wasAttributedTo(vc[trace["runId"]], vc["ag_"+trace["creator"]])
+                bundle.agent(knmi["ag_"+trace["creator"]],other_attributes={"dcterms:creator":trace["creator"]})  # first time the ex namespace was used, it is added to the document automatically
+                bundle.wasAttributedTo(knmi[trace["runId"]], knmi["ag_"+trace["creator"]])
                 
             'adding activity information for lineage'
             dic={}
@@ -143,14 +129,14 @@ def toW3Cprov(ling,bundl,format='xml'):
                             
                             dic.update({"prov:location": trace[key]})    
                         else:
-                            dic.update({vc[key]: trace[key]})
+                            dic.update({knmi[key]: trace[key]})
             
             
                 
             if "Invocation_"+trace["iterationId"] not in entities:
-                ac=bundle.activity(vc["Invocation_"+trace["iterationId"]], trace["startTime"], trace["endTime"], other_attributes=dic.update({'prov:type': vc["Invocation"]}))
+                ac=bundle.activity(knmi["Invocation_"+trace["iterationId"]], trace["startTime"], trace["endTime"], other_attributes=dic.update({'prov:type': vc["Invocation"]}))
                 entities["Invocation_"+trace["iterationId"]]=ac
-                bundle.actedOnBehalfOf(vc['Invocation_'+trace["iterationId"]],vc["ComponentInstance_"+trace["instanceId"]])
+                bundle.actedOnBehalfOf(knmi['Invocation_'+trace["iterationId"]],knmi["ComponentInstance_"+trace["instanceId"]])
             else:
                 ac=entities["Invocation_"+trace["iterationId"]]
                 if (ac.get_endTime()<dateutil.parser.parse(trace["endTime"])):
@@ -159,14 +145,16 @@ def toW3Cprov(ling,bundl,format='xml'):
             
             
             if "ComponentInstance_"+trace["instanceId"] not in entities:
-                ag=bundle.agent(vc["ComponentInstance_"+trace["instanceId"]], other_attributes={"prov:type":"ComponentInstance",vc["worker"]:trace['worker'],vc["pid"]:trace['pid']})
+                ag=bundle.agent(knmi["ComponentInstance_"+trace["instanceId"]], other_attributes={"prov:type":vc["ComponentInstance"],vc["worker"]:trace['worker'],vc["pid"]:trace['pid']})
                 entities["ComponentInstance_"+trace["instanceId"]]=1
-                bundle.actedOnBehalfOf(vc["ComponentInstance_"+trace["instanceId"]],vc["Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"]])
+                bundle.actedOnBehalfOf(knmi["ComponentInstance_"+trace["instanceId"]],knmi["Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"]])
+                
             
             
             if "Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"] not in entities:
-                ag=bundle.agent(vc["Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"]], other_attributes={"prov:type":"Component"})
+                ag=bundle.agent(knmi["Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"]], other_attributes={"prov:type":vc["Component"],"s-prov:functionName":trace["name"]})
                 entities["Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"]]=1
+                bundle.wasAttributedTo(knmi["Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"]],knmi[trace["runId"]])
                 
               
                
@@ -176,13 +164,13 @@ def toW3Cprov(ling,bundl,format='xml'):
                 if ':' in x["key"]:
                     dic.update({x["key"]: x["val"]})
                 else:
-                    dic.update({vc[x["key"]]: x["val"]})
+                    dic.update({knmi[x["key"]]: x["val"]})
                 
-            dic.update({'prov:type':vc['Parameters']})
+            dic.update({'prov:type':vc['ComponentParameters']})
             
             
-            bundle.entity(vc["Parameters_"+trace["instanceId"]], formatArtifactDic(dic))
-            bundle.used(vc['Invocation_'+trace["iterationId"]], vc["Parameters_"+trace["instanceId"]], identifier=vc["used_"+trace["iterationId"]])
+            bundle.entity(knmi["Parameters_"+trace["instanceId"]], formatArtifactDic(dic))
+            bundle.used(knmi['Invocation_'+trace["iterationId"]], knmi["Parameters_"+trace["instanceId"]], identifier=knmi["used_"+trace["iterationId"]])
 
             'adding input dependencies to the document as input entities'
             dic={}
@@ -194,14 +182,14 @@ def toW3Cprov(ling,bundl,format='xml'):
                 if 'DerivedFromDatasetID' in x and x['DerivedFromDatasetID']:
                 
                     #if "Data_"+x["DerivedFromDatasetID"] not in entities:
-                    #    c1=bundle.collection(vc["Data_"+x["DerivedFromDatasetID"]])
+                    #    c1=bundle.collection(knmi["Data_"+x["DerivedFromDatasetID"]])
                     #    entities["Data_"+x["DerivedFromDatasetID"]]=c1
                     #    print "USED"
                     #else:
                     #    print "EXisTS"
                     #    c1=entities["Data_"+x["DerivedFromDatasetID"]] 
                            
-                    bundle.used(vc['Invocation_'+trace["iterationId"]], vc["Data_"+x["DerivedFromDatasetID"]], identifier=vc["used_"+trace["iterationId"]+"_"+x["DerivedFromDatasetID"]])
+                    bundle.used(knmi['Invocation_'+trace["iterationId"]], knmi["Data_"+x["DerivedFromDatasetID"]], identifier=knmi["used_"+trace["iterationId"]+"_"+x["DerivedFromDatasetID"]])
 
 
 
@@ -212,7 +200,7 @@ def toW3Cprov(ling,bundl,format='xml'):
                 for key in x:
                         if key=='con:immediateAccess':
                             
-                            parent_dic.update({vc['immediateAccess']: x[key]}) 
+                            parent_dic.update({knmi['immediateAccess']: x[key]}) 
                         elif key=='location':
                             parent_dic.update({"prov:location": str(x[key])})
                         elif key == 'content':
@@ -225,19 +213,19 @@ def toW3Cprov(ling,bundl,format='xml'):
             
                 
                 #if "Data_"+x["id"] not in entities:
-                c1=bundle.collection(vc["Data_"+x["id"]],other_attributes=parent_dic)
+                c1=bundle.collection(knmi["Data_"+x["id"]],other_attributes=parent_dic)
                 #    entities["Data_"+x["id"]]=c1
                 #    print "DADADADADAD"
                 #else:
                 #    print "EXisTS"
                 #    c1=entities["Data_"+x["id"]]
                     
-                bundle.wasGeneratedBy(vc["Data_"+x["id"]], vc["Invocation_"+trace["iterationId"]], identifier=vc["wgb_"+x["id"]])
+                bundle.wasGeneratedBy(knmi["Data_"+x["id"]], knmi["Invocation_"+trace["iterationId"]], identifier=knmi["wgb_"+x["id"]])
                 
                 dd=0
                 for d in trace['derivationIds']:
                     if 'DerivedFromDatasetID' in x and x['DerivedFromDatasetID']:
-                        bundle.wasDerivedFrom(vc["Data_"+x["id"]], vc["Data_"+d['DerivedFromDatasetID']],identifier=vc["wdf_"+x["id"]+"_"+d['DerivedFromDatasetID']])
+                        bundle.wasDerivedFrom(knmi["Data_"+x["id"]], knmi["Data_"+d['DerivedFromDatasetID']],identifier=knmi["wdf_"+x["id"]+"_"+d['DerivedFromDatasetID']])
                         dd+=1
                 
                 for y in x["content"]:
@@ -257,22 +245,18 @@ def toW3Cprov(ling,bundl,format='xml'):
                             if ':' in key:
                                 dic.update({key: val})
                             else:
-                                dic.update({vc[key]: val})
+                                dic.update({knmi[key]: val})
                     else:
-                        dic={vc['text']:y}
+                        dic={knmi['text']:y}
                     
                     dic.update({'prov:type':vc['DataGranule']})
                  
                     #dic.update({"verce:parent_entity": vc["data_"+x["id"]]})
                
-                    e1=bundle.entity(vc["DataGranule_"+x["id"]+"_"+str(i)], dic)
+                    e1=bundle.entity(knmi["DataGranule_"+x["id"]+"_"+str(i)], dic)
                 
                     bundle.hadMember(c1, e1)
-                    #bundle.wasGeneratedBy(vc["DataGranule_"+x["id"]+"_"+str(i)], vc["Invocation_"+trace["iterationId"]], identifier=vc["wgb_"+x["id"]+"_"+str(i)])
-                
-                    #for d in trace['derivationIds']:
-                    #    bundle.wasDerivedFrom(vc["DataGranule_"+x["id"]+"_"+str(i)], vc[d['DerivedFromDatasetID']],identifier=vc["wdf_"+"DataGranule_"+x["id"]+"_"+str(i)])
-        
+                    
                     i=i+1
         if format =='w3c-prov-json':
             return str(g.serialize(format='json'))
