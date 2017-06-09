@@ -32,30 +32,31 @@
             "d-prov:port" : "_d4p_state"
         }
     ],
-    "s-prov:invocation" : {
+    "s-prov:Invocation" : {
         "@id" : "CorrCoef-orfeus-as-95144-ba9f2d45-d657-11e6-8a03-f45c89acf865",
         "prov:startTime" : "2017-01-09 10:38:16.287077",
         "s-prov:iterationIndex" : 1,
         "prov:wasAssociatedWith" : {
-            "s-prov:Instance" : {
                 "@id" : "CorrCoef-Instance--orfeus-as-95144-ba923bc0-d657-11e6-a750-f45c89acf865",
+                "prov:type":"s-prov:ComponentInstance",
                 "s-prov:pid" : "95144",
                 "s-prov:functionName" : "CorrCoef",
                 "s-prov:mapping" : "mpi",
                 "s-prov:worker" : "orfeus-as",
-                "s-prov:actedOnBehalfOf" : {
+                "prov:actedOnBehalfOf" :{
+                	"prov:type":"s-prov:Component",
                     "@id" : "CorrCoef39",
                     "s-prov:provCluster" : "record1",
-                    "s-prov:componentParameters" : [ 
+                    "s-prov:ComponentParameters" :  
                         {
-                            "val" : 4,
-                            "key" : "batch_size"
+                            "ex:batch_size":4
                         }
-                    ]
+                 }
+                 }   
                 }
             }
-        }
-    },
+        },
+    
     "s-prov:errors" : "",
     "s-prov:feedbackIteration" : false,
     "vcard:uid" : "aspinuso",
@@ -79,7 +80,7 @@
             "d-prov:port" : "_d4p_state"
             }
     ],
-    "s-prov:wfExecution" : {
+    "s-prov:WFExecution" : {
         "@id" : "JUP_SIMPLE_orfeus-as-95144-ba902268-d657-11e6-ab01-f45c89acf865"
     },
     "prov:generatedAtTime" : "2017-01-09 10:38:16.287421"

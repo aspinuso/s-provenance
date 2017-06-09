@@ -1,0 +1,44 @@
+document
+  prefix s-prov <http://s-prov/ns/#>
+  prefix d-prov <http://d-prov.org/#>
+  prefix  prov <http://www.w3.org/ns/prov#>
+  prefix ex <http://www.ex.org/>
+  ...
+  entity(var:WFExecution, [s-prov:type="s-prov:WFExecution", s-prov:description="var:e", s-prov:name="var:d", s-prov:tags="var:b", s-prov:modules="var:modules", s-prov:mapping="var:a"])
+  agent(var:user, [vcard:uid="var:name"])
+  bundle var:WFExecution
+    wasAttributedTo(var:WFExecution, var:user)
+        
+    activity(var:Invocation, var:startTime, var:endTime, [prov:type="s-prov:Invocation"],tmpl:linked="var:ComponentInstance")
+    agent(var:Component, [prov:type="s-prov:Component", s-prov:source-code="var:value"])
+    agent(var:ComponentInstance, [tmpl:linked="var:StateCollection", prov:type='s-prov:ComponentInstance', tmpl:linked="var:Component", prov:location="var:name", s-prov:pid="var:p", s-prov:mapping="var:o"])
+    wasAssociatedWith(var:Invocation, var:ComponentInstance, -)
+    actedOnBehalfOf(var:ComponentInstance, var:Component, -)
+    wasAttributedTo(var:WFExecutionParameter, var:WFExecution)
+    wasAttributedTo(var:StateCollection, var:ComponentInstance)
+    
+    
+    entity(var:StateData, [s-prov:format="var:e", prov:type='s-prov:Data', prov:location="var:x", d-prov:port="state", s-prov:lookupname='var:ln', s-prov:size="var:f"])
+    entity(var:StateCollection, [tmpl:linked="var:ComponentInstance",prov:type='prov:Collection', prov:type='s-prov:StateCollection'])
+    entity(var:DataGranule2, [tmpl:linked="var:DataOut",var:term_="var:l"])
+    
+    onInPort(var:DataIn,var:inport,var:Invocation)
+    onOutPort(var:DataOut,var:outport,var:Invocation)
+    wasGeneratedBy(var:StateData, var:Invocation, -)
+    wasGeneratedBy(var:DataOut, var:Invocation, -)
+    used(var:Invocation, var:ComponentParameters, -)
+    
+    entity(var:DataOut, [d-prov:port="var:outport", prov:location="var:g", s-prov:size="var:i", prov:type='s-prov:Data', s-prov:format="var:h"])
+    entity(var:DataGranule1, [tmpl:linked="var:StateData",var:term_="var:n"])
+    entity(var:DataIn, [d-prov:port="var:pt", prov:type='s-prov:Data'])
+    entity(var:ComponentParameters, [tmpl:linked="var:Component",prov:type='s-prov:ComponentParameters', var:par_="var:n"])
+    entity(var:WFExecutionParameter, [tmpl:linked="var:WFExecution",prov:type="s-prov:WFExecutionParameter", prov:location="var:l", s-prov:mime-type="var:x", s-prov:name="var:q"])
+    hadMember(var:DataOut, var:DataGranule2)
+    hadMember(var:StateData, var:DataGranule1)
+    hadMember(var:StateCollection, var:StateData)
+    
+    wasDerivedFrom(var:StateData, var:DataIn, -, -, -)
+    wasDerivedFrom(var:DataOut, var:StateData, -, -, -)
+    wasDerivedFrom(var:DataOut, var:DataIn, -, -, -)
+  endBundle
+endDocument
