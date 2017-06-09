@@ -46,12 +46,11 @@
                 "s-prov:actedOnBehalfOf" : {
                     "@id" : "CorrCoef39",
                     "s-prov:provCluster" : "record1",
-                    "s-prov:componentParameters" : [ 
+                    "s-prov:ComponentParameters" :  
                         {
-                            "val" : 4,
-                            "key" : "batch_size"
+                            "ex:batch_size":4
                         }
-                    ]
+                    
                 }
             }
         }
