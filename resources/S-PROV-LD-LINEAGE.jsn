@@ -53,9 +53,9 @@
                         }
                  }
                  }   
-                }
-            }
-        },
+                },
+            
+        
     
     "s-prov:errors" : "",
     "s-prov:feedbackIteration" : false,
@@ -66,11 +66,12 @@
             "s-prov:Data" : {
                 "oa:annotations" : [],
                 "s-prov:format" : "",
-                "s-prov:DataGranule" : [ 
-                    {
+                "prov:hadMember" : [ 
+                    {	"prov:type" : "DataGranule",
                         "ex:batch2" : "[99.69114131423181,18.42938275423983]",
                         "ex:name" : "batch2_1"
                     }
+                
                 ],
                 "prov:location" : "",
                 "@id" : "orfeus-as-95144-ba9f33f3-d657-11e6-bb16-f45c89acf865",
