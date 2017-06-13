@@ -1,0 +1,217 @@
+ {
+        "$schema": "http://json-schema.org/draft-04/schema#",
+        "additionalProperties": true,
+        "definitions": {},
+        "id": "http://s-prov.knmi.nl/json-ld/wfexecution/v1",
+        "properties": {
+            "@context": {
+                "additionalProperties": true,
+                "id": "/properties/@context",
+                "properties": {
+                    "d-prov": {
+                        "default": "http://d-prov.org/#",
+                        "id": "/properties/@context/properties/d-prov",
+                        "type": "string"
+                    },
+                    "dcterms": {
+                        "default": "http://purl.org/dc/terms/",
+                        "id": "/properties/@context/properties/dcterms",
+                        "type": "string"
+                    },
+                    "ex": {
+                        "id": "/properties/@context/properties/ex",
+                        "type": "string"
+                    },
+                    "oa": {
+                        "default": "http://www.w3.org/ns/oa.rdf#",
+                        "id": "/properties/@context/properties/oa",
+                        "type": "string"
+                    },
+                    "prov": {
+                        "default": "http://www.w3.org/ns/prov#",
+                        "id": "/properties/@context/properties/prov",
+                        "type": "string"
+                    },
+                    "s-prov": {
+                        "id": "/properties/@context/properties/s-prov",
+                        "type": "string"
+                    },
+                    "vcard": {
+                        "default": "http://www.w3.org/2006/vcard/ns#",
+                        "id": "/properties/@context/properties/vcard",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "prov",
+                    "oa",
+                    "d-prov",
+                    "dcterms"
+                ],
+                "type": "object"
+            },
+            "@id": {
+                "id": "/properties/@id",
+                "type": "string"
+            },
+            "_id": {
+                "id": "/properties/_id",
+                "type": "string"
+            },
+            "dcterms:description": {
+                "id": "/properties/dcterms:description",
+                "type": "string"
+            },
+            "doctype": {
+              	"enum":["workflow_run"],
+                "id": "/properties/doctype",
+                "type": "string"
+            },
+            "prov:generatedAtTime": {
+                "id": "/properties/prov:generatedAtTime",
+                "type": "string"
+            },
+            "prov:type": {
+                "id": "/properties/prov:type",
+                "type": "string"
+            },
+            "s-prov:WFExecutionParameter": {
+                "additionalItems": true,
+                "id": "/properties/s-prov:WFExecutionParameter",
+                "items": {
+                    "additionalProperties": true,
+                    "id": "/properties/s-prov:WFExecutionParameter/items",
+                    "properties": {
+                        "@id": {
+                            "id": "/properties/s-prov:WFExecutionParameter/items/properties/@id",
+                            "type": "string"
+                        },
+                        "dcterms:format": {
+                            "id": "/properties/s-prov:WFExecutionParameter/items/properties/dcterms:format",
+                            "type": "string"
+                        },
+                        "prov:hadMember": {
+                            "additionalItems": true,
+                            "id": "/properties/s-prov:WFExecutionParameter/items/properties/prov:hadMember",
+                            "items": {
+                                "additionalProperties": true,
+                                "id": "/properties/s-prov:WFExecutionParameter/items/properties/prov:hadMember/items",
+                                "properties": {
+                                    "prov:type": {
+                                        "enum":["s-prov:DataGranule"],
+                                        "id": "/properties/s-prov:WFExecutionParameter/items/properties/prov:hadMember/items/properties/prov:type",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            },
+                            "type": "array",
+                            "uniqueItems": false
+                        },
+                        "prov:location": {
+                            "id": "/properties/s-prov:WFExecutionParameter/items/properties/prov:location",
+                            "type": "string"
+                        },
+                        "prov:type": {
+                            "enum":["s-prov:Data"],
+                            "id": "/properties/s-prov:WFExecutionParameter/items/properties/prov:type",
+                            "type": "string"
+                        },
+                        "s-prov:parameterName": {
+                            "id": "/properties/s-prov:WFExecutionParameter/items/properties/s-prov:parameterName",
+                            "type": "string"
+                        }
+                    },"required":["prov:type"],
+                    "type": "object"
+                },
+                "type": "array",
+                "uniqueItems": false
+            },
+            "s-prov:functionsSource": {
+                "additionalItems": true,
+                "id": "/properties/s-prov:functionsSource",
+                "items": {
+                    "additionalProperties": true,
+                    "id": "/properties/s-prov:functionsSource/items",
+                    "properties": {
+                        "s-prov:code": {
+                            "id": "/properties/s-prov:functionsSource/items/properties/s-prov:code",
+                            "type": "string"
+                        },
+                        "s-prov:functionName": {
+                            "id": "/properties/s-prov:functionsSource/items/properties/s-prov:functionName",
+                            "type": "string"
+                        },
+                        "s-prov:type": {
+                            "id": "/properties/s-prov:functionsSource/items/properties/s-prov:type",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "s-prov:functionName",
+                        "s-prov:code"
+                    ],
+                    "type": "object"
+                },
+                "type": "array",
+                "uniqueItems": false
+            },
+            "s-prov:grid": {
+                "id": "/properties/s-prov:grid",
+                "type": "string"
+            },
+            "s-prov:mapping": {
+                "id": "/properties/s-prov:mapping",
+                "type": "string"
+            },
+            "s-prov:modules": {
+                "additionalItems": true,
+                "id": "/properties/s-prov:modules",
+                "items": {
+                    "id": "/properties/s-prov:modules/items",
+                    "type": "string"
+                },
+                "type": "array",
+                "uniqueItems": false
+            },
+            "s-prov:queue": {
+                "id": "/properties/s-prov:queue",
+                "type": "string"
+            },
+            "s-prov:resource": {
+                "id": "/properties/s-prov:resource",
+                "type": "string"
+            },
+            "s-prov:resourceType": {
+                "id": "/properties/s-prov:resourceType",
+                "type": "string"
+            },
+            "s-prov:workflowId": {
+                "id": "/properties/s-prov:workflowId",
+                "type": "string"
+            },
+            "s-prov:workflowName": {
+                "id": "/properties/s-prov:workflowName",
+                "type": "string"
+            },
+            "vcard:uuid": {
+                "id": "/properties/vcard:uuid",
+                "type": "string"
+            }
+        },
+        "required": [
+            "s-prov:workflowName",
+            "s-prov:workflowId",
+            "s-prov:functionsSource",
+            "vcard:uuid",
+            "prov:type",
+            "doctype",
+            "prov:generatedAtTime",
+            "dcterms:description",
+            "@context",
+            "@id",
+            "s-prov:modules"
+        ],
+        "type": "object"
+    }
+
