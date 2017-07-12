@@ -1062,7 +1062,7 @@ class ProvenanceStore(object):
         for x in idlist:
             test=self.hasAncestorWithValuesRange(x,keylist,minvaluelist,maxvaluelist)
          
-            if test["hasAncestorWith"]==True:
+            if test!=None and test["hasAncestorWith"]==True:
                 filteredIds.append(x)
         
         return filteredIds
@@ -1130,9 +1130,9 @@ class ProvenanceStore(object):
                 
 
             elementsDict.update({x:{"$lte":maxval,"$gte":minval }})
-        
+         
         xx = lineage.find_one({"streams.id":id},{"runId":1,"derivationIds":1});
-        if len(xx["derivationIds"])>0:    
+        if xx!= None and len(xx["derivationIds"])>0:    
             for derid in xx["derivationIds"]:
                 try:
                 
