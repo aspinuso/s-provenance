@@ -164,7 +164,7 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
   if (data.streams[0].port==null && !(data.streams[0].port===undefined))
   {
    edgecol=colour.lightblue
-   col = colour.lightgrey
+   col = colour.lightblue
   }
   
   if (!(data.feedbackIteration===undefined) && data.feedbackIteration)
@@ -246,7 +246,7 @@ var derivedDataDephtree = function(data, graph, parent) {
   {
  if (data.streams[0].port==null && !(data.streams[0].port===undefined))
   {
-  col = colour.lightgrey
+  col = colour.lightblue
   edgecol=colour.lightblue
   }
   
@@ -258,14 +258,14 @@ var derivedDataDephtree = function(data, graph, parent) {
   }
   }
   //var node = graph.addNode(data["id"],{label:data["_id"].substring(0,5),'color':col, 'shape':'dot', 'radius':19,'alpha':1,mass:2})
-  console.log(data.streams[0].location)
+  //alert(data.streams[0].location)
   var nodea = graph.addNode(data["dataId"], {
     label: data["_id"].substring(0, 8),
     'color': col,
     'shape': 'dot',
     'radius': 19,
     'alpha': 1,
-     'data': {'runId':data.runId, 'location':data.streams[0].location},
+    'data': {'runId':data.runId,'location':data.streams[0].location},
     mass: 2
   });
    
@@ -809,7 +809,7 @@ Ext.define('CF.view.ActivityMonitor', {
             totalProperty: 'totalCount'
           }
         });
-
+        artifactStore.clearFilter(false);
         artifactStore.data.clear()
         artifactStore.load()
       }
@@ -1024,6 +1024,8 @@ Ext.define('CF.view.FilterOnAncestor', {
           failure: function(response) {
 
             Ext.Msg.alert("Error", "Filter Request Failed")
+            artifactStore.clearFilter(false);
+            artifactStore.removeAll()
 
 
           },
@@ -1091,7 +1093,8 @@ Ext.define('CF.view.FilterOnAncestorValuesRange', {
             filtered = Ext.decode(response.responseText)
             artifactStore.clearFilter(true);
             if (filtered.length == 0)
-              artifactStore.removeAll()
+              {console.log(filtered)
+              artifactStore.removeAll()}
             else {
               artifactStore.filterBy(function(record, id) {
                 if (Ext.Array.indexOf(filtered, record.data.ID) == -1) {
