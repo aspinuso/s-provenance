@@ -34,6 +34,21 @@
     
 
 
+    <!-- http://purl.org/dc/terms/format -->
+
+    <owl:ObjectProperty rdf:about="http://purl.org/dc/terms/format">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/2017/6/s-prov#Data"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment xml:lang="en">format or mime-type of the entity</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.semanticweb.org/ontologies/2017/6/s-prov#functionName -->
 
     <owl:ObjectProperty rdf:about="http://www.semanticweb.org/ontologies/2017/6/s-prov#functionName">
@@ -410,6 +425,24 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2017/6/s-prov#Workflow">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Plan"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2017/6/s-prov#flow-derivation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2017/6/s-prov#flow-derivation">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Derivation"/>
+        <rdfs:comment>A derviation from an entity b,  wasDerivedFrom(a,b), where a depends on an entity b, which was ingested by the current or any past Invocation.</rdfs:comment>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/ontologies/2017/6/s-prov#state-derivation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/ontologies/2017/6/s-prov#state-derivation">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Derivation"/>
+        <rdfs:comment>A derivation from an entity b, wasDerivedFrom(a,b), where a depends on an entity of the StateCollection.</rdfs:comment>
     </owl:Class>
 </rdf:RDF>
 
