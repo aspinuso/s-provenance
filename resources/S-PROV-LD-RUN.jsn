@@ -8,21 +8,25 @@
     "dcterms": "http://purl.org/dc/terms/",
     "ex": "http://any_namespace_in_the_ns_field",
     "d4py": "http://dispel4py.org/ns/#"
+    
   },
   "@id": "simulation_amatrice0000000_1472560123518_ld",
   "_id": "simulation_amatrice0000000_1472560123518_ld",
   "dcterms:description": "my simulation",
-  "s-prov:grid": "SCAI_Cluster2",
-  "doctype": "workflow_run",
-  "s-prov:WFExecutionParameter": [
-    {
+
+  "s-prov:doctype": "workflow_run",
+  "@type": "s-prov:WFExection",
+  "s-prov:mapping": "mpi",
+  "s-prov:WFExecutionParameters": {
+  "prov:hadMember":[
+    { "@type":"s-prov:Data",
       "prov:type": "s-prov:Data",
       "@id": "0jfa090ej",
       "prov:location": "https://portal.verce.eu/documents/10180/11604/stations_simulation_amatrice00_1472258114577",
       "dcterms:format": "application/xml",
       "s-prov:parameterName": "stations",
       "prov:hadMember": [
-        {
+        {  "@type":"s-prov:DataGranule",
           "prov:type": "s-prov:DataGranule"
         }
       ]
@@ -34,51 +38,50 @@
       "dcterms:format": "application/xml",
       "s-prov:parameterName": "stations",
       "prov:hadMember": [
-        {
+        {  "@type":"s-prov:DataGranule",
           "prov:type": "s-prov:DataGranule"
         }
       ]
     },
-    {
+    { "@type":"s-prov:Data",
       "prov:type": "s-prov:Data",
       "prov:location": "https://portal.verce.eu/documents/10180/11644/SPECFEM3D_CARTESIAN_202_DEV_simulation_amatrice0000000_1472560123518.json",
       "dcterms:format": "application/json",
       "s-prov:parameterName": "solverconf",
       "prov:hadMember": [
-        {
+        {  "@type":"s-prov:DataGranule",
           "prov:type": "s-prov:DataGranule"
         }
       ]
     },
-    {
+    { "@type":"s-prov:Data",
       "prov:type": "s-prov:Data",
-      "prov:location": "https://portal.verce.eu/documents/10180/11630/simulation_amatrice0000000_1472560123518.zip",
+      "prov:Location": "https://portal.verce.eu/documents/10180/11630/simulation_amatrice0000000_1472560123518.zip",
       "dcterms:format": "application/zip",
       "s-prov:parameterName": "vercepes",
       "prov:hadMember": [
-        {
+        {  "@type":"s-prov:DataGranule",
           "prov:type": "s-prov:DataGranule"
         }
       ]
     }
-  ],
+  ]
+  },
   "prov:type": "simulation",
+  "prov:atLocation":{
+  "s-prov:resourceName": "SCAI_Cluster2",
   "s-prov:queue": "jobmanager-pbs",
-  "s-prov:resource": "draco-ext.scai.fraunhofer.de:2119",
+  "s-prov:resourceUrl": "draco-ext.scai.fraunhofer.de:2119",
   "s-prov:resourceType": "gt5",
+  "@type":"s-prov:Resrouce"
+  },
   "prov:generatedAtTime": "2016-08-30T12:28Z",
-  "vcard:uuid": "aspinuso",
+  "prov:Person": "aspinuso",
   "s-prov:workflowId": "258",
   "s-prov:mapping": "mpi",
   "s-prov:workflowName": "SCAI_mpi_SPECFEM_PRODUCTION__2015-03-03-120220_2015-11-19-151723",
-  "s-prov:functionsSource": [
-    {
-      "s-prov:functionName": "StoreFile",
-      "s-prov:code": "https://github.com/KNMI/wps_workflow/blob/master/AdvancedDemo.ipynb",
-      "s-prov:type": "(<class 'dispel4py.provenance.ProvenancePE'>, <class '__main__.Write'>)"
-    }
-  ],
-  "s-prov:modules": [
+  "s-prov:modules":{
+  "dcterms:name":[
     "appinst==2.1.2",
     "appnope==0.1.0",
     "apptools==4.2.0",
@@ -178,5 +181,40 @@
     "ply==3.4",
     "ptyprocess==0.5",
     "py==1.4.26"
-  ]
+  ]},
+  
+  
+"s-prov:Workflow": {
+  "prov:hadMember":[
+  {"@type":"s-prov:Component",
+     "@id":"StoreFile4",
+      "prov:hadPlan": {
+            "@type":"s-prov:Implementation",
+            "s-prov:functionName": "StoreFile",
+            "s-prov:source": "https://github.com/KNMI/wps_workflow/blob/master/AdvancedDemo.ipynb",
+           
+
+
+      },
+       "s-prov:type": "(<class 'dispel4py.provenance.ProvenancePE'>, <class '__main__.Write'>)",
+       "s-prov:prov_cluster":"a"
+    },
+
+ { 
+     "@id":"StoreFile5",
+     "@type":"s-prov:Component",
+       "prov:hadPlan": {
+            "@type":"s-prov:Implementation",
+            "s-prov:functionName": "StoreFile",
+            "s-prov:source": "https://github.com/KNMI/wps_workflow/blob/master/AdvancedDemo.ipynb",
+            
+
+
+      },
+      "s-prov:type": "(<class 'dispel4py.provenance.ProvenancePE'>, <class '__main__.Write'>)",
+      "s-prov:prov_cluster":"a"
+    }
+    ]
+    }
+  
 }

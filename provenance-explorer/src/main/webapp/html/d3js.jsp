@@ -712,6 +712,7 @@ function reload(par,sel){
   	
   	url=updateURLParameter(url,'minidx',document.forms[0].minidx.value)
   	url=updateURLParameter(url,'maxidx',document.forms[0].maxidx.value)
+  	url=updateURLParameter(url,'starttime',document.forms[0].starttime.value)
   	window.location=url
   
   	}
@@ -774,6 +775,8 @@ function reload(par,sel){
   <input type="number" name="minidx" min="0" value="<%= request.getParameter("minidx") %>">
   maxidx
   <input type="number" name="maxidx" min="1" value="<%= request.getParameter("maxidx") %>">
+   start-time
+  <input type="string" name="starttime"  value="<%= request.getParameter("starttime") %>">
   
   <input type="button" name="setrange" value="change range" onclick="reload('','setrange')" />
 <% 
