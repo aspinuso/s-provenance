@@ -77,9 +77,7 @@
   },
   "prov:generatedAtTime": "2016-08-30T12:28Z",
   "prov:Person": "aspinuso",
-  "s-prov:workflowId": "258",
   "s-prov:mapping": "mpi",
-  "s-prov:workflowName": "SCAI_mpi_SPECFEM_PRODUCTION__2015-03-03-120220_2015-11-19-151723",
   "s-prov:modules":{
   "dcterms:name":[
     "appinst==2.1.2",
@@ -185,6 +183,8 @@
   
   
 "s-prov:Workflow": {
+  "s-prov:workflowId": "258",
+  "s-prov:workflowName": "SCAI_mpi_SPECFEM_PRODUCTION__2015-03-03-120220_2015-11-19-151723",
   "prov:hadMember":[
   {"@type":"s-prov:Component",
      "@id":"StoreFile4",
