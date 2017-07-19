@@ -1264,7 +1264,7 @@ class ProvenanceStore(object):
             matchdic=clean_empty(matchdic)
              
             obj=lineage.aggregate(pipeline=[{'$match':matchdic},{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'iterationId':'$iterationId','run':'$runId','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])
-            print("DADADAD "+str(matchdic))
+            
         elif 'level' in kwargs and kwargs['level'][0]=='instances':
             obj=lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'instanceId':'$instanceId','run':'$runId','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])
         elif 'level' in kwargs and kwargs['level'][0]=='pid':
@@ -1288,7 +1288,7 @@ class ProvenanceStore(object):
             
             searchDic = self.makeElementsSearchDic(keylist,mnvaluelist,mxvaluelist)
              
-            print(" searchdic "+json.dumps(searchDic['streams.content']['$elemMatch']))
+            #print(" searchdic "+json.dumps(searchDic['streams.content']['$elemMatch']))
             if kwargs['level'][0]=='vrange':
                 if kwargs['mode'][0]=="AND":
                     obj=lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':searchDic['streams.content']}},{'$group':{'_id': {'run':'$runId','username':'$username', str(groupby):'$'+str(groupby)}}}])
@@ -1297,7 +1297,7 @@ class ProvenanceStore(object):
                         print(y)
                         for c in lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':{'$elemMatch':{y:searchDic['streams.content']['$elemMatch'][y]}}}},{'$group':{'_id': {'run':'$runId','username':'$username', str(groupby):'$'+str(groupby)}}}]):
                             
-                            print(y+str(c))
+                            #print(y+str(c))
                             obj.append(c)
                 
         else:
@@ -1312,7 +1312,7 @@ class ProvenanceStore(object):
             #add=True
 
             if runId:
-                print("DADA")
+                 
                 run=x['_id']['run']
                 x['_id'].update({'runId':run})
                 del x['_id']['run']
