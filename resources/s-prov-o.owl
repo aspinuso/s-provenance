@@ -8,7 +8,8 @@
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:dcterms="http://purl.org/dc/terms/"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-     xmlns:vcard="http://www.w3.org/2006/vcard/ns#">
+     xmlns:vcard="http://www.w3.org/2006/vcard/ns#"
+     xmlns:prov="http://www.w3.org/ns/prov-o#">
     <owl:Ontology rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl">
         <owl:imports rdf:resource="http://purl.org/provone/ontology"/>
         <owl:imports rdf:resource="http://www.w3.org/ns/prov-o-20130430"/>
