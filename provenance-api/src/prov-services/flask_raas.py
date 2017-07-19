@@ -158,28 +158,47 @@ def derivedData(id):
 
 
 # the <method> can indicate value-range, hasAncherstorWith or the id of the resource
-@app.route("/entities/<method>")
+@app.route("/entities/<method>", methods=['GET','POST'])
 def getEntitiesByMethod(method):
         keylist = None
         vluelist= None
         mxvaluelist= None
         mnvaluelist= None
-        
+        idlist=None
         response = Response()
-         
-        try:
-            memory_file = StringIO.StringIO(request.args['keys']);
-            keylist = csv.reader(memory_file).next()
+
+        if request.method == 'POST':
+            try:
+                memory_file = StringIO.StringIO(request.form['ids']);
+                idlist = csv.reader(memory_file).next()
+                memory_file = StringIO.StringIO(request.form['keys']);
+                keylist = csv.reader(memory_file).next()
             #if (self.path=="values-range"):
-            memory_file = StringIO.StringIO(request.args['maxvalues']) if 'maxvalues' in request.args else None
-            mxvaluelist = csv.reader(memory_file).next()
-            memory_file2 = StringIO.StringIO(request.args['minvalues']) if 'minvalues' in request.args else None
-            mnvaluelist = csv.reader(memory_file2).next()
-            memory_file2 = StringIO.StringIO(request.args['values']) if 'values' in request.args else None
-            vluelist = csv.reader(memory_file2).next()
-            dataid =StringIO.StringIO(request.args['dataid']) if 'dataid' in request.args else None
-        except Exception, err:
-             None
+                memory_file = StringIO.StringIO(request.form['maxvalues']) if 'maxvalues' in request.form else None
+                mxvaluelist = csv.reader(memory_file).next()
+                memory_file2 = StringIO.StringIO(request.form['minvalues']) if 'minvalues' in request.form else None
+                mnvaluelist = csv.reader(memory_file2).next()
+                memory_file2 = StringIO.StringIO(request.form['values']) if 'values' in request.form else None
+                vluelist = csv.reader(memory_file2).next()
+                dataid =StringIO.StringIO(request.form['dataid']) if 'dataid' in request.form else None
+        
+            except Exception, err:
+                None
+        else:
+         
+            try:
+                memory_file = StringIO.StringIO(request.args['keys']);
+                keylist = csv.reader(memory_file).next()
+            #if (self.path=="values-range"):
+                memory_file = StringIO.StringIO(request.args['maxvalues']) if 'maxvalues' in request.args else None
+                mxvaluelist = csv.reader(memory_file).next()
+                memory_file2 = StringIO.StringIO(request.args['minvalues']) if 'minvalues' in request.args else None
+                mnvaluelist = csv.reader(memory_file2).next()
+                memory_file2 = StringIO.StringIO(request.args['values']) if 'values' in request.args else None
+                vluelist = csv.reader(memory_file2).next()
+                dataid =StringIO.StringIO(request.args['dataid']) if 'dataid' in request.args else None
+            except Exception, err:
+                None
         
         
     
@@ -194,6 +213,8 @@ def getEntitiesByMethod(method):
         
         if (method=="hasAncestorWith"):
             response = Response(json.dumps(app.db.hasAncestorWith(dataid,keylist,valuelist)))
+        elif (method=="filterOnAncestorsValuesRange"):
+            response = Response(json.dumps(app.db.filterOnAncestorsValuesRange(idlist,keylist,mnvaluelist,mxvaluelist)))
         else:
             response = Response(json.dumps(app.db.getEntitiesBy(method,keylist,mxvaluelist,mnvaluelist,vluelist,**request.args)))
         response.headers['Content-type'] = 'application/json'       

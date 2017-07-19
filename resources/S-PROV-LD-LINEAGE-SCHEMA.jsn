@@ -1,0 +1,314 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"additionalProperties": true,
+	"definitions": {},
+	"id": "http://s-prov.knmi.nl/json-ld/v1",
+	"properties": {
+		"@context": {
+			"additionalProperties": true,
+			"id": "/properties/@context",
+			"properties": {
+				"d-prov": {
+					"default": "http://d-prov.org/#",
+					"id": "/properties/@context/properties/d-prov",
+					"type": "string"
+				},
+				"oa": {
+					"default": "http://www.w3.org/ns/oa.rdf#",
+					"id": "/properties/@context/properties/oa",
+					"type": "string"
+				},
+				"prov": {
+					"default": "http://www.w3.org/ns/prov#",
+					"id": "/properties/@context/properties/prov",
+					"type": "string"
+				},
+				"s-prov": {
+					"default": "https://s-prov.knmi.nl/ns/# ",
+					"id": "/properties/@context/properties/s-prov",
+					"type": "string"
+				},
+				"vcard": {
+					"default": "http://www.w3.org/2006/vcard/ns#",
+					"id": "/properties/@context/properties/vcard",
+					"type": "string"
+				}
+			},
+			"required": [
+				"d-prov",
+				"vcard",
+				"oa",
+				"s-prov"
+			],
+			"type": "object"
+		},
+		"@id": {
+			"id": "/properties/@id",
+			"type": "string"
+		},
+		"_id": {
+			"id": "/properties/_id",
+			"type": "string"
+		},
+		"d-prov:onInPort": {
+			"additionalItems": false,
+			"id": "/properties/d-prov:onInPort",
+			"items": {
+				"additionalProperties": true,
+				"id": "/properties/d-prov:onInPort/items",
+				"properties": {
+					"d-prov:port": {
+						"id": "/properties/d-prov:onInPort/items/properties/d-prov:port",
+						"type": "string"
+					},
+					"prov:wasInformedBy": {
+						"additionalProperties": false,
+						"id": "/properties/d-prov:onInPort/items/properties/prov:wasInformedBy",
+						"properties": {
+							"@id": {
+								"id": "/properties/d-prov:onInPort/items/properties/prov:wasInformedBy/properties/@id",
+								"type": "string"
+							}
+						},
+						"type": "object"
+					},
+					"s-prov:Data": {
+						"additionalProperties": true,
+						"id": "/properties/d-prov:onInPort/items/properties/s-prov:Data",
+						"properties": {
+							"@id": {
+								"id": "/properties/d-prov:onInPort/items/properties/s-prov:Data/properties/@id",
+								"type": "string"
+							}
+						},
+						"required": [
+							"@id"
+						],
+						"type": "object"
+					},
+					"s-prov:provCluster": {
+						"id": "/properties/d-prov:onInPort/items/properties/s-prov:provCluster",
+						"type": "string"
+					}
+				},
+				"required": [
+					"s-prov:Data",
+                    "prov:wasInformedBy",
+                    
+				],
+				"type": "object"
+			},
+			"type": "array",
+			"uniqueItems": true
+		},
+		"d-prov:onOutPort": {
+			"additionalItems": false,
+			"id": "/properties/d-prov:onOutPort",
+			"items": {
+				"additionalProperties": false,
+				"id": "/properties/d-prov:onOutPort/items",
+				"properties": {
+					"d-prov:port": {
+						"id": "/properties/d-prov:onOutPort/items/properties/d-prov:port",
+						"type": "string"
+					},
+					"s-prov:Data": {
+						"additionalProperties": false,
+						"id": "/properties/d-prov:onOutPort/items/properties/s-prov:Data",
+						"properties": {
+							"@id": {
+								"id": "/properties/d-prov:onOutPort/items/properties/s-prov:Data/properties/@id",
+								"type": "string"
+							},
+							"oa:annotations": {
+								"additionalItems": true,
+								"id": "/properties/d-prov:onOutPort/items/properties/s-prov:Data/properties/oa:annotations",
+								"items": {},
+								"type": "array",
+								"uniqueItems": false
+							},
+							"prov:hadMember": {
+								"additionalItems": true,
+								"id": "/properties/d-prov:onOutPort/items/properties/s-prov:Data/properties/prov:hadMember",
+								"items": {
+									"additionalProperties": true,
+									"id": "/properties/d-prov:onOutPort/items/properties/s-prov:Data/properties/prov:hadMember/items",
+									"properties": {
+										"prov:type": {
+											"enum": ["s-prov:DataGranule"],
+											"id": "/properties/d-prov:onOutPort/items/properties/s-prov:Data/properties/prov:hadMember/items/properties/prov:type"
+										}
+									},
+                                    "reqired":["prov:type"],
+									"type": "object"
+								},
+								"type": "array",
+								"uniqueItems": false
+							},
+							"prov:location": {
+								"id": "/properties/d-prov:onOutPort/items/properties/s-prov:Data/properties/prov:location",
+								"type": "string"
+							},
+							"s-prov:format": {
+								"id": "/properties/d-prov:onOutPort/items/properties/s-prov:Data/properties/s-prov:format",
+								"type": "string"
+							},
+							"s-prov:size": {
+								"exclusiveMaximum": false,
+								"exclusiveMinimum": false,
+								"id": "/properties/d-prov:onOutPort/items/properties/s-prov:Data/properties/s-prov:size",
+								"type": "integer"
+							}
+						},
+                        "required": [
+				 
+						],
+						"type": "object"
+					}
+				},
+				"type": "object"
+			},
+			"type": "array",
+			"uniqueItems": false
+		},
+		"doctype": {
+			"id": "/properties/doctype",
+			"type": "string"
+		},
+		"prov:generatedAtTime": {
+			"id": "/properties/prov:generatedAtTime",
+			"type": "string"
+		},
+		"s-prov:Invocation": {
+			"additionalProperties": true,
+			"id": "/properties/s-prov:Invocation",
+			"properties": {
+				"@id": {
+					"id": "/properties/s-prov:Invocation/properties/@id",
+					"type": "string"
+				},
+				"prov:startTime": {
+					"id": "/properties/s-prov:Invocation/properties/prov:startTime",
+					"type": "string"
+				},
+				"prov:wasAssociatedWith": {
+					"additionalProperties": true,
+					"id": "/properties/s-prov:Invocation/properties/prov:wasAssociatedWith",
+					"properties": {
+						"@id": {
+							"id": "/properties/s-prov:Invocation/properties/prov:wasAssociatedWith/properties/@id",
+							"type": "string"
+						},
+						"prov:actedOnBehalfOf": {
+							"additionalProperties": true,
+							"id": "/properties/s-prov:Invocation/properties/prov:wasAssociatedWith/properties/prov:actedOnBehalfOf",
+							"properties": {
+								"@id": {
+									"id": "/properties/s-prov:Invocation/properties/prov:wasAssociatedWith/properties/prov:actedOnBehalfOf/properties/@id",
+									"type": "string"
+								},
+								"prov:type": {
+									"enum": ["s-prov:Component"],
+									"id": "/properties/s-prov:Invocation/properties/prov:wasAssociatedWith/properties/prov:actedOnBehalfOf/properties/prov:type",
+									"type": "string"
+								},
+								"s-prov:ComponentParameters": {
+									"id": "/properties/s-prov:Invocation/properties/prov:wasAssociatedWith/properties/prov:actedOnBehalfOf/properties/s-prov:ComponentParameters"
+
+								}
+								 
+							},
+							"required": [
+									"prov:type"
+							],
+							"s-prov:provCluster": {
+								"id": "/properties/s-prov:Invocation/properties/prov:wasAssociatedWith/properties/prov:actedOnBehalfOf/properties/s-prov:provCluster",
+								"type": "string"
+							}
+						},
+                          
+				},
+					"prov:type": {
+						"enum": ["s-prov:ComponentInstance"],
+						"id": "/properties/s-prov:Invocation/properties/prov:wasAssociatedWith/properties/prov:type",
+						"type": "string"
+					},
+					"s-prov:functionName": {
+						"id": "/properties/s-prov:Invocation/properties/prov:wasAssociatedWith/properties/s-prov:functionName",
+						"type": "string"
+					},
+					"s-prov:mapping": {
+						"id": "/properties/s-prov:Invocation/properties/prov:wasAssociatedWith/properties/s-prov:mapping",
+						"type": "string"
+					},
+					"s-prov:pid": {
+						"id": "/properties/s-prov:Invocation/properties/prov:wasAssociatedWith/properties/s-prov:pid",
+						"type": "string"
+					},
+					"s-prov:worker": {
+						"id": "/properties/s-prov:Invocation/properties/prov:wasAssociatedWith/properties/s-prov:worker",
+						"type": "string"
+					},
+                      "required": [
+									"prov:type",
+                       				 "s-prov:functionName"
+							],
+				},
+				
+				
+			
+			},
+             
+			"s-prov:iterationIndex": {
+				"exclusiveMaximum": false,
+				"exclusiveMinimum": false,
+				"id": "/properties/s-prov:Invocation/properties/s-prov:iterationIndex",
+				"type": "integer"
+			}
+		}
+	},
+	"s-prov:WFExecution": {
+		"additionalProperties": false,
+		"id": "/properties/s-prov:WFExecution",
+		"properties": {
+			"@id": {
+				"id": "/properties/s-prov:WFExecution/properties/@id",
+				"type": "string"
+			}
+		},
+		"required": [
+			"@id"
+		],
+		"type": "object"
+	},
+	"s-prov:errors": {
+		"id": "/properties/s-prov:errors",
+		"type": "string"
+	},
+	"s-prov:feedbackIteration": {
+		"id": "/properties/s-prov:feedbackIteration",
+		"type": "boolean"
+	},
+	"s-prov:stateful": {
+		"id": "/properties/s-prov:stateful",
+		"type": "boolean"
+	},
+	"vcard:uid": {
+		"id": "/properties/vcard:uid",
+		"type": "string"
+	},
+
+	"required": [
+		"d-prov:onInPort",
+		"vcard:uid",
+		"doctype",
+		"prov:generatedAtTime",
+		"s-prov:WFExecution",
+		"@context",
+		"s-prov:Invocation",
+		"@id",
+		"s-prov:errors",
+		"d-prov:onOutPort"
+	],
+	"type": "object"
+}

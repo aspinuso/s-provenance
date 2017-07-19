@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  xmlns:prov="http://www.w3.org/ns/prov#"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:dcterms="http://purl.org/dc/terms/"
+  xmlns:vcard="http://www.w3.org/2006/vcard/ns#"
+  xmlns:s-prov="https://raw.githubusercontent.com/KNMI/s-provenance/resources/s-prov-voc.rdf#"
+>
+  <s-prov:WFExection rdf:about="file:///base/data/home/apps/s%7Erdf-translator/1.380697414950152317/simulation_amatrice0000000_1472560123518_ld">
+    <dcterms:description>my simulation</dcterms:description>
+    <s-prov:WFExecutionParameters>
+      <s-prov:Data rdf:about="file:///base/data/home/apps/s%7Erdf-translator/1.380697414950152317/0jfa090ej">
+        <dcterms:format>application/xml</dcterms:format>
+        <s-prov:parameterName>stations</s-prov:parameterName>
+        <prov:location>https://portal.verce.eu/documents/10180/11604/stations_simulation_amatrice00_1472258114577</prov:location>
+        <prov:type>s-prov:Data</prov:type>
+        <prov:hadMember>
+          <s-prov:DataGranule rdf:nodeID="N7451158214ac4bb99bfa46c53c81d79b">
+            <prov:type>s-prov:DataGranule</prov:type>
+          </s-prov:DataGranule>
+        </prov:hadMember>
+      </s-prov:Data>
+    </s-prov:WFExecutionParameters>
+    <prov:generatedAtTime>2016-08-30T12:28Z</prov:generatedAtTime>
+    <s-prov:resourceType>gt5</s-prov:resourceType>
+    <s-prov:workflowName>SCAI_mpi_SPECFEM_PRODUCTION__2015-03-03-120220_2015-11-19-151723</s-prov:workflowName>
+    <s-prov:WFExecutionParameters>
+      <s-prov:Data rdf:nodeID="N9bdd7cf39c6d444d82ec4c6aae5af1e1">
+        <prov:hadMember>
+          <s-prov:DataGranule rdf:nodeID="Ne31dcc25a79d40c2976246ed4588313d">
+            <prov:type>s-prov:DataGranule</prov:type>
+          </s-prov:DataGranule>
+        </prov:hadMember>
+        <prov:location>https://portal.verce.eu/documents/10180/11644/SPECFEM3D_CARTESIAN_202_DEV_simulation_amatrice0000000_1472560123518.json</prov:location>
+        <s-prov:parameterName>solverconf</s-prov:parameterName>
+        <dcterms:format>application/json</dcterms:format>
+        <prov:type>s-prov:Data</prov:type>
+      </s-prov:Data>
+    </s-prov:WFExecutionParameters>
+    <s-prov:queue>jobmanager-pbs</s-prov:queue>
+    <s-prov:WFExecutionParameters>
+      <rdf:Description rdf:about="file:///base/data/home/apps/s%7Erdf-translator/1.380697414950152317/2340jj202j">
+        <prov:hadMember>
+          <s-prov:DataGranule rdf:nodeID="N2310ad7e40da4c09bef14209cbfa3a72">
+            <prov:type>s-prov:DataGranule</prov:type>
+          </s-prov:DataGranule>
+        </prov:hadMember>
+        <prov:location>https://portal.verce.eu/documents/10180/11604/events_simulation_amatrice0_1472243362636</prov:location>
+        <s-prov:parameterName>stations</s-prov:parameterName>
+        <dcterms:format>application/xml</dcterms:format>
+        <prov:type>s-prov:Data</prov:type>
+      </rdf:Description>
+    </s-prov:WFExecutionParameters>
+    <s-prov:mapping>mpi</s-prov:mapping>
+    <s-prov:resource>draco-ext.scai.fraunhofer.de:2119</s-prov:resource>
+    <s-prov:grid>SCAI_Cluster2</s-prov:grid>
+    <s-prov:modules>
+      <rdf:Description rdf:nodeID="N0a30d556e46e48e5a21ca5f21325f520">
+        <dcterms:name>path.py==8.1.2</dcterms:name>
+        <dcterms:name>cwltool==1.0.20170510165748</dcterms:name>
+        <dcterms:name>flask==0.12.1</dcterms:name>
+        <dcterms:name>globusonline-transfer-api-client==0.10.18</dcterms:name>
+        <dcterms:name>jupyter-console==4.0.3</dcterms:name>
+        <dcterms:name>configargparse==0.10.0</dcterms:name>
+        <dcterms:name>pip==9.0.1</dcterms:name>
+        <dcterms:name>flake8==2.3.0</dcterms:name>
+        <dcterms:name>py==1.4.26</dcterms:name>
+        <dcterms:name>networkx==1.11</dcterms:name>
+        <dcterms:name>gunicorn==19.7.1</dcterms:name>
+        <dcterms:name>examples==7.3</dcterms:name>
+        <dcterms:name>functools32==3.2.3.post2</dcterms:name>
+        <dcterms:name>nbformat==4.0.1</dcterms:name>
+        <dcterms:name>pathtools==0.1.2</dcterms:name>
+        <dcterms:name>gevent==1.1.2</dcterms:name>
+        <dcterms:name>cwlref-runner==1.0</dcterms:name>
+        <dcterms:name>avro==1.8.1</dcterms:name>
+        <dcterms:name>mccabe==0.3</dcterms:name>
+        <dcterms:name>apptools==4.2.0</dcterms:name>
+        <dcterms:name>idle==2.7.3</dcterms:name>
+        <dcterms:name>gnureadline==6.3.3</dcterms:name>
+        <dcterms:name>casuarius==1.1</dcterms:name>
+        <dcterms:name>hyperframe==3.2.0</dcterms:name>
+        <dcterms:name>idna==2.1</dcterms:name>
+        <dcterms:name>backports-abc==0.4</dcterms:name>
+        <dcterms:name>matplotlib==1.4.3</dcterms:name>
+        <dcterms:name>libjpeg==7.0</dcterms:name>
+        <dcterms:name>isodate==0.5.4</dcterms:name>
+        <dcterms:name>notebook==4.0.6</dcterms:name>
+        <dcterms:name>argh==0.26.2</dcterms:name>
+        <dcterms:name>netcdf4==1.2.2</dcterms:name>
+        <dcterms:name>pep8==1.6.2</dcterms:name>
+        <dcterms:name>itsdangerous==0.24</dcterms:name>
+        <dcterms:name>autopep8==1.2</dcterms:name>
+        <dcterms:name>greenlet==0.4.10</dcterms:name>
+        <dcterms:name>panda==0.3.1</dcterms:name>
+        <dcterms:name>nose==1.3.6</dcterms:name>
+        <dcterms:name>pandas==0.17.1</dcterms:name>
+        <dcterms:name>dispel4py==0.0.1</dcterms:name>
+        <dcterms:name>basemap==1.0.7</dcterms:name>
+        <dcterms:name>obspy==0.10.1</dcterms:name>
+        <dcterms:name>future==0.14.3</dcterms:name>
+        <dcterms:name>kernmagic==0.2.0</dcterms:name>
+        <dcterms:name>mpi4py==1.3.1</dcterms:name>
+        <dcterms:name>backports.ssl-match-hostname==3.5.0.1</dcterms:name>
+        <dcterms:name>certifi==2015.11.20.1</dcterms:name>
+        <dcterms:name>passlib==1.6.5</dcterms:name>
+        <dcterms:name>cython==0.23.4</dcterms:name>
+        <dcterms:name>libpng==1.2.40</dcterms:name>
+        <dcterms:name>ipywidgets==4.1.1</dcterms:name>
+        <dcterms:name>lockfile==0.12.2</dcterms:name>
+        <dcterms:name>hpack==2.3.0</dcterms:name>
+        <dcterms:name>noworkflow==0.6.0</dcterms:name>
+        <dcterms:name>cryptography==1.3.4</dcterms:name>
+        <dcterms:name>numpy==1.9.2</dcterms:name>
+        <dcterms:name>html2text==2016.4.2</dcterms:name>
+        <dcterms:name>jupyter==1.0.0</dcterms:name>
+        <dcterms:name>jupyter-client==4.1.1</dcterms:name>
+        <dcterms:name>pickleshare==0.5</dcterms:name>
+        <dcterms:name>lxml==3.6.4</dcterms:name>
+        <dcterms:name>mitmproxy==0.17</dcterms:name>
+        <dcterms:name>chaco==4.4.1</dcterms:name>
+        <dcterms:name>appinst==2.1.2</dcterms:name>
+        <dcterms:name>ipaddress==1.0.17</dcterms:name>
+        <dcterms:name>enable==4.3.0</dcterms:name>
+        <dcterms:name>cloud==2.4.6</dcterms:name>
+        <dcterms:name>enum34==1.1.6</dcterms:name>
+        <dcterms:name>appnope==0.1.0</dcterms:name>
+        <dcterms:name>blinker==1.4</dcterms:name>
+        <dcterms:name>freetype==2.4.4</dcterms:name>
+        <dcterms:name>envisage==4.4.0</dcterms:name>
+        <dcterms:name>h2==2.4.1</dcterms:name>
+        <dcterms:name>etsproxy==0.1.2</dcterms:name>
+        <dcterms:name>markupsafe==1.0</dcterms:name>
+        <dcterms:name>distribute==0.6.49</dcterms:name>
+        <dcterms:name>click==6.7</dcterms:name>
+        <dcterms:name>encore==0.4.0</dcterms:name>
+        <dcterms:name>jinja2==2.9.6</dcterms:name>
+        <dcterms:name>construct==2.5.3</dcterms:name>
+        <dcterms:name>configobj==4.7.2</dcterms:name>
+        <dcterms:name>nbconvert==4.1.0</dcterms:name>
+        <dcterms:name>ipykernel==4.2.1</dcterms:name>
+        <dcterms:name>jupyter-core==4.0.6</dcterms:name>
+        <dcterms:name>ipython==4.0.1</dcterms:name>
+        <dcterms:name>decorator==4.0.4</dcterms:name>
+        <dcterms:name>ply==3.4</dcterms:name>
+        <dcterms:name>pexpect==4.0.1</dcterms:name>
+        <dcterms:name>m2crypto==0.25.1</dcterms:name>
+        <dcterms:name>jsonschema==2.5.1</dcterms:name>
+        <dcterms:name>mistune==0.7.4</dcterms:name>
+        <dcterms:name>ptyprocess==0.5</dcterms:name>
+        <dcterms:name>cachecontrol==0.11.7</dcterms:name>
+        <dcterms:name>h5py==2.5.0</dcterms:name>
+        <dcterms:name>pillow==3.2.0</dcterms:name>
+        <dcterms:name>cffi==1.8.3</dcterms:name>
+        <dcterms:name>grequests==0.3.0</dcterms:name>
+        <dcterms:name>enaml==0.6.8</dcterms:name>
+        <dcterms:name>ipython-genutils==0.1.0</dcterms:name>
+      </rdf:Description>
+    </s-prov:modules>
+    <s-prov:doctype>workflow_run</s-prov:doctype>
+    <vcard:uuid>aspinuso</vcard:uuid>
+    <dcterms:contributors>
+      <s-prov:Component rdf:about="file:///base/data/home/apps/s%7Erdf-translator/1.380697414950152317/StoreFile4">
+        <prov:Plan>
+          <rdf:Description rdf:nodeID="N3ecaa7a9e1b94e9d95da0b074c156d11">
+            <s-prov:functionName>StoreFile</s-prov:functionName>
+            <s-prov:type><![CDATA[(<class 'dispel4py.provenance.ProvenancePE'>, <class '__main__.Write'>)]]></s-prov:type>
+            <s-prov:sourceUrl>https://github.com/KNMI/wps_workflow/blob/master/AdvancedDemo.ipynb</s-prov:sourceUrl>
+          </rdf:Description>
+        </prov:Plan>
+      </s-prov:Component>
+    </dcterms:contributors>
+    <s-prov:WFExecutionParameters>
+      <s-prov:Data rdf:nodeID="Nad07b57bc3604d5e94b77d343234a058">
+        <s-prov:parameterName>vercepes</s-prov:parameterName>
+        <prov:hadMember>
+          <s-prov:DataGranule rdf:nodeID="N3d7c88d77e1e4a2bb6d0e97f5c16cd17">
+            <prov:type>s-prov:DataGranule</prov:type>
+          </s-prov:DataGranule>
+        </prov:hadMember>
+        <prov:location>https://portal.verce.eu/documents/10180/11630/simulation_amatrice0000000_1472560123518.zip</prov:location>
+        <prov:type>s-prov:Data</prov:type>
+        <dcterms:format>application/zip</dcterms:format>
+      </s-prov:Data>
+    </s-prov:WFExecutionParameters>
+    <dcterms:contributors>
+      <s-prov:Component rdf:about="file:///base/data/home/apps/s%7Erdf-translator/1.380697414950152317/StoreFile5">
+        <prov:Plan>
+          <rdf:Description rdf:nodeID="N55d9319947d5461580153e6792b3e496">
+            <s-prov:type><![CDATA[(<class 'dispel4py.provenance.ProvenancePE'>, <class '__main__.Write'>)]]></s-prov:type>
+            <s-prov:functionName>StoreFile</s-prov:functionName>
+            <s-prov:sourceUrl>https://github.com/KNMI/wps_workflow/blob/master/AdvancedDemo.ipynb</s-prov:sourceUrl>
+          </rdf:Description>
+        </prov:Plan>
+      </s-prov:Component>
+    </dcterms:contributors>
+    <prov:type>simulation</prov:type>
+    <s-prov:workflowId>258</s-prov:workflowId>
+  </s-prov:WFExection>
+</rdf:RDF>
+
