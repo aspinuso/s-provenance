@@ -9,6 +9,27 @@
   "_id": "CorrCoef39_stateful_orfeus-as-95144-ba9f3c26-d657-11e6-87b7-f45c89acf865_LD",
   "@id": "CorrCoef39_stateful_orfeus-as-95144-ba9f3c26-d657-11e6-87b7-f45c89acf865",
   "s-prov:doctype": "lineage",
+  "prov:Derivation": [
+        {
+          "s-prov:Data": {
+            "@id": "orfeus-as-95144-ba926c57-d657-11e6-84fd-f45c89acf865",
+            "prov:wasGeneratedBy": {
+              "@id": "Source-orfeus-as-95144-ba926870-d657-11e6-ac16-f45c89acf865"
+            }
+          },
+          "d-prov:InputPort": "input2",
+          "@type": "s-prov:FlowDerivation"
+        },
+        {
+          "s-prov:Data": {
+            "@id": "orfeus-as-95144-ba9f33f3-d657-11e6-bb16-f45c89acf865",
+            "prov:wasGeneratedBy": {
+              "@id": "CorrCoef-orfeus-as-95144-ba9f2d45-d657-11e6-8a03-f45c89acf865"
+            }
+          },
+          "@type": "s-prov:StateDerivation"
+        }
+      ]
   "s-prov:Data": [
     {
       "oa:annotations": [
@@ -29,28 +50,8 @@
       "s-prov:stateLookupTerm": "batch2",
       "s-prov:toStateCollection": {
         "@id": "CorrCoef-state-orfeus-as-95144-ba923bc0-d657-11e6-a750-f45c89acf865"
-      },
-      "prov:qualifiedDerivation": [
-        {
-          "s-prov:Data": {
-            "@id": "orfeus-as-95144-ba926c57-d657-11e6-84fd-f45c89acf865",
-            "prov:wasGeneratedBy": {
-              "@id": "Source-orfeus-as-95144-ba926870-d657-11e6-ac16-f45c89acf865"
-            }
-          },
-          "d-prov:port": "input2",
-          "@type": "s-prov:FlowDerivation"
-        },
-        {
-          "s-prov:Data": {
-            "@id": "orfeus-as-95144-ba9f33f3-d657-11e6-bb16-f45c89acf865",
-            "prov:wasGeneratedBy": {
-              "@id": "CorrCoef-orfeus-as-95144-ba9f2d45-d657-11e6-8a03-f45c89acf865"
-            }
-          },
-          "@type": "s-prov:StateDerivation"
-        }
-      ]
+      }
+      
     }
   ],
   "s-prov:Invocation": {

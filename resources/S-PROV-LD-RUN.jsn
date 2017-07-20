@@ -1,23 +1,22 @@
 {
   "@context": {
-    "s-prov": "https://raw.githubusercontent.com/KNMI/s-provenance/resources/s-prov-voc.rdf#",
-    "prov": "http://www.w3.org/ns/prov#",
+    "s-prov": "https://raw.githubusercontent.com/KNMI/s-provenance/resources/s-prov-o.owl#",
+    "prov": "http://www.w3.org/ns/prov-o#",
     "oa": "http://www.w3.org/ns/oa.rdf#",
-    "vcard": "http://www.w3.org/2006/vcard/ns#",
-    "d-prov": "http://d-prov.org/#",
+    "provone": "http://vcvcomputing.com/provone/provone.owl",
     "dcterms": "http://purl.org/dc/terms/",
-    "ex": "http://any_namespace_in_the_ns_field",
-    "d4py": "http://dispel4py.org/ns/#"
-    
+    "ex": "http://any_namespace_in_the_ns_field"
   },
   "@id": "simulation_amatrice0000000_1472560123518_ld",
   "_id": "simulation_amatrice0000000_1472560123518_ld",
   "dcterms:description": "my simulation",
-
   "s-prov:doctype": "workflow_run",
-  "@type": "s-prov:WFExection",
-  "s-prov:mapping": "mpi",
-  "s-prov:WFExecutionParameters": {
+  "@type": "s-prov:WFExecutionBundle",
+  "prov:generatedAtTime": "2016-08-30T12:28Z",
+  "s-prov:WFExecution":{
+  "prov:used": {
+
+  "s-prov:WFExecutionInputs": {
   "prov:hadMember":[
     { "@type":"s-prov:Data",
       "prov:type": "s-prov:Data",
@@ -26,7 +25,7 @@
       "dcterms:format": "application/xml",
       "s-prov:parameterName": "stations",
       "prov:hadMember": [
-        {  "@type":"s-prov:DataGranule",
+        { "@type":"s-prov:DataGranule",
           "prov:type": "s-prov:DataGranule"
         }
       ]
@@ -66,17 +65,16 @@
       ]
     }
   ]
+  }
   },
-  "prov:type": "simulation",
+
+ 
   "prov:atLocation":{
   "s-prov:resourceName": "SCAI_Cluster2",
   "s-prov:queue": "jobmanager-pbs",
   "s-prov:resourceUrl": "draco-ext.scai.fraunhofer.de:2119",
   "s-prov:resourceType": "gt5",
-  "@type":"s-prov:Resrouce"
-  },
-  "prov:generatedAtTime": "2016-08-30T12:28Z",
-  "prov:Person": "aspinuso",
+  "@type":"s-prov:Resource",
   "s-prov:mapping": "mpi",
   "s-prov:modules":{
   "dcterms:name":[
@@ -179,42 +177,40 @@
     "ply==3.4",
     "ptyprocess==0.5",
     "py==1.4.26"
-  ]},
+  ]}
+  },
   
   
-"s-prov:Workflow": {
+  
+"prov:wasAssociatedWith":{ 
+"provone:Workflow": {
   "s-prov:workflowId": "258",
   "s-prov:workflowName": "SCAI_mpi_SPECFEM_PRODUCTION__2015-03-03-120220_2015-11-19-151723",
-  "prov:hadMember":[
-  {"@type":"s-prov:Component",
-     "@id":"StoreFile4",
-      "prov:hadPlan": {
-            "@type":"s-prov:Implementation",
-            "s-prov:functionName": "StoreFile",
-            "s-prov:source": "https://github.com/KNMI/wps_workflow/blob/master/AdvancedDemo.ipynb",
-           
-
-
-      },
+  "provone:hasSubprocess":[
+     {"@type":"s-prov:Implementation",
+      "s-prov:functionName": "StoreFile",
+      "s-prov:source": "https://github.com/KNMI/wps_workflow/blob/master/AdvancedDemo.ipynb",
        "s-prov:type": "(<class 'dispel4py.provenance.ProvenancePE'>, <class '__main__.Write'>)",
-       "s-prov:prov_cluster":"a"
-    },
-
- { 
-     "@id":"StoreFile5",
-     "@type":"s-prov:Component",
-       "prov:hadPlan": {
-            "@type":"s-prov:Implementation",
-            "s-prov:functionName": "StoreFile",
-            "s-prov:source": "https://github.com/KNMI/wps_workflow/blob/master/AdvancedDemo.ipynb",
-            
-
-
-      },
-      "s-prov:type": "(<class 'dispel4py.provenance.ProvenancePE'>, <class '__main__.Write'>)",
-      "s-prov:prov_cluster":"a"
-    }
+       "prov:wasAttributedTo":{"@type":"s-prov:Component", "s-prov:CName":"StoreFile01","@id":"StoreFile01","s-prov:provCluster":"record0"}
+      
+     },
+     {"@type":"s-prov:Implementation",
+      "s-prov:functionName": "Analyse",
+      "s-prov:source": "https://github.com/KNMI/wps_workflow/blob/master/AdvancedDemo.ipynb",
+       "s-prov:type": "(<class 'dispel4py.provenance.ProvenancePE'>, <class '__main__.Analyse'>)",
+       "prov:wasAttributedTo":{"@type":"s-prov:Component", "s-prov:CName":"ANALYSIS01","@id":"ANALYSIS01", "s-prov:provCluster":"record0"}
+      
+     },
+     {"@type":"s-prov:Implementation",
+      "s-prov:functionName": "Collect",
+      "s-prov:source": "https://github.com/KNMI/wps_workflow/blob/master/AdvancedDemo.ipynb",
+       "s-prov:type": "(<class 'dispel4py.provenance.ProvenancePE'>, <class '__main__.Collect'>)",
+       "prov:wasAttributedTo":{"@type":"s-prov:Component", "s-prov:CName":"Collect01", "@id":"Collect01", "s-prov:provCluster":"record0"}
+      
+     }
     ]
+    },
+    "prov:Person":"aspinuso"
     }
-  
+  }
 }
