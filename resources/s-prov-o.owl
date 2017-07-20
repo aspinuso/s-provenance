@@ -381,7 +381,7 @@
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#workflowId -->
 
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#workflowId">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecution"/>
+        <rdfs:domain rdf:resource="http://purl.org/provone/ontology#Workflow"/>
         <rdfs:range>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
@@ -397,7 +397,7 @@
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#workflowName -->
 
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#workflowName">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecution"/>
+        <rdfs:domain rdf:resource="http://purl.org/provone/ontology#Workflow"/>
         <rdfs:range>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
@@ -506,6 +506,15 @@
     
 
 
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#FlowDerivation -->
+
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#FlowDerivation">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Derivation"/>
+        <prov:definition>A \id{wasDerivedFrom(a,b)} relationship, where $a$ is derived from an entity $b$ which was ingested by the current of any of the past Invocations.</prov:definition>
+    </owl:Class>
+    
+
+
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Implementation -->
 
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Implementation">
@@ -532,6 +541,15 @@
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Collection"/>
         <rdfs:label>StateCollection</rdfs:label>
         <prov-o:definition>The internal state of a \emph{ComponentInstance}. Contains references  to \emph{Data} that are preserved by \emph{Invocations} during stateful operations.</prov-o:definition>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StateDerivation -->
+
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StateDerivation">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Derivation"/>
+        <prov:definition>A \id{wasDerivedFrom(a,b)} relationship, where a depends on an entity of the StateCollection b.</prov:definition>
     </owl:Class>
     
 
