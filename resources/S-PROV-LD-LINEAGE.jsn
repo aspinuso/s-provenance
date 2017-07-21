@@ -1,92 +1,89 @@
 {
-  "@context": {
-    "s-prov": "https:\/\/raw.githubusercontent.com\/KNMI\/s-provenance\/resources\/s-prov-voc.rdf#",
-    "prov": "http:\/\/www.w3.org\/ns\/prov#",
-    "oa": "http:\/\/www.w3.org\/ns\/oa.rdf#",
-    "vcard": "http:\/\/www.w3.org\/2006\/vcard\/ns#",
-    "d-prov": "http:\/\/d-prov.org\/#"
-  },
-  "_id": "CorrCoef39_stateful_orfeus-as-95144-ba9f3c26-d657-11e6-87b7-f45c89acf865_LD",
-  "@id": "CorrCoef39_stateful_orfeus-as-95144-ba9f3c26-d657-11e6-87b7-f45c89acf865",
-  "s-prov:doctype": "lineage",
-  "prov:Derivation": [
+    "@context" : {
+        "s-prov" : "https://raw.githubusercontent.com/KNMI/s-provenance/resources/s-prov-voc.rdf#",
+        "prov" : "http://www.w3.org/ns/prov#",
+        "oa" : "http://www.w3.org/ns/oa.rdf#",
+        "vcard" : "http://www.w3.org/2006/vcard/ns#",
+        "d-prov" : "http://d-prov.org/#"
+    },
+    "_id" : "CorrCoef39_stateful_orfeus-as-95144-ba9f3c26-d657-11e6-87b7-f45c89acf865_LD",
+    "@id" : "CorrCoef39_stateful_orfeus-as-95144-ba9f3c26-d657-11e6-87b7-f45c89acf865",
+    "s-prov:doctype" : "lineage",
+    "prov:Derivation" : [ 
         {
-          "s-prov:Data": {
-            "@id": "orfeus-as-95144-ba926c57-d657-11e6-84fd-f45c89acf865",
-            "prov:wasGeneratedBy": {
-              "@id": "Source-orfeus-as-95144-ba926870-d657-11e6-ac16-f45c89acf865"
-            }
-          },
-          "provone:InputPort": "input2",
-          "@type": "s-prov:FlowDerivation"
-        },
+            "s-prov:Data" : {
+                "@id" : "orfeus-as-95144-ba926c57-d657-11e6-84fd-f45c89acf865"
+            },
+            "provone:InputPort" : "input2",
+            "@type" : "s-prov:FlowDerivation"
+        }, 
         {
-          "s-prov:Data": {
-            "@id": "orfeus-as-95144-ba9f33f3-d657-11e6-bb16-f45c89acf865",
-            "prov:wasGeneratedBy": {
-              "@id": "CorrCoef-orfeus-as-95144-ba9f2d45-d657-11e6-8a03-f45c89acf865"
-            }
-          },
-          "@type": "s-prov:StateDerivation"
+            "s-prov:Data" : {
+                "@id" : "orfeus-as-95144-ba9f33f3-d657-11e6-bb16-f45c89acf865"
+            },
+            "@type" : "s-prov:StateDerivation"
         }
-      ],
-  "s-prov:Data": [
-    {
-      "oa:annotations": [
-        
-      ],
-      "s-prov:format": "",
-      "prov:hadMember": [
+    ],
+    "s-prov:StreamOut" : [ 
         {
-          "prov:type": "s-prov:DataGranule",
-          "@type": "s-prov:DataGranule",
-          "ex:batch2": "[99.69114131423181,18.42938275423983]",
-          "ex:name": "batch2_1"
+            "prov:type" : "s-prov:Data",
+            "oa:annotations" : [],
+            "s-prov:format" : "",
+            "prov:wasGeneratedBy" : {
+                "@id" : "CorrCoef-orfeus-as-95144-ba9f2d45-d657-11e6-8a03-f45c89acf865"
+            },
+            "prov:hadMember" : [ 
+                {
+                    "prov:type" : "s-prov:DataGranule",
+                    "@type" : "s-prov:DataGranule",
+                    "ex:batch2" : "[99.69114131423181,18.42938275423983]",
+                    "ex:name" : "batch2_1"
+                }
+            ],
+            "prov:location" : "",
+            "@id" : "orfeus-as-95144-ba9f33f3-d657-11e6-bb16-f45c89acf865",
+            "prov:wasDerivedFrom" : [ 
+                {
+                    "@id" : "orfeus-as-95144-ba9f33f3-d657-11e6-bb16-f45c89acf865"
+                }, 
+                {
+                    "@id" : "orfeus-as-95144-ba926c57-d657-11e6-84fd-f45c89acf865"
+                }
+            ],
+            "s-prov:size" : 0,
+            "s-prov:stateLookupTerm" : "batch2",
+            "s-prov:dataToStateCollection" : {
+                "@id" : "CorrCoef-state-orfeus-as-95144-ba923bc0-d657-11e6-a750-f45c89acf865"
+            }
         }
-      ],
-      "prov:location": "",
-      "@id": "orfeus-as-95144-ba9f33f3-d657-11e6-bb16-f45c89acf865",
-      "prov:wasDerivedFrom":[{"@id":"orfeus-as-95144-ba9f33f3-d657-11e6-bb16-f45c89acf865"},
-                             {"@id": "orfeus-as-95144-ba926c57-d657-11e6-84fd-f45c89acf865"}
-                             ],
-      "s-prov:size": 0,
-      "s-prov:stateLookupTerm": "batch2",
-      "s-prov:toStateCollection": {
-        "@id": "CorrCoef-state-orfeus-as-95144-ba923bc0-d657-11e6-a750-f45c89acf865"
-      }
-      
-    }
-  ],
-  "s-prov:Invocation": {
-    "@id": "CorrCoef-orfeus-as-95144-ba9f2d45-d657-11e6-8a03-f45c89acf865",
-    "prov:startTime": "2017-01-09 10:38:16.287077",
-    "s-prov:iterationIndex": 1,
-    "prov:wasAssociatedWith": {
-      "@id": "CorrCoef-Instance--orfeus-as-95144-ba923bc0-d657-11e6-a750-f45c89acf865",
-      "@type": "s-prov:ComponentInstance",
-      "prov:type": "s-prov:ComponentInstance",
-      "s-prov:pid": "95144",
-      "s-prov:functionName": "CorrCoef",
-      "s-prov:feedbackIteration": false,
-      "s-prov:mapping": "mpi",
-      "s-prov:worker": "orfeus-as",
-      "s-prov:ComponentParameters": {
-          "ex:batch_size": 4
-        },
-
-      "prov:actedOnBehalfOf": {
-        "@type": "s-prov:Component",
-        "@id": "CorrCoef39",
-        "s-prov:provCluster": "record1"
-        
-      }
-    }
-  },
-  "s-prov:errors": "",
-  "vcard:uid": "aspinuso",
-  "s-prov:stateful": true,
-  "s-prov:WFExecution": {
-    "@id": "JUP_SIMPLE_orfeus-as-95144-ba902268-d657-11e6-ab01-f45c89acf865"
-  },
-  "prov:generatedAtTime": "2017-01-09 10:38:16.287421"
+    ],
+    "s-prov:Invocation" : {
+        "@id" : "CorrCoef-orfeus-as-95144-ba9f2d45-d657-11e6-8a03-f45c89acf865",
+        "prov:startTime" : "2017-01-09 10:38:16.287077",
+        "s-prov:iterationIndex" : 1,
+        "s-prov:feedbackInvocation" : false,
+        "s-prov:message" : "",
+        "prov:wasAssociatedWith" : {
+            "@id" : "CorrCoef-Instance--orfeus-as-95144-ba923bc0-d657-11e6-a750-f45c89acf865",
+            "@type" : "s-prov:ComponentInstance",
+            "prov:type" : "s-prov:ComponentInstance",
+            "prov:atLocation" : {
+                "@type" : "SystemProcess",
+                "s-prov:pid" : "95144",
+                "s-prov:mapping" : "mpi",
+                "s-prov:worker" : "orfeus-as"
+            },
+            "s-prov:ComponentParameters" : {
+                "ex:batch_size" : 4
+            },
+            "prov:actedOnBehalfOf" : {
+                "@type" : "s-prov:Component",
+                "@id" : "CorrCoef39",
+                "s-prov:provCluster" : "record1"
+            }
+        }
+    },
+    "prov:Person" : "aspinuso",
+    "s-prov:stateful" : true,
+    "prov:generatedAtTime" : "2017-01-09 10:38:16.287421"
 }
