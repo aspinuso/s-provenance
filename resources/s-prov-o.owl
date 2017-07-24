@@ -153,8 +153,8 @@
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
-        <rdfs:comment xml:lang="en">Name of the function implementing the Component</rdfs:comment>
         <rdfs:label xml:lang="en">functionName</rdfs:label>
+        <prov:definition xml:lang="en">Name of the function of a component&apos;s \emph{Implementation}</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -182,7 +182,7 @@
             </owl:Restriction>
         </rdfs:range>
         <rdfs:label xml:lang="en">invocationIndex</rdfs:label>
-        <prov-o:definition xml:lang="en">Sequence number of the current invocation</prov-o:definition>
+        <prov:definition xml:lang="en">Sequence number of the current \emph{Invocation}.</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -199,8 +199,8 @@
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
             </owl:Restriction>
         </rdfs:range>
-        <rdfs:comment xml:lang="en">type of resource mapping for the concrete execution of the workflow; eg. mpi, multiprocessing, apache-storm, etc. It may occurr that some components of a larger and etherogeneus workflow are mapped to different enactment. Therefore we use this property also to describe the single ComponentInstance</rdfs:comment>
         <rdfs:label xml:lang="en">mapping</rdfs:label>
+        <prov:definition xml:lang="en">Type of resource mapping for the concrete execution of the workflow; \eg{} mpi, multiprocessing, Storm, \etc{} It may occur that some components of a larger and heterogeneous workflow are mapped to different enactment engines. Therefore, we allow this property also to describe the single \emph{ComponentInstance}.</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -209,7 +209,7 @@
 
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#message">
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
-        <rdfs:comment>Any text message or code generated at runtime during an Invocation. A message should be typically used to indicate anomalies and errors.</rdfs:comment>
+        <prov:definition>Any text message or code generated at runtime during an Invocation. A message is typically used to notify anomalies and errors</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -218,17 +218,8 @@
 
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#modules">
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionBundle"/>
-        <rdfs:comment xml:lang="en">Collection of software modules used within the current execution; eg. python modules with their version indication, &quot;matplotlib==1.4.3&quot;</rdfs:comment>
         <rdfs:label xml:lang="en">modules</rdfs:label>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#onInputPort -->
-
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#onInputPort">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#FlowDerivation"/>
-        <rdfs:range rdf:resource="http://purl.org/provone/ontology#InputPort"/>
+        <prov:definition xml:lang="en">Collection of software modules used within the current execution; eg. python modules with their version indication, &quot;matplotlib==1.4.3&quot;</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -282,7 +273,7 @@
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
-        <rdfs:comment xml:lang="en">Extended Name of the Computational Resource; eg. SCAI_Cluster or LRZ_SMUC</rdfs:comment>
+        <prov:definition xml:lang="en">Name of a local or institutional computational infrastructure; \eg{} SCAI\_Cluster or LRZ\_SMUC</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -297,7 +288,7 @@
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
-        <rdfs:comment xml:lang="en">Type of the computational resource access point (if applicable); eg GT5, Unicore etc</rdfs:comment>
+        <prov:definition xml:lang="en">Type of the computational resource access point (if applicable); \eg{} GT5, Unicore, OCCI.</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -312,7 +303,7 @@
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
             </owl:Restriction>
         </rdfs:range>
-        <rdfs:comment xml:lang="en">URL of the remote resource where the workflow has been submitted to.</rdfs:comment>
+        <prov:definition xml:lang="en">URL of the remote resource where the workflow has been submitted to.</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -333,7 +324,7 @@
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
-        <rdfs:comment xml:lang="en">Source code or url pointing to an external repository such as a code revision service, eg. github</rdfs:comment>
+        <prov:definition xml:lang="en">Source code of an \emph{Implementation} pointing to an external repository, such as a code revision service; \eg{} a Github repository.</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -349,7 +340,7 @@
             </owl:Restriction>
         </rdfs:range>
         <rdfs:label xml:lang="en">stateLookupTerm</rdfs:label>
-        <prov-o:definition xml:lang="en">a key literal associated with a Data entity in the StateCollection</prov-o:definition>
+        <prov:definition xml:lang="en">A key literal associated with a \emph{Data} entity in the \emph{StateCollection}</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -359,8 +350,8 @@
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#toStateCollection">
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
         <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StateCollection"/>
-        <rdfs:comment xml:lang="en">A Data Collection is added to the StateCollection by an invocation</rdfs:comment>
         <rdfs:label xml:lang="en">dataToStateCollection</rdfs:label>
+        <prov:definition xml:lang="en">This relationship indicates that a \emph{Data} is sent to the \emph{StateCollection} .</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -375,8 +366,8 @@
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
-        <rdfs:comment xml:lang="en">Runtime Type of the Component Agent. Multiple types can indicate the computational class and the provenance pattern or metadata schema associated to the Component.</rdfs:comment>
         <rdfs:label xml:lang="en">type</rdfs:label>
+        <prov:definition xml:lang="en">Runtime type of the \emph{Component}. Multiple types can indicate the computational class and the provenance pattern or metadata schema associated to the Component.</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -388,8 +379,9 @@
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
         <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentParameters"/>
         <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Implementation"/>
+        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#SystemProcess"/>
         <rdfs:label xml:lang="en">wasChangedWith</rdfs:label>
-        <prov-o:definition xml:lang="en">The relationship indicates that a ComponentInstance changed its ComponentParameters or its Implementation</prov-o:definition>
+        <prov:definition xml:lang="en">This relationship indicates that a \emph{ComponentInstance} changed its \emph{ComponentParameters}, \emph{Implementation} or \emph{SystemProcess}.</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -405,7 +397,7 @@
             </owl:Restriction>
         </rdfs:range>
         <rdfs:label xml:lang="en">wcount</rdfs:label>
-        <prov-o:definition xml:lang="en">Writing sequence number of a Data entity across invocations</prov-o:definition>
+        <prov:definition xml:lang="en">The sequence-number of the output data written from an invocation.</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -420,8 +412,8 @@
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
-        <rdfs:comment xml:lang="en">System Id of the workflow</rdfs:comment>
         <rdfs:label xml:lang="en">workflowId</rdfs:label>
+        <prov:definition xml:lang="en">System Id of the workflow</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -437,7 +429,7 @@
             </owl:Restriction>
         </rdfs:range>
         <rdfs:label xml:lang="en">workflowName</rdfs:label>
-        <prov-o:definition xml:lang="en">Common name of the workflow</prov-o:definition>
+        <prov:definition xml:lang="en">Common name of the workflow</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -490,7 +482,7 @@
 
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#CResource">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Location"/>
-        <prov-o:definition>Computational Resource where the workflow is submitted and executed</prov-o:definition>
+        <prov:definition>The computational Resource where the workflow is submitted and executed</prov:definition>
     </owl:Class>
     
 
@@ -500,7 +492,7 @@
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Component">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Agent"/>
         <rdfs:label>Component</rdfs:label>
-        <prov-o:definition>The agent responsible to perform a task in the workflow.  It represent an abstract structural element of the workflow and delegates to its instances the actual computation on the incoming data stream. Its Instances may be executed in parallel.  More \emph{Component} agents cooperate in the execution of a \emph{Workflow}</prov-o:definition>
+        <prov:definition>The agent responsible to perform a task in the workflow.  It represent an abstract structural element of the workflow and delegates to its instances the actual concurrent computation on the incoming data stream. More \emph{Component} agents cooperate in a \emph{WFExecution}</prov:definition>
     </owl:Class>
     
 
@@ -509,9 +501,9 @@
 
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov-o#SoftwareAgent"/>
-        <rdfs:comment>This is a SoftwareAgent that acts on behalf of a logical \emph{Component}. In a parallel execution multiple \emph{ComponentInstance} act on behalf of the same \emph{Component} by performing its Process Plan (Implementation). In runtime changes occurring to the concrete instances, such as re-scheduling, re-parametrisation and the attribution of a new Implementation, which may include the restructuring of the workflow, these are traced consistently to the original logical \emph{Component} Agent</rdfs:comment>
         <rdfs:label>ComponentInstance</rdfs:label>
         <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:versionInfo>
+        <prov:definition>This is a \emph{prov:SoftwareAgent} that acts on behalf of a logical \emph{Component}. In a parallel execution multiple \emph{ComponentInstance} act on behalf of the same \emph{Component} by performing the same \emph{Implementation}.</prov:definition>
     </owl:Class>
     
 
@@ -521,7 +513,7 @@
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentParameters">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
         <rdfs:label>ComponentParameters</rdfs:label>
-        <prov-o:definition>Each \emph{ComponentInstance} and therefore their \emph{Invocations} are parametrised. Parameters&apos; vaues gets assigned at the time of the configuration of the workflow execution, but can change at runtime.</prov-o:definition>
+        <prov:definition>Each \emph{ComponentInstance} and therefore their \emph{Invocations} are parametrised. Parameters&apos; vaues gets assigned at the time of the configuration of the workflow execution and may change at runtime.</prov:definition>
     </owl:Class>
     
 
@@ -531,7 +523,7 @@
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Collection"/>
         <rdfs:label>Data</rdfs:label>
-        <prov-o:definition>Any \emph{Collection} of data produced or used by an \emph{Invocation}.  Each element gets time-stamped and if not volatile, it can refer to  the \emph{url} of its location. It is similar to the Collection entity used by PROV and also by PROV-ONE, however it has been redefined to associate more specific attributes to describe general characteristics of the output data produced; eg. location, format, size. S-PROV assumes for practical reasons that outputs should be always considered like collections of one or more granules.</prov-o:definition>
+        <prov:definition>Any data produced or used by an \emph{Invocation}.  Each entity gets time-stamped it can refer to  the \emph{url} of its location. We redefine the ProvONE Data entity as being a subclass of a Collection. S-PROV treats data entities as characterised by a generic container containing one or more data granules. This guarantees separation between a baseline of generic information, such as location, format, size and annotations, and domain specific metadata which are instead attributed to the granules.</prov:definition>
     </owl:Class>
     
 
@@ -541,7 +533,7 @@
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#DataGranule">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
         <rdfs:label>DataGranule</rdfs:label>
-        <prov-o:definition>A \emph{DataGranule} is part of a \emph{Data} collection and contains contextual metadata related to the specific research topic and domain. Metadata can be associated with data formats and community schemas, as well as user-defined. The latter fosters the adoption of provenance for the rapid cataloguing and exploration of experimental properties that are extracted from intermediate results.</prov-o:definition>
+        <prov:definition>A \emph{DataGranule} is part of a \emph{Data} collection. It contains contextual metadata related to the specific research topic and domain. Metadata can be associated with data formats and community schemas, as well as user-defined. The latter fosters the adoption of provenance for the rapid cataloguing and exploration of experimental properties that are extracted from intermediate results.</prov:definition>
     </owl:Class>
     
 
@@ -560,7 +552,7 @@
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Implementation">
         <rdfs:subClassOf rdf:resource="http://purl.org/provone/ontology#Process"/>
         <rdfs:label>Implementation</rdfs:label>
-        <prov-o:definition>A Plan representing an atomic operation constituting a workflow.  It is described by its source code or by a link or to an external versioning system. If applicable, it also indicates information about its type in the context of the native programming language. This is a subclass of \emph{provone:Process} therefore it has properties indicating input and outport ports and the traceability of its evolution.</prov-o:definition>
+        <prov:definition>A \emp{provone:Process} representing an atomic operation constituting a workflow component. It is described by its source code or by a link or to an external versioning system. If applicable, it also indicates information about its type in the context of the native programming language. This is a subclass of \emph{provone:Process} therefore it has input and outport ports and allows for the traceability of its evolution.</prov:definition>
     </owl:Class>
     
 
@@ -580,7 +572,7 @@
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StateCollection">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Collection"/>
         <rdfs:label>StateCollection</rdfs:label>
-        <prov-o:definition>The internal state of a \emph{ComponentInstance}. Contains references  to \emph{Data} that are preserved by \emph{Invocations} during stateful operations.</prov-o:definition>
+        <prov:definition>The internal state of a \emph{ComponentInstance}. Contains references to \emph{Data} entities that gets updated by an \emph{Invocation} during stateful operations.</prov:definition>
     </owl:Class>
     
 
@@ -598,7 +590,7 @@
 
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StreamOut">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
-        <rdfs:comment>Equivalent to a Collection. It is used to characterised a set of \emph{Data} elements as being produced by a streaming operator.</rdfs:comment>
+        <prov:definition>Equivalent to a Collection. It is used to characterised a set of \emph{Data} elements as being produced in output by a streaming operator.</prov:definition>
     </owl:Class>
     
 
@@ -608,7 +600,7 @@
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#SystemProcess">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Location"/>
         <rdfs:label>SystemProcess</rdfs:label>
-        <prov-o:definition>Represents the Location where a ComponentInstance is allocated in a runtime-environment. It describes information about the computational worker node of a cluster and the Operative System process. Multiple ComponentInstances can be allocated to the same worker and also to the same process.</prov-o:definition>
+        <prov:definition>The location of a \emph{ComponentInstance} in a runtime environment. It describes information about the computational worker node of a cluster and the operative system process pid. Multiple \emph{ComponentInstances} can be allocated to the same worker and also to the same process.</prov:definition>
     </owl:Class>
     
 
@@ -618,7 +610,7 @@
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecution">
         <rdfs:subClassOf rdf:resource="http://purl.org/provone/ontology#ProcessExec"/>
         <rdfs:label>WFExecution</rdfs:label>
-        <prov-o:definition>The Activity representing the execution of a workflow run. From this activity qualified associations to agents such as users and software components are established. The class present also details about the execution environment.</prov-o:definition>
+        <prov-o:definition>The \emph{prov:Activity} representing the execution of a workflow run. From this activity qualified associations to agents such as users and logical components are established. The class links also to details about the location where the workflow is deployed (\emph{CResource}).</prov-o:definition>
     </owl:Class>
     
 
