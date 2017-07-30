@@ -1,6 +1,6 @@
 # S-ProvFlow
 
-Provenance framework for storage and access of data-intensive streaming lineage. It offers a a web API and a range of dedicated visualisation tools. It offers a web API, a range of dedicated vis-ualisation tools and provenance model (S-PROV) based on a specialised template of the W3C-PROV format. 
+Provenance framework for storage and access of data-intensive streaming lineage. It offers a a web API and a range of dedicated visualisation tools. It offers a web API, a range of dedicated vis-ualisation tools and provenance model (S-PROV) which utilises and extends PROV and ProvONE models. 
 
 ![alt tag](https://raw.githubusercontent.com/aspinuso/s-provenance/master/resources/template.png)
 
