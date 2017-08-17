@@ -14,25 +14,32 @@ RUN apt-get update && apt-get install -y \
 	procps \
 	python \
 	python-pip \
+	vim \
 	mongodb
 
 # python requirements
 RUN pip install --no-cache-dir -r requirements.txt
 
-#RUN sudo service mongod start
-CMD["/etc/init.d/mongodb","start"] # issue?
+EXPOSE 8082
+
+# to run mongo
+# example at /prov/s-provenance-master/provenance-api/resources/mongo-bash
+# CMD["/etc/init.d/mongodb","start"] # issue?
+# RUN /etc/init.d/mongodb start # as demon
+RUN /bin/mongod --dbpath /tmp/ --logpath /tmp/mongo.log --auth &
 
 
-# /prov/s-provenance-master/provenance-api/src/prov-services/
-# ENTRYPOINT[start_sprovapi_flask_gunicorn.sh]
+
+# WORKDIR /prov/s-provenance-master/provenance-api/src/prov-services/
+# ENTRYPOINT["start_flask_gunicorn.sh"]
 # download test data...
 
 
 #
 # docker run -it --rm tomcat:9.0 
-# docker build . -t prov:dockerfile
+# docker build . -t prov
 # docker images
-# docker run prov
+# docker run -it prov
 # docker exec -it 36c1221d56be bash
 # 
 
