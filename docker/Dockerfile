@@ -1,9 +1,6 @@
 # image knmi
 FROM debian
 
-# image tomcat on debian
-#FROM tomcat:9.0
-
 RUN mkdir -p /prov/
 WORKDIR /prov/
 
@@ -18,7 +15,7 @@ RUN apt-get update && apt-get install -y \
 	mongodb
 
 # s-prov download from git
-RUN curl -L -O https://github.com/aspinuso/s-provenance/archive/master.zip 
+RUN curl -L -O https://github.com/andrejsim/s-provenance/archive/master.zip 
 RUN unzip master.zip
 
 # python requirements
@@ -27,29 +24,25 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8082
 
-# to run mongo
-# example at /prov/s-provenance-master/provenance-api/resources/mongo-bash
-# CMD["/etc/init.d/mongodb","start"] # issue?
-# RUN /etc/init.d/mongodb start # as demon
-# RUN /bin/mongod --dbpath /prov/data/ --logpath /tmp/mongo.log --auth &
-
 # provenance repo
 WORKDIR /prov/s-provenance-master/provenance-api/src/prov-services/
 
+
 # docker start file
-RUN echo '/bin/mongod --dbpath /prov/ --logpath /prov/mongo.log --auth &' >> dstart.sh
-RUN echo './start_flask_gunicorn.sh' >> dstart.sh
-RUN chmod a+x dstart.sh
+RUN echo './start_flask_gunicorn_docker.sh' >> docker_entry.sh
+RUN echo 'mongod --logpath /prov/mongo.log --dbpath /prov/ --auth' >> docker_entry.sh
 
-#ENTRYPOINT bash
-#CMD ./dstart.sh
 
-CMD bash
+RUN chmod a+x docker_entry.sh
+
+ENTRYPOINT bash docker_entry.sh
 
 #
-# docker build . -t prov
-# docker images
-# 
+# docker build docker/ --rm -t prov
+# docker rmi $(docker images -f "dangling=true" -q)
+# docker run -it -p 8082:8082 prov &
+# docker run -it -d -p 8082:8082 prov
 # docker exec -it 36c1221d56be bash
 # 
+
 
