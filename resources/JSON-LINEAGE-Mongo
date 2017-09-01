@@ -1,0 +1,52 @@
+{
+    "_id" : "CorrCoef20_stateful_orfeus-as-86915-974dc854-8eef-11e7-b440-f45c89acf865",
+    "derivationIds" : [ 
+        {
+            "iterationIndex" : 3,
+            "DerivedFromDatasetID" : "orfeus-as-86915-974780b5-8eef-11e7-b36d-f45c89acf865",
+            "TriggeredByProcessIterationID" : "Source-orfeus-as-86915-97477bd4-8eef-11e7-977c-f45c89acf865",
+            "prov_cluster" : "record0",
+            "port" : "input_5"
+        }
+    ],
+    "instanceId" : "CorrCoef-Instance--orfeus-as-86915-9745b91e-8eef-11e7-8ca6-f45c89acf865",
+    "pid" : "86915",
+    "iterationId" : "CorrCoef-orfeus-as-86915-974dadba-8eef-11e7-bd8d-f45c89acf865",
+    "prov_cluster" : "record1",
+    "errors" : "",
+    "parameters" : [],
+    "feedbackIteration" : false,
+    "type" : "lineage",
+    "annotations" : {},
+    "username" : "aspinuso",
+    "actedOnBehalfOf" : "CorrCoef20",
+    "worker" : "orfeus-as",
+    "mapping" : "-f",
+    "stateful" : true,
+    "startTime" : "2017-09-01 08:28:54.486744",
+    "name" : "CorrCoef",
+    "iterationIndex" : 3,
+    "streams" : [ 
+        {
+            "annotations" : [],
+            "format" : "",
+            "port" : "_d4p_state",
+            "content" : [ 
+                {
+                    "var_4" : [ 
+                        53.795429138, 
+                        47.6094568534, 
+                        34.6581375575, 
+                        86.2373960698, 
+                        33.9095512701
+                    ]
+                }
+            ],
+            "location" : "",
+            "id" : "orfeus-as-86915-974dc642-8eef-11e7-91f4-f45c89acf865",
+            "size" : 0
+        }
+    ],
+    "runId" : "CORR_LARGE_orfeus-as-86915-94c4bb23-8eef-11e7-804e-f45c89acf865",
+    "endTime" : "2017-09-01 08:28:54.487425"
+}

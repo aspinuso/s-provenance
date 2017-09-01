@@ -1,0 +1,53 @@
+{
+    "_id" : "CORR_LARGE_orfeus-as-86915-94c4bb23-8eef-11e7-804e-f45c89acf865",
+    "username" : "aspinuso",
+    "workflowId" : "xx",
+    "ns" : {},
+    "description" : "provState",
+    "modules" : [ 
+        "appinst==2.1.2", 
+        "appnope==0.1.0", 
+        "apptools==4.2.0", 
+        "argh==0.26.2", 
+        "autopep8==1.2", 
+        "avro==1.8.1", 
+        "b2handle==1.1.1", 
+        "babel==2.4.0", 
+        "backports-abc==0.4", 
+        "backports.ssl-match-hostname==3.5.0.1", 
+        "basemap==1.0.7", 
+        "blinker==1.4", 
+        "cachecontrol==0.11.7"
+    ],
+    "mapping" : "-f",
+    "source" : {
+        "Start8" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.provenance.ProvenancePE'>, <class '__main__.Source'>)",
+            "functionName" : "Source"
+        }
+    },
+    "system_id" : null,
+    "runId" : "CORR_LARGE_orfeus-as-86915-94c4bb23-8eef-11e7-804e-f45c89acf865",
+    "startTime" : "2017-09-01 08:28:50.513188",
+    "input" : [ 
+        {
+            "url" : 4,
+            "name" : "variables_number"
+        }, 
+        {
+            "url" : 100,
+            "name" : "sampling_rate"
+        }, 
+        {
+            "url" : 5,
+            "name" : "batch_size"
+        }, 
+        {
+            "url" : 2,
+            "name" : "iterations"
+        }
+    ],
+    "type" : "workflow_run",
+    "workflowName" : "test_rdwd"
+}
