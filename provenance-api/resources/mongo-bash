@@ -1,19 +1,15 @@
-run as daemon
-
-ON dir-irods.epcc.ed.ac.uk
+- Run as daemon
 
 export LANGUAGE=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
-sudo numactl --interleave=all /usr/bin/mongod --dbpath /disk2/verce_mongo/ --fork --auth --rest  --logpath /disk2/mongologs/mongodb.log
+sudo numactl --interleave=all $MONGO_PATH/bin/mongod --dbpath $MONGO_DB_PATH --fork --auth --rest  --logpath $MONGO_LOG/mongodb.log
 
-OR
+- Or as a normal process
 
-sudo start mongodb
+sudo $MONGO_PATH/bin/mongod --dbpath $MONGO_DB_PATH --auth
 
-file is in /etc/init/mongodb.conf, it reads settings from /etc/default/mongodb
+- Start webservices with gunicorn
 
-start webservices
-
-in /disk2/provenance_api/src/prov-services/src/
-nohup ./start.sh &
+in $HOME/provenance_api/src/prov-services/src/
+nohup ./start_flask_gunicorn.sh
