@@ -6,7 +6,7 @@
         "vcard" : "http://www.w3.org/2006/vcard/ns#",
         "d-prov" : "http://d-prov.org/#"
     },
-    "_id" : "CorrCoef39_stateful_orfeus-as-95144-ba9f3c26-d657-11e6-87b7-f45c89acf865_LD",
+    "_id" : "CorrCoef39_stateful_orfeus-as-95144-ba9f3c26-d657-11e6-87b7-f45c89acf865_LD_1",
     "@id" : "CorrCoef39_stateful_orfeus-as-95144-ba9f3c26-d657-11e6-87b7-f45c89acf865",
     "s-prov:doctype" : "lineage",
     "prov:Derivation" : [ 
@@ -14,14 +14,17 @@
             "s-prov:Data" : {
                 "@id" : "orfeus-as-95144-ba926c57-d657-11e6-84fd-f45c89acf865"
             },
-            "provone:InputPort" : "input2",
+            "provone:InputPort" : "input1",
+            "s-prov:hadInformer" : "Source1-orfeus-as-955335-ba9f2d45-d657-11e6-8a03-f45c89acf865",
             "@type" : "s-prov:FlowDerivation"
         }, 
         {
             "s-prov:Data" : {
                 "@id" : "orfeus-as-95144-ba9f33f3-d657-11e6-bb16-f45c89acf865"
             },
-            "@type" : "s-prov:StateDerivation"
+            "s-prov:hadInformer" : "CorrCoef-orfeus-as-955335-ba9f2d45-d657-11e6-8a03-f45c89acf865",
+            "@type" : "s-prov:StateDerivation",
+            "s-prov:lookupterm" : "var_5_0"
         }
     ],
     "s-prov:StreamOut" : [ 
@@ -50,11 +53,7 @@
                     "@id" : "orfeus-as-95144-ba926c57-d657-11e6-84fd-f45c89acf865"
                 }
             ],
-            "s-prov:size" : 0,
-            "s-prov:stateLookupTerm" : "batch2",
-            "s-prov:dataToStateCollection" : {
-                "@id" : "CorrCoef-state-orfeus-as-95144-ba923bc0-d657-11e6-a750-f45c89acf865"
-            }
+            "s-prov:size" : 0
         }
     ],
     "s-prov:Invocation" : {
@@ -84,6 +83,8 @@
         }
     },
     "prov:Person" : "aspinuso",
-    "s-prov:stateful" : true,
-    "prov:generatedAtTime" : "2017-01-09 10:38:16.287421"
+    "prov:generatedAtTime" : "2017-01-09 10:38:16.287421",
+    "s-prov:WorflowExecution" : {
+        "@id" : "JUP_SIMPLE_orfeus-as-95144-ba902268-d657-11e6-ab01-f45c89acf865"
+    }
 }
