@@ -1607,8 +1607,7 @@ class ProvenanceStore(object):
                                                      "s-prov:count":{"$push":"$streams.id"},
                                                      "pid" : {"$first":"$pid"},
                                                      "mapping" : {"$first":"$mapping"},
-                                                     
-                                                     "s-prov:feedbackInvocation": {"$push":"$feedbackInvocation"},
+                                                     "feedbackInvocation": {"$push":"$feedbackInvocation"},
                                                      "actedOnBehalfOf":{"$first":"$actedOnBehalfOf"},
                                                      "prov_cluster":{"$first":"$prov_cluster"}}}
                                                      #{ "$project": { "@id":"$_id", "_id":0, "s-prov:worker":1, "s-prov:lastEventTime":1, "s-prov:message":1,"s-prov:generatedWithImmediateAccess":1,"s-prov:generatedWithLocation":1,"s-prov:count":1}}
@@ -1650,8 +1649,9 @@ class ProvenanceStore(object):
             x['s-prov:generatedWithLocation']=True if x['s-prov:generatedWithLocation']!="" else False
             x['s-prov:generatedWithImmediateAccess']= True if ("true" in x['s-prov:generatedWithImmediateAccess'] or True in x['s-prov:generatedWithImmediateAccess']) else False
             x['s-prov:count'] = len(x['s-prov:count'])
-            x['s-prov:feedbackInvocation']=True if ("true" in  x['s-prov:feedbackInvocation'] or True in x['s-prov:feedbackInvocation']) else False
+            x['s-prov:wasChangedWith']=True if ("true" in  x['feedbackInvocation'] or True in x['feedbackInvocation']) else False
            
+            del x['feedbackInvocation']
             del x['_id']
             del x["pid"]
             del x["mapping"]
