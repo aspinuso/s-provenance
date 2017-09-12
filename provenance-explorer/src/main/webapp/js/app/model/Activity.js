@@ -4,26 +4,26 @@ Ext.define('CF.model.Activity', {
   fields: [{
     name: 'ID',
     type: 'string',
-    mapping: '_id'
+    mapping: '@id'
   }, {
-    name: 'instanceId',
+    name: 'lastEventTime',
     type: 'string',
-    mapping: 'instanceId'
-  }, {
-    name: 'parameters',
+    mapping: 's-prov:lastEventTime'
+  }
+  ,{
+    name: 'count',
+    type: 'int',
+    mapping: 's-prov:count'
+  },
+   {
+    name: 'message',
     type: 'string',
-    mapping: 'parameters'
-  }, {
-    name: 'creationDate',
+    mapping: 's-prov:message'
+  }
+  ,
+   {
+    name: 'worker',
     type: 'string',
-    mapping: 'endTime'
-  }, {
-    name: 'errors',
-    type: 'string',
-    mapping: 'errors'
-  }, {
-    name: 'iterationIndex',
-    type: 'string',
-    mapping: 'iterationIndex'
+    mapping: 's-prov:worker'
   }]
 });

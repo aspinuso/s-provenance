@@ -366,9 +366,11 @@ Ext.define('CF.view.WorkflowSelection', {
 
         activityStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(record.get("runId"))+'?method=aggregate',
+          //url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(record.get("runId"))+'?method=aggregate',
+          url: PROV_SERVICE_BASEURL + '/workflowexecution/'+encodeURIComponent(record.get("runId"))+'/instances',
+          
           reader: {
-            rootProperty: 'activities',
+            rootProperty: '@graph',
             totalProperty: 'totalCount'
           },
           simpleSortMode: true
