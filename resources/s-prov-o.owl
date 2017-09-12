@@ -143,6 +143,24 @@
     
 
 
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#feedbackInvocation -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#feedbackInvocation">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment>Indicates that the instance received a runtime steering instruction to change its internal behaviour. It contains a list of invocations where the instruction was received or, when describing an invocation, assumes a boolean value.</rdfs:comment>
+        <rdfs:label>feedbackInvocation</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#functionName -->
 
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#functionName">
