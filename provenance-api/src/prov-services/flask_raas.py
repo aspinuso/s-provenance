@@ -267,7 +267,6 @@ def exportDataProvenance(id):
 def getInvovocationsMonitoring(runid):
     limit = request.args['limit'] 
     start = request.args['start']
-     
     if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET invocations - "+runid+" PID:"+str(os.getpid()));
     response = Response()
     response = Response(json.dumps(app.db.getMonitoring(runid,'invocation',int(start),int(limit))))
@@ -285,23 +284,19 @@ def getInstancesMonitoring(runid):
     response.headers['Content-type'] = 'application/json'    
     return response
 
-@app.route("/workflowexecution/<runid>/invocations/<invocid>")
-def getEntitiesByInvocation(runid,invocid):
-        limit = int(request.args['limit']) 
-        start = int(request.args['start'])
-        if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET entities by invocation - "+invocid+" PID:"+str(os.getpid()));
+#@app.route("/workflowexecution/<runid>/invocations/<invocid>")
+def getInvocationDetails(runid,invocid):
+        if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET invocation details - "+invocid+" PID:"+str(os.getpid()));
         response = Response()
-        response = Response(json.dumps(app.db.getEntitiesGeneratedBy(runid,invocid,start,limit)))
+        response = Response(json.dumps(app.db.getInvocation(runid,invocid)))
         response.headers['Content-type'] = 'application/json'       
         return response
 
 @app.route("/workflowexecution/<runid>/instances/<instid>")
-def getEntitiesByInstance(runid,instid):
-        limit = int(request.args['limit']) 
-        start = int(request.args['start'])
-        if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET entities by invocation - "+invocid+" PID:"+str(os.getpid()));
+def getInstanceDetails(runid,instid):
+        if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET instance details - "+instid+" PID:"+str(os.getpid()));
         response = Response()
-        response = Response(json.dumps(app.db.getEntitiesAttributedTo(runid,instid,start,limit)))
+        response = Response(json.dumps(app.db.getComponentInstance(instid)))
         response.headers['Content-type'] = 'application/json'       
         return response
     

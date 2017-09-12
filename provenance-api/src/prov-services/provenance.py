@@ -885,73 +885,6 @@ class ProvenanceStore(object):
          
     
 
-
-    def getMonitoring(self, id,level,start,limit):
-        db = self.conection["verce-prov"]
-        lineage = db['lineage']
-        group=''
-        if level=="invocation":
-               group='iterationId'
-        elif level=="instance":
-               group='instanceId'
-
-        obj = lineage.aggregate(pipeline=[{'$match':{'runId':id}},
-                                                    
-                                                    {"$unwind":"$streams"},
-                                                    {'$group':{'_id':'$'+group, 
-                                                     "s-prov:lastEventTime":{"$max":"$endTime"}, 
-                                                     "s-prov:message":{"$push":"$errors"},
-                                                     "s-prov:worker":{"$max":"$worker"}, 
-                                                     "s-prov:generatedWithImmediateAccess":{"$push":"$streams.con:immediateAccess"},
-                                                     "s-prov:generatedWithLocation":{"$push":"$streams.location"},
-                                                     "s-prov:count":{"$push":"$streams.id"}}},
-                                                     {"$sort":{"s-prov:lastEventTime":-1}},
-                                                     {'$skip':start},
-                                                     {'$limit':limit},
-                                                     { "$project": { "@id":"$_id", "_id":0, "s-prov:worker":1, "s-prov:lastEventTime":1, "s-prov:message":1,"s-prov:generatedWithImmediateAccess":1,"s-prov:generatedWithLocation":1,"s-prov:count":1}}
-                                                    ]) 
-        count = lineage.aggregate(pipeline=[{'$match':{'runId':id}},
-                                                    {'$group':{'_id':'$'+group}},
-                                                    {"$count":group}])
-        for x in count:
-            totalCount=x[group]
-#{'$project':{"runId":1,"instanceId":1,"parameters":1,"endTime":-1,"errors":1,"iterationIndex":1,"iterationId":1,"streams.con:immediateAccess":1,"streams.location":1}
-       # lineage.find({'runId':id},{"runId":1,"instanceId":1,"parameters":1,"endTime":-1,"errors":1,"iterationIndex":1,"iterationId":1,"streams.con:immediateAccess":1,"streams.location":1})[start:start+limit].sort("endTime",direction=-1)
-         
-        activities = list()
-        
-        for x in obj:
-           if level=="invocation":
-               x['@type']='s-prov:Invocation'
-           elif level=="instance":
-               x['@type']='s-prov:Instance'
-
-           activities.append(x)
-           x['s-prov:message']=''.join(x['s-prov:message'])
-           
-           if type(x['s-prov:generatedWithLocation'])==list:
-                flat_list=[]
-                for sublist in x['s-prov:generatedWithLocation']:
-                    for item in sublist:
-                        flat_list.append(item)
-                x['s-prov:generatedWithLocation']=flat_list
-
-           x['s-prov:generatedWithLocation']=''.join(x['s-prov:generatedWithLocation'])
-           x['s-prov:generatedWithLocation']=True if x['s-prov:generatedWithLocation']!="" else False
-           x['s-prov:generatedWithImmediateAccess']= True if ("true" in x['s-prov:generatedWithImmediateAccess'] or True in x['s-prov:generatedWithImmediateAccess']) else False
-           x['s-prov:count'] = len(x['s-prov:count'])
-           
-           
-            
-        output = {"@graph":activities};
-        output["@context"]={"s-prov" : "https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#",
-                            "prov" : "http://www.w3.org/ns/prov-o#",
-                            "oa" : "http://www.w3.org/ns/oa.rdf#",
-                            "vcard" : "http://www.w3.org/2006/vcard/ns#",
-                            "provone" : "http://purl.org/provone"}
-        
-        output["totalCount"]= totalCount
-        return  output
     
     def editRun(self, id,doc):
         
@@ -1578,5 +1511,162 @@ class ProvenanceStore(object):
         output.update({"totalCount": totalCount})
        
         return  output
+
+
+    # new methods for new API returning JSON-LD
+
+
+    def addLDContext(self,obj):
+        obj["@context"]={"s-prov" : "https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#",
+                            "prov" : "http://www.w3.org/ns/prov-o#",
+                            "oa" : "http://www.w3.org/ns/oa.rdf#",
+                            "vcard" : "http://www.w3.org/2006/vcard/ns#",
+                            "provone" : "http://purl.org/provone"}
+        return obj
+
+    def getMonitoring(self, id,level,start,limit):
+        db = self.conection["verce-prov"]
+        lineage = db['lineage']
+        group=''
+        if level=="invocation":
+               group='iterationId'
+        elif level=="instance":
+               group='instanceId'
+
+        obj = lineage.aggregate(pipeline=[{'$match':{'runId':id}},
+                                                    
+                                                    {"$unwind":"$streams"},
+                                                    {'$group':{'_id':'$'+group, 
+                                                     "s-prov:lastEventTime":{"$max":"$endTime"}, 
+                                                     "s-prov:message":{"$push":"$errors"},
+                                                     "s-prov:worker":{"$first":"$worker"}, 
+                                                     "s-prov:generatedWithImmediateAccess":{"$push":"$streams.con:immediateAccess"},
+                                                     "s-prov:generatedWithLocation":{"$push":"$streams.location"},
+                                                     "s-prov:feedbackInvocation": {"$push":"$feedbackInvocation"},
+                                                     "s-prov:count":{"$push":"$streams.id"}}},
+                                                     {"$sort":{"s-prov:lastEventTime":-1}},
+                                                     {'$skip':start},
+                                                     {'$limit':limit},
+                                                     ])
+
+        count = lineage.aggregate(pipeline=[{'$match':{'runId':id}},
+                                                    {'$group':{'_id':'$'+group}},
+                                                    {"$count":group}])
+        for x in count:
+            totalCount=x[group]
+#{'$project':{"runId":1,"instanceId":1,"parameters":1,"endTime":-1,"errors":1,"iterationIndex":1,"iterationId":1,"streams.con:immediateAccess":1,"streams.location":1}
+       # lineage.find({'runId':id},{"runId":1,"instanceId":1,"parameters":1,"endTime":-1,"errors":1,"iterationIndex":1,"iterationId":1,"streams.con:immediateAccess":1,"streams.location":1})[start:start+limit].sort("endTime",direction=-1)
+         
+        activities = list()
+        
+        for x in obj:
+           x['@id']=x['_id']
+           del x['_id']
+           if level=="invocation":
+               x['@type']='s-prov:Invocation'
+           elif level=="instance":
+               x['@type']='s-prov:ComponentInstance'
+
+           activities.append(x)
+
+           x['s-prov:message']=''.join(x['s-prov:message'])
+           
+           if type(x['s-prov:generatedWithLocation'])==list:
+                flat_list=[]
+                for sublist in x['s-prov:generatedWithLocation']:
+                    for item in sublist:
+                        flat_list.append(item)
+                x['s-prov:generatedWithLocation']=flat_list
+
+           x['s-prov:generatedWithLocation']=''.join(x['s-prov:generatedWithLocation'])
+           x['s-prov:generatedWithLocation']=True if x['s-prov:generatedWithLocation']!="" else False
+           x['s-prov:generatedWithImmediateAccess']= True if ("true" in x['s-prov:generatedWithImmediateAccess'] or True in x['s-prov:generatedWithImmediateAccess']) else False
+           x['s-prov:feedbackInvocation']=True if ("true" in  x['s-prov:feedbackInvocation'] or True in x['s-prov:feedbackInvocation']) else False
+           x['s-prov:count'] = len(x['s-prov:count'])
+           
+           
+            
+        output = {"@graph":activities};
+  
+        output=self.addLDContext(output)
+        output["totalCount"]= totalCount
+        return  output
+
+
+    def getComponentInstance(self, id):
+        db = self.conection["verce-prov"]
+        lineage = db['lineage']
+        obj = lineage.aggregate(pipeline=[{'$match':{'instanceId':id}},
+                                                    {"$unwind":"$streams"},
+                                                    {'$group':{'_id':'$instanceId', 
+                                                     "s-prov:lastEventTime":{"$max":"$endTime"}, 
+                                                     "s-prov:message":{"$push":"$errors"},
+                                                     "worker":{"$first":"$worker"}, 
+                                                     "s-prov:generatedWithImmediateAccess":{"$push":"$streams.con:immediateAccess"},
+                                                     "s-prov:generatedWithLocation":{"$push":"$streams.location"},
+                                                     "s-prov:count":{"$push":"$streams.id"},
+                                                     "pid" : {"$first":"$pid"},
+                                                     "mapping" : {"$first":"$mapping"},
+                                                     
+                                                     "s-prov:feedbackInvocation": {"$push":"$feedbackInvocation"},
+                                                     "actedOnBehalfOf":{"$first":"$actedOnBehalfOf"},
+                                                     "prov_cluster":{"$first":"$prov_cluster"}}}
+                                                     #{ "$project": { "@id":"$_id", "_id":0, "s-prov:worker":1, "s-prov:lastEventTime":1, "s-prov:message":1,"s-prov:generatedWithImmediateAccess":1,"s-prov:generatedWithLocation":1,"s-prov:count":1}}
+                                                    ]) 
+        
+        output={}
+        count = lineage.aggregate(pipeline=[{'$match':{'instanceId':id}},
+                                                    {'$group':{'_id':'$instanceId'}},
+                                                    {"$count":'instanceNum'}])
+
+        for x in count:
+            totalCount=x['instanceNum']
+
+
+        for x in obj:
+            
+            x['@id']=x['_id']
+            x['@type']='s-prov:ComponentInstance'
+            x['prov:type']='s-prov:ComponentInstance'
+            x['prov:atLocation']= {"@type" : "s-prov:SystemProcess",
+                "s-prov:pid" : x["pid"],
+                "s-prov:mapping" : x["mapping"],
+                "s-prov:worker" : x["worker"]}
+
+            x['prov:actedOnBehalfOf'] = {
+                "@id" : x['actedOnBehalfOf'],
+                "@type":"s-prov:Component"
+            }
+            x['s-prov:message']=''.join(x['s-prov:message'])
+           
+            if type(x['s-prov:generatedWithLocation'])==list:
+                flat_list=[]
+                for sublist in x['s-prov:generatedWithLocation']:
+                    for item in sublist:
+                        flat_list.append(item)
+                x['s-prov:generatedWithLocation']=flat_list
+
+            x['s-prov:generatedWithLocation']=''.join(x['s-prov:generatedWithLocation'])
+            x['s-prov:generatedWithLocation']=True if x['s-prov:generatedWithLocation']!="" else False
+            x['s-prov:generatedWithImmediateAccess']= True if ("true" in x['s-prov:generatedWithImmediateAccess'] or True in x['s-prov:generatedWithImmediateAccess']) else False
+            x['s-prov:count'] = len(x['s-prov:count'])
+            x['s-prov:feedbackInvocation']=True if ("true" in  x['s-prov:feedbackInvocation'] or True in x['s-prov:feedbackInvocation']) else False
+           
+            del x['_id']
+            del x["pid"]
+            del x["mapping"]
+            del x["worker"]
+            del x['prov_cluster']
+            del x['actedOnBehalfOf']
+            output=x
+
+        output=self.addLDContext(output)
+        output["totalCount"]= totalCount
+        return output
+
+
+
+
+
         
     
