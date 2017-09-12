@@ -1,30 +1,28 @@
 {
     "@context" : {
-        "s-prov" : "https://raw.githubusercontent.com/KNMI/s-provenance/resources/s-prov-voc.rdf#",
-        "prov" : "http://www.w3.org/ns/prov#",
+        "s-prov" : "https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#",
+        "prov" : "http://www.w3.org/ns/prov-o#",
         "oa" : "http://www.w3.org/ns/oa.rdf#",
         "vcard" : "http://www.w3.org/2006/vcard/ns#",
-        "d-prov" : "http://d-prov.org/#"
+        "provone" : "http://purl.org/provone"
     },
-    "_id" : "CorrCoef39_stateful_orfeus-as-95144-ba9f3c26-d657-11e6-87b7-f45c89acf865_LD_1",
-    "@id" : "CorrCoef39_stateful_orfeus-as-95144-ba9f3c26-d657-11e6-87b7-f45c89acf865",
+    "_id" : "CorrCoef39_write_orfeus-as-95144-ba9f3c26-d657-11e6-87b7-f45c89acf865_LD",
+    "@id" : "CorrCoef39_write_orfeus-as-95144-ba9f3c26-d657-11e6-87b7-f45c89acf865",
     "s-prov:doctype" : "lineage",
     "prov:Derivation" : [ 
         {
+            "@id":"_:n1",
             "s-prov:Data" : {
                 "@id" : "orfeus-as-95144-ba926c57-d657-11e6-84fd-f45c89acf865"
             },
-            "provone:InputPort" : "input1",
-            "s-prov:hadInformer" : "Source1-orfeus-as-955335-ba9f2d45-d657-11e6-8a03-f45c89acf865",
+            "provone:InputPort" : "input2",
             "@type" : "s-prov:FlowDerivation"
         }, 
-        {
+        {   "@id":"_:n2",
             "s-prov:Data" : {
                 "@id" : "orfeus-as-95144-ba9f33f3-d657-11e6-bb16-f45c89acf865"
             },
-            "s-prov:hadInformer" : "CorrCoef-orfeus-as-955335-ba9f2d45-d657-11e6-8a03-f45c89acf865",
-            "@type" : "s-prov:StateDerivation",
-            "s-prov:lookupterm" : "var_5_0"
+            "@type" : "s-prov:StateDerivation"
         }
     ],
     "s-prov:StreamOut" : [ 
@@ -45,12 +43,12 @@
             ],
             "prov:location" : "",
             "@id" : "orfeus-as-95144-ba9f33f3-d657-11e6-bb16-f45c89acf865",
-            "prov:wasDerivedFrom" : [ 
+            "prov:qualifiedDerivation" : [ 
                 {
-                    "@id" : "orfeus-as-95144-ba9f33f3-d657-11e6-bb16-f45c89acf865"
+                    "@id" : "_:n1"
                 }, 
                 {
-                    "@id" : "orfeus-as-95144-ba926c57-d657-11e6-84fd-f45c89acf865"
+                    "@id" : "_:n2"
                 }
             ],
             "s-prov:size" : 0
@@ -62,7 +60,15 @@
         "s-prov:iterationIndex" : 1,
         "s-prov:feedbackInvocation" : false,
         "s-prov:message" : "",
+        "provone:OutputPort" : "corr",
         "prov:wasAssociatedWith" : {
+            "@id" : "CorrCoef-Instance--orfeus-as-95144-ba923bc0-d657-11e6-a750-f45c89acf865",
+        }
+    },
+    "prov:Person" : "aspinuso",
+    "s-prov:stateful" : true,
+    "prov:generatedAtTime" : "2017-01-09 10:38:16.287421"
+    "s-prov:ComponentInstance"{
             "@id" : "CorrCoef-Instance--orfeus-as-95144-ba923bc0-d657-11e6-a750-f45c89acf865",
             "@type" : "s-prov:ComponentInstance",
             "prov:type" : "s-prov:ComponentInstance",
@@ -81,10 +87,4 @@
                 "s-prov:provCluster" : "record1"
             }
         }
-    },
-    "prov:Person" : "aspinuso",
-    "prov:generatedAtTime" : "2017-01-09 10:38:16.287421",
-    "s-prov:WorflowExecution" : {
-        "@id" : "JUP_SIMPLE_orfeus-as-95144-ba902268-d657-11e6-ab01-f45c89acf865"
-    }
 }
