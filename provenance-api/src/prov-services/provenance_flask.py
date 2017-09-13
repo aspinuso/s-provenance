@@ -857,8 +857,15 @@ class ProvenanceStore(object):
     def getActivities(self, id,start,limit):
         db = self.conection["verce-prov"]
         lineage = db['lineage']
-        obj = lineage.find({'runId':id},{"runId":1,"instanceId":1,"parameters":1,"endTime":-1,"errors":1,"iterationIndex":1,"iterationId":1,"streams.con:immediateAccess":1,"streams.location":1})[start:start+limit].sort("endTime",direction=-1)
-        totalCount=lineage.find({'runId':id},{"instanceId":1}).count()
+
+
+        obj = lineage.aggregate(pipeline=[{'$match':{'runId':id}},
+                                                    {'$group':{'_id':'$iterationId'}},
+                                                    {'$sort':{'startTime':-1}},
+                                                    {'$project':{"id":-1,"runId":1,"instanceId":1,"parameters":1,"endTime":-1,"errors":1,"iterationIndex":1,"iterationId":1,"streams.con:immediateAccess":1,"streams.location":1}}]) 
+
+       # lineage.find({'runId':id},{"runId":1,"instanceId":1,"parameters":1,"endTime":-1,"errors":1,"iterationIndex":1,"iterationId":1,"streams.con:immediateAccess":1,"streams.location":1})[start:start+limit].sort("endTime",direction=-1)
+        totalCount=obj.count()
         activities = list()
         
         for x in obj:
