@@ -143,6 +143,24 @@
     
 
 
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#feedbackInvocation -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#feedbackInvocation">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment>Indicates that the instance received a runtime steering instruction to change its internal behaviour. It contains a list of invocations where the instruction was received or, when describing an invocation, assumes a boolean value.</rdfs:comment>
+        <rdfs:label>feedbackInvocation</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#functionName -->
 
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#functionName">
@@ -155,6 +173,41 @@
         </rdfs:range>
         <rdfs:label xml:lang="en">functionName</rdfs:label>
         <prov:definition xml:lang="en">Name of the function of a component&apos;s \emph{Implementation}</prov:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#generatedWithImmediateAccess -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#generatedWithImmediateAccess">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment>Specifies if  Invocation or an Instance  respectively participated in the generation of Data with immediate access</rdfs:comment>
+        <rdfs:label>generatedWithImmediateAccess</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#generatedWithLocation -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#generatedWithLocation">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment>Specifies if an Invocation or an Instance participated in the generation of  Data eventually materialised and accessible at a target location</rdfs:comment>
+        <rdfs:label>generatedWithLocation</rdfs:label>
     </owl:ObjectProperty>
     
 
@@ -183,6 +236,23 @@
         </rdfs:range>
         <rdfs:label xml:lang="en">invocationIndex</rdfs:label>
         <prov:definition xml:lang="en">Sequence number of the current \emph{Invocation}.</prov:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#lastEventTime -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#lastEventTime">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:label>lastEventTime</rdfs:label>
+        <prov:definition>Given an activity this property indicates the highest time of the occurrence of an event within an activity. For instance such as the last writing of data to an output port or the creation of stateful data.</prov:definition>
     </owl:ObjectProperty>
     
 

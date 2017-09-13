@@ -74,9 +74,12 @@ function openRun(id)
 		 	this.currentRun=id
         activityStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(currentRun)+'?method=aggregate',
+          //url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(currentRun)+'?method=aggregate',
+          url: PROV_SERVICE_BASEURL + '/workflowexecution/'+encodeURIComponent(currentRun)+'/instances',
+          
+
           reader: {
-            rootProperty: 'activities',
+            rootProperty: '@graph',
             totalProperty: 'totalCount'
           },
           simpleSortMode: true
@@ -444,9 +447,11 @@ Ext.define('CF.view.WorkflowOpenByRunID', {
 		
         activityStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(form.findField("runId").getValue(false).trim())+'?method=aggregate',
+          // OLD API => url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(form.findField("runId").getValue(false).trim())+'?method=aggregate',
+          url: PROV_SERVICE_BASEURL + '/workflowexecution/'+encodeURIComponent(form.findField("runId").getValue(false).trim())+'/invocations',
+          
           reader: {
-            rootProperty: 'activities',
+            rootProperty: 'graph',
             totalProperty: 'totalCount'
           },
           simpleSortMode: true
@@ -602,40 +607,46 @@ Ext.define('CF.view.WorkFlowSelectionWindow', {
 var onStoreLoad = function(store) {
   Ext.getCmp('viewworkflowinput').enable()
   Ext.getCmp('exportrun').enable();;
-  Ext.getCmp("activitymonitor").setTitle(userSN+' - Run activity monitor - ' + currentRun)
+  Ext.getCmp("activitymonitor").setTitle(userSN+' - Runtime Instances monitor - ' + currentRun)
 }
 
-var renderActivityID = function(value, p, record) {
-if (record.data.streams)
-   for (i=0;i<=record.data.streams.length;i++)
-   {
-   		
-	if(record.data.streams[i]['con:immediateAccess'] && record.data.streams[i]['con:immediateAccess']!="")
-	   	return Ext.String.format(
+var renderInstanceID = function(value, p, record) {
+ 
+if (record.data['s-prov:generatedWithImmediteAccess'])
+    return Ext.String.format(
     		"<strong><i>{0}</i></strong>",
-    		record.data.ID
+    		record.data["@id"]
   	   	);
-  	if(record.data.streams[i].location && record.data.streams[i].location!='')
-    	return Ext.String.format(
+if (record.data["s-prov:generatedWithLocation"])
+    return Ext.String.format(
     		"<i>{0}</i>",
-    		record.data.ID
-  	   	);
-  	return Ext.String.format(
+    		record.data["@id"]
+  	   	)
+
+return Ext.String.format(
     	"{0}",
-    	record.data.ID
-  	   );
-  	
-  	}
-else  	
-  	return Ext.String.format(
-    	"{0}",
-    	record.data.ID
+    	record.data["@id"]
   	   );
 }
+
+var renderChanged = function(value, p, record) {
+ 
+if (record.data['s-prov:qualifiedChange'] && record.data['s-prov:qualifiedChange'].length>0)
+    return Ext.String.format(
+        "<strong style='color:red'>{0}</strong>",
+        record.data['s-prov:qualifiedChange'].length
+        );
+return Ext.String.format(
+      "{0}",
+      ""
+       );
+}
+
+
   	
 
 Ext.define('CF.view.ActivityMonitor', {
-  title: 'Run Activity monitor',
+  title: 'Runtime Instances monitor',
   width: '30%',
   region: 'west',
   extend: 'Ext.grid.Panel',
@@ -777,23 +788,45 @@ Ext.define('CF.view.ActivityMonitor', {
       header: 'ID',
       dataIndex: 'ID',
       flex: 3,
-      sortable: true,
-      renderer: renderActivityID
+      sortable: false,
+      renderer: renderInstanceID
     },
 
     {
-      header: 'Date',
-      dataIndex: 'creationDate',
+      header: 'Last Event',
+      dataIndex: 'lastEventTime',
       flex: 3,
       sortable: true,
       groupable: false
     }, // custom mapping
     {
-      header: 'Messages',
-      dataIndex: 'errors',
+      header: 'Data count',
+      dataIndex: 'count',
+      flex: 3,
+      sortable: true,
+      groupable: false
+    },
+    {
+      header: 'worker',
+      dataIndex: 'worker',
+      flex: 3,
+      sortable: true,
+      groupable: false
+    },
+    {
+      header: 'Message',
+      dataIndex: 'message',
       flex: 3,
       sortable: false
+    },
+    {
+      header: 'Changed',
+      dataIndex: 'change',
+      flex: 3,
+      sortable: false,
+      renderer: renderChanged
     }
+
   ],
   flex: 1,
 
@@ -802,10 +835,10 @@ Ext.define('CF.view.ActivityMonitor', {
       itemdblclick: function(dataview, record, item, index, e) {
         artifactStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + 'entities/generatedby?iterationId=' + record.get("ID"),
+          url: PROV_SERVICE_BASEURL + 'data?attributedTo=' + record.get("ID"),
 
           reader: {
-            rootProperty: 'entities',
+            rootProperty: '@graph',
             totalProperty: 'totalCount'
           }
         });

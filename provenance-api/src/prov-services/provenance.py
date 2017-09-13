@@ -396,16 +396,19 @@ class ProvenanceStore(object):
         searchDic={'streams.content':{'$elemMatch':elementsDict}}
         return searchDic
     
-    def getEntitiesFilter(self,activ_searchDic,keylist,mxvaluelist,mnvaluelist,start,limit):
+    def getEntitiesFilter(self,searchDic,keylist,mxvaluelist,mnvaluelist,start,limit):
             elementsDict ={}
-            searchDic={}
+            searchContextDic={}
             db = self.conection["verce-prov"]
             lineage = db['lineage']
             #if iterationId!=None:
             
             if keylist==None:
-                print "Filter Query: "+str(activ_searchDic)
-                return lineage.find(activ_searchDic,{"runId":1,"streams":1,"parameters":1,'startTime':1,'endTime':1,'errors':1,'derivationIds':1,'iterationId':1})[start:start+limit].sort("endTime",direction=-1)
+                print "Filter Query: "+str(searchDic)
+                obj = lineage.find(searchDic,{"runId":1,"streams":1,"parameters":1,'startTime':1,'endTime':1,'errors':1,'derivationIds':1,'iterationId':1}).sort("endTime",direction=-1)[start:start+limit]
+                totalCount = lineage.count(searchDic)
+                #lineage.count(searchDic)
+                return (obj,totalCount)
             else:
                 
                 for x in keylist:
@@ -420,15 +423,15 @@ class ProvenanceStore(object):
 
                 
                     elementsDict.update({x:{"$lte":maxval,"$gte":minval }})
-                    searchDic={'streams.content':{'$elemMatch':elementsDict}}
+                    searchContextDic={'streams.content':{'$elemMatch':elementsDict}}
                     
-                    activ_searchDic.update(searchDic)
+                    searchDic.update(searchContextDic)
                     
                     
                  
-                print "Filter Query: "+str(activ_searchDic)
+                print "Filter Query: "+str(searchContextDic)
                 #obj =  lineage.find(activ_searchDic,{"runId":1,"streams.content.$":1,'endTime':1,'errors':1,"parameters":1})[start:start+limit].sort("endTime",direction=-1)
-                obj= lineage.aggregate(pipeline=[{'$match':activ_searchDic},
+                obj= lineage.aggregate(pipeline=[{'$match':searchContextDic},
                                                     {"$unwind": "$streams" },
                                                     #{ "$unwind": "$streams.content" },
                                                     
@@ -883,19 +886,8 @@ class ProvenanceStore(object):
        
         return  output
          
-    def getActivities(self, id,start,limit):
-        db = self.conection["verce-prov"]
-        lineage = db['lineage']
-        obj = lineage.find({'runId':id},{"runId":1,"instanceId":1,"parameters":1,"endTime":-1,"errors":1,"iterationIndex":1,"iterationId":1,"streams.con:immediateAccess":1,"streams.location":1})[start:start+limit].sort("endTime",direction=-1)
-        totalCount=lineage.find({'runId':id},{"instanceId":1}).count()
-        activities = list()
-        
-        for x in obj:
-            activities.append(x)
-            
-        output = {"activities":activities};
-        output.update({"totalCount": totalCount})
-        return  output
+    
+
     
     def editRun(self, id,doc):
         
@@ -1492,5 +1484,266 @@ class ProvenanceStore(object):
         output.update({"totalCount": totalCount})
        
         return  output
+
+
+    def getEntitiesAttributedToInstnace(self,runid,instanceId,start,limit):
+        cursorsList=[]
+        activ_searchDic={'instanceId':instanceId,'runId':runid}
+        cursorsList.append(self.getEntitiesFilter(activ_searchDic,None,None,None,start,limit))
+        entities=[]
+        
+        totalCount=0
+        for cursor in cursorsList:
+            for x in cursor:
+                 
+                for s in x["streams"]:
+                     
+                    totalCount=totalCount+1
+                    s["wasGeneratedBy"]=x["iterationId"]
+                    s["parameters"]=x["parameters"]
+                    s["endTime"]=x["endTime"]
+                    s["startTime"]=x["startTime"]
+                    s["runId"]=x["runId"]
+                    s["errors"]=x["errors"]
+                    s["derivationIds"]=x['derivationIds']
+                    entities.append(s)
+                    
+        
+                
+        output = {"entities":entities};
+        output.update({"totalCount": totalCount})
+       
+        return  output
+
+
+    # new methods for new API returning JSON-LD
+
+
+    def addLDContext(self,obj):
+        obj["@context"]={"s-prov" : "https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#",
+                            "prov" : "http://www.w3.org/ns/prov-o#",
+                            "oa" : "http://www.w3.org/ns/oa.rdf#",
+                            "vcard" : "http://www.w3.org/2006/vcard/ns#",
+                            "provone" : "http://purl.org/provone"}
+        return obj
+
+    def getMonitoring(self, id,level,start,limit):
+        db = self.conection["verce-prov"]
+        lineage = db['lineage']
+        group=''
+        if level=="invocation":
+               group='iterationId'
+        elif level=="instance":
+               group='instanceId'
+
+        obj = lineage.aggregate(pipeline=[{'$match':{'runId':id}},
+                                                    
+                                                    {"$unwind":"$streams"},
+                                                    {'$group':{'_id':'$'+group, 
+                                                     "s-prov:lastEventTime":{"$max":"$endTime"}, 
+                                                     "s-prov:message":{"$push":"$errors"},
+                                                     "s-prov:worker":{"$first":"$worker"}, 
+                                                     "s-prov:generatedWithImmediateAccess":{"$push":"$streams.con:immediateAccess"},
+                                                     "s-prov:generatedWithLocation":{"$push":"$streams.location"},
+                                                     "s-prov:qualifiedChange": {"$push":"$feedbackInvocation"},
+                                                     "s-prov:count":{"$push":"$streams.id"}}},
+                                                     {"$sort":{"s-prov:lastEventTime":-1}},
+                                                     {'$skip':start},
+                                                     {'$limit':limit},
+                                                     ])
+
+        count = lineage.aggregate(pipeline=[{'$match':{'runId':id}},
+                                                    {'$group':{'_id':'$'+group}},
+                                                    {"$count":group}])
+        for x in count:
+            totalCount=x[group]
+#{'$project':{"runId":1,"instanceId":1,"parameters":1,"endTime":-1,"errors":1,"iterationIndex":1,"iterationId":1,"streams.con:immediateAccess":1,"streams.location":1}
+       # lineage.find({'runId':id},{"runId":1,"instanceId":1,"parameters":1,"endTime":-1,"errors":1,"iterationIndex":1,"iterationId":1,"streams.con:immediateAccess":1,"streams.location":1})[start:start+limit].sort("endTime",direction=-1)
+         
+        activities = list()
+        
+        for x in obj:
+           x['@id']=x['_id']
+           del x['_id']
+           if level=="invocation":
+               x['@type']='s-prov:Invocation'
+           elif level=="instance":
+               x['@type']='s-prov:ComponentInstance'
+
+           activities.append(x)
+
+           x['s-prov:message']=''.join(x['s-prov:message'])
+           
+           if type(x['s-prov:generatedWithLocation'])==list:
+                flat_list=[]
+                for sublist in x['s-prov:generatedWithLocation']:
+                    for item in sublist:
+                        flat_list.append(item)
+                x['s-prov:generatedWithLocation']=flat_list
+
+           x['s-prov:generatedWithLocation']=''.join(x['s-prov:generatedWithLocation'])
+           x['s-prov:generatedWithLocation']=True if x['s-prov:generatedWithLocation']!="" else False
+           x['s-prov:generatedWithImmediateAccess']= True if ("true" in x['s-prov:generatedWithImmediateAccess'] or True in x['s-prov:generatedWithImmediateAccess']) else False
+           #x['s-prov:hasChanged']=True if len(x['feedbackInvocation'])!=0 else False
+           x['s-prov:count'] = len(x['s-prov:count'])
+           
+           
+            
+        output = {"@graph":activities};
+  
+        output=self.addLDContext(output)
+        output["totalCount"]= totalCount
+        return  output
+
+
+    def getComponentInstance(self, id):
+        db = self.conection["verce-prov"]
+        lineage = db['lineage']
+        obj = lineage.aggregate(pipeline=[{'$match':{'instanceId':id}},
+                                                    {"$unwind":"$streams"},
+                                                    {"$sort":{"endTime":-1}},
+                                                    {'$group':{'_id':'$instanceId', 
+                                                     "s-prov:lastEventTime":{"$max":"$endTime"}, 
+                                                     "s-prov:message":{"$push":"$errors"},
+                                                     "worker":{"$first":"$worker"}, 
+                                                     "s-prov:generatedWithImmediateAccess":{"$push":"$streams.con:immediateAccess"},
+                                                     "s-prov:generatedWithLocation":{"$push":"$streams.location"},
+                                                     "s-prov:count":{"$push":"$streams.id"},
+                                                     "pid" : {"$first":"$pid"},
+                                                     "mapping" : {"$first":"$mapping"},
+                                                     "s-prov:qualifiedChange": {"$push":"$feedbackInvocation"},
+                                                     "s-prov:ComponentParameters": {"$first":"$parameters"},
+                                                     "actedOnBehalfOf":{"$first":"$actedOnBehalfOf"},
+                                                     "prov_cluster":{"$first":"$prov_cluster"}}}
+                                                     #{ "$project": { "@id":"$_id", "_id":0, "s-prov:worker":1, "s-prov:lastEventTime":1, "s-prov:message":1,"s-prov:generatedWithImmediateAccess":1,"s-prov:generatedWithLocation":1,"s-prov:count":1}}
+                                                    ]) 
+        
+        output={}
+        count = lineage.aggregate(pipeline=[{'$match':{'instanceId':id}},
+                                                    {'$group':{'_id':'$instanceId'}},
+                                                    {"$count":'instanceNum'}])
+
+        for x in count:
+            totalCount=x['instanceNum']
+
+
+        for x in obj:
+            
+            x['@id']=x['_id']
+            x['@type']='s-prov:ComponentInstance'
+            x['prov:type']='s-prov:ComponentInstance'
+            x['prov:atLocation']= {"@type" : "s-prov:SystemProcess",
+                "s-prov:pid" : x["pid"],
+                "s-prov:mapping" : x["mapping"],
+                "s-prov:worker" : x["worker"]}
+
+            x['prov:actedOnBehalfOf'] = {
+                "@id" : x['actedOnBehalfOf'],
+                "@type":"s-prov:Component"
+            }
+            x['s-prov:message']=''.join(x['s-prov:message'])
+           
+            if type(x['s-prov:generatedWithLocation'])==list:
+                flat_list=[]
+                for sublist in x['s-prov:generatedWithLocation']:
+                    for item in sublist:
+                        flat_list.append(item)
+                x['s-prov:generatedWithLocation']=flat_list
+
+            x['s-prov:generatedWithLocation']=''.join(x['s-prov:generatedWithLocation'])
+            x['s-prov:generatedWithLocation']=True if x['s-prov:generatedWithLocation']!="" else False
+            x['s-prov:generatedWithImmediateAccess']= True if ("true" in x['s-prov:generatedWithImmediateAccess'] or True in x['s-prov:generatedWithImmediateAccess']) else False
+            x['s-prov:count'] = len(x['s-prov:count'])
+
+             
+            
+            del x['_id']
+            del x["pid"]
+            del x["mapping"]
+            del x["worker"]
+            del x['prov_cluster']
+            del x['actedOnBehalfOf']
+            output=x
+
+        output=self.addLDContext(output)
+        output["totalCount"]= totalCount
+        return output
+
+
+    def getData(self,start,limit,genBy=None,attrTo=None,keylist=None,maxvalues=None,minvalues=None,id=None):
+    
+        db = self.conection["verce-prov"]
+        lineage = db['lineage']
+        totalCount=0;
+        searchAgents=None
+        searchActivities=None
+        cursorsList=[]
+        
+        activities=None
+        
+        if attrTo!=None:
+            agents=attrTo.split(',')
+            searchAgents=[{'actedOnBehalfOf':{'$in':agents}},{'instanceId':{'$in':agents}},{'username':{'$in':agents}}]
+            
+
+        if genBy!=None:
+            activities=genBy.split(',')
+            searchActivities=[{'name':{'$in':activities}},{'iterationId':{'$in':activities}}]
+        
+
+
+            
+        i=0
+        ' extract data by annotations either from the whole archive or for a specific runId'
+         
+        searchDic={"$and":[{"$or":searchAgents},{"$or":searchActivities}]}
+        searchDic=clean_empty(searchDic)
+         
+        
+        
+        
+         
+        if searchDic!=None:
+            (obj,totalCount)=self.getEntitiesFilter(searchDic,keylist,maxvalues,minvalues,start,limit)
+            cursorsList.append(obj)
+        #elif meth=="values-range":
+        #    cursorsList.append(self.getEntitiesFilter(activ_searchDic,keylist,mxvaluelist,mnvaluelist,start,limit))
+        
+        else:
+            cursorsList.append(lineage.find({'streams.id':id}))
+                
+            
+        artifacts = list()
+
+        for cursor in cursorsList:
+            for x in cursor:
+                
+                for s in x["streams"]:
+                     
+                    #if (mtype==None or mtype=="") or ('format' in s and s["format"]==mtype):
+                     
+                    s["wasGeneratedBy"]=x["_id"]
+                    s["parameters"]=x["parameters"]
+                    s["endTime"]=x["endTime"]
+                    s["startTime"]=x["startTime"]
+                    s["runId"]=x["runId"]
+                    s["errors"]=x["errors"]
+                    s["derivationIds"]=x['derivationIds']
+                    artifacts.append(s)
+                    
+        
+                
+        output = {"@graph":artifacts};
+        output=self.addLDContext(output)
+        output.update({"totalCount": totalCount})
+       
+        return  output
+        
+
+
+
+
+
+
         
     

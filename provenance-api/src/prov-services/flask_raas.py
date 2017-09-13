@@ -259,6 +259,66 @@ def exportDataProvenance(id):
             response.headers['Content-type']='application/octet-stream'
             
         return response             
+
+
+' new methods: '
+
+@app.route("/workflowexecution/<runid>/invocations")
+def getInvovocationsMonitoring(runid):
+    limit = request.args['limit'] 
+    start = request.args['start']
+    if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET invocations - "+runid+" PID:"+str(os.getpid()));
+    response = Response()
+    response = Response(json.dumps(app.db.getMonitoring(runid,'invocation',int(start),int(limit))))
+    response.headers['Content-type'] = 'application/json'    
+    return response
+
+@app.route("/workflowexecution/<runid>/instances")
+def getInstancesMonitoring(runid):
+    limit = request.args['limit'] 
+    start = request.args['start']
+     
+    if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET instances - "+runid+" PID:"+str(os.getpid()));
+    response = Response()
+    response = Response(json.dumps(app.db.getMonitoring(runid,'instance',int(start),int(limit))))
+    response.headers['Content-type'] = 'application/json'    
+    return response
+
+#@app.route("/workflowexecution/<runid>/invocations/<invocid>")
+def getInvocationDetails(runid,invocid):
+        if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET invocation details - "+invocid+" PID:"+str(os.getpid()));
+        response = Response()
+        response = Response(json.dumps(app.db.getInvocation(runid,invocid)))
+        response.headers['Content-type'] = 'application/json'       
+        return response
+
+@app.route("/instances/<instid>")
+def getInstanceDetails(runid,instid):
+        if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET instance details - "+instid+" PID:"+str(os.getpid()));
+        response = Response()
+        response = Response(json.dumps(app.db.getComponentInstance(instid)))
+        response.headers['Content-type'] = 'application/json'       
+        return response
+
+
+@app.route("/data")
+def getData():
+        limit = request.args['limit'] 
+        start = request.args['start']
+        if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET data collection - PID:"+str(os.getpid()));
+        
+        genby = request.args['generatedBy'] if 'generatedBy' in request.args else None
+        attrTo = request.args['attributedTo'] if 'attributedTo' in request.args else None
+        keylist = csv.reader(StringIO.StringIO(request.args['keys'])).next() if 'keys' in request.args else None
+        maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])) if 'maxvalues' in request.args else None
+        minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])) if 'minvalues' in request.args else None
+
+        
+        response = Response(json.dumps(app.db.getData(int(start),int(limit),genBy=genby,attrTo=attrTo,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues)))
+
+        response.headers['Content-type'] = 'application/json'
+
+        return response
     
     
 
