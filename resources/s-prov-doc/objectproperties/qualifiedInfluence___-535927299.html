@@ -22,11 +22,12 @@
 
 <div class='summary'><h2>Object Property: qualifiedInfluence</h2>
 
-<div id='annotations_(8)'>
-<h4>Annotations (8)</h4>
+<div id='annotations_(9)'>
+<h4>Annotations (9)</h4>
 <div class='codebox'>
 <ul>
 <li class="asserted"><a href="../annotationproperties/comment___1501100887.html" class='Annotation Property' title="http://www.w3.org/2000/01/rdf-schema#comment">rdfs:comment</a> <span class='literal'>"Because prov:qualifiedInfluence is a broad relation, the more specific relations (qualifiedCommunication, qualifiedDelegation, qualifiedEnd, etc.) should be used when applicable."</span> <span style='color: black;'>@en</span></li>
+<li class="asserted"><a href="../annotationproperties/comment___1501100887.html" class='Annotation Property' title="http://www.w3.org/2000/01/rdf-schema#comment">rdfs:comment</a> <span class='literal'>"If this ComponentIntance prov:wasChangedWith Entity :e, then it can qualify the Change using prov:qualifiedChange [ a prov:Change;  prov:entity :ag; :foo :bar ]."</span></li>
 <li class="asserted"><a href="../annotationproperties/isDefinedBy___449337134.html" class='Annotation Property' title="http://www.w3.org/2000/01/rdf-schema#isDefinedBy">rdfs:isDefinedBy</a> http://www.w3.org/ns/prov-o# 
 <a href='http://www.w3.org/ns/prov-o#' class='urlOption' target='_blank' ><img src="../images/external.png" title="Attempt to open link in another window" /></a></li>
 <li class="asserted"><a href="../annotationproperties/label___653429740.html" class='Annotation Property' title="http://www.w3.org/2000/01/rdf-schema#label">rdfs:label</a> <span class='literal'>"qualifiedInfluence"</span></li>
@@ -41,7 +42,7 @@
 <a href='../ontologies/index.html?action=load&uri=http%3A%2F%2Fwww.w3.org%2Fns%2Fprov%23wasInfluencedBy&redirect=..%2Fobjectproperties%2FqualifiedInfluence___-535927299.html' class='urlOption' ><img src="../images/download.png" title="Attempt to load owl/rdf" /></a></li>
 </ul>
 </div>
-</div><!-- annotations (8) -->
+</div><!-- annotations (9) -->
 
 
 <div id='domains_(1)'>
@@ -64,8 +65,18 @@
 </div><!-- ranges (1) -->
 
 
-<div id='usage_(13)'>
-<h4>Usage (13)</h4>
+<div id='inverses_(1)'>
+<h4>Inverses (1)</h4>
+<div class='codebox'>
+<ul>
+<li class="asserted"><a href="qualifiedInfluenceOf___632677812.html" class='Object Property' title="http://www.w3.org/ns/prov#qualifiedInfluenceOf">qualifiedInfluenceOf</a></li>
+</ul>
+</div>
+</div><!-- inverses (1) -->
+
+
+<div id='usage_(15)'>
+<h4>Usage (15)</h4>
 <div class='codebox'>
 <ul>
 <li class="asserted"><a href="qualifiedAssociation___1360036489.html" class='Object Property' title="http://www.w3.org/ns/prov#qualifiedAssociation">qualifiedAssociation</a> <span class='keyword'>&sube;</span> <span class='Object Property active-entity'>qualifiedInfluence</span></li>
@@ -81,9 +92,11 @@
 <li class="asserted"><a href="qualifiedRevision___1610733787.html" class='Object Property' title="http://www.w3.org/ns/prov#qualifiedRevision">qualifiedRevision</a> <span class='keyword'>&sube;</span> <span class='Object Property active-entity'>qualifiedInfluence</span></li>
 <li class="asserted"><a href="qualifiedStart___-1766038.html" class='Object Property' title="http://www.w3.org/ns/prov#qualifiedStart">qualifiedStart</a> <span class='keyword'>&sube;</span> <span class='Object Property active-entity'>qualifiedInfluence</span></li>
 <li class="asserted"><a href="qualifiedUsage___50857.html" class='Object Property' title="http://www.w3.org/ns/prov#qualifiedUsage">qualifiedUsage</a> <span class='keyword'>&sube;</span> <span class='Object Property active-entity'>qualifiedInfluence</span></li>
+<li class="asserted"><a href="qualifiedChange___-823630841.html" class='Object Property' title="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#qualifiedChange">qualifiedChange</a> <span class='keyword'>&sube;</span> <span class='Object Property active-entity'>qualifiedInfluence</span></li>
+<li class="asserted"><span class='Object Property active-entity'>qualifiedInfluence</span> <span class='keyword'>inverse</span> <a href="qualifiedInfluenceOf___632677812.html" class='Object Property' title="http://www.w3.org/ns/prov#qualifiedInfluenceOf">qualifiedInfluenceOf</a></li>
 </ul>
 </div>
-</div><!-- usage (13) -->
+</div><!-- usage (15) -->
 
 </div> <!-- summary -->
 <p class='footer'>
