@@ -610,7 +610,7 @@ var onStoreLoad = function(store) {
   Ext.getCmp("activitymonitor").setTitle(userSN+' - Runtime Instances monitor - ' + currentRun)
 }
 
-var renderActivityID = function(value, p, record) {
+var renderInstanceID = function(value, p, record) {
  
 if (record.data['s-prov:generatedWithImmediteAccess'])
     return Ext.String.format(
@@ -628,6 +628,21 @@ return Ext.String.format(
     	record.data["@id"]
   	   );
 }
+
+var renderChanged = function(value, p, record) {
+ 
+if (record.data['s-prov:qualifiedChange'] && record.data['s-prov:qualifiedChange'].length>0)
+    return Ext.String.format(
+        "<strong style='color:red'>{0}</strong>",
+        record.data['s-prov:qualifiedChange'].length
+        );
+return Ext.String.format(
+      "{0}",
+      ""
+       );
+}
+
+
   	
 
 Ext.define('CF.view.ActivityMonitor', {
@@ -773,8 +788,8 @@ Ext.define('CF.view.ActivityMonitor', {
       header: 'ID',
       dataIndex: 'ID',
       flex: 3,
-      sortable: true,
-      renderer: renderActivityID
+      sortable: false,
+      renderer: renderInstanceID
     },
 
     {
@@ -803,7 +818,15 @@ Ext.define('CF.view.ActivityMonitor', {
       dataIndex: 'message',
       flex: 3,
       sortable: false
+    },
+    {
+      header: 'Changed',
+      dataIndex: 'change',
+      flex: 3,
+      sortable: false,
+      renderer: renderChanged
     }
+
   ],
   flex: 1,
 
@@ -812,7 +835,7 @@ Ext.define('CF.view.ActivityMonitor', {
       itemdblclick: function(dataview, record, item, index, e) {
         artifactStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + 'data?instanceId=' + record.get("ID"),
+          url: PROV_SERVICE_BASEURL + 'data?attributedTo=' + record.get("ID"),
 
           reader: {
             rootProperty: '@graph',

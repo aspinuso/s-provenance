@@ -25,5 +25,10 @@ Ext.define('CF.model.Activity', {
     name: 'worker',
     type: 'string',
     mapping: 's-prov:worker'
+  },
+  {
+    name: 'change',
+    type: 'boolean',
+    mapping: 's-prov:hasChanged'
   }]
 });
