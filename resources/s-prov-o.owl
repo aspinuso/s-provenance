@@ -78,6 +78,14 @@
     
 
 
+    <!-- http://www.w3.org/ns/prov#qualifiedInfluence -->
+
+    <rdf:Description rdf:about="http://www.w3.org/ns/prov#qualifiedInfluence">
+        <rdfs:comment>If this ComponentIntance prov:wasChangedWith Entity :e, then it can qualify the Change using prov:qualifiedChange [ a prov:Change;  prov:entity :ag; :foo :bar ].</rdfs:comment>
+    </rdf:Description>
+    
+
+
     <!-- http://www.w3.org/ns/prov-o#actedOnBehalfOf -->
 
     <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#actedOnBehalfOf">
@@ -143,10 +151,21 @@
     
 
 
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#changed -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#changed">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/prov#influenced"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
+        <rdfs:comment>Establish a relation between the activity that applied the change to an instance</rdfs:comment>
+        <rdfs:label>changed</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#feedbackInvocation -->
 
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#feedbackInvocation">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
         <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
         <rdfs:range>
@@ -155,7 +174,7 @@
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
             </owl:Restriction>
         </rdfs:range>
-        <rdfs:comment>Indicates that the instance received a runtime steering instruction to change its internal behaviour. It contains a list of invocations where the instruction was received or, when describing an invocation, assumes a boolean value.</rdfs:comment>
+        <rdfs:comment>Indicates that the invocation received a runtime steering instruction to change the behaviour of the associated instance. It points to the new Entity representing the actual change.</rdfs:comment>
         <rdfs:label>feedbackInvocation</rdfs:label>
     </owl:ObjectProperty>
     
@@ -220,6 +239,21 @@
         <rdfs:range rdf:resource="http://purl.org/provone/ontology#ProcessExec"/>
         <rdfs:label>hadInformer</rdfs:label>
         <prov:definition>Indicates the invocation that informed the activity involved in the current derivation</prov:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#hasChanged -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#hasChanged">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment>Indicates whether an Agent such as a CompentInstace has changed any of the behaviour associated to its Component</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -315,6 +349,26 @@
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#provCluster">
         <rdfs:comment xml:lang="en">Name of the Cluster to which the Component belongs for runtime provenance analysis</rdfs:comment>
     </owl:ObjectProperty>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#qualifiedChange -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#qualifiedChange">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/prov#qualifiedInfluence"/>
+        <owl:inverseOf rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#qualifiedChangeOf"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Change"/>
+        <rdfs:comment>If this ComponentInstance prov:wasChangedWith Entity :en, then it can qualify the Chenge using prov:qualifiedChange [ a prov:Change;  s-prov:Entity :en; :foo :bar ].</rdfs:comment>
+        <rdfs:label>qualifiedChange</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#qualifiedChangeOf -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#qualifiedChangeOf"/>
     
 
 
@@ -553,6 +607,16 @@
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#CResource">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Location"/>
         <prov:definition>The computational Resource where the workflow is submitted and executed</prov:definition>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Change -->
+
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Change">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#InstantaneousEvent"/>
+        <rdfs:comment>An instance of s-prov:Change provides additional descriptions about the binary prov:wasChangedWith relation from an changed s-prov:ComponentInstance to the new prov:Entity that chaged the instance For example, :filter_Instance s-prov:wasChangedWith :new_parameters; prov:qualifiedChange [ a s-prov:Change; s-prov:ComponentParameter :new_parameters; :foo :bar ].</rdfs:comment>
+        <rdfs:label>Change</rdfs:label>
     </owl:Class>
     
 
