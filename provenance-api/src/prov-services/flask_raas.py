@@ -284,8 +284,8 @@ def getInstancesMonitoring(runid):
     response.headers['Content-type'] = 'application/json'    
     return response
 
-#@app.route("/workflowexecution/<runid>/invocations/<invocid>")
-def getInvocationDetails(runid,invocid):
+@app.route("/invocations/<invocid>")
+def getInvocationDetails(invocid):
         if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET invocation details - "+invocid+" PID:"+str(os.getpid()));
         response = Response()
         response = Response(json.dumps(app.db.getInvocation(runid,invocid)))
@@ -293,7 +293,7 @@ def getInvocationDetails(runid,invocid):
         return response
 
 @app.route("/instances/<instid>")
-def getInstanceDetails(runid,instid):
+def getInstanceDetails(instid):
         if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET instance details - "+instid+" PID:"+str(os.getpid()));
         response = Response()
         response = Response(json.dumps(app.db.getComponentInstance(instid)))
@@ -312,15 +312,26 @@ def getData():
         keylist = csv.reader(StringIO.StringIO(request.args['keys'])).next() if 'keys' in request.args else None
         maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])) if 'maxvalues' in request.args else None
         minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])) if 'minvalues' in request.args else None
-
+        
         
         response = Response(json.dumps(app.db.getData(int(start),int(limit),genBy=genby,attrTo=attrTo,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues)))
 
         response.headers['Content-type'] = 'application/json'
 
         return response
-    
-    
+
+
+# EXPORT to PROV methods
+
+@app.route("/data/<data_id>/export")
+def _exportDataProvenance(data_id):
+    return exportDataProvenance(data_id)
+
+
+@app.route("/workflowexecution/<run_id>/export")
+def _exportRunProvenance(run_id):
+    return exportRunProvenance(run_id)
+
 
 if __name__ == "__main__":
     import sys

@@ -112,8 +112,8 @@ def toW3Cprov(ling,bundl,format='xml'):
                         imp=bundle.entity(knmi["Imp_"+trace["_id"]+"_"+str(i)], other_attributes=dic)
                         bundle.hadMember(wfp,imp)
                         i=i+1
-                bundle.wasAssociatedWith(WFE,wfp)
-                i=0
+                    bundle.wasAssociatedWith(WFE,wfp)
+                 
                 if type(trace['input'])!=list:
                     trace['input']=[trace['input']]
 
@@ -1319,13 +1319,10 @@ class ProvenanceStore(object):
             #print(" searchdic "+json.dumps(searchDic['streams.content']['$elemMatch']))
             if kwargs['level'][0]=='vrange':
                 if kwargs['mode'][0]=="AND":
-                    obj=lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':searchDic['streams.content']}},{'$group':{'_id': {'run':'$runId','username':'$username', str(groupby):'$'+str(groupby)}}}])
+                    obj=lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':searchDic['streams.content']}},{'$group':{'_id': {'runId':'$runId','username':'$username', str(groupby):'$'+str(groupby)}}}])
                 elif kwargs['mode'][0]=="OR":
                     for y in searchDic['streams.content']['$elemMatch']:
-                        print(y)
-                        for c in lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':{'$elemMatch':{y:searchDic['streams.content']['$elemMatch'][y]}}}},{'$group':{'_id': {'run':'$runId','username':'$username', str(groupby):'$'+str(groupby)}}}]):
-                            
-                            #print(y+str(c))
+                        for c in lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':{'$elemMatch':{y:searchDic['streams.content']['$elemMatch'][y]}}}},{'$group':{'_id': {'runId':'$runId','username':'$username'}}}]):
                             obj.append(c)
                 
         else:
@@ -1345,7 +1342,7 @@ class ProvenanceStore(object):
                  
                 #run=x['_id']['run']
                 x['_id'].update({'runId':runId})
-                print ("DADA "+str(x))
+                 
                 #del x['_id']['run']
             
             trigger_cursor=None
@@ -1353,26 +1350,33 @@ class ProvenanceStore(object):
             if 'level' in kwargs and kwargs['level'][0]=='vrange':
                 try:
                     
-                    trigger_cursor=workflow.aggregate(pipeline=[{'$match':{'_id':x['_id']['run']}},{'$unwind':'$input'},{'$match':{'$or':[{'input.prov:type':'wfrun'},{'input.prov-type':'wfrun'}]}},{'$project':{'input.url':1,'_id':0}}])
-                    #print 'TRIG '+x['_id']+' '+ json.dumps(triggers)
+                    trigger_cursor=workflow.aggregate(pipeline=[{'$match':{'_id':x['_id']['runId']}},{'$unwind':'$input'},{'$match':{'$or':[{'input.prov:type':'wfrun'},{'input.prov-type':'wfrun'}]}},{'$project':{'input.url':1,'_id':0}}])
+                    print 'TRIG '+str(x['_id'])+' '+ json.dumps(triggers)
                 except:
                     traceback.print_exc()
                     triggers=[]
                 
                     #print "wf ID "+str(x['_id'])
-                #try:
-                #    wfitem=workflow.find({'_id':x['_id']['runId']},{'workflowName':1,'grid':1})[0]
-                #    x['_id'].update(wfitem) 
+                try:
+
+                    wfitem=workflow.find({'_id':x['_id']['runId']},{groupby:1,'_id':0})[0]
+                    if groupby in wfitem:
+                        x['_id'].update(wfitem) 
+                    else:
+                        continue
                         #print "wfname"+str(wfitem['workflowName'])
-                #except:
-                #    traceback.print_exc()
-#                    print "wf ID "+str(x['_id']['run'])+" not found inf workflow collection"
-                #    add=not add
+                except:
+                    traceback.print_exc()
+                    print "wf ID "+str(x['_id']['runId'])+" not found inf workflow collection"
+                    del x
+                    continue
                      
                      
             elif 'level' in kwargs and (kwargs['level'][0]=='instances' or kwargs['level'][0]=='iterations' or kwargs['level'][0]=='prospective'):
                 trigger_cursor=lineage.aggregate(pipeline=[{'$match':x['_id']},{'$unwind':'$derivationIds'},{'$group':{'_id':'$derivationIds.DerivedFromDatasetID'}}])  
-            
+            elif 'level' in kwargs and kwargs['level'][0]=='data':
+                trigger_cursor=lineage.aggregate(pipeline=[{'$match':{'streams.id':x['_id']['id']}},{'$unwind':'$derivationIds'},{'$project':{'_id':0,'id':'$derivationIds.DerivedFromDatasetID'}}]) 
+
             triggers=[]
             
             for t in trigger_cursor:
@@ -1381,16 +1385,16 @@ class ProvenanceStore(object):
                     
                     
                     triggers.append(t['_id'])
-                     
+                else:
+                    triggers.append(t)
                
                 
                 
             
             
-            #json.dumps(triggers)+" "+str(add)
-            #if add and len(triggers)>0:
+            
             if len(triggers)>0:
-                print "triggers "+str(x['_id'])+" "+str(triggers)
+                #print "triggers "+str(x['_id'])+" "+str(triggers)
                 pes=[]
                 #print "DOING CONN"
                  
@@ -1404,10 +1408,9 @@ class ProvenanceStore(object):
                     for w in triggers:
                         up=urlparse(w['input']['url']).path
                         up=up[up.rfind('/')+1:len(up)+1]
-                        
+                         
                         curs=workflow.find({'_id':up})
                         if (curs.count()>0):
-                            
                             pes.append(up)
                 elif 'level' in kwargs and kwargs['level'][0]=='data':
                     pes=triggers
@@ -1424,7 +1427,7 @@ class ProvenanceStore(object):
                     
                 x.update({'name':x['_id'], 'connlist':pelist})
                 
-                print "connections done for: "+str(x['_id'])+" PES:"+str(pelist)
+                #print "connections done for: "+str(x['_id'])+" PES:"+str(pelist)
                 #print "size for: "+str(x['_id'])+" PES:"+str(len(pes))
                 
                 
@@ -1432,14 +1435,13 @@ class ProvenanceStore(object):
                 connections.append(x)
                 
                  
-#            elif add:
+#             
             else: 
-                #x['_id']['runId']=run
+                 
                 x.update({'name':x['_id'], 'connlist':[]})
                 del x['_id']
                 connections.append(x)
                 
-        #print "PES: "+str(connections)
         return connections
     
     
