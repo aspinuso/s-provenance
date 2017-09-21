@@ -75,7 +75,7 @@ function openRun(id)
         activityStore.setProxy({
           type: 'ajax',
           //url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(currentRun)+'?method=aggregate',
-          url: PROV_SERVICE_BASEURL + '/workflowexecution/'+encodeURIComponent(currentRun)+'/instances',
+          url: PROV_SERVICE_BASEURL + '/workflowexecutions/'+encodeURIComponent(currentRun)+'/instances',
           
 
           reader: {
@@ -434,7 +434,7 @@ Ext.define('CF.view.WorkflowOpenByRunID', {
 
       }]
     }]
-  }],
+  }], 
 
   buttons: [{
     text: 'Open',
@@ -448,7 +448,7 @@ Ext.define('CF.view.WorkflowOpenByRunID', {
         activityStore.setProxy({
           type: 'ajax',
           // OLD API => url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(form.findField("runId").getValue(false).trim())+'?method=aggregate',
-          url: PROV_SERVICE_BASEURL + '/workflowexecution/'+encodeURIComponent(form.findField("runId").getValue(false).trim())+'/invocations',
+          url: PROV_SERVICE_BASEURL + '/workflowexecutions/'+encodeURIComponent(form.findField("runId").getValue(false).trim())+'/invocations',
           
           reader: {
             rootProperty: 'graph',
