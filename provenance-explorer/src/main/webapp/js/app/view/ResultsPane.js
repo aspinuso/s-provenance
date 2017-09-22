@@ -160,23 +160,24 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
 
   }
   
-  if (data.streams)
+  if (data['s-prov:Data'])
   { 
  
+
    
-  if (data.streams[0].port==null && !(data.streams[0].port===undefined))
+  if (data['s-prov:Data'].port==null && !(data['s-prov:Data'].port===undefined))
   {
    edgecol=colour.lightblue
    col = colour.lightblue
   }
-  
-  if (!(data.feedbackIteration===undefined) && data.feedbackIteration)
+   
+  if (!(data['s-prov:Data']["prov:wasGeneratedBy"].feedbackIteration===undefined) && data['s-prov:Data']["prov:wasGeneratedBy"].feedbackIteration)
   {
    edgecol=colour.lightblue
    col = colour.red
   }
  
-  	if (data.streams[0].port=='_d4p_state')
+  	if (data['s-prov:Data'].port=='_d4p_state')
   	{     //console.log(data.streams[0].port)
   		col = colour.lightblue
   		
@@ -191,13 +192,13 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
  // if (!data.streams.port or data.streams.port=='')
   
  
-  var nodea = graph.addNode(data["id"], {
-    label: data["_id"].substring(0, 8),
+  var nodea = graph.addNode(data['s-prov:Data']["@id"], {
+    label: data['s-prov:Data']["prov:wasAttributedTo"]["@id"].substring(0, 8),
     'color': col,
     'shape': 'dot',
     'radius': 19,
     'alpha': 1,
-    'data': {'runId':data.runId,'location':data.streams[0].location},
+    'data': {'runId':data['s-prov:Data']["prov:wasGeneratedBy"]["s-prov:WFExecution"]["@id"],'location':data['s-prov:Data']['prov:location']},
     mass: 2
   });
 
@@ -227,10 +228,10 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
 
   }
 
-  if (data["derivationIds"].length > 0 && typeof data["derivationIds"] != "undefined") {
-    for (var i = 0; i < data["derivationIds"].length; i++) {
-      if (data["derivationIds"][i]["wasDerivedFrom"]) {
-        wasDerivedFromDephtree(data["derivationIds"][i]["wasDerivedFrom"], graph, nodea);
+  if (data['s-prov:Data']["prov:Derivation"].length > 0 && typeof data['s-prov:Data']["prov:Derivation"] != "undefined") {
+    for (var i = 0; i < data['s-prov:Data']["prov:Derivation"].length; i++) {
+      if (data['s-prov:Data']["prov:Derivation"][i]["prov:wasDerivedFrom"]) {
+        wasDerivedFromDephtree(data['s-prov:Data']["prov:Derivation"][i]["prov:wasDerivedFrom"], graph, nodea);
       }
     }
   }
@@ -434,7 +435,7 @@ Ext.define('CF.view.WorkflowOpenByRunID', {
 
       }]
     }]
-  }], 
+  }],
 
   buttons: [{
     text: 'Open',

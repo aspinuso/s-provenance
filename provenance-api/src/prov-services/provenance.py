@@ -1053,18 +1053,87 @@ class ProvenanceStore(object):
         
       
         return xx
-        
+    
+    def getTraceX(self, id,level):
+        db = self.conection["verce-prov"]
+         
+        lineage = db['lineage']
+        if type(id)==list:
+            xx = lineage.find({"streams.id":{"$in":id}});
+        else:
+            xx = lineage.find_one({"streams.id":id});
+
+        xx.update({"id":id})
+        if level>=0:
+            
+            try:
+                derid["wasDerivedFrom"] = self.getTrace(derid["DerivedFromDatasetID"],level-1)
+            except Exception, err:
+                None
+            return xx
+
+
     def getTrace(self, id,level):
         db = self.conection["verce-prov"]
         lineage = db['lineage']
         xx = lineage.find_one({"streams.id":id});
-        xx.update({"id":id})
+        if type(id)==list:
+            xx = lineage.find({"streams.id":{"$in":id}});
+        else:
+            xx = lineage.find_one({"streams.id":id});
+       # xx.update({"id":id})
         if level>=0:
-            for derid in xx["derivationIds"]:
+            
+            for derid in x["derivationIds"]:
                 try:
-                    derid["wasDerivedFrom"] = self.getTrace(derid["DerivedFromDatasetID"],level-1)
+                    derid["s-prov:Data"] = self.getTrace(derid["DerivedFromDatasetID"],level-1)
                 except Exception, err:
                     None
+            return xx
+
+
+    def getTrace(self, id,level):
+        db = self.conection["verce-prov"]
+        lineage = db['lineage']
+        xx = lineage.find_one({"streams.id":id},{'streams':{'$elemMatch':{'id':id}},
+                                                            'iterationId':1,
+                                                            'runId':1,
+                                                            'streams.location':1,
+                                                            'actedOnBehalfOf':1,
+                                                            'derivationIds':1,
+                                                            '_id':0}
+                                                            );
+        
+        #xx.update({"id":id})
+        if level>=0:
+            
+            for derid in xx["derivationIds"]:
+                try:
+                    derid["s-prov:Data"] = {"@id":derid["DerivedFromDatasetID"]}
+
+                    derid["prov:wasDerivedFrom"] = self.getTrace(derid["DerivedFromDatasetID"],level-1)
+                    del derid["DerivedFromDatasetID"]
+                    del derid["TriggeredByProcessIterationID"]
+                except Exception, err:
+                    None
+            
+            xx["s-prov:Data"]=xx['streams'][0]
+            xx["s-prov:Data"]['@id']=xx["s-prov:Data"]['id']
+            xx["s-prov:Data"]['prov:location']=xx["s-prov:Data"]['location']
+            xx["s-prov:Data"]['prov:hadMember']=xx["s-prov:Data"]['content']
+            xx["s-prov:Data"]['prov:Derivation']=xx["derivationIds"]
+            xx["s-prov:Data"]["prov:wasGeneratedBy"]={}
+            xx["s-prov:Data"]["prov:wasGeneratedBy"]['s-prov:Invocation']={'@id':xx['iterationId']}
+            xx["s-prov:Data"]["prov:wasGeneratedBy"]['s-prov:WFExecution']={'@id':xx['runId']}
+            xx["s-prov:Data"]["prov:wasAttributedTo"]={'@id':xx['actedOnBehalfOf'],'@type':'s-prov:Component'}
+            del xx["s-prov:Data"]['location']
+            del xx["s-prov:Data"]['content']
+            del xx["s-prov:Data"]['id']
+            del xx['iterationId']
+            del xx['runId']
+            del xx["actedOnBehalfOf"]
+            del xx["derivationIds"]
+            del xx['streams']
             return xx
         
         
@@ -1533,7 +1602,8 @@ class ProvenanceStore(object):
                                                     {'$group':{'_id':'$'+group, 
                                                      "s-prov:lastEventTime":{"$max":"$endTime"}, 
                                                      "s-prov:message":{"$push":"$errors"},
-                                                     "s-prov:worker":{"$first":"$worker"}, 
+                                                     "s-prov:worker":{"$first":"$worker"},
+                                                     "prov:actedOnBehalfOf":{"$first":"$actedOnBehalfOf"}, 
                                                      "s-prov:generatedWithImmediateAccess":{"$push":"$streams.con:immediateAccess"},
                                                      "s-prov:generatedWithLocation":{"$push":"$streams.location"},
                                                      "s-prov:qualifiedChange": {"$push":"$s-prov:qualifiedChange"},
@@ -1577,6 +1647,7 @@ class ProvenanceStore(object):
            x['s-prov:generatedWithImmediateAccess']= True if ("true" in x['s-prov:generatedWithImmediateAccess'] or True in x['s-prov:generatedWithImmediateAccess']) else False
            #x['s-prov:hasChanged']=True if len(x['feedbackInvocation'])!=0 else False
            x['s-prov:count'] = len(x['s-prov:count'])
+           x['prov:actedOnBehalfOf'] = {"@type":"s-prov:Component", "@id":x['prov:actedOnBehalfOf']}
            
            
             
@@ -1604,7 +1675,8 @@ class ProvenanceStore(object):
                                                      "mapping" : {"$first":"$mapping"},
                                                      "s-prov:qualifiedChange": {"$push":"$s-prov:qualifiedChange"},
                                                      "s-prov:ComponentParameters": {"$first":"$parameters"},
-                                                     "actedOnBehalfOf":{"$first":"$actedOnBehalfOf"},
+                                                     "prov:contributed":{"$first":"$name"}, 
+                                                     "prov:actedOnBehalfOf":{"$first":"$actedOnBehalfOf"}, 
                                                      "prov_cluster":{"$first":"$prov_cluster"}}}
                                                      #{ "$project": { "@id":"$_id", "_id":0, "s-prov:worker":1, "s-prov:lastEventTime":1, "s-prov:message":1,"s-prov:generatedWithImmediateAccess":1,"s-prov:generatedWithLocation":1,"s-prov:count":1}}
                                                     ]) 
@@ -1628,10 +1700,10 @@ class ProvenanceStore(object):
                 "s-prov:mapping" : x["mapping"],
                 "s-prov:worker" : x["worker"]}
 
-            x['prov:actedOnBehalfOf'] = {
-                "@id" : x['actedOnBehalfOf'],
-                "@type":"s-prov:Component"
-            }
+            x['prov:actedOnBehalfOf'] = {"@type":"s-prov:Component", "@id":x['prov:actedOnBehalfOf']}
+            x['prov:contributed'] = {"@type":"s-prov:Implementation", "@id":x['prov:contributed']}
+
+            
             x['s-prov:message']=''.join(x['s-prov:message'])
            
             if type(x['s-prov:generatedWithLocation'])==list:
@@ -1654,7 +1726,7 @@ class ProvenanceStore(object):
             del x["mapping"]
             del x["worker"]
             del x['prov_cluster']
-            del x['actedOnBehalfOf']
+            
             output=x
 
         output=self.addLDContext(output)

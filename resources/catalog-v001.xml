@@ -6,8 +6,7 @@
     <uri id="Imports Wizard Entry" name="http://purl.org/provone/ontology" uri="http://vcvcomputing.com/provone/provone.owl"/>
     <uri id="Imports Wizard Entry" name="http://www.w3.org/ns/prov-o-20130430" uri="http://www.w3.org/ns/prov-o#"/>
     <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
-        <uri id="Automatically generated entry, Timestamp=1500906089657" name="http://www.semanticweb.org/ontologies/2017/6/s-prov" uri="S-PROV.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1500906089657" name="http://www.semanticweb.org/ontologies/2017/6/untitled-ontology-5" uri="backup-owl.owl"/>
-        <uri id="Automatically generated entry, Timestamp=1500906089657" name="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl" uri="s-prov-o.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1505288830119" name="http://www.semanticweb.org/ontologies/2017/6/untitled-ontology-5" uri="backup-owl.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1505288830119" name="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl" uri="s-prov-o.owl"/>
     </group>
 </catalog>
