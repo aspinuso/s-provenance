@@ -296,7 +296,7 @@ def deleteWorkflowRun(runid):
         return response
 
 
-#Extract documents from the bundle collection by the \id{id} of a \emph{WFExecution} (\id{run\_id}) or according to a query string, which includes the \id{username} and domain metadata \id{terms} and \emph{value-ranges}.
+#Extract documents from the bundle collection by the \id{run\_id} of a \emph{WFExecution} 
 @app.route("/workflowexecutions/<runid>", methods=['GET', 'DELETE'])
 def getWorkflowInfo(runid):
         response=None
@@ -315,7 +315,7 @@ def getWorkflowInfo(runid):
         return response
 
 # Thomas
-#Extract documents from the bundle collection by the \id{id} of a \emph{WFExecution} (\id{run\_id}) or according to a query string, which includes the \id{username} and domain metadata \id{terms} and \emph{value-ranges}.
+#Extract documents from the bundle collection according to a query string which may include \id{username}, \id{type} of the workflow, its \id{functionNames} and domain metadata \id{terms} and \emph{value-ranges}. 
 @app.route("/workflowexecutions")
 def getWorkflowExecutions():
     limit = request.args['limit'] 
