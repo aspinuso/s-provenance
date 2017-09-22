@@ -143,7 +143,9 @@ def summariesHandler():
 def wasDerivedFrom(id):
     level = request.args['level']
     if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET wasDerivedFrom - "+id+" PID:"+str(os.getpid()));
-    response = Response(json.dumps(app.db.getTrace(id,int(level))))
+    result=app.db.getTrace(id,int(level))
+    result=app.db.addLDContext(result)
+    response = Response(json.dumps(result))
     response.headers['Content-type'] = 'application/json'       
     return response
 
