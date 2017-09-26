@@ -16,14 +16,14 @@ def addIndexedContentToLineage(lineage):
                                 else: 
                                     all_content_map[key][content[key]] = 1
           
-                indexedDataGranuleMetadata = []
+                indexedMeta = []
                 for map_key in all_content_map:
                     for map_value in all_content_map[map_key]:
-                        indexedDataGranuleMetadata.append({
+                        indexedMeta.append({
                             'key': map_key,
                             'value': map_value
                         })
-                stream['indexedDataGranuleMetadata'] = indexedDataGranuleMetadata
+                stream['indexedMeta'] = indexedMeta
     return lineage
 
 
@@ -52,8 +52,8 @@ def getIndices():
   return [ 
     { 
         'index': [
-            ('streams.indexedDataGranuleMetadata.key', ASCENDING),
-            ('streams.indexedDataGranuleMetadata.value', ASCENDING)
+            ('streams.indexedMeta.key', ASCENDING),
+            ('streams.indexedMeta.value', ASCENDING)
         ],
         'name': 'key_value'
     } 
