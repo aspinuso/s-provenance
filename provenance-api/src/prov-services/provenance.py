@@ -1105,17 +1105,29 @@ class ProvenanceStore(object):
                                                             );
         
         #xx.update({"id":id})
+        
+
         if level>=0:
             
-            for derid in xx["derivationIds"]:
+            for derid in xx["derivationIds"]: 
                 try:
                     derid["s-prov:Data"] = {"@id":derid["DerivedFromDatasetID"]}
+                    derid["wasDerivedFrom"] = self.getTrace(derid["DerivedFromDatasetID"],level-1)
+                     
+                    if (derid["wasDerivedFrom"]):
+                        derid["s-prov:Data"] = derid["wasDerivedFrom"]["s-prov:Data"]
+                        del derid["wasDerivedFrom"]
+                        del derid["DerivedFromDatasetID"]
+                        del derid["TriggeredByProcessIterationID"]
+                    else:
+                        derid.clear()
+                         
 
-                    derid["prov:wasDerivedFrom"] = self.getTrace(derid["DerivedFromDatasetID"],level-1)
-                    del derid["DerivedFromDatasetID"]
-                    del derid["TriggeredByProcessIterationID"]
+                  
+
+
                 except Exception, err:
-                    None
+                    traceback.print_exc()
             
             xx["s-prov:Data"]=xx['streams'][0]
             xx["s-prov:Data"]['@id']=xx["s-prov:Data"]['id']
