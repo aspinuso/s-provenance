@@ -138,7 +138,7 @@ class ProvenanceStore(object):
         from pymongo import InsertOne
         db = self.connection["verce-prov"]
         lineage = db['lineage']
-        items = lineage.find({}).sort("_id",direction=1)
+        items = lineage.find({}).sort("_id",direction=1).skip(3000000)
         lineage_new = db['lineage_new2']
 
         # .limit(limit)

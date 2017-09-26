@@ -416,14 +416,14 @@ def summariesHandlerWorkflow():
 # Extract information about the reuse and exchange of data between workflow executions, users and infrastructures, based terms and values' ranges. These Additional properties, such as workflow's type or (\id{prov:type})  can be also extracted
 @app.route("/summaries/collaborative")
 def summariesHandlerCollab():
-        users = request.args['users'] if 'users' in request.args else None
-        groupby = csv.reader(StringIO.StringIO(request.args['groupby'])).next() if 'groupby' in request.args else None
-        mode = csv.reader(StringIO.StringIO(request.args['mode'])) if 'mode' in request.args else None
+        users = csv.reader(StringIO.StringIO(request.args['users'])).next() if 'users' in request.args else None
+        groupby = request.args['groupby'] if 'groupby' in request.args else None
+        mode = request.args['mode']if 'mode' in request.args else None
         keylist = csv.reader(StringIO.StringIO(request.args['terms'])).next() if 'terms' in request.args else None
-        maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])) if 'maxvalues' in request.args else None
-        minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])) if 'minvalues' in request.args else None
+        maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])).next() if 'maxvalues' in request.args else None
+        minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])).next() if 'minvalues' in request.args else None
 
-
+        print(minvalues)
         
 
         if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+": GET getSummaries collab - level= "+request.args['level']);
@@ -435,7 +435,9 @@ def summariesHandlerCollab():
         level = csv.reader(StringIO.StringIO(request.args['level'])).next() if 'level' in request.args else None
 
         
-        response = Response(json.dumps(app.db.getActivitiesSummaries(**request.args)))
+        #response = Response(json.dumps(app.db.getActivitiesSummaries(**request.args)))
+        response = Response(json.dumps(app.db.getCollaborativeSummariesWorkfows(mode=mode,groupby=groupby,users=users,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues)))
+        
         response.headers['Content-type'] = 'application/json'    
         return response
 
