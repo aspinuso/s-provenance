@@ -49,12 +49,39 @@ def jsonLdToWorkflow():
 
 
 def getIndices():  
-  return [ 
-    { 
-        'index': [
-            ('streams.indexedMeta.key', ASCENDING),
-            ('streams.indexedMeta.value', ASCENDING)
-        ],
-        'name': 'key_value'
-    } 
-  ]
+    return [ 
+        { 
+            'index': [
+                ('streams.indexedMeta.key', ASCENDING),
+                ('streams.indexedMeta.value', ASCENDING)
+            ],
+            'name': 'key_value'
+        } 
+    ]
+
+
+def getKeyValuePairs(keylist, maxvalues, minvalues):
+    # TODO check lengths
+    items= []
+
+    for key in keylist:
+
+        maxval=maxvalues.pop(0)
+        minval=minvalues.pop(0)
+
+        value = {
+            '$gte': minval,
+            '$lte': maxval
+        }
+
+        if maxval == minval:
+            value = maxval 
+
+        items.append({
+            'key': key,
+            'value': value
+        })
+
+    return items
+
+
