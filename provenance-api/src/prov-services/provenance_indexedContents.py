@@ -138,7 +138,7 @@ class ProvenanceStore(object):
         from pymongo import InsertOne
         db = self.connection["verce-prov"]
         lineage = db['lineage']
-        items = lineage.find({}).sort("_id",direction=1).skip(3000000)
+        items = lineage.find({}).sort("_id",direction=1)
         lineage_new = db['lineage_new2']
 
         # .limit(limit)
@@ -169,5 +169,85 @@ class ProvenanceStore(object):
         lineage_new.bulk_write(transformedItems)
         end = time.time()
         print('---after-bulk-->', end-start)
+
                 
 
+    def getWorkflowExecuton(self, start, limit, usernames, functionNames, keylist, maxvalues, minvalues):
+        db = self.connection["verce-prov"]
+        lineage = db['lineage']
+        workflow = db['workflow']
+
+        # BUILD MATCH
+        aggregate_match = {}
+        if usernames is not None and len(usernames) > 0: 
+            aggregate_match['username'] = {
+                '$in': usernames
+            }
+
+        if functionNames is not None and len(functionNames) > 0: 
+            aggregate_match['name'] = {
+                '$in': functionNames
+            }
+
+        key_value_pairs = helper.getKeyValuePairs(keylist, maxvalues, minvalues);
+
+        if len(key_value_pairs) > 0:
+            aggregate_match['$or'] = []
+            for key_value_pair in key_value_pairs: 
+                aggregate_match['$or'].append({
+                    'streams': {
+                        '$elemMatch': {
+                            'indexedMeta': {
+                                '$elemMatch': key_value_pair
+                            }
+                        }  
+                    }  
+                })
+                aggregate_match['$or'].append({
+                    'parameters': {
+                        '$elemMatch': key_value_pair
+                    }
+                })
+        # TODO see if sort on runId or index that end on runId have influence on the group stage.
+
+        # GET WORKFLOW IDS
+        aggregateResults = lineage.aggregate(pipeline= [
+            {
+                '$match': aggregate_match,
+            },
+            {
+               '$group':{
+                    '_id':'$runId'
+                }
+            }                                
+        ])
+
+        runIds = []
+        for runId in aggregateResults:
+            runIds.append(runId['_id'])
+
+        workflowQueryResults = workflow.find(
+            {
+                "_id":{
+                    "$in":runIds
+                }
+            },
+            {
+                "startTime":1,
+                "system_id":1,
+                "description":1,
+                "workflowName":1 
+            }
+        ).sort("startTime",direction=-1).skip(start).limit(limit)
+
+        workflows=[]
+        for workflow in workflowQueryResults:
+            workflows.append(workflow)
+    
+        return {
+            "runIds":workflows,
+            "totalCount": len(runIds)
+        } 
+               
+
+ 
