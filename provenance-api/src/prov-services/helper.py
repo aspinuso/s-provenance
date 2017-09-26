@@ -61,13 +61,14 @@ def getIndices():
 
 
 def getKeyValuePairs(keylist, maxvalues, minvalues):
+
     # TODO check lengths
     items= []
 
     for key in keylist:
 
-        maxval=maxvalues.pop(0)
-        minval=minvalues.pop(0)
+        maxval=num(maxvalues.pop(0))
+        minval=num(minvalues.pop(0))
 
         value = {
             '$gte': minval,
@@ -84,4 +85,12 @@ def getKeyValuePairs(keylist, maxvalues, minvalues):
 
     return items
 
+def num(s):
+    try:
+        return int(s)
+    except exceptions.ValueError:
+        try:
+            return float(s)
+        except exceptions.ValueError:
+            return s
 
