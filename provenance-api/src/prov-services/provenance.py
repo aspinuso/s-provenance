@@ -969,7 +969,7 @@ class ProvenanceStore(object):
                 if prov["type"]=="lineage":
                 #    return lineage.find_one_and_replace({'_id':prov['_id']},prov,upsert=True)
                 # if(workflow.find_one({"_id":prov["runId"]})!=None):
-                     return lineage.insert(prov)
+                     return lineage.insert(helper.addIndexedContentToLineage(prov))
                 # else: 
                 #     raise Exception("Workflow Run not found")
 
@@ -1889,10 +1889,10 @@ class ProvenanceStore(object):
         return  output
         
 
-    def getWorkflowExecuton(self, start, limit, usernames, functionNames, keylist, maxvalues, minvalues):
+    def getWorkflowExecutionByLineage(self, start, limit, usernames, functionNames, keylist, maxvalues, minvalues):
         print('usernames: ', usernames, 'functionNames: ', functionNames, 'keylist: ', keylist, 'maxvalues: ', maxvalues, 'minvalues: ', minvalues)
         db = self.connection["verce-prov"]
-        lineage = db['lineage']
+        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
         workflow = db['workflow']
        
         # BUILD MATCH
@@ -1968,8 +1968,36 @@ class ProvenanceStore(object):
             "totalCount": len(runIds)
         } 
 
+    def getWorkflowExecution(self, start, limit, usernames):
+        print('getWorkflowExecuton -->', usernames)
+        db = self.connection["verce-prov"]
+        workflow = db['workflow']
 
+        query = {
+            'username': {
+                '$in': usernames
+            }
+        }
 
+        workflow_cursor = workflow.find(
+            query,
+            {
+                "startTime":1,
+                "system_id":1,
+                "description":1,
+                "workflowName":1 
+            }
+        ).sort("startTime",direction=-1).skip(start).limit(limit)
 
-        
+        workflow_count = workflow.count(query)
+
+        workflows=[]
+        for workflow in workflow_cursor:
+            workflows.append(workflow)
+    
+        return {
+            "runIds": workflows,
+            "totalCount": workflow_count
+        }
+
     
