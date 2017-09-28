@@ -186,12 +186,11 @@ var cutoffLastJobString = batch_job.cutoffDateLastJob.toISOString();
 
 var batch_job = true
 if (batch_job) {
-    db.lineage_new.mapReduce(
+    db.lineage.mapReduce(
         mapFunction,
         reduceFunction,
         {
             query: {
-                "runId" : "93a5172fe1c317c30ff243283b419a0f",
                 "startTime": {
                     '$gte': cutoffLastJobString,
                     '$lte': startOfJobString
