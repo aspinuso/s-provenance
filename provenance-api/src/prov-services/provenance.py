@@ -1926,6 +1926,9 @@ class ProvenanceStore(object):
                             '$elemMatch': key_value_pair
                         }
                     })
+        # TODO add AND
+
+
         # TODO see if sort on runId or index that end on runId have influence on the group stage.
 
         # GET WORKFLOW IDS
@@ -1955,7 +1958,8 @@ class ProvenanceStore(object):
                 "startTime":1,
                 "system_id":1,
                 "description":1,
-                "workflowName":1 
+                "workflowName":1,
+                "username":1  
             }
         ).sort("startTime",direction=-1).skip(start).limit(limit)
 
@@ -1985,7 +1989,8 @@ class ProvenanceStore(object):
                 "startTime":1,
                 "system_id":1,
                 "description":1,
-                "workflowName":1 
+                "workflowName":1,
+                "username":1  
             }
         ).sort("startTime",direction=-1).skip(start).limit(limit)
 
