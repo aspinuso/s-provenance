@@ -197,7 +197,7 @@ if (batch_job) {
                 }
             },
             out: { 
-                replace: "term_summaries" 
+                reduce: "term_summaries" 
             },
             sort: {
                 runId: 1
