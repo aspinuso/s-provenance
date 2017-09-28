@@ -335,7 +335,13 @@ def getWorkflowExecutions():
     if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET workflowexecutions -  PID:"+str(os.getpid()));
     response = Response()
     # chec functions above in root "/workflow/user/<user>""
-    response = Response(json.dumps(app.db.getWorkflowExecuton(int(start),int(limit),usernames=usernames,functionNames=functionNames,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues)))
+
+    # 
+    if keylist == None and functionNames == None:
+        response = Response(json.dumps(app.db.getWorkflowExecution(int(start),int(limit),usernames=usernames)))
+    else: 
+        response = Response(json.dumps(app.db.getWorkflowExecutionByLineage(int(start),int(limit),usernames=usernames,functionNames=functionNames,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues)))
+
     response.headers['Content-type'] = 'application/json'    
     return response
 
