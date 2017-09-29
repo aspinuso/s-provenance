@@ -278,7 +278,7 @@ def toW3Cprov(ling,bundl,format='xml'):
                             val=None
                             for key in y:
                         
-                                val =num(y[key])
+                                val =helper.num(y[key])
                                 
                                 
                             
@@ -388,8 +388,8 @@ class ProvenanceStore(object):
         for x in keylist:
             maxval=mxvaluelist.pop(0)
             minval=mnvaluelist.pop(0)
-            maxval =self.num(maxval)
-            minval =self.num(minval)
+            maxval =helper.num(maxval)
+            minval =helper.num(minval)
             
                 
             elementsDict.update({x:{"$lte":maxval,"$gte":minval }})
@@ -416,8 +416,8 @@ class ProvenanceStore(object):
                     
                     maxval=mxvaluelist.pop(0)
                     minval=mnvaluelist.pop(0)
-                    maxval =self.num(maxval)
-                    minval =self.num(minval)
+                    maxval =helper.num(maxval)
+                    minval =helper.num(minval)
                    
 
                 
@@ -460,7 +460,7 @@ class ProvenanceStore(object):
              
             self.getTraceList(id, 1000,tracelist) 
         elif 'level' in kwargs:  
-            self.getTraceList(id, self.num(kwargs['level'][0]),tracelist) 
+            self.getTraceList(id, helper.num(kwargs['level'][0]),tracelist) 
             
               #lineage.find({'runId':id}).sort("endTime",direction=-1)
             
@@ -647,8 +647,8 @@ class ProvenanceStore(object):
         for x in keylist:
             maxval=maxvaluelist.pop(0)
             minval=minvaluelist.pop(0)
-            maxval =self.num(maxval)
-            minval =self.num(minval)
+            maxval =helper.num(maxval)
+            minval =helper.num(minval)
             
             objdata=lineage.aggregate(pipeline=[{'$match':{'username':userid,'streams.content':{'$elemMatch':{x:{"$lte":maxval,"$gte":minval }}}}},
                                                     {'$group':{'_id':'$runId','startTime':{ '$first': '$startTime' }}},
@@ -704,8 +704,8 @@ class ProvenanceStore(object):
         for x in keylist:
             maxval=maxvaluelist.pop(0)
             minval=minvaluelist.pop(0)
-            maxval =self.num(maxval)
-            minval =self.num(minval)
+            maxval =helper.num(maxval)
+            minval =helper.num(minval)
              
             if runId!=None:
                 
@@ -973,12 +973,12 @@ class ProvenanceStore(object):
                 # else: 
                 #     raise Exception("Workflow Run not found")
 
-            if prov["type"]=="workflow_run":
-             
-                return workflow.insert(prov)
+            if prov["type"]=="workflow_run":    
+                return workflow.update_one({'runId':prov['runId']},{"$set":prov},upsert=True).raw_result
         
         except Exception, err:
-            raise
+            traceback.print_exc()
+             
             
     def insertData(self, prov):
         db = self.connection["verce-prov"]
@@ -1009,8 +1009,10 @@ class ProvenanceStore(object):
             
             response={"success":False}
             response.update({"error":str(err)}) 
+
             
         finally:
+
             return response
     
     
@@ -1192,7 +1194,7 @@ class ProvenanceStore(object):
         for x in keylist:
             val=valuelist[k]
             k+=1
-            val =self.num(val)
+            val =helper.num(val)
             
             elementsDict.update({x:val})
         
@@ -1215,8 +1217,8 @@ class ProvenanceStore(object):
             maxval=maxvaluelist[k]
             minval=minvaluelist[k]
             k+=1
-            maxval =self.num(maxval)
-            minval =self.num(minval)
+            maxval =helper.num(maxval)
+            minval =helper.num(minval)
                 
 
             elementsDict.update({x:{"$lte":maxval,"$gte":minval }})
@@ -1246,7 +1248,7 @@ class ProvenanceStore(object):
         for x in keylist:
             val=valuelist[k]
             k+=1
-            val =self.num(val)
+            val =helper.num(val)
             
             elementsDict.update({x:val})
         
@@ -1277,7 +1279,7 @@ class ProvenanceStore(object):
         for x in keylist:
             val=valuelist[k]
             k+=1
-            val =self.num(val)
+            val =helper.num(val)
             
             elementsDict.update({x:val})
         
