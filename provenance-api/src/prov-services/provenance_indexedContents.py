@@ -139,7 +139,7 @@ class ProvenanceStore(object):
         db = self.connection["verce-prov"]
         lineage = db['lineage']
         items = lineage.find({}).sort("_id",direction=1)
-        lineage_new = db['lineage_new2']
+        lineage_new = db['lineage_new']
 
         # .limit(limit)
         transformedItems = []

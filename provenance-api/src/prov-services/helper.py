@@ -90,11 +90,14 @@ def getKeyValuePairs(keylist, maxvalues, minvalues):
         return []
 
 def num(s):
+    val=None
     try:
-        return int(s)
+        val= int(s)
     except exceptions.ValueError:
         try:
-            return float(s)
+            val= float(s)
         except exceptions.ValueError:
-            return s
+            val= str(s)
+    finally:
+        return val
 
