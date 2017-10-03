@@ -37,7 +37,7 @@ RUN echo 'mongod --logpath /prov/mongo.log --dbpath /prov/' >> docker_entry.sh
 #RUN echo 'mongod --logpath /prov/mongo.log --dbpath /prov/ --auth' >> docker_entry.sh
 
 ENV SPROV_DB=sprov-db
-RUN echo 'mongo --eval "var dbName = $SPROV_DB  /prov/s-provenance-master/provenance-api/resources/ensure_indexes.js' >> docker_entry.sh
+RUN echo 'mongo --eval "var dbName = '$SPROV_DB'"  /prov/s-provenance-master/provenance-api/resources/ensure_indexes.js' >> docker_entry.sh
 
 # crontab map reduce
 # import data ?
