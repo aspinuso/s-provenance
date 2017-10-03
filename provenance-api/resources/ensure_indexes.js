@@ -1,5 +1,5 @@
 // select right db
-use verce-prov
+use dbName
 
 var indexes = [ 
     { 
