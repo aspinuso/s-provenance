@@ -1,6 +1,8 @@
 # image knmi
 FROM debian
 
+LABEL "KNMI PROVENANCE STORE CONTAINER"
+
 RUN mkdir -p /prov/
 WORKDIR /prov/
 
@@ -15,6 +17,7 @@ RUN apt-get update && apt-get install -y \
 	mongodb
 
 # s-prov download from git
+# RUN curl -L -O https://github.com/aspinuso/s-provenance/archive/master.zip 
 RUN curl -L -O https://github.com/andrejsim/s-provenance/archive/master.zip 
 RUN unzip master.zip
 
@@ -29,8 +32,13 @@ WORKDIR /prov/s-provenance-master/provenance-api/src/prov-services/
 
 
 # docker start file
-RUN echo './start_flask_gunicorn_docker.sh' >> docker_entry.sh
 RUN echo 'mongod --logpath /prov/mongo.log --dbpath /prov/ --auth' >> docker_entry.sh
+
+# crontab map reduce
+
+# import data ?
+
+RUN echo './start_flask_gunicorn_docker.sh' >> docker_entry.sh
 
 
 RUN chmod a+x docker_entry.sh
@@ -42,7 +50,8 @@ ENTRYPOINT bash docker_entry.sh
 # docker rmi $(docker images -f "dangling=true" -q)
 # docker run -it -p 8082:8082 prov &
 # docker run -it -d -p 8082:8082 prov
-# docker exec -it 36c1221d56be bash
+# docker exec -it docker_name bash
+# docker logs -f docker_name
 # 
 
 
