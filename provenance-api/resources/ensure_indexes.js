@@ -7,7 +7,7 @@ var indexes = [
             'streams.indexedMeta.key': 1,
             'streams.indexedMeta.value': 1
         },
-        'collection': 'lineage2',
+        'collection': 'lineage',
         'name': 'lineage indexedMeta'
     },
     { 
@@ -15,28 +15,28 @@ var indexes = [
             'parameters.key': 1,
             'parameters.value': 1
         },
-        'collection': 'lineage2',
+        'collection': 'lineage',
         'name': 'lineage parameters'
     },    
     { 
         'index': {
             'streams.id': 1
         },
-        'collection': 'lineage2',
+        'collection': 'lineage',
         'name': 'lineage streamsId'
     },
     { 
         'index': {
             'derivationId.DerivedFromDatasetID': 1
         },
-        'collection': 'lineage2',
+        'collection': 'lineage',
         'name': 'lineage DerivedFromDatasetID'
     },
     { 
         'index': {
             'runId': 1
         },
-        'collection': 'lineage2',
+        'collection': 'lineage',
         'name': 'lineage runId'
     }
 ]
