@@ -3,24 +3,7 @@
 
  
  						
- Ext.define('CF.model.Activity', {
-    extend: 'Ext.data.Model',
- 
-  fields : [
-  		     
-            {name: 'ID', type: 'string', mapping:'_id'},
-            {name: 'instanceId', type: 'string', mapping:'instanceId'},
-            {name: 'parameters', type: 'string', mapping:'parameters'},
-            {name: 'creationDate', type: 'string', mapping:'endTime'}, // custom mapping
-            {name: 'error', type: 'string' , convert: function (val){
-            			 				return JSON.stringify(val)
-    							}
-    					}, // custom mapping
-            {name: 'iterationIndex', type: 'string' , mapping:'iterationIndex'} // custom mapping
-            
-        	], 
-});
- 						
+ 	
 
 
  
@@ -53,7 +36,7 @@ Ext.define('CF.store.ActivityStore', {
    				         type: 'ajax',
   				          url: '/j2ep-1.0/prov/run/?id=http%3A%2F%2Flocalhost%3A8080%2FDispelGateway%2Fservices%2Fprocess-6bd8e593-0847-443e-a842-e69635c2c2c6',
   				          reader: {
-   						             root: 'activities',
+   						             root: 'graph',
   						             totalProperty: 'totalCount'
   						          },
   						  simpleSortMode: true

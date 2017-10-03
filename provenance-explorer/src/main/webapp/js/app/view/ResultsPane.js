@@ -74,9 +74,12 @@ function openRun(id)
 		 	this.currentRun=id
         activityStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(currentRun)+'?method=aggregate',
+          //url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(currentRun)+'?method=aggregate',
+          url: PROV_SERVICE_BASEURL + '/workflowexecutions/'+encodeURIComponent(currentRun)+'/instances',
+          
+
           reader: {
-            rootProperty: 'activities',
+            rootProperty: '@graph',
             totalProperty: 'totalCount'
           },
           simpleSortMode: true
@@ -157,23 +160,24 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
 
   }
   
-  if (data.streams)
+  if (data['s-prov:Data'])
   { 
  
+
    
-  if (data.streams[0].port==null && !(data.streams[0].port===undefined))
+  if (data['s-prov:Data'].port==null && !(data['s-prov:Data'].port===undefined))
   {
    edgecol=colour.lightblue
    col = colour.lightblue
   }
-  
-  if (!(data.feedbackIteration===undefined) && data.feedbackIteration)
+   
+  if (!(data['s-prov:Data']["prov:wasGeneratedBy"].feedbackIteration===undefined) && data['s-prov:Data']["prov:wasGeneratedBy"].feedbackIteration)
   {
    edgecol=colour.lightblue
    col = colour.red
   }
  
-  	if (data.streams[0].port=='_d4p_state')
+  	if (data['s-prov:Data'].port=='_d4p_state')
   	{     //console.log(data.streams[0].port)
   		col = colour.lightblue
   		
@@ -188,13 +192,13 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
  // if (!data.streams.port or data.streams.port=='')
   
  
-  var nodea = graph.addNode(data["id"], {
-    label: data["_id"].substring(0, 8),
+  var nodea = graph.addNode(data['s-prov:Data']["@id"], {
+    label: data['s-prov:Data']["prov:wasAttributedTo"]["@id"].substring(0, 8),
     'color': col,
     'shape': 'dot',
     'radius': 19,
     'alpha': 1,
-    'data': {'runId':data.runId,'location':data.streams[0].location},
+    'data': {'runId':data['s-prov:Data']["prov:wasGeneratedBy"]["s-prov:WFExecution"]["@id"],'location':data['s-prov:Data']['prov:location']},
     mass: 2
   });
 
@@ -224,10 +228,10 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
 
   }
 
-  if (data["derivationIds"].length > 0 && typeof data["derivationIds"] != "undefined") {
-    for (var i = 0; i < data["derivationIds"].length; i++) {
-      if (data["derivationIds"][i]["wasDerivedFrom"]) {
-        wasDerivedFromDephtree(data["derivationIds"][i]["wasDerivedFrom"], graph, nodea);
+  if (data['s-prov:Data']["prov:Derivation"].length > 0 && typeof data['s-prov:Data']["prov:Derivation"] != "undefined") {
+    for (var i = 0; i < data['s-prov:Data']["prov:Derivation"].length; i++) {
+      if (data['s-prov:Data']["prov:Derivation"][i]["prov:wasDerivedFrom"]) {
+        wasDerivedFromDephtree(data['s-prov:Data']["prov:Derivation"][i]["prov:wasDerivedFrom"], graph, nodea);
       }
     }
   }
@@ -444,9 +448,11 @@ Ext.define('CF.view.WorkflowOpenByRunID', {
 		
         activityStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(form.findField("runId").getValue(false).trim())+'?method=aggregate',
+          // OLD API => url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(form.findField("runId").getValue(false).trim())+'?method=aggregate',
+          url: PROV_SERVICE_BASEURL + '/workflowexecutions/'+encodeURIComponent(form.findField("runId").getValue(false).trim())+'/invocations',
+          
           reader: {
-            rootProperty: 'activities',
+            rootProperty: 'graph',
             totalProperty: 'totalCount'
           },
           simpleSortMode: true
@@ -602,40 +608,46 @@ Ext.define('CF.view.WorkFlowSelectionWindow', {
 var onStoreLoad = function(store) {
   Ext.getCmp('viewworkflowinput').enable()
   Ext.getCmp('exportrun').enable();;
-  Ext.getCmp("activitymonitor").setTitle(userSN+' - Run activity monitor - ' + currentRun)
+  Ext.getCmp("activitymonitor").setTitle(userSN+' - Runtime Instances monitor - ' + currentRun)
 }
 
-var renderActivityID = function(value, p, record) {
-if (record.data.streams)
-   for (i=0;i<=record.data.streams.length;i++)
-   {
-   		
-	if(record.data.streams[i]['con:immediateAccess'] && record.data.streams[i]['con:immediateAccess']!="")
-	   	return Ext.String.format(
+var renderInstanceID = function(value, p, record) {
+ 
+if (record.data['s-prov:generatedWithImmediteAccess'])
+    return Ext.String.format(
     		"<strong><i>{0}</i></strong>",
-    		record.data.ID
+    		record.data["@id"]
   	   	);
-  	if(record.data.streams[i].location && record.data.streams[i].location!='')
-    	return Ext.String.format(
+if (record.data["s-prov:generatedWithLocation"])
+    return Ext.String.format(
     		"<i>{0}</i>",
-    		record.data.ID
-  	   	);
-  	return Ext.String.format(
+    		record.data["@id"]
+  	   	)
+
+return Ext.String.format(
     	"{0}",
-    	record.data.ID
-  	   );
-  	
-  	}
-else  	
-  	return Ext.String.format(
-    	"{0}",
-    	record.data.ID
+    	record.data["@id"]
   	   );
 }
+
+var renderChanged = function(value, p, record) {
+ 
+if (record.data['s-prov:qualifiedChange'] && record.data['s-prov:qualifiedChange'].length>0)
+    return Ext.String.format(
+        "<strong style='color:red'>{0}</strong>",
+        record.data['s-prov:qualifiedChange'].length
+        );
+return Ext.String.format(
+      "{0}",
+      ""
+       );
+}
+
+
   	
 
 Ext.define('CF.view.ActivityMonitor', {
-  title: 'Run Activity monitor',
+  title: 'Runtime Instances monitor',
   width: '30%',
   region: 'west',
   extend: 'Ext.grid.Panel',
@@ -777,23 +789,45 @@ Ext.define('CF.view.ActivityMonitor', {
       header: 'ID',
       dataIndex: 'ID',
       flex: 3,
-      sortable: true,
-      renderer: renderActivityID
+      sortable: false,
+      renderer: renderInstanceID
     },
 
     {
-      header: 'Date',
-      dataIndex: 'creationDate',
+      header: 'Last Event',
+      dataIndex: 'lastEventTime',
       flex: 3,
       sortable: true,
       groupable: false
     }, // custom mapping
     {
-      header: 'Messages',
-      dataIndex: 'errors',
+      header: 'Data count',
+      dataIndex: 'count',
+      flex: 3,
+      sortable: true,
+      groupable: false
+    },
+    {
+      header: 'worker',
+      dataIndex: 'worker',
+      flex: 3,
+      sortable: true,
+      groupable: false
+    },
+    {
+      header: 'Message',
+      dataIndex: 'message',
       flex: 3,
       sortable: false
+    },
+    {
+      header: 'Changed',
+      dataIndex: 'change',
+      flex: 3,
+      sortable: false,
+      renderer: renderChanged
     }
+
   ],
   flex: 1,
 
@@ -802,10 +836,10 @@ Ext.define('CF.view.ActivityMonitor', {
       itemdblclick: function(dataview, record, item, index, e) {
         artifactStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + 'entities/generatedby?iterationId=' + record.get("ID"),
+          url: PROV_SERVICE_BASEURL + 'data?attributedTo=' + record.get("ID"),
 
           reader: {
-            rootProperty: 'entities',
+            rootProperty: '@graph',
             totalProperty: 'totalCount'
           }
         });
