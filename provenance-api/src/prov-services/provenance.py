@@ -1891,8 +1891,8 @@ class ProvenanceStore(object):
         return  output
         
 
-    def getWorkflowExecutionByLineage(self, start, limit, usernames, functionNames, keylist, maxvalues, minvalues):
-        print('usernames: ', usernames, 'functionNames: ', functionNames, 'keylist: ', keylist, 'maxvalues: ', maxvalues, 'minvalues: ', minvalues)
+    def getWorkflowExecutionByLineage(self, start, limit, usernames, functionNames, keylist, maxvalues, minvalues, mode):
+        print('usernames: ', usernames, 'functionNames: ', functionNames, 'keylist: ', keylist, 'maxvalues: ', maxvalues, 'minvalues: ', minvalues, 'mode: ', mode)
         db = self.connection["verce-prov"]
         lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
         workflow = db['workflow']
@@ -1908,44 +1908,55 @@ class ProvenanceStore(object):
             aggregate_match['name'] = {
                 '$in': functionNames
             }
-        if type(keylist) is list and type(maxvalues) is list and type(minvalues):
-            key_value_pairs = helper.getKeyValuePairs(keylist, maxvalues, minvalues);
 
-            if len(key_value_pairs) > 0:
-                aggregate_match['$or'] = []
-                for key_value_pair in key_value_pairs: 
-                    aggregate_match['$or'].append({
-                        'streams': {
-                            '$elemMatch': {
-                                'indexedMeta': {
-                                    '$elemMatch': key_value_pair
-                                }
-                            }  
-                        }  
-                    })
-                    aggregate_match['$or'].append({
-                        'parameters': {
-                            '$elemMatch': key_value_pair
+        key_value_pairs = helper.getKeyValuePairs(keylist, maxvalues, minvalues);
+        indexed_meta_query = helper.getIndexedMetaQueryList(key_value_pairs)
+        parameters_query = helper.getParametersQueryList(key_value_pairs)
+
+        aggregate_match['$or'] = indexed_meta_query + parameters_query
+       
+        print('---aggregate_match->',  aggregate_match)
+
+        if mode == 'OR':
+            aggregateResults = lineage.aggregate(pipeline= [
+                {
+                    '$match': aggregate_match,
+                },
+                {
+                   '$group':{
+                        '_id':'$runId'
+                    }
+                }                                
+            ])
+        elif mode == 'AND':
+            and_query = helper.getAndQueryList(key_value_pairs)
+            print(' parameters_query- --- ', parameters_query)
+            aggregateResults = lineage.aggregate(pipeline= [
+                {
+                    '$match': aggregate_match,
+                },
+                {   
+                    '$unwind': '$streams'
+                },
+                {   
+                    '$unwind': '$streams.indexedMeta'
+                },
+                {
+                   '$group':{
+                        '_id':'$runId',
+                        'indexedMeta': { 
+                            '$addToSet': "$streams.indexedMeta"    
                         }
-                    })
-        # TODO add AND
+                    },  
+                },
+                {
+                    '$match': {
+                        '$and': and_query
+                    }
+                }                                
+            ])
 
-
-        # TODO see if sort on runId or index that end on runId have influence on the group stage.
-
-        # GET WORKFLOW IDS
-        print(aggregate_match)
-        aggregateResults = lineage.aggregate(pipeline= [
-            {
-                '$match': aggregate_match,
-            },
-            {
-               '$group':{
-                    '_id':'$runId'
-                }
-            }                                
-        ])
-
+        # Parse runIds for finding workflows
         runIds = []
         for runId in aggregateResults:
             runIds.append(runId['_id'])

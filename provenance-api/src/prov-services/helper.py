@@ -59,17 +59,53 @@ def jsonLdToWorkflow():
     workflow = {}
     # TODO implement transformation of JSON-LD to workflow
     return workflow
+    
+def getIndexedMetaQueryList(KeyValuePairs):
+    indexedMetaQueryList = []
+    for key_value_pair in KeyValuePairs:
+        indexedMetaQueryList.append({
+            'streams': {
+                '$elemMatch': {
+                    'indexedMeta': {
+                        '$elemMatch': key_value_pair 
+                    }
+                }
+            }
+        })
+    return indexedMetaQueryList
 
+def getParametersQueryList(KeyValuePairs):
+    parametersQueryList = []
+    for key_value_pair in KeyValuePairs:
+        parametersQueryList.append({
+            'parameters': {
+                '$elemMatch': key_value_pair
+            }
+        })
+    return parametersQueryList
 
+def getAndQueryList(KeyValuePairs):
+    parametersQueryList = []
+    for key_value_pair in KeyValuePairs:
+        parametersQueryList.append({
+            'indexedMeta': {
+                '$elemMatch': key_value_pair
+            }
+        })
+    return parametersQueryList
 
 def getKeyValuePairs(keylist, maxvalues, minvalues):
+    keys = copy.deepcopy(keylist)
+    maxValList = copy.deepcopy(maxvalues)
+    minValList = copy.deepcopy(minvalues)
+
     try:
-        items= []
+        key_val_match_list = []
 
-        for key in keylist:
+        for key in keys:
 
-            maxval=num(maxvalues.pop(0))
-            minval=num(minvalues.pop(0))
+            maxval=num(maxValList.pop(0))
+            minval=num(minValList.pop(0))
 
             value = {
                 '$gte': minval,
@@ -79,12 +115,12 @@ def getKeyValuePairs(keylist, maxvalues, minvalues):
             if maxval == minval:
                 value = maxval 
 
-            items.append({
+            key_val_match_list.append({
                 'key': key,
                 'val': value
             })
 
-        return items
+        return key_val_match_list
     except exceptions.ValueError:
         # TODO how to handle error?
         return []
