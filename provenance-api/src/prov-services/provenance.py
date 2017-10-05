@@ -318,7 +318,7 @@ class ProvenanceStore(object):
     def __init__(self, url):
  
         self.connection = MongoClient(url, 27017)
-        #db = self.connection["verce-prov"]
+        self.db = self.connection[os.environ["SPROV_DB"]]
         #self.lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
         #workflow = db[ProvenanceStore.BUNDLE_COLLECTION]
         
@@ -400,8 +400,8 @@ class ProvenanceStore(object):
     def getEntitiesFilter(self,searchDic,keylist,mxvaluelist,mnvaluelist,start,limit):
             elementsDict ={}
             searchContextDic={}
-            db = self.connection["verce-prov"]
-            lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+            # db = self.connection["verce-prov"]
+            lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
             #if iterationId!=None:
             
             if keylist==None:
@@ -450,9 +450,9 @@ class ProvenanceStore(object):
     def exportDataProvenance(self, id,**kwargs):
         
         
-        db = self.connection["verce-prov"]
-        workflow = db[ProvenanceStore.BUNDLE_COLLECTION]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         totalCount=lineage.find({'runId':id}).count()
         
         tracelist=[]
@@ -477,9 +477,9 @@ class ProvenanceStore(object):
     def exportRunProvenance(self, id,**kwargs):
         
         
-        db = self.connection["verce-prov"]
-        workflow = db[ProvenanceStore.BUNDLE_COLLECTION]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         totalCount=lineage.find({'runId':id}).count()
         cursorsList=list()
         
@@ -505,8 +505,8 @@ class ProvenanceStore(object):
         
         
         
-        db = self.connection["verce-prov"]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         totalCount=lineage.find({'runId':id}).count()+1
         cursorsList=list()
         
@@ -564,8 +564,8 @@ class ProvenanceStore(object):
         
          
         runids=[]
-        db = self.connection["verce-prov"]
-        workflow = db[ProvenanceStore.BUNDLE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
         obj=workflow.find({"_id":{"$in":id_list},'username':userid},{"startTime":-1,"system_id":1,"description":1,"name":1,"workflowName":1,"grid":1,"resourceType":1,"resource":1,"queue":1}).sort("startTime",direction=-1)
         totalCount=workflow.find({"_id":{"$in":id_list}}).sort("startTime",direction=-1).count()
         for x in obj:
@@ -580,9 +580,9 @@ class ProvenanceStore(object):
     
     
     def getUserRunsValuesRange(self,userid,keylist,maxvaluelist,minvaluelist,**kwargs):
-        db = self.connection["verce-prov"]
-        workflow = db[ProvenanceStore.BUNDLE_COLLECTION]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         elementsDict ={}
         output=None
         runids=[]
@@ -760,16 +760,16 @@ class ProvenanceStore(object):
         
     
     def getRunInfo(self, path):
-         db = self.connection["verce-prov"]
-         workflow = db[ProvenanceStore.BUNDLE_COLLECTION]
+         # db = self.connection["verce-prov"]
+         workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
          obj = workflow.find_one({"_id":path})
          return obj
 
          
      
     def getUserRuns(self, path, **kwargs):
-        db = self.connection["verce-prov"]
-        workflow = db[ProvenanceStore.BUNDLE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
         obj=None
         totalCount=None
         output=None
@@ -808,8 +808,8 @@ class ProvenanceStore(object):
     
     
     def getEntitiesBy(self,meth,keylist,mxvaluelist,mnvaluelist,vluelist,**kwargs):
-        db = self.connection["verce-prov"]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         totalCount=0;
         cursorsList=list()
         obj=None
@@ -891,9 +891,9 @@ class ProvenanceStore(object):
         
         ret=[]
         response={}
-        db = self.connection["verce-prov"]
-        workflow = db[ProvenanceStore.BUNDLE_COLLECTION]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         try:
             
             workflow.update({"_id":id},{'$set':doc})
@@ -912,9 +912,9 @@ class ProvenanceStore(object):
     def deleteRun(self, id):
         ret=[]
         response={}
-        db = self.connection["verce-prov"]
-        workflow = db[ProvenanceStore.BUNDLE_COLLECTION]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         try:
             if (workflow.find_one({"_id":id})!=None):
                 lineage.remove({"runId":id})
@@ -934,8 +934,8 @@ class ProvenanceStore(object):
             return response
     
     def insertWorkflow(self, json):
-        db = self.connection["verce-prov"]
-        workflow = db[ProvenanceStore.BUNDLE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
         ret=[]
         response={}
         
@@ -961,9 +961,9 @@ class ProvenanceStore(object):
     ' insert new data in different collections depending from the document type'
 
     def updateCollections(self, prov):
-        db = self.connection["verce-prov"]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
-        workflow = db[ProvenanceStore.BUNDLE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
+        workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
         try:
             if prov["type"]=="lineage":
                 if prov["type"]=="lineage":
@@ -981,8 +981,8 @@ class ProvenanceStore(object):
              
             
     def insertData(self, prov):
-        db = self.connection["verce-prov"]
-        workflow = db[ProvenanceStore.BUNDLE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
         ret=[]
         response={}
         
@@ -1017,8 +1017,8 @@ class ProvenanceStore(object):
     
     
     def getDerivedDataTrace(self, id,level):
-        db = self.connection["verce-prov"]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         xx = lineage.find_one({"streams.id":id},{"runId":1,"derivationIds":1,'streams.port':1,'streams.location':1});
         xx.update({"dataId":id})
         cursor=lineage.find({"derivationIds":{'$elemMatch':{"DerivedFromDatasetID":id}}},{"runId":1,"streams":1});
@@ -1053,9 +1053,9 @@ class ProvenanceStore(object):
         return xx
     
     def getTraceX(self, id,level):
-        db = self.connection["verce-prov"]
+        # db = self.connection["verce-prov"]
          
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         if type(id)==list:
             xx = lineage.find({"streams.id":{"$in":id}});
         else:
@@ -1074,8 +1074,8 @@ class ProvenanceStore(object):
      
 
     def getTrace(self, id,level):
-        db = self.connection["verce-prov"]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         xx = lineage.find_one({"streams.id":id},{'streams':{'$elemMatch':{'id':id}},
                                                             'iterationId':1,
                                                             'runId':1,
@@ -1132,8 +1132,8 @@ class ProvenanceStore(object):
         
     def getTraceList(self, id,level,ll):
         sys.setrecursionlimit(2000)
-        db = self.connection["verce-prov"]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         xx = lineage.find_one({"streams.id":id});
         xx.update({"id":id})
         ll.append(xx)
@@ -1209,8 +1209,8 @@ class ProvenanceStore(object):
     
                 
     def hasAncestorWithValuesRange(self, id, keylist,minvaluelist,maxvaluelist):
-        db = self.connection["verce-prov"]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         elementsDict ={}
         k=0
         for x in keylist:
@@ -1271,8 +1271,8 @@ class ProvenanceStore(object):
         
         
     def getTraceConditonalX(self, id, keylist,valuelist):
-        db = self.connection["verce-prov"]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         elementsDict ={}
         
         k=0
@@ -1305,9 +1305,9 @@ class ProvenanceStore(object):
         
         
     def getActivitiesSummaries(self,**kwargs): 
-        db = self.connection["verce-prov"]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
-        workflow = db[ProvenanceStore.BUNDLE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
+        workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
         obj=[]
         runId=[]
         groupby=None
@@ -1502,9 +1502,9 @@ class ProvenanceStore(object):
 
 
     def getCollaborativeSummariesWorkfows(self,mode="OR",groupby="username",keylist=None,maxvalues=None,minvalues=None,users=None):
-        db = self.connection["verce-prov"]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
-        workflow = db[ProvenanceStore.BUNDLE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
+        workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
         obj=[]
         searchDic = self.makeElementsSearchDic(keylist,minvalues,maxvalues)
         #print(searchDic)
@@ -1675,8 +1675,8 @@ class ProvenanceStore(object):
         return obj
 
     def getMonitoring(self, id,level,start,limit):
-        db = self.connection["verce-prov"]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         group=''
         if level=="invocation":
                group='iterationId'
@@ -1746,8 +1746,8 @@ class ProvenanceStore(object):
 
 
     def getComponentInstance(self, id):
-        db = self.connection["verce-prov"]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        # db = self.connection["verce-prov"]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         obj = lineage.aggregate(pipeline=[{'$match':{'instanceId':id}},
                                                     {"$unwind":"$streams"},
                                                     {"$sort":{"endTime":-1}},
@@ -1822,9 +1822,9 @@ class ProvenanceStore(object):
 
 
     def getData(self,start,limit,genBy=None,attrTo=None,keylist=None,maxvalues=None,minvalues=None,id=None):
-    
-        db = self.connection["verce-prov"]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
+        print('start getDate--> start: ', start, ' limit: ', limit, ' genBy: ', genBy, ' attrTo: ', attrTo, ' keylist: ', keylist, ' maxvalues: ', maxvalues, ' minvalues: ', minvalues, ' id: ', id)
+        # db = self.connection["verce-prov"]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         totalCount=0;
         searchAgents=None
         searchActivities=None
@@ -1893,9 +1893,9 @@ class ProvenanceStore(object):
 
     def getWorkflowExecutionByLineage(self, start, limit, usernames, functionNames, keylist, maxvalues, minvalues, mode):
         print('usernames: ', usernames, 'functionNames: ', functionNames, 'keylist: ', keylist, 'maxvalues: ', maxvalues, 'minvalues: ', minvalues, 'mode: ', mode)
-        db = self.connection["verce-prov"]
-        lineage = db[ProvenanceStore.LINEAGE_COLLECTION]
-        workflow = db['workflow']
+        # db = self.connection["verce-prov"]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
+        workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
        
         # BUILD MATCH
         aggregate_match = {}
@@ -1987,8 +1987,8 @@ class ProvenanceStore(object):
 
     def getWorkflowExecution(self, start, limit, usernames):
         print('getWorkflowExecuton -->', usernames)
-        db = self.connection["verce-prov"]
-        workflow = db['workflow']
+        # db = self.connection["verce-prov"]
+        workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
 
         query = {
             'username': {
