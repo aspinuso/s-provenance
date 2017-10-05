@@ -1503,23 +1503,9 @@ class ProvenanceStore(object):
 
 
     def getCollaborativeSummariesWorkfows(self,mode="OR",groupby="username",keylist=None,maxvalues=None,minvalues=None,users=None):
-        # db = self.connection["verce-prov"]
         lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
         obj=[]
-        searchDic = self.makeElementsSearchDic(keylist,minvalues,maxvalues)
-        #print(searchDic)
-         
-        # if mode=="AND":
-        #     obj=lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':searchDic['streams.content']}},
-        #                                     {'$group':{'_id': {'runId':'$runId','username':'$username'}}}])
-        # elif mode=="OR":
-        #     for y in searchDic['streams.content']['$elemMatch']:
-        #         for c in lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':{'$elemMatch':{y:searchDic['streams.content']['$elemMatch'][y]}}}},
-        #                                                      {'$group':{'_id': {'runId':'$runId','username':'$username'}}}]):
-        #            print(c)
-        #            obj.append(c)
-
 
         key_value_pairs = helper.getKeyValuePairs(keylist, maxvalues, minvalues)
         
