@@ -538,19 +538,20 @@ class ProvenanceStore(object):
       
         return  (output,totalCount)
     
-    def getSolverConf(self,path,request):
+    def getSolverConf(self,id,userId=None):
         db = self.connection["verce-prov"]
         solver = db['solver']
         try:
-            solver = solver.find_one({"_id":path})
+            solver = solver.find_one({"_id":id})
             if (solver!=None):
                 solver.update({"success":True})
-                userId = request.args["userId"][0] if "userId" in request.args else False
-                def userFilter(item): return (not "users" in item) or (userId and userId in item["users"])
-                def velmodFilter(item):
-                    item["velmod"] = filter(userFilter, item["velmod"])
-                    return item
-                solver["meshes"] = map(velmodFilter, filter(userFilter, solver["meshes"]))
+                if userId!=None:
+                    def userFilter(item): 
+                        return (not "users" in item) or (userId and userId in item["users"])
+                    def velmodFilter(item):
+                        item["velmod"] = filter(userFilter, item["velmod"])
+                        return item
+                    solver["meshes"] = map(velmodFilter, filter(userFilter, solver["meshes"]))
                 return solver
             else:
                 return {"success":False, "error":"Solver "+path+" not Found"}
