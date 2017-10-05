@@ -149,7 +149,7 @@ var svg = d3.select("body").append("svg")
 
 var link = svg.append("g").selectAll(".link"), node = svg.append("g").selectAll(".node");
 
-d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, classes) {
+d3.json(PROV_SERVICE_BASEURL + "/summaries/collaborative?"+qstring, function(error, classes) {
   if (error) throw error;
 
 if (RAD_MODE=='data') 
@@ -184,14 +184,14 @@ if (RAD_MODE=='data')
    }
    else
     
-  if (RAD_MODE=='vrange') 
+  if (RAD_MODE=='workflows') 
   {
    nodes = cluster.nodes(packageHierarchyPE(classes,RAD_GB));
   
    links = packageConnlistPEs(nodes);
    link = link
       .data(bundle(links))
-    .enter().append("path")
+      .enter().append("path")
       .each(function(d) {  d.source = d[0], d.target = d[d.length - 1];})
       .attr("class", "link")
       .attr("d", line)
@@ -710,9 +710,11 @@ function reload(par,sel){
   url=window.location+""
   if (sel=='setrange'){
   	
-  	url=updateURLParameter(url,'minidx',document.forms[0].minidx.value)
-  	url=updateURLParameter(url,'maxidx',document.forms[0].maxidx.value)
-  	url=updateURLParameter(url,'starttime',document.forms[0].starttime.value)
+  	url=updateURLParameter(url,'minvalues',document.forms[0].minvalues.value)
+  	url=updateURLParameter(url,'maxvalues',document.forms[0].maxvalues.value)
+  	url=updateURLParameter(url,'terms',document.forms[0].terms.value)
+    url=updateURLParameter(url,'mode',document.forms[0].mode.value)
+    url=updateURLParameter(url,'users',document.forms[0].users.value)
   	window.location=url
   
   	}
@@ -725,7 +727,7 @@ function reload(par,sel){
 
 
 </script>
-<h2>Radial Provenance Analysis for '<%= request.getParameter("runId") %>' with tags '<%= request.getParameter("tags") %>'</h2>
+<h2>Collaborative Provenance Analysis</h2>
 <div class='my-legend'>
 <div class='legend-title'>Edges: Data Transfer (bytes)</div>
 <div class='legend-scale'>
@@ -764,43 +766,37 @@ function reload(par,sel){
 
  <select onchange="reload('level','selectLevel')" id="selectLevel">
   <option value="xx">Select Level</option>
-  <option value="prospective">prospective</option>
-  <option value="instances">instances</option>
-  <option value="iterations">iterations</option>
+  <option value="worklfows">worklfows</option>
+  <option value="data">data</option>
 </select> 
 <form name="indexrange">
-<% if (request.getParameter("level").equals("iterations")) { %>
-<strong>Iteration Range:</strong> 
-  minidx
-  <input type="number" name="minidx" min="0" value="<%= request.getParameter("minidx") %>">
-  maxidx
-  <input type="number" name="maxidx" min="1" value="<%= request.getParameter("maxidx") %>">
-   start-time
-  <input type="string" name="starttime"  value="<%= request.getParameter("starttime") %>">
+
+<strong>Visualisation Parameters:</strong> 
+  terms
+  <input type="string" name="terms"  value="<%= request.getParameter("terms") %>">
+  minvalues
+  <input type="string" name="minvalues" min="0" value="<%= request.getParameter("minvalues") %>">
+  maxvalues
+  <input type="string" name="maxvalues" min="1" value="<%= request.getParameter("maxvalues") %>">
+  mode
+  <input type="string" name="mode" min="1" value="<%= request.getParameter("mode") %>">
+  users
+  <input type="string" name="users" min="1" value="<%= request.getParameter("users") %>">
   
-  <input type="button" name="setrange" value="change range" onclick="reload('','setrange')" />
-<% 
-}
-%>
+  
+  <input type="button" name="load" value="change range" onclick="reload('','setrange')" />
+
 </form>
 <br/><br/>
 <div class='legend-source'>Grouping: <strong><%= request.getParameter("groupby") %></strong></div>
 
  <select onchange="reload('groupby','selectGroup')" id="selectGroup">
   <option value="xx">Select Grouping</option>
-  <option value="pid">pid</option>
-  <option value="worker">worker</option>
-  <option value="instanceId">instanceId</option>
-  <option value="actedOnBehalfOf">actedOnBehalfOf</option>
-  <option value="runId">runId</option>
-  <option value="name">name</option>
+  <option value="username">username</option>
+  <option value="prov:type">prov:type</option>
+  <option value="grid">Infrastructure</option>
 </select> 
 <br/><br/>
-<div class='legend-source'>Tags: <strong><%= request.getParameter("tags") %></strong></div>
-
- <input type="text" id="mytags" placeholder="Insert tags..."/>
- <button type="button" onclick="reload('tags','mytags')">Go!</button>
-</div>
 <br/><br/>
 </center>
 </body>

@@ -106,7 +106,7 @@ Ext.define('CF.view.Viewport', {
       Ext.getCmp('username_win').close();
       Ext.create('CF.view.WorkFlowSelectionWindow').show()
       if (!workflowStore.isLoaded()) {
-          workflowStore.getProxy().api.read = PROV_SERVICE_BASEURL + 'workflow/user/' + userSN;
+          workflowStore.getProxy().api.read = PROV_SERVICE_BASEURL + 'workflowexecutions?usernames=' + userSN;
 
           workflowStore.load();
           }
