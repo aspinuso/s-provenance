@@ -1510,15 +1510,82 @@ class ProvenanceStore(object):
         searchDic = self.makeElementsSearchDic(keylist,minvalues,maxvalues)
         #print(searchDic)
          
+        # if mode=="AND":
+        #     obj=lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':searchDic['streams.content']}},
+        #                                     {'$group':{'_id': {'runId':'$runId','username':'$username'}}}])
+        # elif mode=="OR":
+        #     for y in searchDic['streams.content']['$elemMatch']:
+        #         for c in lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':{'$elemMatch':{y:searchDic['streams.content']['$elemMatch'][y]}}}},
+        #                                                      {'$group':{'_id': {'runId':'$runId','username':'$username'}}}]):
+        #            print(c)
+        #            obj.append(c)
+
+
+        key_value_pairs = helper.getKeyValuePairs(keylist, mxvaluelist, mnvaluelist)
+        
         if mode=="AND":
-            obj=lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':searchDic['streams.content']}},
-                                            {'$group':{'_id': {'runId':'$runId','username':'$username'}}}])
+            aggregate_pipeline = [
+                {
+                    '$match':{
+                        'username':{
+                            '$in':users
+                        },
+                        '$or': helper.getIndexedMetaQueryList(key_value_pairs)
+                    }
+                },
+                {
+                    '$unwind': '$streams'
+                },
+                {   
+                    '$unwind': '$streams.indexedMeta'
+                },
+                {
+                    '$group':{
+                        '_id': {
+                            'runId':'$runId',
+                            'username':'$username', 
+                            str(groupby):'$'+str(groupby)
+                        },
+                        'indexedMeta': { 
+                            '$addToSet': "$streams.indexedMeta"
+                        }
+                    }
+                },
+                {
+                    '$match': {
+                        '$and': helper.getAndQueryList(key_value_pairs)
+                    }
+                }
+            ]
+
+            aggregate_results = lineage.aggregate(pipeline=aggregate_pipeline)
+            for aggregate_result in aggregate_results:    
+                obj.append(aggregate_result)
+
         elif mode=="OR":
-            for y in searchDic['streams.content']['$elemMatch']:
-                for c in lineage.aggregate(pipeline=[{'$match':{'username':{'$in':users},'streams.content':{'$elemMatch':{y:searchDic['streams.content']['$elemMatch'][y]}}}},
-                                                             {'$group':{'_id': {'runId':'$runId','username':'$username'}}}]):
-                   print(c)
-                   obj.append(c)
+            aggregate_pipeline = [
+                {
+                    '$match':{
+                        'username':{
+                            '$in':users
+                        },
+                        '$or': helper.getIndexedMetaQueryList(key_value_pairs)
+                    }
+                },
+                {
+                    '$group':{
+                        '_id': {
+                            'runId':'$runId',
+                            'username':'$username', 
+                            str(groupby):'$'+str(groupby)
+                        }
+                    }
+                }
+            ]
+            aggregate_results = lineage.aggregate(pipeline=aggregate_pipeline)
+            for aggregate_result in aggregate_results:    
+                obj.append(aggregate_result)
+
 
         runIds=[]
 
