@@ -35,15 +35,15 @@ WORKDIR /prov/s-provenance-master/provenance-api/src/prov-services/
 
 VOLUME /prov/data
 
-# docker start file
-RUN echo './start_flask_gunicorn_docker.sh' >> docker_entry.sh
-RUN echo 'mongod --logpath /prov/mongo.log --dbpath /prov/data/' >> docker_entry.sh
-#RUN echo 'mongod --logpath /prov/mongo.log --dbpath /prov/data/ --auth' >> docker_entry.sh
-
 ENV CLIMEXPFORTRAN='../Fortran'
 ENV SPROV_DB=sprov-db
 
-RUN echo 'mongo --eval "var dbName = '$SPROV_DB'"  /prov/s-provenance-master/provenance-api/resources/ensure_indexes.js' >> docker_entry.sh
+# docker start file
+RUN echo './start_flask_gunicorn_docker.sh' >> docker_entry.sh
+
+RUN echo 'mongod --logpath /prov/mongo.log --dbpath /prov/data/ \' >> docker_entry.sh
+#RUN echo 'mongod --logpath /prov/mongo.log --dbpath /prov/data/ --auth \' >> docker_entry.sh
+RUN echo '&& mongo --eval "var dbName = '$SPROV_DB'"  /prov/s-provenance-master/provenance-api/resources/ensure_indexes.js' >> docker_entry.sh
 
 # crontab map reduce
 # import data ?
@@ -56,11 +56,11 @@ CMD bash docker_entry.sh
 #
 # docker build docker/ --rm -t prov
 # docker rmi $(docker images -f "dangling=true" -q)
-# docker run -it -d -p 8081:8082 prov
-# docker run -it -d -p 8082:8082 -v /nobackup/users/mihajlov/data:/prov/data prov
+# docker run -it -d -p 8083:8082 prov
+# docker run -it -d -p 8083:8082 -v /nobackup/users/mihajlov/data:/prov/data prov
 # docker run -it -d --name=sprov -p 8083:8082 -v /nobackup/users/mihajlov/data:/prov/data prov 
-# docker run -it -d -p 8084:8082 prov
-# docker run -it -d -p 8085:8082 /tmp:/prov/data prov
+# docker run -it -d -p 8083:8082 prov
+# docker run -it -d -p 8083:8082 /tmp:/prov/data prov
 # docker exec -it docker_name bash
 # docker logs -f docker_name
 # 
