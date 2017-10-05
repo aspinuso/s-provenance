@@ -335,7 +335,6 @@ def getWorkflowExecutions():
     # Required parameters
     limit = request.args['limit'] 
     start = request.args['start']
-    mode = request.args['mode']
     usernames = csv.reader(StringIO.StringIO(request.args['usernames'])).next() if 'usernames' in request.args else None
 
     # include components parameters
@@ -343,6 +342,8 @@ def getWorkflowExecutions():
     maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])).next() if 'maxvalues' in request.args else None
     minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])).next() if 'minvalues' in request.args else None
     functionNames = csv.reader(StringIO.StringIO(request.args['functionNames'])).next() if 'functionNames' in request.args else None
+    mode = request.args['mode'] if 'mode' in request.args else None
+
     # type = csv.reader(StringIO.StringIO(request.args['type'])) if 'type' in request.args else None
 
     if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET workflowexecutions -  PID:"+str(os.getpid()));
