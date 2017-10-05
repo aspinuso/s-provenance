@@ -260,7 +260,19 @@ def exportDataProvenance(id):
         else:
             response.headers['Content-type']='application/octet-stream'
             
-        return response             
+        return response 
+
+
+' domain specific methods '
+'VERCE'
+
+@app.route("/solver/<solver_id>")
+def getSolver(solver_id):
+    userId = request.args['userId'] if 'userId' in request.args else None
+    response = Response(json.dumps(app.db.getSolverConf(solver_id,userId=userId)))
+    response.headers['Content-type'] = 'application/json'
+    if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET VERCE method for solver parameters  - "+" PID:"+str(os.getpid()));
+    return response   
 
 
 ' new methods: '
