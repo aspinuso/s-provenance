@@ -1521,7 +1521,7 @@ class ProvenanceStore(object):
         #            obj.append(c)
 
 
-        key_value_pairs = helper.getKeyValuePairs(keylist, mxvaluelist, mnvaluelist)
+        key_value_pairs = helper.getKeyValuePairs(keylist, maxvalues, minvalues)
         
         if mode=="AND":
             aggregate_pipeline = [
@@ -1530,7 +1530,7 @@ class ProvenanceStore(object):
                         'username':{
                             '$in':users
                         },
-                        '$or': helper.getIndexedMetaQueryList(key_value_pairs)
+                        '$or': helper.getIndexedMetaQueryList(key_value_pairs) + helper.getParametersQueryList(key_value_pairs)
                     }
                 },
                 {
@@ -1569,7 +1569,7 @@ class ProvenanceStore(object):
                         'username':{
                             '$in':users
                         },
-                        '$or': helper.getIndexedMetaQueryList(key_value_pairs)
+                        '$or': helper.getIndexedMetaQueryList(key_value_pairs) + helper.getParametersQueryList(key_value_pairs)
                     }
                 },
                 {
