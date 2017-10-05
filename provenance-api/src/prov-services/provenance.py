@@ -1521,7 +1521,7 @@ class ProvenanceStore(object):
         #            obj.append(c)
 
 
-        key_value_pairs = helper.getKeyValuePairs(keylist, mxvaluelist, mnvaluelist)
+        key_value_pairs = helper.getKeyValuePairs(keylist, maxvalues, minvalues)
         
         if mode=="AND":
             aggregate_pipeline = [
