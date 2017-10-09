@@ -371,12 +371,23 @@ def getInstancesMonitoring(runid):
     response.headers['Content-type'] = 'application/json'    
     return response
 
+@app.route("/workflowexecutions/<runid>/showactivity")
+def getMonitoring(runid):
+    limit = request.args['limit'] 
+    start = request.args['start']
+    level = request.args['level'] if 'level' in request.args else None
+    if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET workflowexecutions monitoring - "+runid+" PID:"+str(os.getpid()));
+    response = Response()
+    response = Response(json.dumps(app.db.getMonitoring(runid,level,int(start),int(limit))))
+    response.headers['Content-type'] = 'application/json'    
+    return response
+
 #Extract details about a single invocation or an instance by specifying their $id$.
 @app.route("/invocations/<invocid>")
 def getInvocationDetails(invocid):
         if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET invocation details - "+invocid+" PID:"+str(os.getpid()));
         response = Response()
-        response = Response(json.dumps(app.db.getInvocation(runid,invocid)))
+        response = Response(json.dumps(app.db.getInvocation(invocid)))
         response.headers['Content-type'] = 'application/json'       
         return response
 
@@ -387,6 +398,14 @@ def getInstanceDetails(instid):
         if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET instance details - "+instid+" PID:"+str(os.getpid()));
         response = Response()
         response = Response(json.dumps(app.db.getComponentInstance(instid)))
+        response.headers['Content-type'] = 'application/json'       
+        return response
+
+@app.route("/components/<compid>")
+def getComponentDetails(compid):
+        if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET component details - "+compid+" PID:"+str(os.getpid()));
+        response = Response()
+        response = Response(json.dumps(app.db.getComponent(compid)))
         response.headers['Content-type'] = 'application/json'       
         return response
 
