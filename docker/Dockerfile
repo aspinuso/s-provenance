@@ -41,9 +41,12 @@ ENV SPROV_DB=sprov-db
 # docker start file
 RUN echo './start_flask_gunicorn_docker.sh' >> docker_entry.sh
 
-RUN echo 'mongod --logpath /prov/mongo.log --dbpath /prov/data/ \' >> docker_entry.sh
-#RUN echo 'mongod --logpath /prov/mongo.log --dbpath /prov/data/ --auth \' >> docker_entry.sh
-RUN echo '&& mongo --eval "var dbName = '$SPROV_DB'"  /prov/s-provenance-master/provenance-api/resources/ensure_indexes.js' >> docker_entry.sh
+RUN echo 'mongod --logpath /prov/mongo.log --dbpath /prov/data/' >> docker_entry.sh
+#RUN echo 'mongod --logpath /prov/mongo.log --dbpath /prov/data/ --auth' >> docker_entry.sh
+RUN echo 'mongo --eval "var dbName = '$SPROV_DB'"  /prov/s-provenance-master/provenance-api/resources/ensure_indexes.js' >> docker_entry.sh
+
+# RUN mongo --eval "var dbName = '$SPROV_DB'"  /prov/s-provenance-master/provenance-api/resources/lineage_map_reduce.js
+
 
 # crontab map reduce
 # import data ?
