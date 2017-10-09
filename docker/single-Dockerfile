@@ -15,9 +15,10 @@ RUN apt-get update && apt-get install -y \
 	python-pip \
 	vim
 
-
-# couple this file to a seperate mongo instance, pull docker mongo 3.4
-
+# mongodb-org v3.4 required
+RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
+RUN echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list
+RUN apt-get update && apt-get install -y mongodb-org
 
 # s-prov download from git
 RUN curl -L -O https://github.com/aspinuso/s-provenance/archive/master.zip 
@@ -32,22 +33,28 @@ EXPOSE 8082
 # provenance repo
 WORKDIR /prov/s-provenance-master/provenance-api/src/prov-services/
 
+VOLUME /prov/data
+
 ENV CLIMEXPFORTRAN='../Fortran'
 ENV SPROV_DB=sprov-db
 
 # docker start file
 RUN echo './start_flask_gunicorn_docker.sh' >> docker_entry.sh
 
-#RUN echo 'mongo --eval "var dbName = '$SPROV_DB'"  /prov/s-provenance-master/provenance-api/resources/ensure_indexes.js' >> docker_entry.sh
-# crontab map reduce
+RUN echo 'mongod --logpath /prov/mongo.log --dbpath /prov/data/' >> docker_entry.sh
+#RUN echo 'mongod --logpath /prov/mongo.log --dbpath /prov/data/ --auth' >> docker_entry.sh
+RUN echo 'mongo --eval "var dbName = '$SPROV_DB'"  /prov/s-provenance-master/provenance-api/resources/ensure_indexes.js' >> docker_entry.sh
+
 # RUN mongo --eval "var dbName = '$SPROV_DB'"  /prov/s-provenance-master/provenance-api/resources/lineage_map_reduce.js
 
-#RUN curl localhost:27017
+
+# crontab map reduce
+# import data ?
 
 RUN chmod a+x docker_entry.sh
 
-ENTRYPOINT bash docker_entry.sh
-#CMD bash docker_entry.sh
+#ENTRYPOINT bash docker_entry.sh
+CMD bash docker_entry.sh
 
 #
 # docker build docker/ --rm -t prov
