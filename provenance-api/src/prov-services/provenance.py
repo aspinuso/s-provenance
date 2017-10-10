@@ -115,24 +115,25 @@ def toW3Cprov(ling,bundl,format='xml'):
                         i=i+1
                     bundle.wasAssociatedWith(WFE,wfp)
                  
-                if type(trace['input'])!=list:
-                    trace['input']=[trace['input']]
+                if 'input' in trace:
+                    if type(trace['input'])!=list:
+                        trace['input']=[trace['input']]
 
-                wp = bundle.collection(knmi["WFPar_"+trace["_id"]], other_attributes={'prov:type': vc['WFExecutionParameter']} )
-                for y in trace['input']:
-                    dic.update({'prov:type': vc['Data']})
-                    for key in y:
-                        if ':' in key:
-                            dic.update({key: y[key]})
-                        else:
-                            dic.update({vc[key]: y[key]})
-                    
+                    wp = bundle.collection(knmi["WFPar_"+trace["_id"]], other_attributes={'prov:type': vc['WFExecutionParameter']} )
+                    for y in trace['input']:
+                        dic.update({'prov:type': vc['Data']})
+                        for key in y:
+                            if ':' in key:
+                                dic.update({key: y[key]})
+                            else:
+                                dic.update({vc[key]: y[key]})
+                        
 
-                    dt = bundle.collection(knmi[trace["_id"]+"_"+str(i)], formatArtifactDic(dic))
-                    bundle.hadMember(wp,dt)
-                    i=i+1
-                    
-                bundle.used(knmi[trace["runId"]], wp)
+                        dt = bundle.collection(knmi[trace["_id"]+"_"+str(i)], formatArtifactDic(dic))
+                        bundle.hadMember(wp,dt)
+                        i=i+1
+                        
+                    bundle.used(knmi[trace["runId"]], wp)
                     
                     
         'specify lineage'
