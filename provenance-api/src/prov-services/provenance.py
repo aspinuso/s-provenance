@@ -169,7 +169,7 @@ def toW3Cprov(ling,bundl,format='xml'):
                 bundle.wasAssociatedWith(ac,knmi["ComponentInstance_"+trace["instanceId"]])
             else:
                 ac=entities["Invocation_"+trace["iterationId"]]
-                if (ac.get_endTime()<dateutil.parser.parse(trace["endTime"])):
+                if (str(ac.get_endTime())<trace["endTime"]):
                    ac=entities["Invocation_"+trace["iterationId"]]
                    ac.set_time(ac.get_startTime(), trace["endTime"])
             
@@ -480,19 +480,25 @@ class ProvenanceStore(object):
         # db = self.connection["verce-prov"]
         workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
         lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
-        totalCount=lineage.find({'runId':id}).count()
+        #totalCount=lineage.find({'runId':id}).count()
         cursorsList=list()
         
         if 'all' in kwargs and kwargs['all'][0].upper()=='TRUE':
-            
-            lineage=lineage.find({'runId':id}).sort("endTime",direction=-1)
+
+
+            bundle=workflow.find_one({"_id":id})
+            username=bundle['username']
+            lineage=lineage.find({'runId':id,'username':username})
+            #.sort("endTime",direction=-1)
              
-            bundle=workflow.find({"_id":id}).sort("startTime",direction=-1)
+           # bundle=workflow.find({"_id":id}).sort("startTime",direction=-1)
             
             if 'format' in kwargs:
-                return toW3Cprov(lineage,bundle,format = kwargs['format'][0]),0
+
+                return toW3Cprov(lineage,[bundle],format = kwargs['format'][0]),0
             else:
-                return toW3Cprov(lineage,bundle),0
+                print("ADADAD")
+                return toW3Cprov(lineage,[bundle]),0
             
                     
                     
