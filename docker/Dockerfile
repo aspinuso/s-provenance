@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y \
   python-pip \
   vim
 
-# mongodb-org v3.4 required, mongo shell is necessary to pass 
+# mongodb-org v3.4 required, mongo shell is necessary to pass js instructions by services.
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 0C49F3730359A14518585931BC711F9BA15703C6
 RUN echo "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-3.4.list
 RUN apt-get update && apt-get install -y mongodb-org
@@ -53,8 +53,6 @@ RUN echo 'gunicorn -w 9 -b 0.0.0.0:8082 "flask_raas:bootstrap_app()" --log-level
 ENTRYPOINT bash docker_entry.sh 
 
 CMD mongod --port 27001
-
-#new
 CMD mongo 172.17.0.1:27017/$SPROV_DB /prov/s-provenance-master/provenance-api/resources/ensure_indexes.js
 CMD mongo 172.17.0.1:27017/$SPROV_DB /prov/s-provenance-master/provenance-api/resources/lineage_map_reduce.js
 

@@ -8,7 +8,7 @@ services:
         ports:
           - 27017:27017
       # mongod --logpath /prov/mongo.log --dbpath /prov/data/
-      # command: mongod --dbpath /data/db # --quiet
+        command: mongod --dbpath /data/db # --quiet
     myapp:
         build: .
         container_name: "sprov"
@@ -18,5 +18,5 @@ services:
         links:
           - mongodb
         depends_on:
-          - mongodb 
+          - mongodb
         #command: ./docker_entry.sh #tail -f /prov/access.log
