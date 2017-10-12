@@ -1,6 +1,6 @@
 // select right db
 
-db = db.getSiblingDB(dbName)
+//db = db.getSiblingDB(dbName)
 
 var indexes = [ 
     { 
