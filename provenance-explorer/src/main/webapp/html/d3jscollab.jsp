@@ -766,7 +766,7 @@ function reload(par,sel){
 
  <select onchange="reload('level','selectLevel')" id="selectLevel">
   <option value="xx">Select Level</option>
-  <option value="worklfows">worklfows</option>
+  <option value="workflows">workflows</option>
   <option value="data">data</option>
 </select> 
 <form name="indexrange">
