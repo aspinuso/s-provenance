@@ -115,24 +115,25 @@ def toW3Cprov(ling,bundl,format='xml'):
                         i=i+1
                     bundle.wasAssociatedWith(WFE,wfp)
                  
-                if type(trace['input'])!=list:
-                    trace['input']=[trace['input']]
+                if 'input' in trace:
+                    if type(trace['input'])!=list:
+                        trace['input']=[trace['input']]
 
-                wp = bundle.collection(knmi["WFPar_"+trace["_id"]], other_attributes={'prov:type': vc['WFExecutionParameter']} )
-                for y in trace['input']:
-                    dic.update({'prov:type': vc['Data']})
-                    for key in y:
-                        if ':' in key:
-                            dic.update({key: y[key]})
-                        else:
-                            dic.update({vc[key]: y[key]})
-                    
+                    wp = bundle.collection(knmi["WFPar_"+trace["_id"]], other_attributes={'prov:type': vc['WFExecutionParameter']} )
+                    for y in trace['input']:
+                        dic.update({'prov:type': vc['Data']})
+                        for key in y:
+                            if ':' in key:
+                                dic.update({key: y[key]})
+                            else:
+                                dic.update({vc[key]: y[key]})
+                        
 
-                    dt = bundle.collection(knmi[trace["_id"]+"_"+str(i)], formatArtifactDic(dic))
-                    bundle.hadMember(wp,dt)
-                    i=i+1
-                    
-                bundle.used(knmi[trace["runId"]], wp)
+                        dt = bundle.collection(knmi[trace["_id"]+"_"+str(i)], formatArtifactDic(dic))
+                        bundle.hadMember(wp,dt)
+                        i=i+1
+                        
+                    bundle.used(knmi[trace["runId"]], wp)
                     
                     
         'specify lineage'
@@ -169,7 +170,7 @@ def toW3Cprov(ling,bundl,format='xml'):
                 bundle.wasAssociatedWith(ac,knmi["ComponentInstance_"+trace["instanceId"]])
             else:
                 ac=entities["Invocation_"+trace["iterationId"]]
-                if (ac.get_endTime()<dateutil.parser.parse(trace["endTime"])):
+                if (str(ac.get_endTime())<trace["endTime"]):
                    ac=entities["Invocation_"+trace["iterationId"]]
                    ac.set_time(ac.get_startTime(), trace["endTime"])
             
@@ -480,19 +481,25 @@ class ProvenanceStore(object):
         # db = self.connection["verce-prov"]
         workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
         lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
-        totalCount=lineage.find({'runId':id}).count()
+        #totalCount=lineage.find({'runId':id}).count()
         cursorsList=list()
         
         if 'all' in kwargs and kwargs['all'][0].upper()=='TRUE':
-            
-            lineage=lineage.find({'runId':id}).sort("endTime",direction=-1)
+
+
+            bundle=workflow.find_one({"_id":id})
+            username=bundle['username']
+            lineage=lineage.find({'runId':id,'username':username})
+            #.sort("endTime",direction=-1)
              
-            bundle=workflow.find({"_id":id}).sort("startTime",direction=-1)
+           # bundle=workflow.find({"_id":id}).sort("startTime",direction=-1)
             
             if 'format' in kwargs:
-                return toW3Cprov(lineage,bundle,format = kwargs['format'][0]),0
+
+                return toW3Cprov(lineage,[bundle],format = kwargs['format'][0]),0
             else:
-                return toW3Cprov(lineage,bundle),0
+                print("ADADAD")
+                return toW3Cprov(lineage,[bundle]),0
             
                     
                     
@@ -1736,6 +1743,10 @@ class ProvenanceStore(object):
                group='iterationId'
         elif level=="instance":
                group='instanceId'
+        elif level=="component":
+               group='actedOnBehalfOf'
+        else:   
+               group='instanceId'
 
         obj = lineage.aggregate(pipeline=[{'$match':{'runId':id}},
                                                     
@@ -1748,7 +1759,7 @@ class ProvenanceStore(object):
                                                      "s-prov:generatedWithImmediateAccess":{"$push":"$streams.con:immediateAccess"},
                                                      "s-prov:generatedWithLocation":{"$push":"$streams.location"},
                                                      "s-prov:qualifiedChange": {"$push":"$s-prov:qualifiedChange"},
-                                                     "s-prov:count":{"$push":"$streams.id"}}},
+                                                     "s-prov:dataCount":{"$push":"$streams.id"}}},
                                                      {"$sort":{"s-prov:lastEventTime":-1}},
                                                      {'$skip':start},
                                                      {'$limit':limit},
@@ -1771,6 +1782,8 @@ class ProvenanceStore(object):
                x['@type']='s-prov:Invocation'
            elif level=="instance":
                x['@type']='s-prov:ComponentInstance'
+           elif level=="component":
+               x['@type']='s-prov:Component'
 
            activities.append(x)
 
@@ -1787,8 +1800,12 @@ class ProvenanceStore(object):
            x['s-prov:generatedWithLocation']=True if x['s-prov:generatedWithLocation']!="" else False
            x['s-prov:generatedWithImmediateAccess']= True if ("true" in x['s-prov:generatedWithImmediateAccess'] or True in x['s-prov:generatedWithImmediateAccess']) else False
            #x['s-prov:hasChanged']=True if len(x['feedbackInvocation'])!=0 else False
-           x['s-prov:count'] = len(x['s-prov:count'])
-           x['prov:actedOnBehalfOf'] = {"@type":"s-prov:Component", "@id":x['prov:actedOnBehalfOf']}
+           x['s-prov:dataCount'] = len(x['s-prov:dataCount'])
+           
+           if level=="component":
+               del x['prov:actedOnBehalfOf']
+           else:
+               x['prov:actedOnBehalfOf'] = {"@type":"s-prov:Component", "@id":x['prov:actedOnBehalfOf']}
            
            
             
@@ -1811,7 +1828,7 @@ class ProvenanceStore(object):
                                                      "worker":{"$first":"$worker"}, 
                                                      "s-prov:generatedWithImmediateAccess":{"$push":"$streams.con:immediateAccess"},
                                                      "s-prov:generatedWithLocation":{"$push":"$streams.location"},
-                                                     "s-prov:count":{"$push":"$streams.id"},
+                                                     "s-prov:dataCount":{"$push":"$streams.id"},
                                                      "pid" : {"$first":"$pid"},
                                                      "mapping" : {"$first":"$mapping"},
                                                      "s-prov:qualifiedChange": {"$push":"$s-prov:qualifiedChange"},
@@ -1873,6 +1890,107 @@ class ProvenanceStore(object):
         output=self.addLDContext(output)
         output["totalCount"]= totalCount
         return output
+
+
+    def getInvocation(self, id):
+        # db = self.connection["verce-prov"]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
+        obj = lineage.aggregate(pipeline=[{'$match':{'iterationId':id}},
+                                                    {'$group':{'_id':'$iterationId', 
+                                                     "s-prov:lastEventTime":{"$max":"$endTime"}, 
+                                                     "s-prov:message":{"$push":"$errors"},
+                                                     #"worker":{"$first":"$worker"}, 
+                                                     #"s-prov:generatedWithImmediateAccess":{"$push":"$streams.con:immediateAccess"},
+                                                     #"s-prov:generatedWithLocation":{"$push":"$streams.location"},
+                                                     #"s-prov:dataCount":{"$push":"$streams.id"},
+                                                     #"pid" : {"$first":"$pid"},
+                                                     #"mapping" : {"$first":"$mapping"},
+                                                     "s-prov:qualifiedChange": {"$push":"$s-prov:qualifiedChange"},
+                                                     "s-prov:ComponentParameters": {"$first":"$parameters"},
+                                                     #"prov:contributed":{"$first":"$name"}, 
+                                                     "s-prov:ComponentInstance":{"$first":"$instanceId"}, 
+                                                     #"prov:actedOnBehalfOf":{"$first":"$actedOnBehalfOf"}, 
+                                                     "prov_cluster":{"$first":"$prov_cluster"}}}
+                                                     #{ "$project": { "@id":"$_id", "_id":0, "s-prov:worker":1, "s-prov:lastEventTime":1, "s-prov:message":1,"s-prov:generatedWithImmediateAccess":1,"s-prov:generatedWithLocation":1,"s-prov:count":1}}
+                                                    ]) 
+        
+        output={}
+        count = lineage.aggregate(pipeline=[{'$match':{'iterationId':id}},
+                                                    {'$group':{'_id':'$iterationId'}},
+                                                    {"$count":'invocNum'}])
+
+        for x in count:
+            totalCount=x['invocNum']
+
+
+        for x in obj:
+            
+            x['@id']=x['_id']
+            x['@type']='s-prov:Invocation'
+            x['prov:type']='s-prov:Invocation'
+            x['prov:wasAssociatedWith']= {"@type" : "s-prov:ComponentInstance",
+                
+                "@id" : x["s-prov:ComponentInstance"]}
+
+            
+            x['s-prov:message']=''.join(x['s-prov:message'])
+           
+            del x['_id']
+            #del x["pid"]
+            #del x["mapping"]
+            del x["s-prov:ComponentInstance"]
+            #del x["worker"]
+            del x['prov_cluster']
+            
+            output=x
+
+        output=self.addLDContext(output)
+        output["totalCount"]= totalCount
+        return output
+
+
+    def getComponent(self, id):
+        # db = self.connection["verce-prov"]
+        workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
+        obj = workflow.aggregate(pipeline=[{"$match":{"provone:hasSubProcess.prov:wasAttributedTo.@id": id}},
+                                           { "$unwind": "$provone:hasSubProcess" },
+                                           {"$group":{"_id":"$provone:hasSubProcess.prov:wasAttributedTo.@id",
+                                            "@type":{"$first":"$provone:hasSubProcess.prov:wasAttributedTo.@type"},
+                                            "s-prov:CName":{"$first":"$provone:hasSubProcess.prov:wasAttributedTo.s-prov:CName"},
+                                            "prov:hadPlan":{"$first":"$provone:hasSubProcess"},
+                                            "runId":{"$first":"$runId"}
+                                            }},
+                                           {'$match': {"_id": {"$eq": id}}}
+                                           ])
+
+        ln = lineage.aggregate(pipeline=[{'$match':{'actedOnBehalfOf':id}},
+                                                    {'$group':{'_id':'$instanceId', 
+                                                     "s-prov:qualifiedChange": {"$push":"$s-prov:qualifiedChange"},
+                                                     "s-prov:ComponentParameters": {"$first":"$parameters"},
+                                                     "prov_cluster":{"$first":"$prov_cluster"}}}
+                                                     #{ "$project": { "@id":"$_id", "_id":0, "s-prov:worker":1, "s-prov:lastEventTime":1, "s-prov:message":1,"s-prov:generatedWithImmediateAccess":1,"s-prov:generatedWithLocation":1,"s-prov:count":1}}
+                                                    ]) 
+        
+       
+        
+        x=obj.next()
+        
+        x["prov:wasAssociateFor"]={"@type":"s-prov:WFExecution","@id":x["runId"]}
+        for inst in ln:
+            if "s-prov:qualifiedChange" in inst and (len(inst["s-prov:qualifiedChange"])>0):
+                x["s-prov:qualifiedChange"]=inst["s-prov:qualifiedChange"]
+                for change in x["s-prov:qualifiedChange"]:
+                    change.update({"s-prov:ComponentInstance":{"@id":inst["_id"]}})
+
+        x["@id"]=x["_id"]
+
+        del x["_id"]
+        del x["runId"]
+        del x["prov:hadPlan"]["prov:wasAttributedTo"]
+        #output["totalCount"]= totalCount
+        self.addLDContext(x)
+        return x
 
 
     def getData(self,start,limit,genBy=None,attrTo=None,keylist=None,maxvalues=None,minvalues=None,id=None):

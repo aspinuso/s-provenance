@@ -2,7 +2,7 @@
 delete Ext.tip.Tip.prototype.minWidth;
 
 
-iDROP='http://iren-web.renci.org/idrop-release/idrop.jnlp'   
+iDROP='http://iren-web.renci.org/idrop-release/idrop.jnlp'
 RADIAL='d3js.jsp?minidx=0&maxidx=10&level=prospective&groupby=actedOnBehalfOf'	      	                    
 PROV_SERVICE_BASEURL="/j2ep-1.0/prov/"
 var IRODS_URL = "http://dir-irods.epcc.ed.ac.uk/irodsweb/rodsproxy/"+userSN+".UEDINZone@dir-irods.epcc.ed.ac.uk:1247/UEDINZone"
@@ -24,6 +24,8 @@ var seismoMetaStore = Ext.create('CF.store.SeismoMeta');
 
 var mimetypesStore = Ext.create('CF.store.Mimetype');
 
+var modeStore = Ext.create('CF.store.ModeStore');
+
 // specifies the userhome of whom we are going to access the data from (for sharing purposes)
 owner = userSN
 var dn_regex=/file:\/\/?([\w-]|([\da-z\.-]+)\.([a-z\.]{2,6}))+/
@@ -33,7 +35,7 @@ Ext.define('CF.view.metaCombo', {
   extend: 'Ext.form.field.ComboBox',
   alias: 'widget.metacombo',
   fieldLabel: 'Terms',
-  name: 'keys',
+  name: 'terms',
   displayField: 'term',
   width: 200,
   inputAttrTpl: " data-qtip='Insert here a sequence of Terms divided by commas.<br/> Eg. magnitude,station' ",
@@ -114,6 +116,28 @@ Ext.define('CF.view.mimeCombo', {
   }
 });
 
+
+Ext.define('CF.view.modeCombo', {
+  extend: 'Ext.form.field.ComboBox',
+  alias: 'widget.modecombo',
+  fieldLabel: 'mode',
+  name: 'mode',
+  displayField: 'mode',
+  width: 100,
+  labelWidth: 30,
+  value:"OR",
+  colspan: 4,
+  store: modeStore,
+  queryMode: 'local',
+  inputAttrTpl: " data-qtip='Select AND or OR to indicate if the runs must match all the terms of the query or at least one<br/> Eg. magnitude,station' ",
+  getInnerTpl: function() {
+    return '<div data-qtip="{AND, OR}">{mode}</div>';
+  },
+  initComponent: function() {
+    this.callParent();
+  }
+});
+
 var graphMode = ""
 
 var currentRun
@@ -171,14 +195,14 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
    col = colour.lightblue
   }
    
-  if (!(data['s-prov:Data']["prov:wasGeneratedBy"].feedbackIteration===undefined) && data['s-prov:Data']["prov:wasGeneratedBy"].feedbackIteration)
+  if (data['s-prov:Data']["prov:wasGeneratedBy"] && !(data['s-prov:Data']["prov:wasGeneratedBy"].feedbackIteration===undefined) && data['s-prov:Data']["prov:wasGeneratedBy"].feedbackIteration)
   {
    edgecol=colour.lightblue
    col = colour.red
   }
  
   	if (data['s-prov:Data'].port=='_d4p_state')
-  	{     //console.log(data.streams[0].port)
+  	{ console.log(data['s-prov:Data'].port)
   		col = colour.lightblue
   		
  	 }
@@ -230,8 +254,8 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
 
   if (data['s-prov:Data']["prov:Derivation"].length > 0 && typeof data['s-prov:Data']["prov:Derivation"] != "undefined") {
     for (var i = 0; i < data['s-prov:Data']["prov:Derivation"].length; i++) {
-      if (data['s-prov:Data']["prov:Derivation"][i]["prov:wasDerivedFrom"]) {
-        wasDerivedFromDephtree(data['s-prov:Data']["prov:Derivation"][i]["prov:wasDerivedFrom"], graph, nodea);
+      if (data['s-prov:Data']["prov:Derivation"][i]["s-prov:Data"]) {
+        wasDerivedFromDephtree(data["s-prov:Data"]["prov:Derivation"][i], graph, nodea);
       }
     }
   }
@@ -535,6 +559,10 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
           anchor: '80%',
           allowBlank: false,
           margin: '10 0 10 0'
+        },
+        {
+          xtype: 'modecombo',
+          margin: '10 0 10 10'
         }
 
       ]
@@ -545,7 +573,7 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
     text: 'Refresh',
     handler: function() {
       this.up('form').getForm().reset();
-      workflowStore.getProxy().api.read = PROV_SERVICE_BASEURL + 'workflow/user/' + userSN;
+      workflowStore.getProxy().api.read = PROV_SERVICE_BASEURL + 'workflowexecutions?usernames=' + userSN;
       workflowStore.load();
     }
   }, {
@@ -554,13 +582,18 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
 
     handler: function() {
       var form = this.up('form').getForm();
-      var keys = form.findField("keys").getValue(false).trim();
+      var terms = form.findField("terms").getValue(false).trim();
+      var mode = form.findField("mode").getValue(false).trim();
       var minvalues = encodeURIComponent(form.findField("minvalues").getValue(false).trim());
       var maxvalues = encodeURIComponent(form.findField("maxvalues").getValue(false).trim());
       owner = userSN;
 
       if (form.isValid()) {
-        workflowStore.getProxy().api.read = PROV_SERVICE_BASEURL + 'workflow/user/' + userSN + '?keys=' + keys + "&maxvalues=" + maxvalues + "&minvalues=" + minvalues;
+        workflowStore.getProxy().api.read = PROV_SERVICE_BASEURL + 'workflowexecutions?usernames=' + userSN +
+                                                                  "&terms=" + terms + 
+                                                                  "&maxvalues=" + maxvalues + 
+                                                                  "&minvalues=" + minvalues +
+                                                                  "&mode=" + mode;
       };
 
       //BUG: with a single load the grid doesn't synchronise when scrolled to the bottom
@@ -578,7 +611,7 @@ Ext.define('CF.view.WorkFlowSelectionWindow', {
   requires: ['CF.view.WorkflowSelection'],
   title: 'Workflows Runs',
   height: 530,
-  width: 850,
+  width: 950,
   closeAction: 'hide',
   layout: {
     type: 'vbox',
@@ -678,7 +711,7 @@ Ext.define('CF.view.ActivityMonitor', {
         this.workflowselectionwindow.show();
 
         if (!workflowStore.isLoaded()) {
-          workflowStore.getProxy().api.read = PROV_SERVICE_BASEURL + 'workflow/user/' + userSN;
+          workflowStore.getProxy().api.read = PROV_SERVICE_BASEURL + 'workflowexecutions?usernames=' + userSN;
 
           workflowStore.load();
         }
@@ -698,7 +731,7 @@ Ext.define('CF.view.ActivityMonitor', {
       handler: function() {
         workflowInputStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + 'workflow/' + encodeURIComponent(currentRun),
+          url: PROV_SERVICE_BASEURL + 'workflowexecutions/' + encodeURIComponent(currentRun),
           reader: {
             rootProperty: 'input',
             totalProperty: 'totalCount'
