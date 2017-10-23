@@ -101,7 +101,7 @@ Ext.define('CF.view.mimeCombo', {
   extend: 'Ext.form.field.ComboBox',
   alias: 'widget.mimecombo',
   fieldLabel: 'mime-type',
-  name: 'mime-type',
+  name: 'format',
   displayField: 'mime',
   width: 300,
   labelWidth: 130,
@@ -973,6 +973,9 @@ Ext.define('CF.view.StreamValuesRangeSearch', {
     allowBlank: true
   }, {
     xtype: 'mimecombo'
+  },
+  {
+    xtype: 'modecombo'
   }],
 
   buttons: [{
@@ -981,18 +984,33 @@ Ext.define('CF.view.StreamValuesRangeSearch', {
 
     handler: function() {
       var form = this.up('form').getForm();
-      var keys = this.up('form').getForm().findField("keys").getValue(false);
+      var keys = this.up('form').getForm().findField("terms").getValue(false);
       var minvalues = encodeURIComponent(this.up('form').getForm().findField("minvalues").getValue(false));
       var maxvalues = encodeURIComponent(this.up('form').getForm().findField("maxvalues").getValue(false));
-      var mimetype = this.up('form').getForm().findField("mime-type").getValue(false);
-      if (keys == null) keys = "";
+      var mimetype = this.up('form').getForm().findField("format").getValue(false);
+      var mode = form.findField("mode").getValue(false).trim();
+      
+      
+      qerystring=""
+      if (keys!="" && maxvalues!="" && minvalues=="" && keys==null)
+          qerystring="&format=" + mimetype
+                     "&terms=" + keys + 
+                     "&maxvalues=" + maxvalues + 
+                     "&minvalues=" + minvalues 
+
+      if (mimetype!=null && mimetype!="") 
+         qerystring=qerystring+"&format=" + mimetype
+      
+
       if (form.isValid()) {
         artifactStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + 'entities/values-range?runId=' + currentRun + "&keys=" + keys + "&maxvalues=" + maxvalues + "&minvalues=" + minvalues + "&mime-type=" + mimetype,
+          url: PROV_SERVICE_BASEURL + 'data?generatedBy=' + currentRun + 
+                                      qerystring+          
+                                      "&mode="+mode,
 
           reader: {
-            rootProperty: 'entities',
+            rootProperty: '@graph',
             totalProperty: 'totalCount'
           },
 
@@ -1305,15 +1323,14 @@ Ext.define('CF.view.AnnotationSearch', {
 
 var searchartifactspane = Ext.create('Ext.window.Window', {
   title: 'Search Data',
-  height: 230,
+  height: 300,
   width: 500,
   layout: 'fit',
   closeAction: 'hide',
   items: [{
     xtype: 'tabpanel',
     items: [
-      Ext.create('CF.view.StreamValuesRangeSearch'),
-      Ext.create('CF.view.AnnotationSearch')
+      Ext.create('CF.view.StreamValuesRangeSearch')
     ]
   }]
 });
@@ -1321,7 +1338,7 @@ var searchartifactspane = Ext.create('Ext.window.Window', {
 
 var insertusername = Ext.create('Ext.window.Window', {
   title: 'Search Data',
-  height: 230,
+  height: 500,
   width: 500,
   layout: 'fit',
   closeAction: 'hide',
@@ -1352,6 +1369,7 @@ var filterOnAncestorspane = Ext.create('Ext.window.Window', {
 
 
 var renderStream = function(value, p, record) {
+  
   var location = "</br>"
   var contenthtm = ""
   var prov='<a href=\"'+PROV_SERVICE_BASEURL + 'workflow/export/data/'+record.data.ID+'?all=true\" target=\"_blank">Download Provenance</a><br/>'
