@@ -2352,7 +2352,6 @@ class ProvenanceStore(object):
                 'contentMap': {}
             }
             for term_summaries_item in term_summaries_items:
-                print('---------')
                 if 'parameterMap' in term_summaries_item['value']:
                     print('yes')
                     for parameter_key in term_summaries_item['value']['parameterMap']:
@@ -2374,7 +2373,6 @@ class ProvenanceStore(object):
                                                 merged_value['parameterMap'][parameter_key]['valuesByType'][value_type_key]['max'] = term_summaries_item['value']['parameterMap'][parameter_key]['valuesByType'][value_type_key]['max']
 
                 if 'contentMap' in term_summaries_item['value']:
-                    print(term_summaries_item['_id']['runId'])
                     for content_key in term_summaries_item['value']['contentMap']:
                         print('--- content_key ---', content_key)
 
