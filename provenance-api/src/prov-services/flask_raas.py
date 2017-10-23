@@ -420,11 +420,13 @@ def getData():
         genby = request.args['generatedBy'] if 'generatedBy' in request.args else None
         attrTo = request.args['attributedTo'] if 'attributedTo' in request.args else None
         keylist = csv.reader(StringIO.StringIO(request.args['terms'])).next() if 'terms' in request.args else None
-        maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])) if 'maxvalues' in request.args else None
-        minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])) if 'minvalues' in request.args else None
+        maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])).next() if 'maxvalues' in request.args else None
+        minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])).next() if 'minvalues' in request.args else None
+        format = request.args['format'] if 'format' in request.args else None
+        mode = request.args['mode'] if 'mode' in request.args else 'OR'
+        id = request.args['id'] if 'id' in request.args else None
         
-        
-        response = Response(json.dumps(app.db.getData(int(start),int(limit),genBy=genby,attrTo=attrTo,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues)))
+        response = Response(json.dumps(app.db.getData(int(start),int(limit),genBy=genby,attrTo=attrTo,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues,id=id,format=format,mode=mode)))
 
         response.headers['Content-type'] = 'application/json'
 
@@ -439,7 +441,17 @@ def getData():
 
 # Thomas
 #Returns a list of metadata terms that can be suggested based on their appearance within a list of runs, users, or for the whole provenance archive
-#@app.route("/dataGranuleTerms")
+@app.route("/dataGranuleTerms")
+def getDataGranuleTerms():
+        aggregationLevel = request.args['aggregationLevel'] if 'aggregationLevel' in request.args else 'all'
+        runIdList = csv.reader(StringIO.StringIO(request.args['runIds'])).next() if 'runIds' in request.args else None
+        usernameList = csv.reader(StringIO.StringIO(request.args['usernames'])).next() if 'usernames' in request.args else None
+        print('----->', aggregationLevel, runIdList, usernameList)
+        response = Response(json.dumps(app.db.getDataGranuleTerms(aggregationLevel=aggregationLevel,runIdList=runIdList,usernameList=usernameList)))
+
+        response.headers['Content-type'] = 'application/json'
+
+        return response  
 
 
 @app.route("/summaries/workflowexecution")
