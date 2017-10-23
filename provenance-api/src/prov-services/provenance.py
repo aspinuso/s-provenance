@@ -2175,6 +2175,8 @@ class ProvenanceStore(object):
         lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         
         if keylist==None:
+            if format is not None:
+                searchDic['streams.format'] = format
 
             lineage_items_cursor = lineage.find(
                 searchDic,
@@ -2211,8 +2213,12 @@ class ProvenanceStore(object):
                             stream['errors'] = lineage_item['errors']
                         if 'derivationIds' in lineage_item: 
                             stream['derivationIds'] = lineage_item['derivationIds']
-
-                        stream_items.append(stream)
+                        
+                        if format is not None: 
+                            if stream['format'] == format:
+                                stream_items.append(stream)
+                        else: 
+                            stream_items.append(stream)
 
             return(stream_items, count)
 
