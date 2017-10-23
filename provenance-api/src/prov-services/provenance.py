@@ -315,7 +315,8 @@ class ProvenanceStore(object):
 
     LINEAGE_COLLECTION='lineage'
     BUNDLE_COLLECTION='workflow'
-    
+    TERM_SUMMARIES_COLLECTION='term_summaries'
+
     def __init__(self, url):
  
         self.connection = MongoClient(url, 27017)
@@ -1992,75 +1993,51 @@ class ProvenanceStore(object):
         self.addLDContext(x)
         return x
 
-
-    def getData(self,start,limit,genBy=None,attrTo=None,keylist=None,maxvalues=None,minvalues=None,id=None):
-        print('start getDate--> start: ', start, ' limit: ', limit, ' genBy: ', genBy, ' attrTo: ', attrTo, ' keylist: ', keylist, ' maxvalues: ', maxvalues, ' minvalues: ', minvalues, ' id: ', id)
+    def getData(self,start,limit,genBy=None,attrTo=None,keylist=None,maxvalues=None,minvalues=None,id=None,format=None,mode='OR'):
+        print('start getData--> start: ', start, ' limit: ', limit, ' genBy: ', genBy, ' attrTo: ', attrTo, ' keylist: ', keylist, ' maxvalues: ', maxvalues, ' minvalues: ', minvalues, ' id: ', id)
         # db = self.connection["verce-prov"]
         lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
-        totalCount=0;
-        searchAgents=None
-        searchActivities=None
-        cursorsList=[]
-        
-        activities=None
-        
-        if attrTo!=None:
-            agents=attrTo.split(',')
-            searchAgents=[{'actedOnBehalfOf':{'$in':agents}},{'instanceId':{'$in':agents}},{'username':{'$in':agents}}]
-            
 
-        if genBy!=None:
-            activities=genBy.split(',')
-            searchActivities=[{'name':{'$in':activities}},{'iterationId':{'$in':activities}},{'runId':{'$in':activities}}]
-        
+        if id != None:
+            print('---- is not none')
+            lineage_item = lineage.find_one({'streams.id':id})
 
 
-            
-        i=0
-        ' extract data by annotations either from the whole archive or for a specific runId'
-         
-        searchDic={"$and":[{"$or":searchAgents},{"$or":searchActivities}]}
-        searchDic=clean_empty(searchDic)
-         
-        
-        
-        
-         
-        if searchDic!=None:
-            (obj,totalCount)=self.getEntitiesFilter(searchDic,keylist,maxvalues,minvalues,start,limit)
-            cursorsList.append(obj)
-        #elif meth=="values-range":
-        #    cursorsList.append(self.getEntitiesFilter(activ_searchDic,keylist,mxvaluelist,mnvaluelist,start,limit))
-        
         else:
-            cursorsList.append(lineage.find({'streams.id':id}))
-                
+            totalCount=0;
+            searchAgents=None
+            searchActivities=None
+            cursorsList=[]
             
-        artifacts = list()
+            activities=None
+            
+            if attrTo!=None:
+                agents=attrTo.split(',')
+                searchAgents=[{'actedOnBehalfOf':{'$in':agents}},{'instanceId':{'$in':agents}},{'username':{'$in':agents}}]
+                
 
-        for cursor in cursorsList:
-            for x in cursor:
-                
-                for s in x["streams"]:
-                     
-                    #if (mtype==None or mtype=="") or ('format' in s and s["format"]==mtype):
-                     
-                    s["wasGeneratedBy"]=x["_id"]
-                    s["parameters"]=x["parameters"]
-                    s["endTime"]=x["endTime"]
-                    s["startTime"]=x["startTime"]
-                    s["runId"]=x["runId"]
-                    s["errors"]=x["errors"]
-                    s["derivationIds"]=x['derivationIds']
-                    artifacts.append(s)
-                    
-        
-                
-        output = {"@graph":artifacts};
-        output=self.addLDContext(output)
-        output.update({"totalCount": totalCount})
-       
-        return  output
+            if genBy!=None:
+                activities=genBy.split(',')
+                searchActivities=[{'name':{'$in':activities}},{'iterationId':{'$in':activities}},{'runId':{'$in':activities}}]
+            
+            # TODO format
+
+
+            i=0
+            ' extract data by annotations either from the whole archive or for a specific runId'
+             
+            searchDic={"$and":[{"$or":searchAgents},{"$or":searchActivities}]}
+            searchDic=clean_empty(searchDic)
+             
+            print(searchDic) 
+            if searchDic!=None:
+                (streamItems, totalCount)=self.getEntitiesFilter_new(searchDic,keylist,maxvalues,minvalues,start,limit, mode,format)
+            
+            output = {"@graph":streamItems};
+            output=self.addLDContext(output)
+            output.update({"totalCount": totalCount})
+           
+            return  output
         
 
     def getWorkflowExecutionByLineage(self, start, limit, usernames, functionNames, keylist, maxvalues, minvalues, mode):
@@ -2190,4 +2167,235 @@ class ProvenanceStore(object):
             "totalCount": workflow_count
         }
 
-    
+    def getEntitiesFilter_new(self,searchDic,keylist,mxvaluelist,mnvaluelist,start,limit,mode='OR',format=None):
+        elementsDict ={}
+        searchContextDic={}
+        print('searchDic',searchDic,'keylist',keylist,'mxvaluelist',mxvaluelist,'mnvaluelist',mnvaluelist,'start',start,'limit',limit,'format',format,'mode',mode)
+
+        lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
+        
+        if keylist==None:
+
+            lineage_items_cursor = lineage.find(
+                searchDic,
+                {
+                    "iterationId": 1,
+                    "runId":1,
+                    "streams":1,
+                    "parameters":1,
+                    'startTime':1,
+                    'endTime':1,
+                    'errors':1,
+                    'derivationIds':1,
+                    'iterationId':1
+                }).sort("endTime",direction=-1).skip(start).limit(limit)
+            # TODO sort on endTime or startTime
+
+            count = lineage.count(searchDic) * 2 
+
+            stream_items = []
+            for lineage_item in lineage_items_cursor:
+                if 'streams' in lineage_item:
+                    for stream in lineage_item['streams']:
+                        if 'iterationId' in lineage_item: 
+                            stream['wasGeneratedBy'] = lineage_item['iterationId']
+                        if 'parameters' in lineage_item: 
+                            stream['parameters'] = lineage_item['parameters']
+                        if 'startTime' in lineage_item: 
+                            stream['startTime'] = lineage_item['startTime']
+                        if 'endTime' in lineage_item: 
+                            stream['endTime'] = lineage_item['endTime']
+                        if 'runId' in lineage_item: 
+                            stream['runId'] = lineage_item['runId']
+                        if 'errors' in lineage_item: 
+                            stream['errors'] = lineage_item['errors']
+                        if 'derivationIds' in lineage_item: 
+                            stream['derivationIds'] = lineage_item['derivationIds']
+
+                        stream_items.append(stream)
+
+            return(stream_items, count)
+
+        else:
+            
+            key_value_pairs = helper.getKeyValuePairs(keylist, mxvaluelist, mnvaluelist)
+            indexed_meta_query = helper.getIndexedMetaQueryList(key_value_pairs, format)
+            print('------>', mode)
+            # TODO add AND behaviour
+            if mode == 'OR': 
+                print('--OR--', mode)
+                searchDic['$or'] = indexed_meta_query
+            elif mode == 'AND':
+                print('--AND--', mode)
+                searchDic['$and'] = indexed_meta_query
+
+            aggregate_pipeline = [
+                {
+                    '$match':searchDic
+                },
+                {
+                    '$sort': {
+                        'endTime': 1
+                    }
+                },
+                {
+                    '$skip': start
+                },
+                {
+                    '$limit': limit
+                },
+                {
+                    "$unwind": "$streams" 
+                },
+                {
+                    '$match': {
+                        '$or': helper.getUnwindedStreamIndexedMetaQuery(key_value_pairs, format)
+                    }
+                },
+                {
+                    '$project': {
+                        'format': '$streams.format',
+                        'annotations': '$streams.annotations',
+                        'contents': '$streams.content',
+                        'locations': '$streams.location',
+                        'id': '$streams.id',
+                        'port': '$streams.port',
+                        'wasGeneratedBy': '$iterationId',
+                        'parameters': 1,
+                        'startTime': 1,
+                        'endTime': 1,
+                        'runId': 1,
+                        'errors': 1,
+                        'derivationIds': 1
+                    }
+                }
+            ]
+            print('aggregate_pipeline:  ', aggregate_pipeline)
+            try: 
+                print('---- try ----')
+                stream_items_cursor = lineage.aggregate(pipeline=aggregate_pipeline) 
+            except:
+                # If sorting fails remove the sort from the query
+                print('---- except ----')
+
+                aggregate_pipeline.pop(1)
+                stream_items_cursor = lineage.aggregate(pipeline=aggregate_pipeline)        
+
+
+            stream_items = []
+            for stream_item in stream_items_cursor: 
+                stream_items.append(stream_item)
+            print('-----stream_items count : ', len(stream_items))
+            # TODO check if we can get precise count
+            totalCount = lineage.count(searchDic) * 2 
+
+            return(stream_items, totalCount)
+
+    def getDataGranuleTerms(self, aggregationLevel = 'all', runIdList = [], usernameList = []):
+        term_summaries = self.db[ProvenanceStore.TERM_SUMMARIES_COLLECTION]
+
+        term_summaries_query = {}
+        return_key = {}
+
+        if aggregationLevel ==  'all':
+            term_summaries_query['_id.type'] = 'all'
+
+            return_key = {
+                'type': 'all'
+            }
+
+        elif aggregationLevel ==  'runId':
+            term_summaries_query['_id.type'] = 'runId_username'
+            term_summaries_query['_id.runId'] = {
+                '$in': runIdList
+            }
+
+            return_key = {
+                'type': 'runId',
+                'runIds': runIdList
+            }
+
+        elif aggregationLevel ==  'username':
+            term_summaries_query['_id.type'] = 'username'
+            term_summaries_query['_id.username'] = {
+                '$in': usernameList
+            }
+
+            return_key = {
+                'type': 'username',
+                'usernames': usernameList
+            }
+        print('---query--->', term_summaries_query)
+
+        term_summaries_cursor = term_summaries.find(term_summaries_query)
+
+        term_summaries_items = []
+
+        for term_summaries_item in term_summaries_cursor:
+            term_summaries_items.append(term_summaries_item)
+
+        # If there is only one result return it. Else merge the results.
+        if len(term_summaries_items) == 1:
+            item = term_summaries_items[0]
+            item['_id'] = return_key 
+            return item
+
+        else: 
+            merged_value = {
+                'parameterMap': {},
+                'contentMap': {}
+            }
+            for term_summaries_item in term_summaries_items:
+                print('---------')
+                if 'parameterMap' in term_summaries_item['value']:
+                    print('yes')
+                    for parameter_key in term_summaries_item['value']['parameterMap']:
+                        if parameter_key not in merged_value['parameterMap']:
+                            merged_value['parameterMap'][parameter_key] = term_summaries_item['value']['parameterMap'][parameter_key]
+                        else:
+                            merged_value['parameterMap'][parameter_key]['count'] += term_summaries_item['value']['parameterMap'][parameter_key]['count']
+                            if 'valuesByType' in term_summaries_item['value']['parameterMap'][parameter_key]:
+                                for value_type_key in term_summaries_item['value']['parameterMap'][parameter_key]['valuesByType']:
+                                
+                                    if value_type_key not in merged_value['parameterMap'][parameter_key]['valuesByType']:
+                                        merged_value['parameterMap'][parameter_key]['valuesByType'][value_type_key] = term_summaries_item['value']['parameterMap'][parameter_key]['valuesByType'][value_type_key]
+                                    else:
+                                        merged_value['parameterMap'][parameter_key]['valuesByType'][value_type_key]['count'] += term_summaries_item['value']['parameterMap'][parameter_key]['valuesByType'][value_type_key]['count']
+                                        if value_type_key == 'number':
+                                            if merged_value['parameterMap'][parameter_key]['valuesByType'][value_type_key]['min'] > term_summaries_item['value']['parameterMap'][parameter_key]['valuesByType'][value_type_key]['min']:
+                                                merged_value['parameterMap'][parameter_key]['valuesByType'][value_type_key]['min'] = term_summaries_item['value']['parameterMap'][parameter_key]['valuesByType'][value_type_key]['min']
+                                            elif merged_value['parameterMap'][parameter_key]['valuesByType'][value_type_key]['max'] < term_summaries_item['value']['parameterMap'][parameter_key]['valuesByType'][value_type_key]['max']:
+                                                merged_value['parameterMap'][parameter_key]['valuesByType'][value_type_key]['max'] = term_summaries_item['value']['parameterMap'][parameter_key]['valuesByType'][value_type_key]['max']
+
+                if 'contentMap' in term_summaries_item['value']:
+                    print(term_summaries_item['_id']['runId'])
+                    for content_key in term_summaries_item['value']['contentMap']:
+                        print('--- content_key ---', content_key)
+
+                        if content_key not in merged_value['contentMap']:
+                            print('--not- content_key ---', content_key)
+
+                            merged_value['contentMap'][content_key] = term_summaries_item['value']['contentMap'][content_key]
+                        else:
+                            print('--yes- content_key ---', content_key)
+                            merged_value['contentMap'][content_key]['count'] += term_summaries_item['value']['contentMap'][content_key]['count']
+                            if 'valuesByType' in term_summaries_item['value']['contentMap'][content_key]:
+                                for value_type_key in term_summaries_item['value']['contentMap'][content_key]['valuesByType']:
+                                    
+                                    if value_type_key not in merged_value['contentMap'][content_key]['valuesByType']:
+                                        merged_value['contentMap'][content_key]['valuesByType'][value_type_key] = term_summaries_item['value']['contentMap'][content_key]['valuesByType'][value_type_key]
+                                    else:
+                                        merged_value['contentMap'][content_key]['valuesByType'][value_type_key]['count'] += term_summaries_item['value']['contentMap'][content_key]['valuesByType'][value_type_key]['count']
+                                        if value_type_key == 'number':
+                                            if merged_value['contentMap'][content_key]['valuesByType'][value_type_key]['min'] > term_summaries_item['value']['contentMap'][content_key]['valuesByType'][value_type_key]['min']:
+                                                merged_value['contentMap'][content_key]['valuesByType'][value_type_key]['min'] = term_summaries_item['value']['contentMap'][content_key]['valuesByType'][value_type_key]['min']
+                                            elif merged_value['contentMap'][content_key]['valuesByType'][value_type_key]['max'] < term_summaries_item['value']['contentMap'][content_key]['valuesByType'][value_type_key]['max']:
+                                                merged_value['contentMap'][content_key]['valuesByType'][value_type_key]['max'] = term_summaries_item['value']['contentMap'][content_key]['valuesByType'][value_type_key]['max']
+  
+            return {
+                '_id': return_key,
+                'value': merged_value
+            }
+
+
+        
