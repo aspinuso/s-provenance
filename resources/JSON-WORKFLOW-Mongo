@@ -1,9 +1,8 @@
 {
-    "_id" : "CORR_LARGE_orfeus-as-86915-94c4bb23-8eef-11e7-804e-f45c89acf865",
+    "_id" : "PREPROCESS_VERCE_orfeus-as-39191-3a42aede-ad1c-11e7-95cf-f45c89acf865",
+    "runId" : "PREPROCESS_VERCE_orfeus-as-39191-3a42aede-ad1c-11e7-95cf-f45c89acf865",
     "username" : "aspinuso",
-    "workflowId" : "xx",
-    "ns" : {},
-    "description" : "provState",
+    "description" : "test processing workflow",
     "modules" : [ 
         "appinst==2.1.2", 
         "appnope==0.1.0", 
@@ -17,37 +16,278 @@
         "backports.ssl-match-hostname==3.5.0.1", 
         "basemap==1.0.7", 
         "blinker==1.4", 
-        "cachecontrol==0.11.7"
+        "cachecontrol==0.11.7", 
+        "casuarius==1.1", 
+        "certifi==2015.11.20.1", 
+        "cffi==1.8.3", 
+        "chaco==4.4.1", 
+        "ckanapi==4.0", 
+        "click==6.7", 
+        "cloud==2.4.6", 
+        "configargparse==0.10.0", 
+        "configobj==4.7.2", 
+        "construct==2.5.3", 
+        "cryptography==1.3.4", 
+        "cwlref-runner==1.0", 
+        "cwltool==1.0.20170510165748", 
+        "cython==0.23.4", 
+        "datetime==4.2", 
+        "decorator==4.0.4", 
+        "dispel4py==0.0.1", 
+        "distribute==0.6.49", 
+        "docopt==0.6.2", 
+        "dublincore==1.0", 
+        "enable==4.3.0", 
+        "enaml==0.6.8", 
+        "encore==0.4.0", 
+        "enum34==1.1.6", 
+        "envisage==4.4.0", 
+        "etsproxy==0.1.2", 
+        "examples==7.3", 
+        "flake8==2.3.0", 
+        "flask==0.12.1", 
+        "freetype==2.4.4", 
+        "functools32==3.2.3.post2", 
+        "future==0.14.3", 
+        "gevent==1.1.2", 
+        "globusonline-transfer-api-client==0.10.18", 
+        "gnureadline==6.3.3", 
+        "greenlet==0.4.10", 
+        "grequests==0.3.0", 
+        "gunicorn==19.7.1", 
+        "h2==2.4.1", 
+        "h5py==2.5.0", 
+        "hpack==2.3.0", 
+        "html2text==2016.4.2", 
+        "hyperframe==3.2.0", 
+        "idle==2.7.3", 
+        "idna==2.1", 
+        "ipaddress==1.0.17", 
+        "ipykernel==4.2.1", 
+        "ipython-genutils==0.1.0", 
+        "ipython==4.0.1", 
+        "ipywidgets==4.1.1", 
+        "isodate==0.5.4", 
+        "itsdangerous==0.24", 
+        "jinja2==2.9.6", 
+        "jsonpatch==1.16", 
+        "jsonpointer==1.10", 
+        "jsonschema==2.5.1", 
+        "jupyter-client==4.1.1", 
+        "jupyter-console==4.0.3", 
+        "jupyter-core==4.0.6", 
+        "jupyter==1.0.0", 
+        "kernmagic==0.2.0", 
+        "libjpeg==7.0", 
+        "libpng==1.2.40", 
+        "lockfile==0.12.2", 
+        "lxml==3.6.4", 
+        "m2crypto==0.25.1", 
+        "markupsafe==1.0", 
+        "matplotlib==1.4.3", 
+        "mccabe==0.3", 
+        "mistune==0.7.4", 
+        "mitmproxy==0.17", 
+        "mpi4py==1.3.1", 
+        "nbconvert==4.1.0", 
+        "nbformat==4.0.1", 
+        "netcdf4==1.2.2", 
+        "networkx==1.11", 
+        "nose==1.3.6", 
+        "notebook==4.0.6", 
+        "noworkflow==0.6.0", 
+        "numpy==1.9.2", 
+        "obspy==0.10.1", 
+        "panda==0.3.1", 
+        "pandas==0.17.1", 
+        "passlib==1.6.5", 
+        "path.py==8.1.2", 
+        "pathtools==0.1.2", 
+        "pep8==1.6.2", 
+        "pexpect==4.0.1", 
+        "pickleshare==0.5", 
+        "pillow==3.2.0", 
+        "pip==9.0.1", 
+        "ply==3.4", 
+        "ptyprocess==0.5", 
+        "py==1.4.26", 
+        "pyasn1==0.1.9", 
+        "pycparser==2.14", 
+        "pydotplus==2.0.2", 
+        "pyface==4.4.0", 
+        "pyflakes==0.8.1", 
+        "pyflex==0.1.3", 
+        "pyglet==1.1.4", 
+        "pygments==1.6", 
+        "pyinstaller==3.2.1", 
+        "pymongo==3.4.0", 
+        "pympler==0.4.2", 
+        "pyopenssl==16.1.0", 
+        "pyparsing==2.1.9", 
+        "pyperclip==1.5.27", 
+        "pytest==2.6.4", 
+        "python-dateutil==2.4.2", 
+        "python-levenshtein==0.12.0", 
+        "pythondoc==2.7.3", 
+        "pytz==2015.2", 
+        "pyyaml==3.12", 
+        "pyzmq==15.1.0", 
+        "qtconsole==4.1.1", 
+        "rdflib-jsonld==0.4.0", 
+        "rdflib==4.2.2", 
+        "readline==6.2.1", 
+        "requests-futures==0.9.7", 
+        "requests==2.9.2", 
+        "ruamel.ordereddict==0.4.9", 
+        "ruamel.yaml==0.14.11", 
+        "schema-salad==2.5.20170428142041", 
+        "scipy==0.15.1", 
+        "scriptcwl==0.3.1", 
+        "seaborn==0.7.1", 
+        "setuptools==25.1.4", 
+        "shellescape==3.4.1", 
+        "sickle==0.6.1", 
+        "simplegeneric==0.8.1", 
+        "simplejson==3.11.1", 
+        "singledispatch==3.4.0.3", 
+        "six==1.10.0", 
+        "sqlalchemy==0.9.9", 
+        "suds==0.4", 
+        "sympy==0.7.3", 
+        "terminado==0.5", 
+        "tornado==4.3", 
+        "traitlets==4.0.0", 
+        "traits==4.4.0", 
+        "traitsui==4.4.0", 
+        "twisted==16.2.0", 
+        "txmongo==16.1.0", 
+        "typing==3.5.3.0", 
+        "ujson==1.35", 
+        "urwid==1.3.1", 
+        "watchdog==0.8.3", 
+        "werkzeug==0.12.1", 
+        "wxpython==2.9.2.4", 
+        "xarray==0.7.1", 
+        "zope.interface==4.0.5"
     ],
-    "mapping" : "-f",
+    "mapping" : "multi",
+    
     "source" : {
-        "Start8" : {
+        "PE_filter_bandpass14" : {
             "code" : "",
-            "type" : "(<class 'dispel4py.provenance.ProvenancePE'>, <class '__main__.Source'>)",
-            "functionName" : "Source"
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.MisfitPreprocessingFunctionPE'>)"
+        },
+        "PE_filter_bandpass6" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.MisfitPreprocessingFunctionPE'>)"
+        },
+        "RotationPE16" : {
+            "code" : " "
+        },
+        "PE_plot_stream9" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.MisfitPreprocessingFunctionPE'>)"
+        },
+        "RotationPE17" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.RotationPE'>)"
+        },
+        "PE_filter_highpass5" : {
+            "code" : " ",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.MisfitPreprocessingFunctionPE'>)"
+        },
+        "PE_plot_stream3" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.MisfitPreprocessingFunctionPE'>)"
+        },
+        "PE_filter_lowpass4" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.MisfitPreprocessingFunctionPE'>)"
+        },
+        "StoreStreamChannel19" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.StoreStreamChannel'>)"
+        },
+        "PE_remove_response2" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.MisfitPreprocessingFunctionPE'>)"
+        },
+        "PE_filter_lowpass12" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.MisfitPreprocessingFunctionPE'>)"
+        },
+        "PE_store_stream10" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.MisfitPreprocessingFunctionPE'>)"
+        },
+        "PE_detrend7" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.MisfitPreprocessingFunctionPE'>)"
+        },
+        "PE_detrend0" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.MisfitPreprocessingFunctionPE'>)"
+        },
+        "PE_filter_highpass13" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.MisfitPreprocessingFunctionPE'>)"
+        },
+        "StoreStreamChannel18" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.StoreStreamChannel'>)"
+        },
+        "PE_pre_filter11" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.MisfitPreprocessingFunctionPE'>)"
+        },
+        "PE_taper1" : {
+            "code" : " ",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.MisfitPreprocessingFunctionPE'>)"
+        },
+        "readDataPE15" : {
+            "code" : "",
+            "type" : "(<class 'dispel4py.seismo.seismo.SeismoPE'>, <class 'test.misfit_preprocessing.create_misfit_prep.ReadDataPE'>)"
         }
-    },
+    },,
     "system_id" : null,
     "runId" : "CORR_LARGE_orfeus-as-86915-94c4bb23-8eef-11e7-804e-f45c89acf865",
     "startTime" : "2017-09-01 08:28:50.513188",
-    "input" : [ 
-        {
-            "url" : 4,
-            "name" : "variables_number"
-        }, 
-        {
-            "url" : 100,
-            "name" : "sampling_rate"
-        }, 
-        {
-            "url" : 5,
-            "name" : "batch_size"
-        }, 
-        {
-            "url" : 2,
-            "name" : "iterations"
-        }
-    ],
+   input": [
+
+    {
+        "url": "/j2ep-1.0/prov/workflowexecution/simulation_workflow_wd123441144,
+        "mime-type": "application/octet-stream",
+        "prov:type": "wfrun",
+        "name": "simulation_workflow"
+    },
+    {
+        "url": "/j2ep-1.0/prov/workflowexecution/download_workflow_wde4sdaaa1144”,
+        "mime-type": "application/octet-stream",
+        "prov:type": "wfrun",
+        "name": "download_workflow"
+    },
+    {
+        "url": "/documents/20181/processing_conf.json,
+        "mime-type": "text/json",
+        "name": "processing_conf"
+    },
+    {
+        "url": "https://verce-portal-test.scai.fraunhofer.de/documents/20181/30184/events_simulation_abruzzo0_1506527110248",
+        "mime-type": "application/xml",
+        "name": "quakeml"
+    },
+    {
+        "url": "/documents/20181/38888/processing_abruzzo_INGV0_1506617606682_1508665787139_pipelines.json",
+        "mime-type": "text/json",
+        "name": "pipelines"
+    },
+    {
+        "url": "documents/20181/30214/processing_abruzzo_INGV0_1506617606682_1508665787139.zip",
+        "mime-type": "zip",
+        "name": "vercepes"
+    }
+
+],
     "type" : "workflow_run",
     "workflowName" : "test_rdwd"
 }
