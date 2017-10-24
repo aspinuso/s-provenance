@@ -439,7 +439,9 @@ class ProvenanceStore(object):
                                                     {'$group':{'_id':'$_id', 'derivationIds':{ '$first': '$derivationIds' },'parameters': { '$first': '$parameters' },'runId': { '$first': '$runId' },'endTime': { '$first': '$endTime' },'startTime': { '$first': '$startTime' },'errors': { '$first': '$errors' },'streams':{ '$push':{'content' :'$streams.content','format':'$streams.format','location':'$streams.location','id':'$streams.id'}}}},
                                                     
                                                     ]) 
-                return obj#totalCount=totalCount+lineage.find(activ_searchDic,{"runId":1}).count()
+
+                totalCount=lineage.find(activ_searchDic,{"runId":1}).count()
+                return (obj,totalCount)
                     
             
             
@@ -871,7 +873,7 @@ class ProvenanceStore(object):
 
         for cursor in cursorsList:
             for x in cursor:
-                
+                print(x)
                 for s in x["streams"]:
                      
                     if (mtype==None or mtype=="") or ('format' in s and s["format"]==mtype):
@@ -1551,7 +1553,7 @@ class ProvenanceStore(object):
                     }
                 }
             ]
-
+            print(aggregate_pipeline)
             aggregate_results = lineage.aggregate(pipeline=aggregate_pipeline)
             for aggregate_result in aggregate_results:    
                 obj.append(aggregate_result)
@@ -2029,7 +2031,7 @@ class ProvenanceStore(object):
             searchDic={"$and":[{"$or":searchAgents},{"$or":searchActivities}]}
             searchDic=clean_empty(searchDic)
              
-            print(searchDic) 
+            print("--- SEARCH! -- "+str(searchDic)) 
             if searchDic!=None:
                 (streamItems, totalCount)=self.getEntitiesFilter_new(searchDic,keylist,maxvalues,minvalues,start,limit, mode,format)
             
@@ -2058,11 +2060,12 @@ class ProvenanceStore(object):
                 '$in': functionNames
             }
 
-        key_value_pairs = helper.getKeyValuePairs(keylist, maxvalues, minvalues);
-        indexed_meta_query = helper.getIndexedMetaQueryList(key_value_pairs)
-        parameters_query = helper.getParametersQueryList(key_value_pairs)
-
-        aggregate_match['$or'] = indexed_meta_query + parameters_query
+        if keylist!=None :
+            key_value_pairs = helper.getKeyValuePairs(keylist, maxvalues, minvalues);
+            indexed_meta_query = helper.getIndexedMetaQueryList(key_value_pairs)
+            parameters_query = helper.getParametersQueryList(key_value_pairs)
+            aggregate_match['$or'] = indexed_meta_query + parameters_query
+       
        
         print('---aggregate_match->',  aggregate_match)
 
@@ -2228,13 +2231,14 @@ class ProvenanceStore(object):
             indexed_meta_query = helper.getIndexedMetaQueryList(key_value_pairs, format)
             print('------>', mode)
             # TODO add AND behaviour
+            print('--searchdic 1111---'+str(searchDic))
             if mode == 'OR': 
                 print('--OR--', mode)
                 searchDic['$or'] = indexed_meta_query
             elif mode == 'AND':
                 print('--AND--', mode)
-                searchDic['$and'] = indexed_meta_query
-
+                searchDic['$and'] = searchDic['$and'] + indexed_meta_query
+            print('--searchdic 22222----'+str(searchDic))
             aggregate_pipeline = [
                 {
                     '$match':searchDic
@@ -2262,8 +2266,8 @@ class ProvenanceStore(object):
                     '$project': {
                         'format': '$streams.format',
                         'annotations': '$streams.annotations',
-                        'contents': '$streams.content',
-                        'locations': '$streams.location',
+                        'content': '$streams.content',
+                        'location': '$streams.location',
                         'id': '$streams.id',
                         'port': '$streams.port',
                         'wasGeneratedBy': '$iterationId',
@@ -2272,7 +2276,10 @@ class ProvenanceStore(object):
                         'endTime': 1,
                         'runId': 1,
                         'errors': 1,
-                        'derivationIds': 1
+                        '_id':0,
+                        'derivationIds': 1,
+                        'size':'$streams.size',
+                        'indexedMeta':'$streams.indexedMeta'
                     }
                 }
             ]
