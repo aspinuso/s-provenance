@@ -17,7 +17,8 @@ RUN rm master.zip
 WORKDIR /prov/s-provenance-master/provenance-explorer
 
 RUN mvn compile war:war
-
-#COPY ./target/provenance-explorer.war /usr/local/tomcat/webapps
+		
+RUN cp ./target/provenance-explorer.war /usr/local/tomcat/webapps
+provenance-explorer.war
 
 # docker run -it -p 9000:8080 explorer
