@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     
-        </server>
+       
         
         
-       <!-- server className="net.sf.j2ep.servers.BaseServer" domainName="climate4impact.eu/prov/" isRewriting="true">
-        
-                <rule className="net.sf.j2ep.rules.DirectoryRule"  directory="/prov/" />
-        </server -->
- <!-- server className="net.sf.j2ep.servers.BaseServer" domainName="portal.verce.eu/j2ep-1.0/prov" isRewriting="true">
-
-                <rule className="net.sf.j2ep.rules.DirectoryRule"  directory="/prov" />
-        </server -->  
+     
         <server className="net.sf.j2ep.servers.BaseServer" domainName="127.0.0.1:8082" isRewriting="true">
                  <rule className="net.sf.j2ep.rules.DirectoryRule"  directory="/prov" />
         </server>	
