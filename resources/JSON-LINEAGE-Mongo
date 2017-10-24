@@ -1,52 +1,56 @@
 {
-    "_id" : "CorrCoef20_stateful_orfeus-as-86915-974dc854-8eef-11e7-b440-f45c89acf865",
+    "_id" : "StoreStreamChannel18_write_orfeus-as-39233-3ed3c0ae-ad1c-11e7-8e72-f45c89acf865",
     "derivationIds" : [ 
         {
-            "iterationIndex" : 3,
-            "DerivedFromDatasetID" : "orfeus-as-86915-974780b5-8eef-11e7-b36d-f45c89acf865",
-            "TriggeredByProcessIterationID" : "Source-orfeus-as-86915-97477bd4-8eef-11e7-977c-f45c89acf865",
-            "prov_cluster" : "record0",
-            "port" : "input_5"
+            "port" : "input",
+            "DerivedFromDatasetID" : "orfeus-as-39226-3e9679a3-ad1c-11e7-b687-f45c89acf865",
+            "TriggeredByProcessIterationID" : "RotationPE-orfeus-as-39226-3dcd1fbd-ad1c-11e7-8af9-f45c89acf865",
+            "prov_cluster" : "RotationPE16"
         }
     ],
-    "instanceId" : "CorrCoef-Instance--orfeus-as-86915-9745b91e-8eef-11e7-8ca6-f45c89acf865",
-    "pid" : "86915",
-    "iterationId" : "CorrCoef-orfeus-as-86915-974dadba-8eef-11e7-bd8d-f45c89acf865",
-    "prov_cluster" : "record1",
+    "instanceId" : "StoreStreamChannel-Instance--orfeus-as-39233-3abaf4a3-ad1c-11e7-a039-f45c89acf865",
+    "pid" : "39233",
+    "iterationId" : "StoreStreamChannel-orfeus-as-39233-3ed0f7ca-ad1c-11e7-9798-f45c89acf865",
+    "prov_cluster" : "StoreStreamChannel18",
     "errors" : "",
-    "parameters" : [],
+    "parameters" : { "par_1":0, "par2":"val"},
     "feedbackIteration" : false,
     "type" : "lineage",
     "annotations" : {},
     "username" : "aspinuso",
-    "actedOnBehalfOf" : "CorrCoef20",
+    "actedOnBehalfOf" : "StoreStreamChannel18",
     "worker" : "orfeus-as",
-    "mapping" : "-f",
-    "stateful" : true,
-    "startTime" : "2017-09-01 08:28:54.486744",
-    "name" : "CorrCoef",
-    "iterationIndex" : 3,
+    "mapping" : "multi",
+    "stateful" : false,
+    "startTime" : "2017-10-09 18:04:08.266093",
+    "name" : "StoreStreamChannel",
+    "iterationIndex" : 2,
     "streams" : [ 
         {
             "annotations" : [],
-            "format" : "",
-            "port" : "_d4p_state",
+            "format" : "application/octet-stream",
+            "id" : "orfeus-as-39233-3ed3badc-ad1c-11e7-afc1-f45c89acf865",
             "content" : [ 
                 {
-                    "var_4" : [ 
-                        53.795429138, 
-                        47.6094568534, 
-                        34.6581375575, 
-                        86.2373960698, 
-                        33.9095512701
-                    ]
+                    "prov:type" : "observed-waveform",
+                    "id" : "3ed3ab75-ad1c-11e7-ad57-f45c89acf865",
+                    "sampling_rate" : 100.0,
+                    "station" : "CAFR",
+                    "location" : "",
+                    "starttime" : "2013-02-16T21:16:09.240000Z",
+                    "delta" : 0.01,
+                    "calib" : 1.0,
+                    "npts" : 9999.0,
+                    "endtime" : "2013-02-16T21:17:49.220000Z",
+                    "response" : "Channel Response\n\tFrom M/S () to COUNTS ()\n\tOverall Sensitivity: 1.5e+09 defined at 0.200 Hz\n\t5 stages:\n\t\tStage 1: PolesZerosResponseStage from M/S to V, gain: 1500\n\t\tStage 2: CoefficientsTypeResponseStage from V to COUNTS, gain: 1e+06\n\t\tStage 3: FIRResponseStage from COUNTS to COUNTS, gain: 1\n\t\tStage 4: FIRResponseStage from COUNTS to COUNTS, gain: 1\n\t\tStage 5: FIRResponseStage from COUNTS to COUNTS, gain: 1",
+                    "channel" : "HHZ"
                 }
             ],
-            "location" : "",
-            "id" : "orfeus-as-86915-974dc642-8eef-11e7-91f4-f45c89acf865",
+            "location" : "file://orfeus-as/test-resources/misfit-data/output/IV.CAFR.HHZ.observed.seed",
+            "port" : "output",
             "size" : 0
         }
     ],
-    "runId" : "CORR_LARGE_orfeus-as-86915-94c4bb23-8eef-11e7-804e-f45c89acf865",
-    "endTime" : "2017-09-01 08:28:54.487425"
+    "runId" : "PREPROCESS_VERCE_orfeus-as-39191-3a42aede-ad1c-11e7-95cf-f45c89acf865",
+    "endTime" : "2017-10-09 18:04:08.284268"
 }
