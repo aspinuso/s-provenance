@@ -2338,7 +2338,6 @@ class ProvenanceStore(object):
                 'type': 'username',
                 'usernames': usernameList
             }
-        print('---query--->', term_summaries_query)
 
         term_summaries_cursor = term_summaries.find(term_summaries_query)
 
@@ -2358,55 +2357,130 @@ class ProvenanceStore(object):
                 'parameterMap': {},
                 'contentMap': {}
             }
+            value_maps = [ 
+                'contentMap',
+                'parameterMap'
+            ]
+
             for term_summaries_item in term_summaries_items:
-                if 'parameterMap' in term_summaries_item['value']:
-                    print('yes')
-                    for parameter_key in term_summaries_item['value']['parameterMap']:
-                        if parameter_key not in merged_value['parameterMap']:
-                            merged_value['parameterMap'][parameter_key] = term_summaries_item['value']['parameterMap'][parameter_key]
-                        else:
-                            merged_value['parameterMap'][parameter_key]['count'] += term_summaries_item['value']['parameterMap'][parameter_key]['count']
-                            if 'valuesByType' in term_summaries_item['value']['parameterMap'][parameter_key]:
-                                for value_type_key in term_summaries_item['value']['parameterMap'][parameter_key]['valuesByType']:
-                                
-                                    if value_type_key not in merged_value['parameterMap'][parameter_key]['valuesByType']:
-                                        merged_value['parameterMap'][parameter_key]['valuesByType'][value_type_key] = term_summaries_item['value']['parameterMap'][parameter_key]['valuesByType'][value_type_key]
-                                    else:
-                                        merged_value['parameterMap'][parameter_key]['valuesByType'][value_type_key]['count'] += term_summaries_item['value']['parameterMap'][parameter_key]['valuesByType'][value_type_key]['count']
-                                        if value_type_key == 'number':
-                                            if merged_value['parameterMap'][parameter_key]['valuesByType'][value_type_key]['min'] > term_summaries_item['value']['parameterMap'][parameter_key]['valuesByType'][value_type_key]['min']:
-                                                merged_value['parameterMap'][parameter_key]['valuesByType'][value_type_key]['min'] = term_summaries_item['value']['parameterMap'][parameter_key]['valuesByType'][value_type_key]['min']
-                                            elif merged_value['parameterMap'][parameter_key]['valuesByType'][value_type_key]['max'] < term_summaries_item['value']['parameterMap'][parameter_key]['valuesByType'][value_type_key]['max']:
-                                                merged_value['parameterMap'][parameter_key]['valuesByType'][value_type_key]['max'] = term_summaries_item['value']['parameterMap'][parameter_key]['valuesByType'][value_type_key]['max']
 
-                if 'contentMap' in term_summaries_item['value']:
-                    for content_key in term_summaries_item['value']['contentMap']:
-                        print('--- content_key ---', content_key)
-
-                        if content_key not in merged_value['contentMap']:
-                            print('--not- content_key ---', content_key)
-
-                            merged_value['contentMap'][content_key] = term_summaries_item['value']['contentMap'][content_key]
-                        else:
-                            print('--yes- content_key ---', content_key)
-                            merged_value['contentMap'][content_key]['count'] += term_summaries_item['value']['contentMap'][content_key]['count']
-                            if 'valuesByType' in term_summaries_item['value']['contentMap'][content_key]:
-                                for value_type_key in term_summaries_item['value']['contentMap'][content_key]['valuesByType']:
+                for value_map in value_maps:
+                    if value_map in term_summaries_item['value']:
+                        for key in term_summaries_item['value'][value_map]:
+                            if key not in merged_value[value_map]:
+                                merged_value[value_map][key] = term_summaries_item['value'][value_map][key]
+                            else:
+                                merged_value[value_map][key]['count'] += term_summaries_item['value'][value_map][key]['count']
+                                if 'valuesByType' in term_summaries_item['value'][value_map][key]:
+                                    for value_type_key in term_summaries_item['value'][value_map][key]['valuesByType']:
                                     
-                                    if value_type_key not in merged_value['contentMap'][content_key]['valuesByType']:
-                                        merged_value['contentMap'][content_key]['valuesByType'][value_type_key] = term_summaries_item['value']['contentMap'][content_key]['valuesByType'][value_type_key]
-                                    else:
-                                        merged_value['contentMap'][content_key]['valuesByType'][value_type_key]['count'] += term_summaries_item['value']['contentMap'][content_key]['valuesByType'][value_type_key]['count']
-                                        if value_type_key == 'number':
-                                            if merged_value['contentMap'][content_key]['valuesByType'][value_type_key]['min'] > term_summaries_item['value']['contentMap'][content_key]['valuesByType'][value_type_key]['min']:
-                                                merged_value['contentMap'][content_key]['valuesByType'][value_type_key]['min'] = term_summaries_item['value']['contentMap'][content_key]['valuesByType'][value_type_key]['min']
-                                            elif merged_value['contentMap'][content_key]['valuesByType'][value_type_key]['max'] < term_summaries_item['value']['contentMap'][content_key]['valuesByType'][value_type_key]['max']:
-                                                merged_value['contentMap'][content_key]['valuesByType'][value_type_key]['max'] = term_summaries_item['value']['contentMap'][content_key]['valuesByType'][value_type_key]['max']
-  
+                                        if value_type_key not in merged_value[value_map][key]['valuesByType']:
+                                            merged_value[value_map][key]['valuesByType'][value_type_key] = term_summaries_item['value'][value_map][key]['valuesByType'][value_type_key]
+                                        else:
+                                            merged_value[value_map][key]['valuesByType'][value_type_key]['count'] += term_summaries_item['value'][value_map][key]['valuesByType'][value_type_key]['count']
+                                            if value_type_key == 'number':
+                                                if merged_value[value_map][key]['valuesByType'][value_type_key]['min'] > term_summaries_item['value'][value_map][key]['valuesByType'][value_type_key]['min']:
+                                                    merged_value[value_map][key]['valuesByType'][value_type_key]['min'] = term_summaries_item['value'][value_map][key]['valuesByType'][value_type_key]['min']
+                                                elif merged_value[value_map][key]['valuesByType'][value_type_key]['max'] < term_summaries_item['value'][value_map][key]['valuesByType'][value_type_key]['max']:
+                                                    merged_value[value_map][key]['valuesByType'][value_type_key]['max'] = term_summaries_item['value'][value_map][key]['valuesByType'][value_type_key]['max']  
             return {
                 '_id': return_key,
                 'value': merged_value
             }
 
+    def hasAncestorWith_new(self, streamId, maxDepth, keylist, maxvalues, minvalues, setContained = False):
+        db = self.connection["verce-prov"]
+        lineage = db['lineage']
 
-        
+        start_node = lineage.find_one({
+                'streams.id': streamId
+            },
+            {
+                'derivationIds': 1,
+                'startTime': 1,
+                'runId': 1
+            })
+
+        (key_value_pairs, contains_range_operator) = helper.getKeyValuePairs(keylist, maxvalues, minvalues) 
+        indexed_meta_query = helper.getAndQueryList(key_value_pairs)
+        print('--->', start_node)
+
+        # TODO use endTime
+
+        min_date = None
+        if setContained == True:
+            max_startTime = start_node['startTime']
+            min_possible_match_query = {
+                'startTime': {
+                    '$lte': start_node['startTime']
+                },
+                '$or': helper.getIndexedMetaQueryList(key_value_pairs),
+                'runId': start_node['runId']
+            }
+            # print('--- min_possible_match_query----->', min_possible_match_query)
+            min_possible_match_cursor = lineage.find(min_possible_match_query).sort("startTime",direction=1).limit(1)
+
+            min_possible_match = None
+            for i in min_possible_match_cursor:
+                min_possible_match = i
+            # print('---min_possible_match -->', min_possible_match)
+            if min_possible_match == None:
+                return False
+            else: 
+                min_date = min_possible_match['startTime']
+
+        derivationIds = []
+        if 'derivationIds' in start_node:
+            for derivationId in start_node['derivationIds']:
+                if 'DerivedFromDatasetID' in derivationId:
+                    derivationIds.append(derivationId['DerivedFromDatasetID'])
+
+        depth = 1;
+        while len(derivationIds) > 0 and maxDepth > 0:
+            print('depth : ', depth, derivationIds, maxDepth)
+            depth += 1 
+            ancestor_match_query = {
+                'streams': {
+                    '$elemMatch': {
+                        'id': {
+                            '$in': derivationIds
+                        },
+                        '$or': indexed_meta_query
+                    }
+                }
+            }
+
+            ancestor_match = lineage.find_one(ancestor_match_query, { '_id': 1 })
+
+            if ancestor_match is not None: 
+                return True
+
+            next_level_query = {
+                'streams': {
+                    '$elemMatch': {
+                        'id': {
+                            '$in': derivationIds
+                        }
+                    }
+                }
+            }
+
+            if setContained == True:
+                next_level_query['startTime'] = {
+                    '$gte': min_date
+                }
+
+            lineage_cursor = lineage.find(next_level_query, { 'derivationIds': 1 })
+
+            derivationIds = []
+            for lineage_item in lineage_cursor:
+                if 'derivationIds' in lineage_item:
+                    for derivationId in lineage_item['derivationIds']:
+                        if 'DerivedFromDatasetID' in derivationId:
+                            derivationIds.append(derivationId['DerivedFromDatasetID'])
+            
+            maxDepth -= 1
+
+        return False
+
+
