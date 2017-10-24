@@ -13,7 +13,7 @@ Ext.define('CF.model.Activity', {
   ,{
     name: 'count',
     type: 'int',
-    mapping: 's-prov:count'
+    mapping: 's-prov:dataCount'
   },
    {
     name: 'message',

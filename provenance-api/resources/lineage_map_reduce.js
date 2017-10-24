@@ -1,15 +1,9 @@
-var mapFunction = function() {
-    var keys = [
-        {
-            runId: this.runId,
-            username: this.username,
-            type: 'runId_username'
-        },
-        {
-            username: this.username,
-            type: 'username'
-        }
-    ];
+var mapRunId = function() {
+    var key = {
+        runId: this.runId,
+        username: this.username,
+        type: 'runId_username'
+    }
    
     var contentMap = {};
     if (this.streams && Object.prototype.toString.call( this.streams ) === '[object Array]' ) {
@@ -98,15 +92,14 @@ var mapFunction = function() {
         }
     }         
 
-    for (let key of keys) {
-        emit(key, {
-            contentMap: contentMap,
-            parameterMap: parameterMap
-        })
-    }
+    emit(key, {
+        contentMap: contentMap,
+        parameterMap: parameterMap
+    })
+    
 }    
 
-var reduceFunction = function(key, values) {
+var reduceTerms = function(key, values) {
     var contentMap = {}
     for (let value of values) {
         for (let key in value.contentMap) {
@@ -169,31 +162,51 @@ var reduceFunction = function(key, values) {
     }
 }
 
+var mapUsernameAndAll = function() {
+    var keys = [
+        {
+            username: this._id.username,
+            type: 'username'
+        },
+        {
+            type: 'all'
+        },
+    ]
+    for(let key of keys) {
+        emit(key, this.value)
+    }
+}
 
 var batch_job = db.getCollection('batch_jobs').findOne({name: 'contentSummary_runId_userName'})
 
 if (!batch_job) {
     db.getCollection('batch_jobs').insert({
         name: 'contentSummary_runId_userName',
-        cutoffDateLastJob: new Date("2000-09-28T09:32:38.002Z")
+        cutoffLastJob: '2000-09-14 21:12:13.224524'
     })
     batch_job = db.getCollection('batch_jobs').findOne({name: 'contentSummary_runId_userName'})
 }
 
+var cursor = db.getCollection('lineage').find().sort({startTime: -1}).limit(1)
 
-var startOfJobString = new Date().toISOString()
-var cutoffLastJobString = batch_job.cutoffDateLastJob.toISOString();
+var lastLineageItem;
+while(cursor.hasNext()) {
+    lastLineageItem = cursor.next()
+}
+
+var cutoffCurrentJob = lastLineageItem.startTime
+var cutoffLastJob = batch_job.cutoffLastJob
 
 var batch_job = true
 if (batch_job) {
     db.lineage.mapReduce(
-        mapFunction,
-        reduceFunction,
+        mapRunId,
+        reduceTerms,
         {
             query: {
-                "startTime": {
-                    '$gte': cutoffLastJobString,
-                    '$lte': startOfJobString
+                startTime: {
+                    $gte: cutoffLastJob,
+                    $lte: cutoffCurrentJob
                 }
             },
             out: { 
@@ -205,7 +218,23 @@ if (batch_job) {
             jsMode: true
         }
     )
-    db.getCollection('batch_jobs').update({name: 'contentSummary_runId_userName'},{$set: {cutoffDateLastJob: new Date(startOfJobString)}})
+    db.term_summaries.mapReduce(
+        mapUsernameAndAll,
+        reduceTerms,
+        {
+            query: {
+                '_id.type': 'runId_username'
+
+            },
+            out: { 
+                merge: "term_summaries" 
+            },
+            jsMode: true
+        }
+    )
+
+
+    db.getCollection('batch_jobs').update({name: 'contentSummary_runId_userName'},{$set: {cutoffLastJob: cutoffCurrentJob }})
 
 } else {
     print('Job not found')

@@ -342,6 +342,8 @@ def getWorkflowExecutions():
     maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])).next() if 'maxvalues' in request.args else None
     minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])).next() if 'minvalues' in request.args else None
     functionNames = csv.reader(StringIO.StringIO(request.args['functionNames'])).next() if 'functionNames' in request.args else None
+    formats = csv.reader(StringIO.StringIO(request.args['formats'])).next() if 'formats' in request.args else None
+    types = csv.reader(StringIO.StringIO(request.args['types'])).next() if 'types' in request.args else None
     mode = request.args['mode'] if 'mode' in request.args else None
 
     # type = csv.reader(StringIO.StringIO(request.args['type'])) if 'type' in request.args else None
@@ -371,12 +373,23 @@ def getInstancesMonitoring(runid):
     response.headers['Content-type'] = 'application/json'    
     return response
 
+@app.route("/workflowexecutions/<runid>/showactivity")
+def getMonitoring(runid):
+    limit = request.args['limit'] 
+    start = request.args['start']
+    level = request.args['level'] if 'level' in request.args else None
+    if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET workflowexecutions monitoring - "+runid+" PID:"+str(os.getpid()));
+    response = Response()
+    response = Response(json.dumps(app.db.getMonitoring(runid,level,int(start),int(limit))))
+    response.headers['Content-type'] = 'application/json'    
+    return response
+
 #Extract details about a single invocation or an instance by specifying their $id$.
 @app.route("/invocations/<invocid>")
 def getInvocationDetails(invocid):
         if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET invocation details - "+invocid+" PID:"+str(os.getpid()));
         response = Response()
-        response = Response(json.dumps(app.db.getInvocation(runid,invocid)))
+        response = Response(json.dumps(app.db.getInvocation(invocid)))
         response.headers['Content-type'] = 'application/json'       
         return response
 
@@ -387,6 +400,14 @@ def getInstanceDetails(instid):
         if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET instance details - "+instid+" PID:"+str(os.getpid()));
         response = Response()
         response = Response(json.dumps(app.db.getComponentInstance(instid)))
+        response.headers['Content-type'] = 'application/json'       
+        return response
+
+@app.route("/components/<compid>")
+def getComponentDetails(compid):
+        if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET component details - "+compid+" PID:"+str(os.getpid()));
+        response = Response()
+        response = Response(json.dumps(app.db.getComponent(compid)))
         response.headers['Content-type'] = 'application/json'       
         return response
 
@@ -401,11 +422,13 @@ def getData():
         genby = request.args['generatedBy'] if 'generatedBy' in request.args else None
         attrTo = request.args['attributedTo'] if 'attributedTo' in request.args else None
         keylist = csv.reader(StringIO.StringIO(request.args['terms'])).next() if 'terms' in request.args else None
-        maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])) if 'maxvalues' in request.args else None
-        minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])) if 'minvalues' in request.args else None
+        maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])).next() if 'maxvalues' in request.args else None
+        minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])).next() if 'minvalues' in request.args else None
+        format = request.args['format'] if 'format' in request.args else None
+        mode = request.args['mode'] if 'mode' in request.args else 'OR'
+        id = request.args['id'] if 'id' in request.args else None
         
-        
-        response = Response(json.dumps(app.db.getData(int(start),int(limit),genBy=genby,attrTo=attrTo,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues)))
+        response = Response(json.dumps(app.db.getData(int(start),int(limit),genBy=genby,attrTo=attrTo,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues,id=id,format=format,mode=mode)))
 
         response.headers['Content-type'] = 'application/json'
 
@@ -420,7 +443,17 @@ def getData():
 
 # Thomas
 #Returns a list of metadata terms that can be suggested based on their appearance within a list of runs, users, or for the whole provenance archive
-#@app.route("/dataGranuleTerms")
+@app.route("/dataGranuleTerms")
+def getDataGranuleTerms():
+        aggregationLevel = request.args['aggregationLevel'] if 'aggregationLevel' in request.args else 'all'
+        runIdList = csv.reader(StringIO.StringIO(request.args['runIds'])).next() if 'runIds' in request.args else None
+        usernameList = csv.reader(StringIO.StringIO(request.args['usernames'])).next() if 'usernames' in request.args else None
+        print('----->', aggregationLevel, runIdList, usernameList)
+        response = Response(json.dumps(app.db.getDataGranuleTerms(aggregationLevel=aggregationLevel,runIdList=runIdList,usernameList=usernameList)))
+
+        response.headers['Content-type'] = 'application/json'
+
+        return response  
 
 
 @app.route("/summaries/workflowexecution")

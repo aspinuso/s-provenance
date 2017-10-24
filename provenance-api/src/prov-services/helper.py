@@ -3,7 +3,7 @@ import copy
 import exceptions
 
 def addIndexedContentToLineage(lineage):
-    MAXIMUM_STRING_SIZE_FOR_INDEXING = 20
+    MAXIMUM_STRING_SIZE_FOR_INDEXING = 50
     lineage_updated = copy.deepcopy(lineage)
 
     if 'streams' in lineage_updated and type(lineage_updated['streams']) == list:
@@ -60,10 +60,10 @@ def jsonLdToWorkflow():
     # TODO implement transformation of JSON-LD to workflow
     return workflow
     
-def getIndexedMetaQueryList(KeyValuePairs):
+def getIndexedMetaQueryList(KeyValuePairs, optionalFormat=None):
     indexedMetaQueryList = []
     for key_value_pair in KeyValuePairs:
-        indexedMetaQueryList.append({
+        item = {
             'streams': {
                 '$elemMatch': {
                     'indexedMeta': {
@@ -71,7 +71,11 @@ def getIndexedMetaQueryList(KeyValuePairs):
                     }
                 }
             }
-        })
+        }
+        if optionalFormat is not None: 
+            item['streams']['$elemMatch']['format'] = optionalFormat
+
+        indexedMetaQueryList.append(item)
     return indexedMetaQueryList
 
 def getParametersQueryList(KeyValuePairs):
@@ -92,6 +96,20 @@ def getAndQueryList(KeyValuePairs):
                 '$elemMatch': key_value_pair
             }
         })
+    return parametersQueryList
+
+
+def getUnwindedStreamIndexedMetaQuery(KeyValuePairs, optionalFormat=None):
+    parametersQueryList = []
+    for key_value_pair in KeyValuePairs:
+        item = {
+            'streams.indexedMeta': {
+                '$elemMatch': key_value_pair
+            }
+        }
+        if optionalFormat != None:
+            item['streams.format'] = optionalFormat
+        parametersQueryList.append(item)
     return parametersQueryList
 
 def getKeyValuePairs(keylist, maxvalues, minvalues):
@@ -128,10 +146,10 @@ def getKeyValuePairs(keylist, maxvalues, minvalues):
 def num(s):
     val=None
     try:
-        val= int(s)
+        val= float(s)
     except exceptions.ValueError:
         try:
-            val= float(s)
+            val= int(s)
         except exceptions.ValueError:
             val= str(s)
     finally:

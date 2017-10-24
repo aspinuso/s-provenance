@@ -163,6 +163,23 @@
     
 
 
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#dataCount -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#dataCount">
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov-o#SoftwareAgent"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Component"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment>summary property offering a view on total data produced by an invocation or attributed to a component instance or a component.</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#feedbackInvocation -->
 
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#feedbackInvocation">
@@ -200,6 +217,7 @@
 
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#generatedWithImmediateAccess">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Component"/>
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
         <rdfs:range>
@@ -483,7 +501,7 @@
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#type -->
 
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#type">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Implementation"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Component"/>
         <rdfs:range>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>

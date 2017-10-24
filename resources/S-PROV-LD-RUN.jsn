@@ -191,21 +191,21 @@
       "s-prov:functionName": "StoreFile",
       "s-prov:source": "https://github.com/KNMI/wps_workflow/blob/master/AdvancedDemo.ipynb",
        "s-prov:type": "(<class 'dispel4py.provenance.ProvenancePE'>, <class '__main__.Write'>)",
-       "prov:wasAttributedTo":{"@type":"s-prov:Component", "s-prov:CName":"StoreFile01","@id":"StoreFile01","s-prov:provCluster":"record0"}
+       "prov:wasPlanOf":{"@type":"s-prov:Component", "s-prov:CName":"StoreFile01","@id":"StoreFile01","s-prov:provCluster":"record0"}
       
      },
      {"@type":"s-prov:Implementation",
       "s-prov:functionName": "Analyse",
       "s-prov:source": "https://github.com/KNMI/wps_workflow/blob/master/AdvancedDemo.ipynb",
        "s-prov:type": "(<class 'dispel4py.provenance.ProvenancePE'>, <class '__main__.Analyse'>)",
-       "prov:wasAttributedTo":{"@type":"s-prov:Component", "s-prov:CName":"ANALYSIS01","@id":"ANALYSIS01", "s-prov:provCluster":"record0"}
+       "prov:wasPlanOf":{"@type":"s-prov:Component", "s-prov:CName":"ANALYSIS01","@id":"ANALYSIS01", "s-prov:provCluster":"record0"}
       
      },
      {"@type":"s-prov:Implementation",
       "s-prov:functionName": "Collect",
       "s-prov:source": "https://github.com/KNMI/wps_workflow/blob/master/AdvancedDemo.ipynb",
        "s-prov:type": "(<class 'dispel4py.provenance.ProvenancePE'>, <class '__main__.Collect'>)",
-       "prov:wasAttributedTo":{"@type":"s-prov:Component", "s-prov:CName":"Collect01", "@id":"Collect01", "s-prov:provCluster":"record0"}
+       "prov:wasPlanOf":{"@type":"s-prov:Component", "s-prov:CName":"Collect01", "@id":"Collect01", "s-prov:provCluster":"record0"}
       
      }
     ]
