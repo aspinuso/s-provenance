@@ -387,6 +387,7 @@ def getMonitoring(runid):
 #Extract details about a single invocation or an instance by specifying their $id$.
 @app.route("/invocations/<invocid>")
 def getInvocationDetails(invocid):
+        
         if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET invocation details - "+invocid+" PID:"+str(os.getpid()));
         response = Response()
         response = Response(json.dumps(app.db.getInvocation(invocid)))
@@ -396,10 +397,13 @@ def getInvocationDetails(invocid):
 
 #Extract details about a single invocation or an instance by specifying their $id$.
 @app.route("/instances/<instid>")
-def getInstanceDetails(instid):
+def getInstanceDetails(instid): 
+        limit = int(request.args['limit']) if 'limit' in request.args else None
+        start = int(request.args['start']) if 'start' in request.args else None
+        runIds = csv.reader(StringIO.StringIO(request.args['runIds'])).next() if 'runIds' in request.args else None
         if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET instance details - "+instid+" PID:"+str(os.getpid()));
         response = Response()
-        response = Response(json.dumps(app.db.getComponentInstance(instid)))
+        response = Response(json.dumps(app.db.getComponentInstance(instid,runIds=runIds,start=start,limit=limit)))
         response.headers['Content-type'] = 'application/json'       
         return response
 

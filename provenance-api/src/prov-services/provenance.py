@@ -1819,13 +1819,22 @@ class ProvenanceStore(object):
         return  output
 
 
-    def getComponentInstance(self, id):
+    def getComponentInstance(self, id, runIds=None,start=None,limit=None):
         # db = self.connection["verce-prov"]
         lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
-        obj = lineage.aggregate(pipeline=[{'$match':{'instanceId':id}},
+        searchdic={}
+        if runIds==None:
+            searchdic = {'instanceId':id} 
+            start=0
+            limit=1
+        else:
+            searchdic = {'instanceId':id,"runId":{"$in":runIds}}
+
+        
+        obj = lineage.aggregate(pipeline=[{'$match':searchdic},
                                                     {"$unwind":"$streams"},
                                                     {"$sort":{"endTime":-1}},
-                                                    {'$group':{'_id':'$instanceId', 
+                                                    {'$group':{'_id':{"s-prov:ComponentInstance":'$instanceId', "s-prov:WFExecution":"$runId"},
                                                      "s-prov:lastEventTime":{"$max":"$endTime"}, 
                                                      "s-prov:message":{"$push":"$errors"},
                                                      "worker":{"$first":"$worker"}, 
@@ -1838,9 +1847,12 @@ class ProvenanceStore(object):
                                                      "s-prov:ComponentParameters": {"$first":"$parameters"},
                                                      "prov:contributed":{"$first":"$name"}, 
                                                      "prov:actedOnBehalfOf":{"$first":"$actedOnBehalfOf"}, 
-                                                     "prov_cluster":{"$first":"$prov_cluster"}}}
+                                                     "prov_cluster":{"$first":"$prov_cluster"}}},
+                                                     {"$skip": start},
+                                                     {"$limit": limit}
                                                      #{ "$project": { "@id":"$_id", "_id":0, "s-prov:worker":1, "s-prov:lastEventTime":1, "s-prov:message":1,"s-prov:generatedWithImmediateAccess":1,"s-prov:generatedWithLocation":1,"s-prov:count":1}}
-                                                    ]) 
+                                                    ])
+      
         
         output={}
         count = lineage.aggregate(pipeline=[{'$match':{'instanceId':id}},
@@ -1853,7 +1865,7 @@ class ProvenanceStore(object):
 
         for x in obj:
             
-            x['@id']=x['_id']
+            x['@id']=x['_id']["s-prov:ComponentInstance"]
             x['@type']='s-prov:ComponentInstance'
             x['prov:type']='s-prov:ComponentInstance'
             x['prov:atLocation']= {"@type" : "s-prov:SystemProcess",
@@ -1863,7 +1875,7 @@ class ProvenanceStore(object):
 
             x['prov:actedOnBehalfOf'] = {"@type":"s-prov:Component", "@id":x['prov:actedOnBehalfOf']}
             x['prov:contributed'] = {"@type":"s-prov:Implementation", "@id":x['prov:contributed']}
-
+            x['prov:wasAssociateFor'] = {"@id":x["_id"]["s-prov:WFExecution"], "@type":"s-prov:WFExecution"}
             
             x['s-prov:message']=''.join(x['s-prov:message'])
            
@@ -1877,7 +1889,7 @@ class ProvenanceStore(object):
             x['s-prov:generatedWithLocation']=''.join(x['s-prov:generatedWithLocation'])
             x['s-prov:generatedWithLocation']=True if x['s-prov:generatedWithLocation']!="" else False
             x['s-prov:generatedWithImmediateAccess']= True if ("true" in x['s-prov:generatedWithImmediateAccess'] or True in x['s-prov:generatedWithImmediateAccess']) else False
-            x['s-prov:count'] = len(x['s-prov:count'])
+            #x['s-prov:count'] = len(x['s-prov:count'])
 
 
              
