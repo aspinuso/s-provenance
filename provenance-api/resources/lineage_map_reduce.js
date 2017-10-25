@@ -218,6 +218,13 @@ if (batch_job) {
             jsMode: true
         }
     )
+
+    db.term_summaries.remove({
+        '_id.type': {
+            '$in': ['username', 'all']
+        }
+    })
+
     db.term_summaries.mapReduce(
         mapUsernameAndAll,
         reduceTerms,
