@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-    
-       
-        
-        
-     
-        <server className="net.sf.j2ep.servers.BaseServer" domainName="127.0.0.1:8082" isRewriting="true">
+
+        <server className="net.sf.j2ep.servers.BaseServer" domainName="172.17.0.1:8082" isRewriting="true">
                  <rule className="net.sf.j2ep.rules.DirectoryRule"  directory="/prov" />
         </server>	
-
-		
 </config>
