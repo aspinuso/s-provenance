@@ -356,7 +356,7 @@ def getWorkflowExecutions():
     if keylist == None and functionNames == None:
         response = Response(json.dumps(app.db.getWorkflowExecution(int(start),int(limit),usernames=usernames)))
     else: 
-        response = Response(json.dumps(app.db.getWorkflowExecutionByLineage(int(start),int(limit),usernames=usernames,functionNames=functionNames,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues, mode=mode)))
+        response = Response(json.dumps(app.db.getWorkflowExecutionByLineage(int(start),int(limit),usernames=usernames,functionNames=functionNames,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues, mode=mode, formats=formats)))
 
     response.headers['Content-type'] = 'application/json'    
     return response
