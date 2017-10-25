@@ -2042,13 +2042,12 @@ class ProvenanceStore(object):
             return  output
         
 
-    def getWorkflowExecutionByLineage(self, start, limit, usernames, functionNames, keylist, maxvalues, minvalues, mode):
-        print('usernames: ', usernames, 'functionNames: ', functionNames, 'keylist: ', keylist, 'maxvalues: ', maxvalues, 'minvalues: ', minvalues, 'mode: ', mode)
-        # db = self.connection["verce-prov"]
+    def getWorkflowExecutionByLineage(self, start, limit, usernames, functionNames, keylist, maxvalues, minvalues, mode = 'OR', formats = None):
+        # print('usernames: ', usernames, 'functionNames: ', functionNames, 'keylist: ', keylist, 'maxvalues: ', maxvalues, 'minvalues: ', minvalues, 'mode: ', mode, 'format: ', format)
         lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
        
-        # BUILD MATCH
+        # START: Build match
         aggregate_match = {}
         if usernames is not None and len(usernames) > 0: 
             aggregate_match['username'] = {
@@ -2060,30 +2059,51 @@ class ProvenanceStore(object):
                 '$in': functionNames
             }
 
-        if keylist!=None :
+        if formats is not None and keylist == None:
+            aggregate_match['streams'] = {
+                '$elemMatch': {
+                    'format': {
+                        '$in': formats
+                    }
+                }
+            }
+
+        if keylist is not None :
             key_value_pairs = helper.getKeyValuePairs(keylist, maxvalues, minvalues);
             indexed_meta_query = helper.getIndexedMetaQueryList(key_value_pairs)
             parameters_query = helper.getParametersQueryList(key_value_pairs)
             aggregate_match['$or'] = indexed_meta_query + parameters_query
-       
-       
-        print('---aggregate_match->',  aggregate_match)
+            
+            if formats is not None:
+                aggregate_match['$or'] += [{
+                    'streams': {
+                        '$elemMatch': {
+                            'format': {
+                                '$in': formats
+                            }
+                        }
+                    }
+                }]
+        # END: Build match
 
+        # START: Find matching runIds
         if mode == 'OR':
-            aggregateResults = lineage.aggregate(pipeline= [
+            aggregate_pipeline =[
                 {
                     '$match': aggregate_match,
                 },
                 {
-                   '$group':{
+                   '$group': {
                         '_id':'$runId'
                     }
                 }                                
-            ])
+            ]
+            print('--- aggregate_pipeline  OR --->', aggregate_pipeline)
+            aggregateResults = lineage.aggregate(pipeline = aggregate_pipeline)
+
         elif mode == 'AND':
             and_query = helper.getAndQueryList(key_value_pairs)
-            print(' parameters_query- --- ', parameters_query)
-            aggregateResults = lineage.aggregate(pipeline= [
+            aggregate_pipeline = [
                 {
                     '$match': aggregate_match,
                 },
@@ -2094,7 +2114,7 @@ class ProvenanceStore(object):
                     '$unwind': '$streams.indexedMeta'
                 },
                 {
-                   '$group':{
+                   '$group': {
                         '_id':'$runId',
                         'indexedMeta': { 
                             '$addToSet': "$streams.indexedMeta"    
@@ -2106,14 +2126,27 @@ class ProvenanceStore(object):
                         '$and': and_query
                     }
                 }                                
-            ])
+            ]
 
-        # Parse runIds for finding workflows
+            if formats is not None:
+                aggregate_pipeline[3]['$group']['formats'] = {         
+                    '$addToSet': "$streams.format"    
+                }
+                aggregate_pipeline[4]['$match']['$and'] += [{         
+                    'formats': {
+                        '$in': formats
+                    }    
+                }]
+            print('--- aggregate_pipeline  AND --->', aggregate_pipeline)
+            aggregateResults = lineage.aggregate(pipeline = aggregate_pipeline)
+
         runIds = []
         for runId in aggregateResults:
             runIds.append(runId['_id'])
+        # END: Find matching runIds
 
-        workflowQueryResults = workflow.find(
+        # START: Find workflows using found runIds
+        workflow_cursor = workflow.find(
             {
                 "_id":{
                     "$in":runIds
@@ -2129,9 +2162,10 @@ class ProvenanceStore(object):
         ).sort("startTime",direction=-1).skip(start).limit(limit)
 
         workflows=[]
-        for workflow in workflowQueryResults:
+        for workflow in workflow_cursor:
             workflows.append(workflow)
-    
+        # END: Find workflows using found runIds
+
         return {
             "runIds":workflows,
             "totalCount": len(runIds)
@@ -2139,7 +2173,6 @@ class ProvenanceStore(object):
 
     def getWorkflowExecution(self, start, limit, usernames):
         print('getWorkflowExecuton -->', usernames)
-        # db = self.connection["verce-prov"]
         workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
 
         query = {
@@ -2229,16 +2262,12 @@ class ProvenanceStore(object):
             
             key_value_pairs = helper.getKeyValuePairs(keylist, mxvaluelist, mnvaluelist)
             indexed_meta_query = helper.getIndexedMetaQueryList(key_value_pairs, format)
-            print('------>', mode)
-            # TODO add AND behaviour
-            print('--searchdic 1111---'+str(searchDic))
+
             if mode == 'OR': 
-                print('--OR--', mode)
                 searchDic['$or'] = indexed_meta_query
             elif mode == 'AND':
-                print('--AND--', mode)
                 searchDic['$and'] = searchDic['$and'] + indexed_meta_query
-            print('--searchdic 22222----'+str(searchDic))
+
             aggregate_pipeline = [
                 {
                     '$match':searchDic
@@ -2347,7 +2376,16 @@ class ProvenanceStore(object):
             term_summaries_items.append(term_summaries_item)
 
         # If there is only one result return it. Else merge the results.
-        if len(term_summaries_items) == 1:
+        if len(term_summaries_items) == 0:
+            return {
+                '_id': return_key,
+                'value': {
+                    'parameterMap': {},
+                    'contentMap': {}
+                }
+            }
+
+        elif len(term_summaries_items) == 1:
             item = term_summaries_items[0]
             item['_id'] = return_key 
             return item
@@ -2405,7 +2443,7 @@ class ProvenanceStore(object):
         indexed_meta_query = helper.getAndQueryList(key_value_pairs)
         print('--->', start_node)
 
-        # TODO use endTime
+        # TODO use endTime or startTime
 
         min_date = None
         if setContained == True:
