@@ -1,8 +1,8 @@
 version: '2'
 services:
-    mongodb:
+    mongo-db:
         image: mongo:3.4.9
-        container_name: "mongodb"
+        container_name: "mongo-db"
         volumes:
           - /tmp/:/data/db
         ports:
@@ -16,7 +16,7 @@ services:
         ports:
           - 8082:8082
         links:
-          - mongodb
+          - mongo-db
         depends_on:
-          - mongodb
+          - mongo-db
         #command: ./docker_entry.sh #tail -f /prov/access.log
