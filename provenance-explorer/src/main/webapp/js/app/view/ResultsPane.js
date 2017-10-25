@@ -869,7 +869,8 @@ Ext.define('CF.view.ActivityMonitor', {
       itemdblclick: function(dataview, record, item, index, e) {
         artifactStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + 'data?attributedTo=' + record.get("ID"),
+          url: PROV_SERVICE_BASEURL + 'data?attributedTo=' + record.get("ID") +
+                                           '&generatedBy=' + currentRun ,
 
           reader: {
             rootProperty: '@graph',
