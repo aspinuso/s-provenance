@@ -17,17 +17,18 @@ Provenance framework for storage and access of data-intensive streaming lineage.
 #### Dockerization
 
 The s-prov project can be deployed using docker technology. The project is split into a store and explorer instances.  The explorer is currently set to connect via the docker bridge to a local instance of the store. Changes to the docker file are required if the explorer is remote.
-The store instance is deployable via docker-compose, the mongo db instance is split from the store services api, so it can also be deployed independently to be attached to an existing mongo db. 
+The store instance is deployable via docker-compose, the mongo db instance is split from the store services api. The store service can also be deployed independently so as to be attached to an existing mongo db. 
 
-s-prov store
+s-prov store,
+  see **docker/store/docker-compose.yml**
 ```
-  $ docker-compose up docker/store/
-  $ docker run...
+  $ cd docker/store/
+  $ docker-compose up --build 
 ```
 s-prov viewer
 ```
-   $ docker build -it -p explorer 
-   $ docker run -it -p explorer 
+   $ docker build docker/viewer/ -t explorer 
+   $ docker run -it -p9000:8080 explorer 
 ```   
 
 
