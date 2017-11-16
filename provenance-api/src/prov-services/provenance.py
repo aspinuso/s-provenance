@@ -62,7 +62,7 @@ def toW3Cprov(ling,bundl,format='xml'):
         for trace in bundl:
             'specifing user'
             
-            ag=g.agent(knmi[trace["username"]],other_attributes={"prov:type":"prov:Person", "vcard:uuid":trace["username"]})  # first time the ex namespace was used, it is added to the document automatically
+            ag=g.agent(knmi[trace["username"]],other_attributes={"prov:type":"provone:User", "vcard:uuid":trace["username"]})  # first time the ex namespace was used, it is added to the document automatically
             
             if 'ns' in trace:
                 for x in trace['ns']:
@@ -75,7 +75,7 @@ def toW3Cprov(ling,bundl,format='xml'):
                 
                 trace.update({'runId':trace['_id']})
                 bundle=g.bundle(knmi["Bundle_"+trace["runId"]])
-                bundle.wasAttributedTo(knmi[trace["runId"]], ag)
+                bundle.wasAssociatedWith(knmi[trace["runId"]], ag)
                 
                 dic={}
                 i=0
@@ -100,7 +100,7 @@ def toW3Cprov(ling,bundl,format='xml'):
                 dic={}
                 i=0
 
-                if 'source' in trace:
+                if 'source' in trace or 'subProcesses' in trace:
                     wfp = bundle.entity(knmi["WF_"+trace["_id"]+"_"+str(i)], other_attributes={'prov:type':'provone:Workflow'})
                     for y in trace['source']:
                         dic={'prov:type': vc['Implementation'],
@@ -110,7 +110,8 @@ def toW3Cprov(ling,bundl,format='xml'):
                              }
 
                         dic=clean_empty(dic)                                                             
-                        imp=bundle.entity(knmi["Imp_"+trace["_id"]+"_"+str(i)], other_attributes=dic)
+                        imp=bundle.entity(knmi["Imp_"+"_"+dic["s-prov:functionName"]], other_attributes=dic)
+                        bundle.wasAttributedTo(imp,knmi["Component_"+y+"_"+trace["_id"]])
                         bundle.hadMember(wfp,imp)
                         i=i+1
                     bundle.wasAssociatedWith(WFE,wfp)
@@ -119,7 +120,7 @@ def toW3Cprov(ling,bundl,format='xml'):
                     if type(trace['input'])!=list:
                         trace['input']=[trace['input']]
 
-                    wp = bundle.collection(knmi["WFPar_"+trace["_id"]], other_attributes={'prov:type': vc['WFExecutionParameter']} )
+                    wp = bundle.collection(knmi["WFPar_"+trace["_id"]], other_attributes={'prov:type': vc['WFExecutionInputs']} )
                     for y in trace['input']:
                         dic.update({'prov:type': vc['Data']})
                         for key in y:
@@ -186,7 +187,8 @@ def toW3Cprov(ling,bundl,format='xml'):
                 ag=bundle.agent(knmi["Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"]], other_attributes={"prov:type":vc["Component"],"s-prov:functionName":trace["name"]})
                 entities["Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"]]=1
                 bundle.wasAssociatedWith(WFE,knmi["Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"]])
-                
+                bundle.wasAssociatedWith(knmi["Invocation_"+trace["iterationId"]],knmi["Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"]],)
+                #bundle.hadPlan
               
                
             'adding parameters to the document as input entities'
@@ -230,6 +232,8 @@ def toW3Cprov(ling,bundl,format='xml'):
                 state=None
                 parent_dic={}
                 for key in x:
+                        if key=='indexedMeta':
+                            continue
                         if key=='con:immediateAccess':
                             
                             parent_dic.update({knmi['immediateAccess']: x[key]}) 
