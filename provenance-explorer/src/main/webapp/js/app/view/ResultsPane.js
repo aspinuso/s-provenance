@@ -265,8 +265,8 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
 
 var derivedDataDephtree = function(data, graph, parent) {
   var col = colour.darkblue;
-   
-   if (!parent) {
+  
+  if (!parent) {
     //col = colour.red
 
   }
@@ -302,12 +302,12 @@ var derivedDataDephtree = function(data, graph, parent) {
    if(nodea.data.data.runId!=parent.data.data.runId)
 	{    	 
 			deriv_run=nodea.data.data.runId
-    		edgecolour=colour.red
+    	edgecolour=colour.red
     		 
     		
     }
     else
-	{     
+	{   
 			deriv_run=nodea.data.data.runId
 			edgecolour=colour.purple
     		 
@@ -326,20 +326,22 @@ var derivedDataDephtree = function(data, graph, parent) {
         if (i < 20)
           derivedDataDephtree(data["derivedData"][i], graph, nodea)
         else {
-          var nodeb = graph.addNode(data["derivedData"][i], {
+           
+          var nodeb = graph.addNode(data["derivedData"][i]["dataId"], {
             label: "...too many",
             'color': colour.purple,
             'shape': 'dot',
             'radius': 19,
             'alpha': 1,
+            'data': {'runId':data.runId,'location':""},
             mass: 2
           })
 
 
-          graph.addEdge(nodeb, nodea,{
+          graph.addEdge(nodea, nodeb,{
             length: 0.75,
             directed: true,
-            weight: 2
+            weight: 4
           })
           break
         }
