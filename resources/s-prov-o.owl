@@ -197,6 +197,36 @@
     
 
 
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#first-known-destination -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#first-known-destination">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment>The URL that states the first known destination of a copy of the data</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#format -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#format">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment>The format of the data, typically its mime-type</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#functionName -->
 
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#functionName">
@@ -272,6 +302,21 @@
             </owl:Restriction>
         </rdfs:range>
         <rdfs:comment>Indicates whether an Agent such as a CompentInstace has changed any of the behaviour associated to its Component</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#immediate-access -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#immediate-access">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment>A boolean tag that indicates that the data needs to be transferred or copied as soon as possible to a target destination</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -446,6 +491,21 @@
             </owl:Restriction>
         </rdfs:range>
         <prov:definition xml:lang="en">URL of the remote resource where the workflow has been submitted to.</prov:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#size -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#size">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#byte"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment>The size of the data or an estimate</rdfs:comment>
     </owl:ObjectProperty>
     
 
