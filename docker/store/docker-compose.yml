@@ -9,7 +9,7 @@ services:
           - 27017:27017
       # mongod --logpath /prov/mongo.log --dbpath /prov/data/
         command: mongod --dbpath /data/db # --quiet
-    myapp:
+    sprov:
         build: .
         container_name: "sprov"
         image: sprov:latest

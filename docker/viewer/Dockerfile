@@ -4,7 +4,8 @@ LABEL "Docker file for provenance-explorer"
 
 MAINTAINER prov@knmi.nl
 
-RUN apt-get update && apt-get install -y maven curl less vim
+RUN apt-get update && apt-get install -y maven curl less vim 
+
 
 # clone s-prov
 RUN mkdir -p /prov/
@@ -22,9 +23,13 @@ RUN cp ./target/provenance-explorer.war /usr/local/tomcat/webapps
 
 RUN cp /prov/s-provenance-master/resources/j2ep-1.0.war /usr/local/tomcat/webapps
 
-# CMD cp /prov/s-provenance-master/resources/data.xml /usr/local/tomcat/webapps/j2ep-1.0/WEB-INF/config/
-# touch /prov/s-provenance-master/resources/data.xml
-#RUN /usr/local/tomcat/bin/shutdown.sh
+
+#CMD cp /prov/s-provenance-master/resources/data.xml /usr/local/tomcat/webapps/j2ep-1.0/WEB-INF/config/data.xml 
+#CMD touch /usr/local/tomcat/webapps/j2ep-1.0/WEB-INF/web.xml
+
+## touch /prov/s-provenance-master/resources/data.xml
+## RUN /usr/local/tomcat/bin/shutdown.sh
+ 
 
 # docker run -it -p 9000:8080 explorer
 
