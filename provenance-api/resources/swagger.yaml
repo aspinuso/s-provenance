@@ -1,0 +1,62 @@
+---
+swagger: '2.0'
+
+info:
+  version: 1.0.0
+  title: Provenance Store
+  description: |
+    #### S-ProvFlow provenance api
+    Provenance framework for storage and access of data-intensive streaming lineage. It offers a a web API and a range of dedicated visualisation tools and a provenance model (S-PROV) which utilises and extends PROV and ProvONE models.
+    
+schemes:
+  - http
+host: prov.knmi.nl
+
+basePath: /
+
+paths:
+  /:
+    get:
+      responses:
+        200:
+          description: This is the s-prov service
+
+  /activity/{runid}:
+    parameters:
+      - name: runid
+        in: path
+        description: RunID
+        type: string
+        required: true
+    get:
+      responses:
+        200:
+          description: s-prov
+
+  /workflow/:
+    get:
+      responses:
+        200:
+          description: T
+  
+  /workflow/user/{user}:
+    parameters:
+      - name: user
+        in: path
+        description: user
+        type: string
+        required: true
+    get:
+      responses:
+        200:
+          description: T
+          
+#  /workflow/edit/{runid}:
+
+#  /workflow/delete/{runid}:
+          
+#  /workflow/insert/:
+          
+#  /workflow/{runid}:
+          
+#  /workflow/summaries/:

@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y maven curl less vim
 # clone s-prov
 RUN mkdir -p /prov/
 WORKDIR /prov/
-RUN curl -L -O https://github.com/andrejsim/s-provenance/archive/master.zip 
+RUN curl -L -O https://github.com/aspinuso/s-provenance/archive/master.zip 
 RUN unzip master.zip
 RUN rm master.zip
 
