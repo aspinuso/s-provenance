@@ -41,10 +41,17 @@ yaml_dict['info']    = {
 Provenance framework for storage and access of data-intensive streaming lineage. It offers a a web API and a range of dedicated visualisation tools and a provenance model (S-PROV) which utilises and extends PROV and ProvONE models. \
 '} 
 
-yaml_dict['schemes'] = ['http']
+yaml_dict[ 'schemes'] = ['http']
 yaml_dict[ 'host' ] = 'prov.knmi.nl'
 yaml_dict[ 'basePath' ] = '/'
 yaml_dict[ 'paths' ] = {} 
+
+
+def parse_path(path_flask):
+  return path_flask.replace("<","{").replace(">","}").replace('\"','')
+
+def extract_parm(func_flask):
+  return func_flask.split('(')[-1].split(')')[0]
 
 with open(pathflaskraas,'r+') as file:
     pathis = None
@@ -55,9 +62,9 @@ with open(pathflaskraas,'r+') as file:
             try:
                 pathis0 , m = path.split(', methods=')\
 
-                pathis = pathis0.replace('\"','')
-                yaml_dict['paths'][pathis] = {}
+                pathis = parse_path(pathis0)
 
+                yaml_dict['paths'][pathis] = {}
                 if 'GET' in m :
                   yaml_dict['paths'][pathis]['get'] = { 'responses': { 200 : {'description':'GET '+str(pathis) }}}
                 if 'POST' in m :
@@ -65,11 +72,46 @@ with open(pathflaskraas,'r+') as file:
                 if 'DELET' in m :
                   yaml_dict['paths'][pathis]['delete'] = { 'responses': { 200 : {'description':'DELET '+str(pathis) }}}
             except:
-                pathis = path.replace('\"','')   
+                pathis = parse_path(path)  
                 yaml_dict['paths'][pathis] = {}
                 yaml_dict['paths'][pathis]['get'] = { 'responses': { 200 : {'description': 'GET '+str(pathis) }}}
         elif ('def' in line) and ( pathis != None ):
             try:
+              try:
+                parm = extract_parm(line)
+
+                
+                if parm is not '':
+                  # get
+                  try:
+                    yaml_dict['paths'][pathis]['get']['parameters'] = [ { 'name':str(parm),
+                                                                        'in': 'path',
+                                                                        'description':parm,
+                                                                        'required':True,
+                                                                        'type':'string'}]           
+                  except:
+                    pass
+                  # post
+                  try:
+                    yaml_dict['paths'][pathis]['post']['parameters'] = [ { 'name':str(parm),
+                                                                        'in': 'path',
+                                                                        'description':parm,
+                                                                        'required':True,
+                                                                        'type':'string'}]           
+                  except:
+                    pass
+                  try:
+                    yaml_dict['paths'][pathis]['delete']['parameters'] = [ { 'name':str(parm),
+                                                                        'in': 'path',
+                                                                        'description':parm,
+                                                                        'required':True,
+                                                                        'type':'string'}]           
+                  except:
+                    pass
+
+              except: #Exception as e:
+                pass #print e
+
               yaml_dict['paths'][pathis]['get']['summary'] = line.replace("\n","")
             except:
               pass
