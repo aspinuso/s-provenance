@@ -6,149 +6,200 @@ info:
     and extends PROV and ProvONE models. '
   title: Provenance Store
   version: 1.0.0
-schemes: '                           - http'
+schemes:
+- http
 host: prov.knmi.nl
 basePath: /
 paths:
-  '#data/<data_id>':
-    get:
-      description: tst
-  '#data/<data_id>/derivedData':
-    get:
-      description: tst
-  '#data/<data_id>/hasAncestorWith':
-    get:
-      description: tst
-  '#data/<data_id>/wasDerivedFrom':
-    get:
-      description: tst
   /:
-    description: 'def hello():'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /
+      summary: 'def hello():'
   /activities/<runId>:
-    description: 'def activitiesHandler(runId):'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /activities/<runId>
+      summary: 'def activitiesHandler(runId):'
   /components/<compid>:
-    description: 'def getComponentDetails(compid):'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /components/<compid>
+      summary: 'def getComponentDetails(compid):'
   /data:
-    description: 'def getData():'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /data
+      summary: 'def getData():'
   /data/<data_id>/export:
-    description: 'def _exportDataProvenance(data_id):'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /data/<data_id>/export
+      summary: 'def _exportDataProvenance(data_id):'
   /dataGranuleTerms:
-    description: 'def getDataGranuleTerms():'
     get:
-      description: tst
-  ? "/derivedData/<id>)    \n"
-  : description: 'def derivedData(id):'
+      responses:
+        200:
+          description: GET /dataGranuleTerms
+      summary: 'def getDataGranuleTerms():'
+  /derivedData/<id>:
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /derivedData/<id>
+      summary: 'def derivedData(id):'
   /entities/<method>:
-    description: 'def getEntitiesByMethod(method):'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /entities/<method>
+      summary: 'def getEntitiesByMethod(method):'
     post:
-      description: tst
+      responses:
+        200:
+          description: POST /entities/<method>
   /instances/<instid>:
-    description: 'def getInstanceDetails(instid): '
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /instances/<instid>
+      summary: 'def getInstanceDetails(instid): '
   /invocations/<invocid>:
-    description: 'def getInvocationDetails(invocid):'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /invocations/<invocid>
+      summary: 'def getInvocationDetails(invocid):'
   /solver/<solver_id>:
-    description: 'def getSolver(solver_id):'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /solver/<solver_id>
+      summary: 'def getSolver(solver_id):'
   /summaries/collaborative:
-    description: 'def summariesHandlerCollab():'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /summaries/collaborative
+      summary: 'def summariesHandlerCollab():'
   /summaries/workflowexecution:
-    description: 'def summariesHandlerWorkflow():'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /summaries/workflowexecution
+      summary: 'def summariesHandlerWorkflow():'
   /wasDerivedFrom/<id>:
-    description: 'def wasDerivedFrom(id):'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /wasDerivedFrom/<id>
+      summary: 'def wasDerivedFrom(id):'
   /workflow/:
-    description: 'def workflowsHandler():'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /workflow/
+      summary: 'def workflowsHandler():'
   /workflow/<runid>:
     delete:
-      description: tst
-    description: 'def workflowInfoHandler(runid):'
+      responses:
+        200:
+          description: DELET /workflow/<runid>
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /workflow/<runid>
+      summary: 'def workflowInfoHandler(runid):'
   /workflow/delete/<runid>:
-    description: 'def workflowInfoHandlerDelete(runid):'
     post:
-      description: tst
+      responses:
+        200:
+          description: POST /workflow/delete/<runid>
   /workflow/edit/<runid>:
-    description: 'def workflowInfoHandlerEdit(runid):'
     post:
-      description: tst
+      responses:
+        200:
+          description: POST /workflow/edit/<runid>
   /workflow/export/<runid>:
-    description: 'def exportRunProvenance(runid):'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /workflow/export/<runid>
+      summary: 'def exportRunProvenance(runid):'
   /workflow/export/data/<id>:
-    description: 'def exportDataProvenance(id):'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /workflow/export/data/<id>
+      summary: 'def exportDataProvenance(id):'
   /workflow/insert:
-    description: 'def insertData():'
     post:
-      description: tst
+      responses:
+        200:
+          description: POST /workflow/insert
   /workflow/summaries:
-    description: 'def summariesHandler():'
     get:
-      description: tst
-  ? "/workflow/user/<user>)  \n"
-  : description: 'def getUserRuns(user):'
+      responses:
+        200:
+          description: GET /workflow/summaries
+      summary: 'def summariesHandler():'
+  /workflow/user/<user>:
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /workflow/user/<user>
+      summary: 'def getUserRuns(user):'
   /workflowexecution/<run_id>/export:
-    description: 'def _exportRunProvenance(run_id):'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /workflowexecution/<run_id>/export
+      summary: 'def _exportRunProvenance(run_id):'
   /workflowexecutions:
-    description: 'def getWorkflowExecutions():'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /workflowexecutions
+      summary: 'def getWorkflowExecutions():'
   /workflowexecutions/<runid>:
     delete:
-      description: tst
-    description: 'def getWorkflowInfo(runid):'
+      responses:
+        200:
+          description: DELET /workflowexecutions/<runid>
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /workflowexecutions/<runid>
+      summary: 'def getWorkflowInfo(runid):'
   /workflowexecutions/<runid>/delete:
-    description: 'def deleteWorkflowRun(runid):'
     post:
-      description: tst
+      responses:
+        200:
+          description: POST /workflowexecutions/<runid>/delete
   /workflowexecutions/<runid>/edit:
-    description: 'def wfExecDescriptionEdit(runid):'
     post:
-      description: tst
+      responses:
+        200:
+          description: POST /workflowexecutions/<runid>/edit
   /workflowexecutions/<runid>/instances:
-    description: 'def getInstancesMonitoring(runid):'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /workflowexecutions/<runid>/instances
+      summary: 'def getInstancesMonitoring(runid):'
   /workflowexecutions/<runid>/showactivity:
-    description: 'def getMonitoring(runid):'
     get:
-      description: tst
+      responses:
+        200:
+          description: GET /workflowexecutions/<runid>/showactivity
+      summary: 'def getMonitoring(runid):'
   /workflowexecutions/insert:
-    description: 'def insertProvenance():'
     post:
-      description: tst
+      responses:
+        200:
+          description: POST /workflowexecutions/insert

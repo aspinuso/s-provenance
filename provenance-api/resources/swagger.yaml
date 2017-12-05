@@ -1,62 +1,206 @@
----
 swagger: '2.0'
-
 info:
-  version: 1.0.0
+  description: | 
+    #### S-ProvFlow provenance api Provenance framework for storage
+    and access of data-intensive streaming lineage. It offers a a web API and a range
+    of dedicated visualisation tools and a provenance model (S-PROV) which utilises
+    and extends PROV and ProvONE models.
   title: Provenance Store
-  description: |
-    #### S-ProvFlow provenance api
-    Provenance framework for storage and access of data-intensive streaming lineage. It offers a a web API and a range of dedicated visualisation tools and a provenance model (S-PROV) which utilises and extends PROV and ProvONE models.
-    
+  version: 1.0.0
 schemes:
-  - http
+- http
 host: prov.knmi.nl
-
 basePath: /
-
 paths:
   /:
     get:
       responses:
         200:
-          description: This is the s-prov service
-
-  /activity/{runid}:
-    parameters:
-      - name: runid
-        in: path
-        description: RunID
-        type: string
-        required: true
+          description: GET /
+      summary: 'def hello():'
+  /activities/<runId>:
     get:
       responses:
         200:
-          description: s-prov
-
+          description: GET /activities/<runId>
+      summary: 'def activitiesHandler(runId):'
+  /components/<compid>:
+    get:
+      responses:
+        200:
+          description: GET /components/<compid>
+      summary: 'def getComponentDetails(compid):'
+  /data:
+    get:
+      responses:
+        200:
+          description: GET /data
+      summary: 'def getData():'
+  /data/<data_id>/export:
+    get:
+      responses:
+        200:
+          description: GET /data/<data_id>/export
+      summary: 'def _exportDataProvenance(data_id):'
+  /dataGranuleTerms:
+    get:
+      responses:
+        200:
+          description: GET /dataGranuleTerms
+      summary: 'def getDataGranuleTerms():'
+  /derivedData/<id>:
+    get:
+      responses:
+        200:
+          description: GET /derivedData/<id>
+      summary: 'def derivedData(id):'
+  /entities/<method>:
+    get:
+      responses:
+        200:
+          description: GET /entities/<method>
+      summary: 'def getEntitiesByMethod(method):'
+    post:
+      responses:
+        200:
+          description: POST /entities/<method>
+  /instances/<instid>:
+    get:
+      responses:
+        200:
+          description: GET /instances/<instid>
+      summary: 'def getInstanceDetails(instid): '
+  /invocations/<invocid>:
+    get:
+      responses:
+        200:
+          description: GET /invocations/<invocid>
+      summary: 'def getInvocationDetails(invocid):'
+  /solver/<solver_id>:
+    get:
+      responses:
+        200:
+          description: GET /solver/<solver_id>
+      summary: 'def getSolver(solver_id):'
+  /summaries/collaborative:
+    get:
+      responses:
+        200:
+          description: GET /summaries/collaborative
+      summary: 'def summariesHandlerCollab():'
+  /summaries/workflowexecution:
+    get:
+      responses:
+        200:
+          description: GET /summaries/workflowexecution
+      summary: 'def summariesHandlerWorkflow():'
+  /wasDerivedFrom/<id>:
+    get:
+      responses:
+        200:
+          description: GET /wasDerivedFrom/<id>
+      summary: 'def wasDerivedFrom(id):'
   /workflow/:
     get:
       responses:
         200:
-          description: T
-  
-  /workflow/user/{user}:
-    parameters:
-      - name: user
-        in: path
-        description: user
-        type: string
-        required: true
+          description: GET /workflow/
+      summary: 'def workflowsHandler():'
+  /workflow/<runid>:
+    delete:
+      responses:
+        200:
+          description: DELET /workflow/<runid>
     get:
       responses:
         200:
-          description: T
-          
-#  /workflow/edit/{runid}:
-
-#  /workflow/delete/{runid}:
-          
-#  /workflow/insert/:
-          
-#  /workflow/{runid}:
-          
-#  /workflow/summaries/:
+          description: GET /workflow/<runid>
+      summary: 'def workflowInfoHandler(runid):'
+  /workflow/delete/<runid>:
+    post:
+      responses:
+        200:
+          description: POST /workflow/delete/<runid>
+  /workflow/edit/<runid>:
+    post:
+      responses:
+        200:
+          description: POST /workflow/edit/<runid>
+  /workflow/export/<runid>:
+    get:
+      responses:
+        200:
+          description: GET /workflow/export/<runid>
+      summary: 'def exportRunProvenance(runid):'
+  /workflow/export/data/<id>:
+    get:
+      responses:
+        200:
+          description: GET /workflow/export/data/<id>
+      summary: 'def exportDataProvenance(id):'
+  /workflow/insert:
+    post:
+      responses:
+        200:
+          description: POST /workflow/insert
+  /workflow/summaries:
+    get:
+      responses:
+        200:
+          description: GET /workflow/summaries
+      summary: 'def summariesHandler():'
+  /workflow/user/<user>:
+    get:
+      responses:
+        200:
+          description: GET /workflow/user/<user>
+      summary: 'def getUserRuns(user):'
+  /workflowexecution/<run_id>/export:
+    get:
+      responses:
+        200:
+          description: GET /workflowexecution/<run_id>/export
+      summary: 'def _exportRunProvenance(run_id):'
+  /workflowexecutions:
+    get:
+      responses:
+        200:
+          description: GET /workflowexecutions
+      summary: 'def getWorkflowExecutions():'
+  /workflowexecutions/<runid>:
+    delete:
+      responses:
+        200:
+          description: DELET /workflowexecutions/<runid>
+    get:
+      responses:
+        200:
+          description: GET /workflowexecutions/<runid>
+      summary: 'def getWorkflowInfo(runid):'
+  /workflowexecutions/<runid>/delete:
+    post:
+      responses:
+        200:
+          description: POST /workflowexecutions/<runid>/delete
+  /workflowexecutions/<runid>/edit:
+    post:
+      responses:
+        200:
+          description: POST /workflowexecutions/<runid>/edit
+  /workflowexecutions/<runid>/instances:
+    get:
+      responses:
+        200:
+          description: GET /workflowexecutions/<runid>/instances
+      summary: 'def getInstancesMonitoring(runid):'
+  /workflowexecutions/<runid>/showactivity:
+    get:
+      responses:
+        200:
+          description: GET /workflowexecutions/<runid>/showactivity
+      summary: 'def getMonitoring(runid):'
+  /workflowexecutions/insert:
+    post:
+      responses:
+        200:
+          description: POST /workflowexecutions/insert
