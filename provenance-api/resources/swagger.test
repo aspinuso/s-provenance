@@ -1,0 +1,154 @@
+swagger: '2.0'
+info:
+  description: '| #### S-ProvFlow provenance api Provenance framework for storage
+    and access of data-intensive streaming lineage. It offers a a web API and a range
+    of dedicated visualisation tools and a provenance model (S-PROV) which utilises
+    and extends PROV and ProvONE models. '
+  title: Provenance Store
+  version: 1.0.0
+schemes: '                           - http'
+host: prov.knmi.nl
+basePath: /
+paths:
+  '#data/<data_id>':
+    get:
+      description: tst
+  '#data/<data_id>/derivedData':
+    get:
+      description: tst
+  '#data/<data_id>/hasAncestorWith':
+    get:
+      description: tst
+  '#data/<data_id>/wasDerivedFrom':
+    get:
+      description: tst
+  /:
+    description: 'def hello():'
+    get:
+      description: tst
+  /activities/<runId>:
+    description: 'def activitiesHandler(runId):'
+    get:
+      description: tst
+  /components/<compid>:
+    description: 'def getComponentDetails(compid):'
+    get:
+      description: tst
+  /data:
+    description: 'def getData():'
+    get:
+      description: tst
+  /data/<data_id>/export:
+    description: 'def _exportDataProvenance(data_id):'
+    get:
+      description: tst
+  /dataGranuleTerms:
+    description: 'def getDataGranuleTerms():'
+    get:
+      description: tst
+  ? "/derivedData/<id>)    \n"
+  : description: 'def derivedData(id):'
+    get:
+      description: tst
+  /entities/<method>:
+    description: 'def getEntitiesByMethod(method):'
+    get:
+      description: tst
+    post:
+      description: tst
+  /instances/<instid>:
+    description: 'def getInstanceDetails(instid): '
+    get:
+      description: tst
+  /invocations/<invocid>:
+    description: 'def getInvocationDetails(invocid):'
+    get:
+      description: tst
+  /solver/<solver_id>:
+    description: 'def getSolver(solver_id):'
+    get:
+      description: tst
+  /summaries/collaborative:
+    description: 'def summariesHandlerCollab():'
+    get:
+      description: tst
+  /summaries/workflowexecution:
+    description: 'def summariesHandlerWorkflow():'
+    get:
+      description: tst
+  /wasDerivedFrom/<id>:
+    description: 'def wasDerivedFrom(id):'
+    get:
+      description: tst
+  /workflow/:
+    description: 'def workflowsHandler():'
+    get:
+      description: tst
+  /workflow/<runid>:
+    delete:
+      description: tst
+    description: 'def workflowInfoHandler(runid):'
+    get:
+      description: tst
+  /workflow/delete/<runid>:
+    description: 'def workflowInfoHandlerDelete(runid):'
+    post:
+      description: tst
+  /workflow/edit/<runid>:
+    description: 'def workflowInfoHandlerEdit(runid):'
+    post:
+      description: tst
+  /workflow/export/<runid>:
+    description: 'def exportRunProvenance(runid):'
+    get:
+      description: tst
+  /workflow/export/data/<id>:
+    description: 'def exportDataProvenance(id):'
+    get:
+      description: tst
+  /workflow/insert:
+    description: 'def insertData():'
+    post:
+      description: tst
+  /workflow/summaries:
+    description: 'def summariesHandler():'
+    get:
+      description: tst
+  ? "/workflow/user/<user>)  \n"
+  : description: 'def getUserRuns(user):'
+    get:
+      description: tst
+  /workflowexecution/<run_id>/export:
+    description: 'def _exportRunProvenance(run_id):'
+    get:
+      description: tst
+  /workflowexecutions:
+    description: 'def getWorkflowExecutions():'
+    get:
+      description: tst
+  /workflowexecutions/<runid>:
+    delete:
+      description: tst
+    description: 'def getWorkflowInfo(runid):'
+    get:
+      description: tst
+  /workflowexecutions/<runid>/delete:
+    description: 'def deleteWorkflowRun(runid):'
+    post:
+      description: tst
+  /workflowexecutions/<runid>/edit:
+    description: 'def wfExecDescriptionEdit(runid):'
+    post:
+      description: tst
+  /workflowexecutions/<runid>/instances:
+    description: 'def getInstancesMonitoring(runid):'
+    get:
+      description: tst
+  /workflowexecutions/<runid>/showactivity:
+    description: 'def getMonitoring(runid):'
+    get:
+      description: tst
+  /workflowexecutions/insert:
+    description: 'def insertProvenance():'
+    post:
+      description: tst
