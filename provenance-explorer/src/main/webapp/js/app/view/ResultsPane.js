@@ -14,6 +14,8 @@ var activityStore = Ext.create('CF.store.Activity');
 
 var artifactStore = Ext.create('CF.store.Artifact');
 
+var termStore =Ext.create('CF.store.TermStore');
+
 var singleArtifactStore = Ext.create('CF.store.Artifact');
 
 var workflowStore = Ext.create('CF.store.ProvWorkflow');
@@ -32,8 +34,48 @@ var dn_regex=/file:\/\/?([\w-]|([\da-z\.-]+)\.([a-z\.]{2,6}))+/
 
 // ComboBox with multiple selection enabled
 Ext.define('CF.view.metaCombo', {
+ 
+extend: 'Ext.form.field.ComboBox',
+alias: 'widget.metacombo',
+fieldLabel: 'Terms',
+name: 'terms',
+ 
+width: 250,
+inputAttrTpl: " data-qtip='Insert here a sequence of Terms divided by commas.<br/> Eg. magnitude,station' ",
+labelWidth: 40,
+abelAlign: 'right',
+margin: '10 10 30 10',
+colspan: 4,
+ 
+queryMode: 'local',
+tpl: Ext.create('Ext.XTemplate',
+ 
+                          '<tpl for=".">',
+ 
+                              '<div class="x-boundlist-item" style="border-bottom:1px solid #f0f0f0;">',
+                               '<div><b>Term:</b> {term}</div>',
+                              '<div><b>Use:</b> {use}</div>',
+                              '<div><b>Type:</b> {type}</div></div>',
+                          '</tpl>'
+                      ),
+displayTpl: Ext.create('Ext.XTemplate',
+                          '<tpl for=".">',
+                              '{term}',
+                          '</tpl>'
+                      ),
+
+forceSelection: false,
+valueField: 'id',
+displayField: 'term',
+autoLoad: false,
+store: termStore
+
+});
+
+
+Ext.define('CF.view.metaCombold', {
   extend: 'Ext.form.field.ComboBox',
-  alias: 'widget.metacombo',
+  alias: 'widget.metacomboxx',
   fieldLabel: 'Terms',
   name: 'terms',
   displayField: 'term',
@@ -584,7 +626,8 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
 
     handler: function() {
       var form = this.up('form').getForm();
-      var terms = form.findField("terms").getValue(false).trim();
+      
+      var terms = form.findField("terms").getRawValue(false).trim();
       var mode = form.findField("mode").getValue(false).trim();
       var minvalues = encodeURIComponent(form.findField("minvalues").getValue(false).trim());
       var maxvalues = encodeURIComponent(form.findField("maxvalues").getValue(false).trim());
@@ -613,7 +656,7 @@ Ext.define('CF.view.WorkFlowSelectionWindow', {
   requires: ['CF.view.WorkflowSelection'],
   title: 'Workflows Runs',
   height: 530,
-  width: 950,
+  width: 1000,
   closeAction: 'hide',
   layout: {
     type: 'vbox',
@@ -987,7 +1030,7 @@ Ext.define('CF.view.StreamValuesRangeSearch', {
 
     handler: function() {
       var form = this.up('form').getForm();
-      var keys = this.up('form').getForm().findField("terms").getValue(false);
+      var terms = form.findField("terms").getRawValue(false).trim();
       var minvalues = encodeURIComponent(this.up('form').getForm().findField("minvalues").getValue(false));
       var maxvalues = encodeURIComponent(this.up('form').getForm().findField("maxvalues").getValue(false));
       var mimetype = this.up('form').getForm().findField("format").getValue(false);
@@ -995,16 +1038,15 @@ Ext.define('CF.view.StreamValuesRangeSearch', {
       
       
       qerystring=""
-      if (keys!="" && maxvalues!="" && minvalues=="" && keys==null)
-          qerystring="&format=" + mimetype
-                     "&terms=" + keys + 
+      if (terms!="" && maxvalues!="" && minvalues!="" && terms!=null)
+          qerystring="&terms=" + terms + 
                      "&maxvalues=" + maxvalues + 
                      "&minvalues=" + minvalues 
-
+       console.log("DADADA "+terms)
       if (mimetype!=null && mimetype!="") 
          qerystring=qerystring+"&format=" + mimetype
       
-
+       console.log("DADADA "+qerystring)
       if (form.isValid()) {
         artifactStore.setProxy({
           type: 'ajax',
@@ -1198,7 +1240,7 @@ Ext.define('CF.view.FilterOnAncestorValuesRange', {
           },
           params: {
             ids: dataids,
-            keys: form.findField("keys").getValue().trim(),
+            terms: form.findField("terms").getRawValue(false).trim(),
             minvalues: form.findField("minvalues").getValue().trim(),
             maxvalues: form.findField("maxvalues").getValue().trim()
           }
@@ -1667,6 +1709,8 @@ Ext.define('CF.view.ArtifactView', {
     }]
   }
 });
+
+
 
 Ext.define('CF.view.provenanceGraphsViewer', {
   extend: 'Ext.panel.Panel',

@@ -109,6 +109,15 @@ Ext.define('CF.view.Viewport', {
           workflowStore.getProxy().api.read = PROV_SERVICE_BASEURL + 'workflowexecutions?usernames=' + userSN;
 
           workflowStore.load();
+
+
+          }
+      if (!termStore.isLoaded()) {
+          termStore.getProxy().api.read = PROV_SERVICE_BASEURL + '/terms?usernames='+userSN+'&aggregationLevel=username',
+
+          termStore.load();
+          
+
           }
     }}]
 }).show()			                        	
