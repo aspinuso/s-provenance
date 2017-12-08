@@ -173,7 +173,7 @@ def getEntitiesByMethod(method):
             try:
                 memory_file = StringIO.StringIO(request.form['ids']);
                 idlist = csv.reader(memory_file).next()
-                memory_file = StringIO.StringIO(request.form['keys']);
+                memory_file = StringIO.StringIO(request.form['terms']);
                 keylist = csv.reader(memory_file).next()
             #if (self.path=="values-range"):
                 memory_file = StringIO.StringIO(request.form['maxvalues']) if 'maxvalues' in request.form else None
@@ -437,6 +437,8 @@ def getData():
         response.headers['Content-type'] = 'application/json'
 
         return response
+
+
 
 
 #@app.route("data/<data_id>")
