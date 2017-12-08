@@ -447,17 +447,32 @@ def getData():
 
 # Thomas
 #Returns a list of metadata terms that can be suggested based on their appearance within a list of runs, users, or for the whole provenance archive
-@app.route("/dataGranuleTerms")
+@app.route("/terms")
 def getDataGranuleTerms():
         aggregationLevel = request.args['aggregationLevel'] if 'aggregationLevel' in request.args else 'all'
         runIdList = csv.reader(StringIO.StringIO(request.args['runIds'])).next() if 'runIds' in request.args else None
         usernameList = csv.reader(StringIO.StringIO(request.args['usernames'])).next() if 'usernames' in request.args else None
         print('----->', aggregationLevel, runIdList, usernameList)
-        response = Response(json.dumps(app.db.getDataGranuleTerms(aggregationLevel=aggregationLevel,runIdList=runIdList,usernameList=usernameList)))
+        
+        respjson={}
+        data = app.db.getDataGranuleTerms(aggregationLevel=aggregationLevel,runIdList=runIdList,usernameList=usernameList)
+        respjson["metadata"]=data["_id"]
+        respjson["terms"]=[]
+         
+        for x in data["value"]["contentMap"]:
+            respjson["terms"].append({"term":x,"use":"metadata","valuesByType":data["value"]["contentMap"][x]["valuesByType"]})
+
+        for x in data["value"]["parameterMap"]:
+            respjson["terms"].append({"term":x,"use":"parameter","valuesByType":data["value"]["parameterMap"][x]["valuesByType"]})
+
+
+        response = Response(json.dumps(respjson))
 
         response.headers['Content-type'] = 'application/json'
 
-        return response  
+
+
+        return response
 
 
 @app.route("/summaries/workflowexecution")
