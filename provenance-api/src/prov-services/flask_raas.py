@@ -338,11 +338,11 @@ def getWorkflowExecutions():
     usernames = csv.reader(StringIO.StringIO(request.args['usernames'])).next() if 'usernames' in request.args else None
 
     # include components parameters
-    keylist = csv.reader(StringIO.StringIO(request.args['terms'])).next() if 'terms' in request.args else None
-    maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])).next() if 'maxvalues' in request.args else None
-    minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])).next() if 'minvalues' in request.args else None
+    keylist = csv.reader(StringIO.StringIO(request.args['terms'])).next() if ('terms' in request.args and request.args['terms']!="") else None
+    maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])).next() if ('maxvalues' in request.args and request.args['maxvalues']!="") else None
+    minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])).next() if ('minvalues' in request.args and request.args['minvalues']!="") else None
     functionNames = csv.reader(StringIO.StringIO(request.args['functionNames'])).next() if 'functionNames' in request.args else None
-    formats = csv.reader(StringIO.StringIO(request.args['formats'])).next() if 'formats' in request.args else None
+    formats = csv.reader(StringIO.StringIO(request.args['formats'])).next() if ('formats' in request.args and request.args['formats']!="") else None
     types = csv.reader(StringIO.StringIO(request.args['types'])).next() if 'types' in request.args else None
     mode = request.args['mode'] if 'mode' in request.args else None
 
@@ -353,7 +353,7 @@ def getWorkflowExecutions():
     # chec functions above in root "/workflow/user/<user>""
 
     # 
-    if keylist == None and functionNames == None:
+    if keylist == None and functionNames == None and formats==None:
         response = Response(json.dumps(app.db.getWorkflowExecution(int(start),int(limit),usernames=usernames)))
     else: 
         response = Response(json.dumps(app.db.getWorkflowExecutionByLineage(int(start),int(limit),usernames=usernames,functionNames=functionNames,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues, mode=mode, formats=formats)))
@@ -416,6 +416,13 @@ def getComponentDetails(compid):
         return response
 
 
+@app.route("/data/<data_id>")
+def getDataItem(data_id): 
+       
+    response = Response(json.dumps(app.db.getData(0,1,id=str(data_id))))
+    response.headers['Content-type'] = 'application/json'       
+    return response
+
 # Thomas
 #The data is selected by specifying its id or a $query\_string$. Query parameters allow to search by \emph{attribution}, \emph{generation} and by combining more metadata terms with their \emph{value-ranges}. Attribution will match all entities of the S-PROV model such as \emph{ComponentInstances}, \emph{Components}, \emph{prov:Person},  while generation will consider \emph{Invocation} and \emph{WorkflowExecution}.
 @app.route("/data")
@@ -441,7 +448,6 @@ def getData():
 
 
 
-#@app.route("data/<data_id>")
 
 
 # Thomas
