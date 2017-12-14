@@ -598,7 +598,7 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
       
       var terms = form.findField("terms").getRawValue(false).trim();
       var mode = form.findField("mode").getValue(false).trim();
-      var format = form.findField("format").getValue(false).trim();
+      var format = form.findField("format").getValue(false);
       var minvalues = encodeURIComponent(form.findField("minvalues").getValue(false).trim());
       var maxvalues = encodeURIComponent(form.findField("maxvalues").getValue(false).trim());
       owner = userSN;
