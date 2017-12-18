@@ -46,6 +46,55 @@ var indexes = [
         },
         'collection': 'lineage',
         'name': 'lineage streams format'
+    },
+    {
+        'index': {
+            'insertedAt': 1
+        },
+        'collection': 'lineage',
+        'name': 'lineage insertedAt'
+    },
+    {
+        'index': {
+            'interationId': 1
+        },
+        'collection': 'lineage',
+        'name': 'lineage interationId'
+    },
+    {
+        'index': {
+            'instanceId': 1
+        },
+        'collection': 'lineage',
+        'name': 'lineage instanceId'
+    },
+    {
+        'index': {
+            'name': 1
+        },
+        'collection': 'lineage',
+        'name': 'lineage name'
+    },
+    {
+        'index': {
+            'username': 1
+        },
+        'collection': 'lineage',
+        'name': 'lineage username'
+    },
+    {
+        'index': {
+            'actedOnBehalfOf': 1
+        },
+        'collection': 'lineage',
+        'name': 'lineage actedOnBehalfOf'
+    },
+    {
+        'index': {
+            'streams.port': 1
+        },
+        'collection': 'lineage',
+        'name': 'lineage streams port'
     }
 ]
 print('start indexing')
