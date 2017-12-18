@@ -6,7 +6,7 @@ var indexes = [
     { 
         'index': {
             'streams.indexedMeta.key': 1,
-            'streams.indexedMeta.value': 1
+            'streams.indexedMeta.val': 1
         },
         'collection': 'lineage',
         'name': 'lineage indexedMeta'
@@ -14,7 +14,7 @@ var indexes = [
     { 
         'index': {
             'parameters.key': 1,
-            'parameters.value': 1
+            'parameters.val': 1
         },
         'collection': 'lineage',
         'name': 'lineage parameters'
@@ -39,6 +39,13 @@ var indexes = [
         },
         'collection': 'lineage',
         'name': 'lineage runId'
+    },
+    {
+        'index': {
+            'streams.format': 1
+        },
+        'collection': 'lineage',
+        'name': 'lineage streams format'
     }
 ]
 print('start indexing')

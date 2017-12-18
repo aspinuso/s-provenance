@@ -149,9 +149,8 @@ class ProvenanceStore(object):
             print count
             count +=1
             print('---before--->', item['_id'])
-            if 'streams' in item:
-                helper.addIndexedContentToLineage(item)
-                transformedItems.append(InsertOne(item))
+                
+            transformedItems.append(InsertOne(helper.addIndexedContentToLineage(item)))
 
             if len(transformedItems) == 100000:
                 start = time.time()

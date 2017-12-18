@@ -1,6 +1,7 @@
 import numbers
 import copy
 import exceptions
+import datetime
 
 def addIndexedContentToLineage(lineage):
     MAXIMUM_STRING_SIZE_FOR_INDEXING = 50
@@ -38,7 +39,9 @@ def addIndexedContentToLineage(lineage):
                 'val': lineage_updated['parameters'][key]
                 })
         lineage_updated['parameters'] = parametersKeyVal
-        
+
+    lineage_updated['insertedAt'] = datetime.datetime.now()
+
     return lineage_updated
 
 def lineageToJsonLd(lineage):
