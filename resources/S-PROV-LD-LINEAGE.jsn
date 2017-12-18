@@ -30,6 +30,7 @@
             "prov:type" : "s-prov:Data",
             "oa:annotations" : [],
             "s-prov:format" : "",
+            "provone:OutputPort" : "corr",
             "prov:wasGeneratedBy" : {
                 "@id" : "CorrCoef-orfeus-as-95144-ba9f2d45-d657-11e6-8a03-f45c89acf865"
             },
@@ -60,7 +61,6 @@
         "s-prov:iterationIndex" : 1,
         "s-prov:feedbackInvocation" : false,
         "s-prov:message" : "",
-        "provone:OutputPort" : "corr",
         "prov:wasAssociatedWith" : {
             "@id" : "CorrCoef-Instance--orfeus-as-95144-ba923bc0-d657-11e6-a750-f45c89acf865",
         }

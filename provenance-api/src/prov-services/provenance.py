@@ -505,7 +505,7 @@ class ProvenanceStore(object):
 
                 return toW3Cprov(lineage,[bundle],format = kwargs['format'][0]),0
             else:
-                print("ADADAD")
+                
                 return toW3Cprov(lineage,[bundle]),0
             
                     
@@ -877,7 +877,7 @@ class ProvenanceStore(object):
 
         for cursor in cursorsList:
             for x in cursor:
-                print(x)
+                
                 for s in x["streams"]:
                      
                     if (mtype==None or mtype=="") or ('format' in s and s["format"]==mtype):
@@ -1774,7 +1774,10 @@ class ProvenanceStore(object):
 
         count = lineage.aggregate(pipeline=[{'$match':{'runId':id}},
                                                     {'$group':{'_id':'$'+group}},
+         
                                                     {"$count":group}])
+
+        totalCount=0
         for x in count:
             totalCount=x[group]
 #{'$project':{"runId":1,"instanceId":1,"parameters":1,"endTime":-1,"errors":1,"iterationIndex":1,"iterationId":1,"streams.con:immediateAccess":1,"streams.location":1}
@@ -2015,10 +2018,12 @@ class ProvenanceStore(object):
         print('start getData--> start: ', start, ' limit: ', limit, ' genBy: ', genBy, ' attrTo: ', attrTo, ' keylist: ', keylist, ' maxvalues: ', maxvalues, ' minvalues: ', minvalues, ' id: ', id)
         # db = self.connection["verce-prov"]
         lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
-
+        streamItems=[]
+        totalCount=1
         if id != None:
             print('---- is not none')
-            lineage_item = lineage.find_one({'streams.id':id})
+            (streamItems, totalCount)=self.getEntitiesFilter_new({'streams.id':id},keylist,maxvalues,minvalues,start,limit, mode,format)
+
 
 
         else:
@@ -2051,18 +2056,18 @@ class ProvenanceStore(object):
             if searchDic!=None:
                 (streamItems, totalCount)=self.getEntitiesFilter_new(searchDic,keylist,maxvalues,minvalues,start,limit, mode,format)
             
-            output = {"@graph":streamItems};
-            output=self.addLDContext(output)
-            output.update({"totalCount": totalCount})
+        output = {"@graph":streamItems};
+        output=self.addLDContext(output)
+        output.update({"totalCount": totalCount})
            
-            return  output
+        return  output
         
 
     def getWorkflowExecutionByLineage(self, start, limit, usernames, functionNames, keylist, maxvalues, minvalues, mode = 'OR', formats = None):
         # print('usernames: ', usernames, 'functionNames: ', functionNames, 'keylist: ', keylist, 'maxvalues: ', maxvalues, 'minvalues: ', minvalues, 'mode: ', mode, 'format: ', format)
         lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
-       
+        
         # START: Build match
         aggregate_match = {}
         if usernames is not None and len(usernames) > 0: 
@@ -2074,7 +2079,7 @@ class ProvenanceStore(object):
             aggregate_match['name'] = {
                 '$in': functionNames
             }
-
+        
         if formats is not None and keylist == None:
             aggregate_match['streams'] = {
                 '$elemMatch': {
@@ -2222,6 +2227,7 @@ class ProvenanceStore(object):
     def getEntitiesFilter_new(self,searchDic,keylist,mxvaluelist,mnvaluelist,start,limit,mode='OR',format=None):
         elementsDict ={}
         searchContextDic={}
+        totalCount=0
         print('searchDic',searchDic,'keylist',keylist,'mxvaluelist',mxvaluelist,'mnvaluelist',mnvaluelist,'start',start,'limit',limit,'format',format,'mode',mode)
 
         lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
@@ -2245,7 +2251,7 @@ class ProvenanceStore(object):
                 }).sort("endTime",direction=-1).skip(start).limit(limit)
             # TODO sort on endTime or startTime
 
-            count = lineage.count(searchDic) * 2 
+            #count = lineage.count(searchDic) * 2 
 
             stream_items = []
             for lineage_item in lineage_items_cursor:
@@ -2272,7 +2278,12 @@ class ProvenanceStore(object):
                         else: 
                             stream_items.append(stream)
 
-            return(stream_items, count)
+            total = lineage.find(searchDic,{"streams":1})
+            
+            for x in total:
+                totalCount+=len(x["streams"])
+
+            return(stream_items, totalCount)
 
         else:
             
@@ -2345,7 +2356,10 @@ class ProvenanceStore(object):
                 stream_items.append(stream_item)
             print('-----stream_items count : ', len(stream_items))
             # TODO check if we can get precise count
-            totalCount = lineage.count(searchDic) * 2 
+            total = lineage.find(searchDic,{"streams":1})
+            
+            for x in total:
+                totalCount+=len(x["streams"])
 
             return(stream_items, totalCount)
 

@@ -14,6 +14,8 @@ var activityStore = Ext.create('CF.store.Activity');
 
 var artifactStore = Ext.create('CF.store.Artifact');
 
+var termStore =Ext.create('CF.store.TermStore');
+
 var singleArtifactStore = Ext.create('CF.store.Artifact');
 
 var workflowStore = Ext.create('CF.store.ProvWorkflow');
@@ -32,44 +34,46 @@ var dn_regex=/file:\/\/?([\w-]|([\da-z\.-]+)\.([a-z\.]{2,6}))+/
 
 // ComboBox with multiple selection enabled
 Ext.define('CF.view.metaCombo', {
-  extend: 'Ext.form.field.ComboBox',
-  alias: 'widget.metacombo',
-  fieldLabel: 'Terms',
-  name: 'terms',
-  displayField: 'term',
-  width: 200,
-  inputAttrTpl: " data-qtip='Insert here a sequence of Terms divided by commas.<br/> Eg. magnitude,station' ",
-  labelWidth: 40,
-  labelAlign: 'right',
-  margin: '10 10 30 10',
-  colspan: 4,
-  multiSelect: true,
-  store: seismoMetaStore,
-  queryMode: 'local',
-  getInnerTpl: function() {
-    return '<div data-qtip="{term}">{term}</div>';
-  },
-  initComponent: function() {
-    this.callParent();
-  },
-  onCollapse: function() {
-    this.callParent();
-    if (this.picker.getSelectionModel().selection == null || this.picker.getSelectionModel().selection.length === 0) {
-      this.value = this.getRawValue();
-    }
-  }
+ 
+extend: 'Ext.form.field.ComboBox',
+alias: 'widget.metacombo',
+fieldLabel: 'Terms',
+name: 'terms',
+ 
+width: 250,
+inputAttrTpl: " data-qtip='Insert here a sequence of Terms divided by commas.<br/> Eg. magnitude,station' ",
+labelWidth: 40,
+abelAlign: 'right',
+ 
+ 
+queryMode: 'local',
+tpl: Ext.create('Ext.XTemplate',
+ 
+                          '<tpl for=".">',
+ 
+                              '<div class="x-boundlist-item" style="border-bottom:1px solid #f0f0f0;">',
+                               '<div><b>Term:</b> {term}</div>',
+                              '<div><b>Use:</b> {use}</div>',
+                              '<div><b>Type:</b> {type}</div></div>',
+                          '</tpl>'
+                      ),
+displayTpl: Ext.create('Ext.XTemplate',
+                          '<tpl for=".">',
+                              '{term}',
+                          '</tpl>'
+                      ),
+
+forceSelection: false,
+valueField: 'id',
+displayField: 'term',
+autoLoad: false,
+store: termStore
+
 });
 
-// Ext.override(Ext.selection.RowModel, {
-//   isRowSelected: function(record, index) {
-//     try {
-//       return this.isSelected(record);
-//     } catch (e) {
-//       return false;
-//     }
-//   }
-// });
 
+ 
+ 
 
 function openRun(id)
 {		if (id) 
@@ -104,8 +108,8 @@ Ext.define('CF.view.mimeCombo', {
   name: 'format',
   displayField: 'mime',
   width: 300,
-  labelWidth: 130,
-  colspan: 4,
+  labelWidth: 90,
+   
   store: mimetypesStore,
   queryMode: 'local',
   getInnerTpl: function() {
@@ -126,7 +130,6 @@ Ext.define('CF.view.modeCombo', {
   width: 100,
   labelWidth: 30,
   value:"OR",
-  colspan: 4,
   store: modeStore,
   queryMode: 'local',
   inputAttrTpl: " data-qtip='Select AND or OR to indicate if the runs must match all the terms of the query or at least one<br/> Eg. magnitude,station' ",
@@ -202,7 +205,7 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
   }
  
   	if (data['s-prov:Data'].port=='_d4p_state')
-  	{ console.log(data['s-prov:Data'].port)
+  	{ //console.log(data['s-prov:Data'].port)
   		col = colour.lightblue
   		
  	 }
@@ -265,8 +268,8 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
 
 var derivedDataDephtree = function(data, graph, parent) {
   var col = colour.darkblue;
-   
-   if (!parent) {
+  
+  if (!parent) {
     //col = colour.red
 
   }
@@ -302,12 +305,12 @@ var derivedDataDephtree = function(data, graph, parent) {
    if(nodea.data.data.runId!=parent.data.data.runId)
 	{    	 
 			deriv_run=nodea.data.data.runId
-    		edgecolour=colour.red
+    	edgecolour=colour.red
     		 
     		
     }
     else
-	{     
+	{   
 			deriv_run=nodea.data.data.runId
 			edgecolour=colour.purple
     		 
@@ -326,20 +329,22 @@ var derivedDataDephtree = function(data, graph, parent) {
         if (i < 20)
           derivedDataDephtree(data["derivedData"][i], graph, nodea)
         else {
-          var nodeb = graph.addNode(data["derivedData"][i], {
+           
+          var nodeb = graph.addNode(data["derivedData"][i]["dataId"], {
             label: "...too many",
             'color': colour.purple,
             'shape': 'dot',
             'radius': 19,
             'alpha': 1,
+            'data': {'runId':data.runId,'location':""},
             mass: 2
           })
 
 
-          graph.addEdge(nodeb, nodea,{
+          graph.addEdge(nodea, nodeb,{
             length: 0.75,
             directed: true,
-            weight: 2
+            weight: 4
           })
           break
         }
@@ -473,7 +478,7 @@ Ext.define('CF.view.WorkflowOpenByRunID', {
         activityStore.setProxy({
           type: 'ajax',
           // OLD API => url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(form.findField("runId").getValue(false).trim())+'?method=aggregate',
-          url: PROV_SERVICE_BASEURL + '/workflowexecutions/'+encodeURIComponent(form.findField("runId").getValue(false).trim())+'/invocations',
+          url: PROV_SERVICE_BASEURL + '/workflowexecutions/'+encodeURIComponent(form.findField("runId").getValue(false).trim())+'/showactivity',
           
           reader: {
             rootProperty: 'graph',
@@ -538,7 +543,11 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
 
       combineErrors: true,
       msgTarget: 'under',
-
+      
+      layout: {
+        type: 'table',
+        columns:3
+      },
       items: [{
           xtype: 'metacombo'
         }, {
@@ -546,7 +555,7 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
           fieldLabel: 'Min values',
           name: 'minvalues',
           anchor: '80%',
-          allowBlank: false,
+          allowBlank: true,
           labelAlign: 'right',
           inputAttrTpl: " data-qtip='Insert here a sequence of min values related to the indicated Terms, divided by commas.<br/> Eg. 3.5,AQU' ",
           margin: '10 0 10 0'
@@ -557,13 +566,17 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
           name: 'maxvalues',
           inputAttrTpl: " data-qtip='Insert here a sequence of max values related to the indicated Terms, divided by commas.<br/> Eg. 5,AQU' ",
           anchor: '80%',
-          allowBlank: false,
+          allowBlank: true,
           margin: '10 0 10 0'
         },
         {
           xtype: 'modecombo',
           margin: '10 0 10 10'
-        }
+        },
+        {
+           xtype: 'mimecombo',
+           allowBlank: true
+       },
 
       ]
     }]
@@ -582,8 +595,10 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
 
     handler: function() {
       var form = this.up('form').getForm();
-      var terms = form.findField("terms").getValue(false).trim();
+      
+      var terms = form.findField("terms").getRawValue(false).trim();
       var mode = form.findField("mode").getValue(false).trim();
+      var format = form.findField("format").getValue(false);
       var minvalues = encodeURIComponent(form.findField("minvalues").getValue(false).trim());
       var maxvalues = encodeURIComponent(form.findField("maxvalues").getValue(false).trim());
       owner = userSN;
@@ -593,7 +608,8 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
                                                                   "&terms=" + terms + 
                                                                   "&maxvalues=" + maxvalues + 
                                                                   "&minvalues=" + minvalues +
-                                                                  "&mode=" + mode;
+                                                                  "&mode=" + mode +
+                                                                  "&formats=" + format;
       };
 
       //BUG: with a single load the grid doesn't synchronise when scrolled to the bottom
@@ -611,7 +627,7 @@ Ext.define('CF.view.WorkFlowSelectionWindow', {
   requires: ['CF.view.WorkflowSelection'],
   title: 'Workflows Runs',
   height: 530,
-  width: 950,
+  width: 1000,
   closeAction: 'hide',
   layout: {
     type: 'vbox',
@@ -770,7 +786,7 @@ Ext.define('CF.view.ActivityMonitor', {
   	    id: 'exportrun',
 
         handler: function() {
-         window.open(PROV_SERVICE_BASEURL + 'workflow/export/' + encodeURIComponent(currentRun)+'?'+'all=True', 'Download')
+         window.open(PROV_SERVICE_BASEURL + 'workflowexecutions/'+encodeURIComponent(currentRun)+'/export?'+'all=True', 'Download')
           
      	}
     },
@@ -985,7 +1001,7 @@ Ext.define('CF.view.StreamValuesRangeSearch', {
 
     handler: function() {
       var form = this.up('form').getForm();
-      var keys = this.up('form').getForm().findField("terms").getValue(false);
+      var terms = form.findField("terms").getRawValue(false).trim();
       var minvalues = encodeURIComponent(this.up('form').getForm().findField("minvalues").getValue(false));
       var maxvalues = encodeURIComponent(this.up('form').getForm().findField("maxvalues").getValue(false));
       var mimetype = this.up('form').getForm().findField("format").getValue(false);
@@ -993,17 +1009,15 @@ Ext.define('CF.view.StreamValuesRangeSearch', {
       
       
       qerystring=""
-      if (keys!="" && maxvalues!="" && minvalues=="" && keys==null)
-          qerystring="&format=" + mimetype
-                     "&terms=" + keys + 
+      if (terms!="" && maxvalues!="" && minvalues!="" && terms!=null)
+          qerystring="&terms=" + terms + 
                      "&maxvalues=" + maxvalues + 
                      "&minvalues=" + minvalues 
-
+       
       if (mimetype!=null && mimetype!="") 
          qerystring=qerystring+"&format=" + mimetype
       
-
-      if (form.isValid()) {
+       if (form.isValid()) {
         artifactStore.setProxy({
           type: 'ajax',
           url: PROV_SERVICE_BASEURL + 'data?generatedBy=' + currentRun + 
@@ -1086,7 +1100,7 @@ Ext.define('CF.view.FilterOnAncestor', {
         FilterAjax.request({
 
           method: 'POST',
-          url: PROV_SERVICE_BASEURL + 'entities/filterOnAncestorsMeta',
+          url: PROV_SERVICE_BASEURL + 'data/filterOnAncestorsMeta',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
@@ -1179,7 +1193,7 @@ Ext.define('CF.view.FilterOnAncestorValuesRange', {
             filtered = Ext.decode(response.responseText)
             artifactStore.clearFilter(true);
             if (filtered.length == 0)
-              {console.log(filtered)
+              {//console.log(filtered)
               artifactStore.removeAll()}
             else {
               artifactStore.filterBy(function(record, id) {
@@ -1196,7 +1210,7 @@ Ext.define('CF.view.FilterOnAncestorValuesRange', {
           },
           params: {
             ids: dataids,
-            keys: form.findField("keys").getValue().trim(),
+            terms: form.findField("terms").getRawValue(false).trim(),
             minvalues: form.findField("minvalues").getValue().trim(),
             maxvalues: form.findField("maxvalues").getValue().trim()
           }
@@ -1361,7 +1375,7 @@ var filterOnAncestorspane = Ext.create('Ext.window.Window', {
   items: [{
     xtype: 'tabpanel',
     items: [
-      Ext.create('CF.view.FilterOnMeta'),
+      //Ext.create('CF.view.FilterOnMeta'),
       Ext.create('CF.view.FilterOnAncestorValuesRange')
     ]
   }]
@@ -1373,11 +1387,12 @@ var renderStream = function(value, p, record) {
   
   var location = "</br>"
   var contenthtm = ""
-  var prov='<a href=\"'+PROV_SERVICE_BASEURL + 'workflow/export/data/'+record.data.ID+'?all=true\" target=\"_blank">Download Provenance</a><br/>'
+  var prov='<a href=\"'+PROV_SERVICE_BASEURL + '/data/'+record.data.ID+'/export?all=true\" target=\"_blank">Download Provenance</a><br/>'
 
   if (record.data.location != "") {
     location = '<a href="javascript:viewData(\'' + record.data.location + '\'.split(\',\'),true)">Open</a><br/>'
   }
+
 
   contentvis = JSON.parse(record.data.content)
 
@@ -1390,6 +1405,7 @@ var renderStream = function(value, p, record) {
     }
   }
 
+  console.log(contenthtm)
   return Ext.String.format(
     '<div class="search-item" style="border:2px solid; box-shadow: 10px 10px 5px #888888;"><br/>' +
     '<strong>Data ID: {0} </strong> <br/> <br/></strong><hr/>' +
@@ -1428,7 +1444,7 @@ var renderStreamSingle = function(value, p, record) {
    
   if (record.data.location != "")
     location = '<a href="javascript:viewData(\'' + record.data.location + '\'.split(\',\'),true)">Open</a><br/>'
-
+  console.log(record.data)
   return Ext.String.format(
     '<div class="search-item" style="border:2px solid; box-shadow: 10px 10px 5px #888888;"><br/>' +
     '<strong>Data ID: {0} </strong> <br/> <br/></strong><hr/>' +
@@ -1666,6 +1682,8 @@ Ext.define('CF.view.ArtifactView', {
   }
 });
 
+
+
 Ext.define('CF.view.provenanceGraphsViewer', {
   extend: 'Ext.panel.Panel',
   alias: 'widget.provenancegraphsviewer',
@@ -1726,9 +1744,9 @@ Ext.define('CF.view.provenanceGraphsViewer', {
           //   addMeta('/j2ep-1.0/prov/streamchunk/?runid='+currentRun+'&id='+selected.node.name)
           singleArtifactStore.setProxy({
             type: 'ajax',
-            url: PROV_SERVICE_BASEURL + 'entities/'+selected.node.name,
+            url: PROV_SERVICE_BASEURL + 'data/'+selected.node.name,
             reader: {
-              rootProperty: 'entities',
+              rootProperty: '@graph',
               totalProperty: 'totalCount'
             }
           });
@@ -1753,7 +1771,7 @@ Ext.define('CF.view.provenanceGraphsViewer', {
 
           singleArtifactStore.data.clear();
           singleArtifactStore.load();
-          window.event.returnValue = false;
+          //window.event.returnValue = false;
         }
       });
 
