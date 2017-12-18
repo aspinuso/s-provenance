@@ -46,6 +46,13 @@ var indexes = [
         },
         'collection': 'lineage',
         'name': 'lineage streams format'
+    },
+    {
+        'index': {
+            'insertedAt': 1
+        },
+        'collection': 'lineage',
+        'name': 'lineage insertedAt'
     }
 ]
 print('start indexing')
