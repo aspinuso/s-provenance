@@ -47,15 +47,14 @@ WORKDIR /prov/s-provenance-master/provenance-api/src/prov-services/
 
 RUN echo 'export RAAS_LOGGING="True"' >> docker_entry.sh
 RUN echo 'export RAAS_REPO="mongodb://172.17.0.1/$SPROV_DB" ' >> docker_entry.sh
+
 RUN echo 'gunicorn -w 9 -b 0.0.0.0:8082 "flask_raas:bootstrap_app()" --log-level debug --backlog 0 --timeout 120 --error-logfile error.log --log-file access.log' >> docker_entry.sh 
 
 
-RUN echo 'mongod --port 27001' >>  mongo_js.sh
 RUN echo 'mongo 172.17.0.1:27017/$SPROV_DB /prov/s-provenance-master/provenance-api/resources/ensure_indexes.js' >>  mongo_js.sh
 RUN echo 'mongo 172.17.0.1:27017/$SPROV_DB /prov/s-provenance-master/provenance-api/resources/lineage_map_reduce.js' >>  mongo_js.sh
 
 ENTRYPOINT bash docker_entry.sh 
-
 
 CMD bash mongo_js.sh
 
