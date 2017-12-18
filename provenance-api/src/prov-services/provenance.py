@@ -1774,7 +1774,10 @@ class ProvenanceStore(object):
 
         count = lineage.aggregate(pipeline=[{'$match':{'runId':id}},
                                                     {'$group':{'_id':'$'+group}},
+         
                                                     {"$count":group}])
+
+        totalCount=0
         for x in count:
             totalCount=x[group]
 #{'$project':{"runId":1,"instanceId":1,"parameters":1,"endTime":-1,"errors":1,"iterationIndex":1,"iterationId":1,"streams.con:immediateAccess":1,"streams.location":1}
