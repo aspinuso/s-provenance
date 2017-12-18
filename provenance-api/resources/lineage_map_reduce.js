@@ -182,19 +182,19 @@ var batch_job = db.getCollection('batch_jobs').findOne({name: 'contentSummary_ru
 if (!batch_job) {
     db.getCollection('batch_jobs').insert({
         name: 'contentSummary_runId_userName',
-        cutoffLastJob: '2000-09-14 21:12:13.224524'
+        cutoffLastJob: new Date("1990-12-18T13:58:27.525Z")
     })
     batch_job = db.getCollection('batch_jobs').findOne({name: 'contentSummary_runId_userName'})
 }
 
-var cursor = db.getCollection('lineage').find().sort({startTime: -1}).limit(1)
+var cursor = db.getCollection('lineage').find().sort({insertedAt: -1}).limit(1)
 
 var lastLineageItem;
 while(cursor.hasNext()) {
     lastLineageItem = cursor.next()
 }
 
-var cutoffCurrentJob = lastLineageItem.startTime
+var cutoffCurrentJob = lastLineageItem.insertedAt
 var cutoffLastJob = batch_job.cutoffLastJob
 
 var batch_job = true
@@ -204,8 +204,8 @@ if (batch_job) {
         reduceTerms,
         {
             query: {
-                startTime: {
-                    $gte: cutoffLastJob,
+                insertedAt: {
+                    $gt: cutoffLastJob,
                     $lte: cutoffCurrentJob
                 }
             },
