@@ -1,8 +1,7 @@
 FROM tomcat
 
-LABEL "Docker file for provenance-explorer"
-
-MAINTAINER prov@knmi.nl
+LABEL "TITLE"="Docker file for provenance-explorer"
+LABEL "MAINTAINER"="prov@knmi.nl"
 
 RUN apt-get update && apt-get install -y maven curl less vim 
 
