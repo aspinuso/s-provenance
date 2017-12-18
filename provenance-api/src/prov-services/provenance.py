@@ -2123,7 +2123,10 @@ class ProvenanceStore(object):
                     '$unwind': '$streams'
                 },
                 {   
-                    '$unwind': '$streams.indexedMeta'
+                    '$unwind': {
+                        'path': '$streams.indexedMeta',
+                        'preserveNullAndEmptyArrays': True
+                    }
                 },
                 {
                    '$group': {
