@@ -2015,7 +2015,7 @@ class ProvenanceStore(object):
         return x
 
     def getData(self,start,limit,genBy=None,attrTo=None,keylist=None,maxvalues=None,minvalues=None,id=None,format=None,mode='OR'):
-        print('start getData--> start: ', start, ' limit: ', limit, ' genBy: ', genBy, ' attrTo: ', attrTo, ' keylist: ', keylist, ' maxvalues: ', maxvalues, ' minvalues: ', minvalues, ' id: ', id)
+        print('start getData--> start: ', start, ' limit: ', limit, ' genBy: ', genBy, 'format:',format,' attrTo: ', attrTo, ' keylist: ', keylist, ' maxvalues: ', maxvalues, ' minvalues: ', minvalues, ' id: ', id)
         # db = self.connection["verce-prov"]
         lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         streamItems=[]
@@ -2035,13 +2035,13 @@ class ProvenanceStore(object):
             activities=None
             
             if attrTo!=None:
-                agents=attrTo.split(',')
-                searchAgents=[{'actedOnBehalfOf':{'$in':agents}},{'instanceId':{'$in':agents}},{'username':{'$in':agents}}]
+                entities=attrTo.split(',')
+                searchAgents=[{'actedOnBehalfOf':{'$in':entities}},{'instanceId':{'$in':entities}},{'username':{'$in':entities}},{'name':{'$in':entities}}]
                 
 
             if genBy!=None:
                 activities=genBy.split(',')
-                searchActivities=[{'name':{'$in':activities}},{'iterationId':{'$in':activities}},{'runId':{'$in':activities}}]
+                searchActivities=[{'iterationId':{'$in':activities}},{'runId':{'$in':activities}}]
             
             # TODO format
 
@@ -2064,9 +2064,10 @@ class ProvenanceStore(object):
         
 
     def getWorkflowExecutionByLineage(self, start, limit, usernames, functionNames, keylist, maxvalues, minvalues, mode = 'OR', formats = None):
-        # print('usernames: ', usernames, 'functionNames: ', functionNames, 'keylist: ', keylist, 'maxvalues: ', maxvalues, 'minvalues: ', minvalues, 'mode: ', mode, 'format: ', format)
+        print('usernames: ', usernames, 'functionNames: ', functionNames, 'keylist: ', keylist, 'maxvalues: ', maxvalues, 'minvalues: ', minvalues, 'mode: ', mode, 'format: ', formats)
         lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
+        aggregateResults=None
         
         # START: Build match
         aggregate_match = {}
@@ -2165,8 +2166,10 @@ class ProvenanceStore(object):
             aggregateResults = lineage.aggregate(pipeline = aggregate_pipeline)
 
         runIds = []
-        for runId in aggregateResults:
-            runIds.append(runId['_id'])
+        
+        if aggregateResults!=None:
+            for runId in aggregateResults:
+                runIds.append(runId['_id'])
         # END: Find matching runIds
 
         # START: Find workflows using found runIds
@@ -2189,11 +2192,11 @@ class ProvenanceStore(object):
         for workflow in workflow_cursor:
             workflows.append(workflow)
         # END: Find workflows using found runIds
-
-        return {
+        output=self.addLDContext({
             "runIds":workflows,
             "totalCount": len(runIds)
-        } 
+        })
+        return output
 
     def getWorkflowExecution(self, start, limit, usernames):
         print('getWorkflowExecuton -->', usernames)
