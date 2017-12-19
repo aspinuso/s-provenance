@@ -341,7 +341,7 @@ def getWorkflowExecutions():
     keylist = csv.reader(StringIO.StringIO(request.args['terms'])).next() if ('terms' in request.args and request.args['terms']!="") else None
     maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])).next() if ('maxvalues' in request.args and request.args['maxvalues']!="") else None
     minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])).next() if ('minvalues' in request.args and request.args['minvalues']!="") else None
-    functionNames = csv.reader(StringIO.StringIO(request.args['functionNames'])).next() if 'functionNames' in request.args else None
+    functionNames = csv.reader(StringIO.StringIO(request.args['associatedWith'])).next() if 'associatedWith' in request.args else None
     formats = csv.reader(StringIO.StringIO(request.args['formats'])).next() if ('formats' in request.args and request.args['formats']!="") else None
     types = csv.reader(StringIO.StringIO(request.args['types'])).next() if 'types' in request.args else None
     mode = request.args['mode'] if 'mode' in request.args else 'OR'

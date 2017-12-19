@@ -2063,8 +2063,8 @@ class ProvenanceStore(object):
         return  output
         
 
-    def getWorkflowExecutionByLineage(self, start, limit, usernames, functionNames, keylist, maxvalues, minvalues, mode = 'OR', formats = None):
-        print('usernames: ', usernames, 'functionNames: ', functionNames, 'keylist: ', keylist, 'maxvalues: ', maxvalues, 'minvalues: ', minvalues, 'mode: ', mode, 'format: ', formats)
+    def getWorkflowExecutionByLineage(self, start, limit, usernames, associatedWith, keylist, maxvalues, minvalues, mode = 'OR', formats = None):
+        print('usernames: ', usernames, 'associatedWith: ', associatedWith, 'keylist: ', keylist, 'maxvalues: ', maxvalues, 'minvalues: ', minvalues, 'mode: ', mode, 'format: ', formats)
         lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
         aggregateResults=None
@@ -2076,9 +2076,9 @@ class ProvenanceStore(object):
                 '$in': usernames
             }
 
-        if functionNames is not None and len(functionNames) > 0: 
+        if associatedWith is not None and len(associatedWith) > 0: 
             aggregate_match['name'] = {
-                '$in': functionNames
+                '$in': associatedWith
             }
         
         if formats is not None and keylist == None:
