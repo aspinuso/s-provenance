@@ -76,11 +76,10 @@ store: termStore
  
 
 function openRun(id)
-{		if (id) 
-		 	this.currentRun=id
+{   if (id) 
+      this.currentRun=id
         activityStore.setProxy({
           type: 'ajax',
-          //url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(currentRun)+'?method=aggregate',
           url: PROV_SERVICE_BASEURL + '/workflowexecutions/'+encodeURIComponent(currentRun)+'/showactivity',
           
 
@@ -204,13 +203,13 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
    col = colour.red
   }
  
-  	if (data['s-prov:Data'].port=='_d4p_state')
-  	{ //console.log(data['s-prov:Data'].port)
-  		col = colour.lightblue
-  		
- 	 }
- 	 
- 	 
+    if (data['s-prov:Data'].port=='_d4p_state')
+    { //console.log(data['s-prov:Data'].port)
+      col = colour.lightblue
+      
+   }
+   
+   
   }
   //var node = graph.addNode(data["id"],{label:data["_id"].substring(0,5),'color':col, 'shape':'dot', 'radius':19,'alpha':1,mass:2})
   //node.runId=data["runId"]
@@ -233,17 +232,17 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
     
   var edgecolour
     if(nodea.data.data.runId!=parent.data.data.runId)
-	{    	 
-			deriv_run=nodea.data.data.runId
-    		edgecolour=colour.red
-    		 
-    		
+  {      
+      deriv_run=nodea.data.data.runId
+        edgecolour=colour.red
+         
+        
     }
     else
-	{     
-			deriv_run=nodea.data.data.runId
-			edgecolour=colour.darkblue
-    		 
+  {     
+      deriv_run=nodea.data.data.runId
+      edgecolour=colour.darkblue
+         
     }
     //console.log(parent.data.data.runId)
     graph.addEdge(parent, nodea, {
@@ -303,17 +302,17 @@ var derivedDataDephtree = function(data, graph, parent) {
 
   if (parent) {
    if(nodea.data.data.runId!=parent.data.data.runId)
-	{    	 
-			deriv_run=nodea.data.data.runId
-    	edgecolour=colour.red
-    		 
-    		
+  {      
+      deriv_run=nodea.data.data.runId
+      edgecolour=colour.red
+         
+        
     }
     else
-	{   
-			deriv_run=nodea.data.data.runId
-			edgecolour=colour.purple
-    		 
+  {   
+      deriv_run=nodea.data.data.runId
+      edgecolour=colour.purple
+         
     }
     graph.addEdge(parent, nodea, {
       length: 0.75,
@@ -359,7 +358,7 @@ var getMetadata = function(data, graph) {
 graph.addEdge(node.name,data["streams"][0]["id"],{label:"wasDerivedBy"})*/
   if (data["entities"][0]["location"] != "") {
     var loc = data["entities"][0]["location"].replace(/file:\/\/[\w-]+[\w.\/]+[\w\/]+pub/, "/intermediate/")
-      //	loc=loc.replace(//,"")
+      //  loc=loc.replace(//,"")
 
     var params = graph.addNode(data["entities"][0]["id"] + "loc", {
       label: JSON.stringify(data["entities"][0]["location"]),
@@ -376,7 +375,7 @@ graph.addEdge(node.name,data["streams"][0]["id"],{label:"wasDerivedBy"})*/
 
 var wasDerivedFromAddBranch = function(url) {
   $.getJSON(url, function(data) {
-  	//console.log(data)
+    //console.log(data)
     wasDerivedFromDephtree(data, sys, null)
   });
 }
@@ -474,14 +473,14 @@ Ext.define('CF.view.WorkflowOpenByRunID', {
       var form = this.up('form').getForm();
 
       if (form.isValid()) {
-		
+    
         activityStore.setProxy({
           type: 'ajax',
           // OLD API => url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(form.findField("runId").getValue(false).trim())+'?method=aggregate',
           url: PROV_SERVICE_BASEURL + '/workflowexecutions/'+encodeURIComponent(form.findField("runId").getValue(false).trim())+'/showactivity',
           
           reader: {
-            rootProperty: 'graph',
+            rootProperty: 'runIds',
             totalProperty: 'totalCount'
           },
           simpleSortMode: true
@@ -664,19 +663,19 @@ var renderInstanceID = function(value, p, record) {
  
 if (record.data['s-prov:generatedWithImmediteAccess'])
     return Ext.String.format(
-    		"<strong><i>{0}</i></strong>",
-    		record.data["@id"]
-  	   	);
+        "<strong><i>{0}</i></strong>",
+        record.data["@id"]
+        );
 if (record.data["s-prov:generatedWithLocation"])
     return Ext.String.format(
-    		"<i>{0}</i>",
-    		record.data["@id"]
-  	   	)
+        "<i>{0}</i>",
+        record.data["@id"]
+        )
 
 return Ext.String.format(
-    	"{0}",
-    	record.data["@id"]
-  	   );
+      "{0}",
+      record.data["@id"]
+       );
 }
 
 var renderChanged = function(value, p, record) {
@@ -693,7 +692,7 @@ return Ext.String.format(
 }
 
 
-  	
+    
 
 Ext.define('CF.view.ActivityMonitor', {
   title: 'Runtime Instances monitor',
@@ -783,17 +782,17 @@ Ext.define('CF.view.ActivityMonitor', {
         tooltip: "Export the trace in a W3C-PROV JSON file",
         text: 'Get W3C-PROV',
         disabled: 'true',
-  	    id: 'exportrun',
+        id: 'exportrun',
 
         handler: function() {
          window.open(PROV_SERVICE_BASEURL + 'workflowexecutions/'+encodeURIComponent(currentRun)+'/export?'+'all=True', 'Download')
           
-     	}
+      }
     },
     {
         tooltip: "Manage Files and Permissions with iDROP",
         text: 'iDrop',
-  	    id: 'idrop',
+        id: 'idrop',
         handler: function() {
          window.open(iDROP, 'Download')
           
@@ -802,7 +801,7 @@ Ext.define('CF.view.ActivityMonitor', {
       {
         tooltip: "Radial Provenance Analysis",
         text: 'Radial',
-  	    id: 'Radial',
+        id: 'Radial',
         handler: function() {
          window.open(RADIAL+'&runId='+currentRun,'_blank')
           
@@ -1433,9 +1432,9 @@ var renderStream = function(value, p, record) {
     record.data.runId,
     record.data.endTime,
     record.data.errors,
-  	record.data.port,
-  	prov,
-  	record.data.startTime
+    record.data.port,
+    prov,
+    record.data.startTime
   );
 };
 
@@ -1481,12 +1480,12 @@ var renderWorkflowInput = function(value, p, record) {
  
  if (record.data.provtype=='wfrun' || record.data.type=='wfrun')
  {  
- 	 wfid=record.data.url.substr(record.data.url.lastIndexOf('/') + 1)
- 	 if (wfid.indexOf('?')!=-1)
-	 	 wfid=wfid.substr(0,wfid.indexOf('?'))
- 	 
+   wfid=record.data.url.substr(record.data.url.lastIndexOf('/') + 1)
+   if (wfid.indexOf('?')!=-1)
+     wfid=wfid.substr(0,wfid.indexOf('?'))
+   
     
-	  return Ext.String.format(
+    return Ext.String.format(
     '<br/><strong>Workflow: </strong>{0} - <a href="javascript:openRun(\'{3}\')">{3}</a><br/><br/>' +
     '<strong><a href="{1}" target="_blank">Get W3C-PROV Document</a><br/><br/>' +
     '<strong><a href="javascript: openRun(\'{4}\')">Refresh Current</a><br/>',
@@ -1644,22 +1643,22 @@ Ext.define('CF.view.ArtifactView', {
             htmlcontent += "globus-url-copy -cred $X509_USER_PROXY " + location.replace(dn_regex, IRODS_URL_GSI + "~/verce/"+currentRun+"/") + " ./ <br/>";
           }
         });
-		
+    
         if (this.window == null) {
-        	
+          
           this.window = Ext.create('Ext.window.Window', {
             title: 'Download Script',
             height: 360,
             width: 800,
             
             listeners:{
-            	scope:this,
-       		 	close:function(){
-            	this.window = null
-              	  
-               	 
-            	}
-        	},
+              scope:this,
+            close:function(){
+              this.window = null
+                  
+                 
+              }
+          },
             layout: {
               type: 'vbox',
               align: 'stretch',
@@ -1713,16 +1712,16 @@ Ext.define('CF.view.provenanceGraphsViewer', {
     html: '<strong>Double Click on the border data-nodes to expand. Right Click on each data-node to access its info</strong><br/>'+
           '<strong>Navigation steps</strong><input id="navlevel" type="text" value=1 size=3 />'+
           '<div class="my-legend">'+
-		  '<div class="legend-title"></div>'+
-		  '<div class="legend-scale">'+
+      '<div class="legend-title"></div>'+
+      '<div class="legend-scale">'+
           '<ul class="legend-labels">'+
-    	  '<li><span style="background:'+colour.darkblue+'"></span>trace-bw</li>'+
-    	  '<li><span style="background:'+colour.purple+'"></span>trace-fw</li>'+
-    	  //'<li><span style="background:'+colour.red+'"></span>expanded</li>'+
-     	  '<li><span style="background:'+colour.lightblue+'"></span>stateful</li>'+
-   		  '<li><span style="background:'+colour.red+'"></span>cross-run</li>'+
-   		  '<li><span style="background:'+colour.orange+'"></span>file</li>'+
-   		  '</ul></div></div><br/><center>'+
+        '<li><span style="background:'+colour.darkblue+'"></span>trace-bw</li>'+
+        '<li><span style="background:'+colour.purple+'"></span>trace-fw</li>'+
+        //'<li><span style="background:'+colour.red+'"></span>expanded</li>'+
+        '<li><span style="background:'+colour.lightblue+'"></span>stateful</li>'+
+        '<li><span style="background:'+colour.red+'"></span>cross-run</li>'+
+        '<li><span style="background:'+colour.orange+'"></span>file</li>'+
+        '</ul></div></div><br/><center>'+
         '<div style="width:100%" height="700"><canvas id="viewportprov" width="1200" height="500"></canvas></div></center>'
   }],
 

@@ -24,7 +24,8 @@ Ext.define('CF.store.TermStore', {
                 type: 'json',
                 root: 'terms'
             } 
-        }
+        },
+        autoLoad: true
         
      				    
      				   
