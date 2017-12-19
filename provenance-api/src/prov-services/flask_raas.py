@@ -281,6 +281,9 @@ def getSolver(solver_id):
 # Insert sequences of provenance documents, these can be bundles or lineage. The documents can be in JSON or JSON-LD. Format adaptation for storage purposes is handled by the acquisition function.
 @app.route("/workflowexecutions/insert", methods=['POST'])
 def insertProvenance():
+        
+        print("DADADA "+str(request.form))
+         
         payload = request.form["prov"] if "prov" in request.form else request.content.read()
         payload = json.loads(str(payload))
         response = Response(json.dumps(app.db.insertData(payload)))
