@@ -56,7 +56,7 @@ Ext.define('CF.store.ProvWorkflow', {
 
         Ext.Ajax.request({
           method: 'POST',
-          url: PROV_SERVICE_BASEURL + 'workflow/edit/' + r.get('runId'),
+          url: PROV_SERVICE_BASEURL + 'workflowexecutions/' + r.get('runId')+'/edit',
           params: {
             "doc": '{ "description":"' + r.get('description') + '"}'
           },
@@ -97,7 +97,7 @@ Ext.define('CF.store.ProvWorkflow', {
 
         Ext.Ajax.request({
           method: 'POST',
-          url: PROV_SERVICE_BASEURL + 'workflow/delete/' + r.get('runId'),
+          url: PROV_SERVICE_BASEURL + 'workflowexecutions/' + r.get('runId')+"/delete",
 
 
           failure: function(response) {
