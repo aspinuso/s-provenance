@@ -282,7 +282,7 @@ def getSolver(solver_id):
 @app.route("/workflowexecutions/insert", methods=['POST'])
 def insertProvenance():
         
-        print("DADADA "+str(request.form))
+        #print("DADADA "+str(request.get_data()))
          
         payload = request.form["prov"] if "prov" in request.form else request.content.read()
         payload = json.loads(str(payload))
