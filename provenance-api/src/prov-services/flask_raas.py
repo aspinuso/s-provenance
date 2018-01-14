@@ -206,7 +206,7 @@ def getEntitiesByMethod(method):
     
         # BEGIN kept for backwards compatibility
         
-        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET generatedBy - "+" PID:"+str(os.getpid()));
+        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET wasGeneratedBy - "+" PID:"+str(os.getpid()));
         ' test http://localhost:8082/entities/hasAnchestor?dataId=lxa88-9865-09df5b44-8f1c-11e3-9f3a-bcaec52d20a2&keys=magnitude&values=3.49&_dc=&page=1&start=0&limit=300'        
         
        # if (self.path=="hasAncestorWith"):
@@ -344,7 +344,7 @@ def getWorkflowExecutions():
     keylist = csv.reader(StringIO.StringIO(request.args['terms'])).next() if ('terms' in request.args and request.args['terms']!="") else None
     maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])).next() if ('maxvalues' in request.args and request.args['maxvalues']!="") else None
     minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])).next() if ('minvalues' in request.args and request.args['minvalues']!="") else None
-    functionNames = csv.reader(StringIO.StringIO(request.args['associatedWith'])).next() if 'associatedWith' in request.args else None
+    functionNames = csv.reader(StringIO.StringIO(request.args['wasAssociatedWith'])).next() if 'wasAssociatedWith' in request.args else None
     formats = csv.reader(StringIO.StringIO(request.args['formats'])).next() if ('formats' in request.args and request.args['formats']!="") else None
     types = csv.reader(StringIO.StringIO(request.args['types'])).next() if 'types' in request.args else None
     mode = request.args['mode'] if 'mode' in request.args else 'OR'
@@ -403,10 +403,10 @@ def getInvocationDetails(invocid):
 def getInstanceDetails(instid): 
         limit = int(request.args['limit']) if 'limit' in request.args else None
         start = int(request.args['start']) if 'start' in request.args else None
-        runIds = csv.reader(StringIO.StringIO(request.args['runIds'])).next() if 'runIds' in request.args else None
+        runIds = csv.reader(StringIO.StringIO(request.args['wasAssociateFor'])).next() if 'wasAssociateFor' in request.args else None
         if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET instance details - "+instid+" PID:"+str(os.getpid()));
         response = Response()
-        response = Response(json.dumps(app.db.getComponentInstance(instid,runIds=runIds,start=start,limit=limit)))
+        response = Response(json.dumps(app.db.getComponentInstance(instid,runIds=wasAssociateFor,start=start,limit=limit)))
         response.headers['Content-type'] = 'application/json'       
         return response
 
@@ -433,8 +433,8 @@ def getData():
         limit = request.args['limit'] 
         start = request.args['start']
         if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET data collection - PID:"+str(os.getpid()));
-        genby = request.args['generatedBy'] if 'generatedBy' in request.args else None
-        attrTo = request.args['attributedTo'] if 'attributedTo' in request.args else None
+        genby = request.args['wasGeneratedBy'] if 'wasGeneratedBy' in request.args else None
+        attrTo = request.args['wasAttributedTo'] if 'wasAttributedTo' in request.args else None
         keylist = csv.reader(StringIO.StringIO(request.args['terms'])).next() if 'terms' in request.args else None
         maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])).next() if 'maxvalues' in request.args else None
         minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])).next() if 'minvalues' in request.args else None
