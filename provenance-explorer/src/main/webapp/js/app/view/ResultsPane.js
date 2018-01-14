@@ -585,7 +585,7 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
     text: 'Refresh',
     handler: function() {
       this.up('form').getForm().reset();
-      workflowStore.getProxy().api.read = PROV_SERVICE_BASEURL + 'workflowexecutions?usernames=' + userSN;
+      workflowStore.getProxy().api.read = PROV_SERVICE_BASEURL + 'workflowexecutions?usernamesw=' + userSN;
       workflowStore.load();
     }
   }, {
@@ -884,8 +884,8 @@ Ext.define('CF.view.ActivityMonitor', {
       itemdblclick: function(dataview, record, item, index, e) {
         artifactStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + 'data?attributedTo=' + record.get("ID") +
-                                           '&generatedBy=' + currentRun ,
+          url: PROV_SERVICE_BASEURL + 'data?wasAttributedTo=' + record.get("ID") +
+                                           '&wasGeneratedBy=' + currentRun ,
 
           reader: {
             rootProperty: '@graph',
