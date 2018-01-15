@@ -358,10 +358,10 @@ def getWorkflowExecutions():
     # chec functions above in root "/workflow/user/<user>""
 
     # 
-    if keylist == None and functionNames == None and formats==None:
+    if keylist == None and implementations == None and formats==None:
         response = Response(json.dumps(app.db.getWorkflowExecution(int(start),int(limit),usernames=usernames)))
     else: 
-        response = Response(json.dumps(app.db.getWorkflowExecutionByLineage(int(start),int(limit),usernames=usernames,associatedWith=wasAssociatedWith, implementations=implementations, keylist=keylist,maxvalues=maxvalues,minvalues=minvalues, mode=mode, formats=formats)))
+        response = Response(json.dumps(app.db.getWorkflowExecutionByLineage(int(start),int(limit),usernames=usernames, associatedWith=wasAssociatedWith, implementations=implementations, keylist=keylist,maxvalues=maxvalues,minvalues=minvalues, mode=mode, formats=formats)))
 
     response.headers['Content-type'] = 'application/json'    
     return response
