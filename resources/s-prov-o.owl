@@ -118,14 +118,6 @@
     
 
 
-    <!-- http://www.w3.org/ns/prov-o#wasAssociatedWith -->
-
-    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#wasAssociatedWith">
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
-    </owl:ObjectProperty>
-    
-
-
     <!-- http://www.w3.org/ns/prov-o#wasAttributedTo -->
 
     <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#wasAttributedTo">
@@ -166,7 +158,6 @@
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#dataCount -->
 
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#dataCount">
-        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov-o#SoftwareAgent"/>
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Component"/>
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
         <rdfs:range>
@@ -672,14 +663,6 @@
     
 
 
-    <!-- http://www.w3.org/ns/prov-o#SoftwareAgent -->
-
-    <owl:Class rdf:about="http://www.w3.org/ns/prov-o#SoftwareAgent">
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#SoftwareAgent"/>
-    </owl:Class>
-    
-
-
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#CResource -->
 
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#CResource">
@@ -712,7 +695,7 @@
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance -->
 
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance">
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov-o#SoftwareAgent"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#SoftwareAgent"/>
         <rdfs:label>ComponentInstance</rdfs:label>
         <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:versionInfo>
         <prov:definition>This is a \emph{prov:SoftwareAgent} that acts on behalf of a logical \emph{Component}. In a parallel execution multiple \emph{ComponentInstance} act on behalf of the same \emph{Component} by performing the same \emph{Implementation}.</prov:definition>
