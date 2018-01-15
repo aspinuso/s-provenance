@@ -344,7 +344,9 @@ def getWorkflowExecutions():
     keylist = csv.reader(StringIO.StringIO(request.args['terms'])).next() if ('terms' in request.args and request.args['terms']!="") else None
     maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])).next() if ('maxvalues' in request.args and request.args['maxvalues']!="") else None
     minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])).next() if ('minvalues' in request.args and request.args['minvalues']!="") else None
-    functionNames = csv.reader(StringIO.StringIO(request.args['wasAssociatedWith'])).next() if 'wasAssociatedWith' in request.args else None
+    wasAssociatedWith = csv.reader(StringIO.StringIO(request.args['wasAssociatedWith'])).next() if 'wasAssociatedWith' in request.args else None
+    implementations = csv.reader(StringIO.StringIO(request.args['implementations'])).next() if 'implementations' in request.args else None
+    
     formats = csv.reader(StringIO.StringIO(request.args['formats'])).next() if ('formats' in request.args and request.args['formats']!="") else None
     types = csv.reader(StringIO.StringIO(request.args['types'])).next() if 'types' in request.args else None
     mode = request.args['mode'] if 'mode' in request.args else 'OR'
@@ -359,7 +361,7 @@ def getWorkflowExecutions():
     if keylist == None and functionNames == None and formats==None:
         response = Response(json.dumps(app.db.getWorkflowExecution(int(start),int(limit),usernames=usernames)))
     else: 
-        response = Response(json.dumps(app.db.getWorkflowExecutionByLineage(int(start),int(limit),usernames=usernames,associatedWith=functionNames,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues, mode=mode, formats=formats)))
+        response = Response(json.dumps(app.db.getWorkflowExecutionByLineage(int(start),int(limit),usernames=usernames,associatedWith=wasAssociatedWith, implementations=implementations, keylist=keylist,maxvalues=maxvalues,minvalues=minvalues, mode=mode, formats=formats)))
 
     response.headers['Content-type'] = 'application/json'    
     return response
