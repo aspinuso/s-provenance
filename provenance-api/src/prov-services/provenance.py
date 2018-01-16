@@ -2066,7 +2066,7 @@ class ProvenanceStore(object):
         
 
     def getWorkflowExecutionByLineage(self, start, limit, usernames, associatedWith, implementations, keylist, maxvalues, minvalues, mode = 'OR', formats = None):
-        print('usernames: ', usernames, 'usernames: ', associatedWith, 'implementations': implementations,'keylist: ', keylist, 'maxvalues: ', maxvalues, 'minvalues: ', minvalues, 'mode: ', mode, 'format: ', formats)
+        print('usernames: ', usernames, 'usernames: ', associatedWith, 'implementations:', implementations,'keylist: ', keylist, 'maxvalues: ', maxvalues, 'minvalues: ', minvalues, 'mode: ', mode, 'format: ', formats)
         # lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         # workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
         aggregateResults=None
