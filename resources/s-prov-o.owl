@@ -86,45 +86,6 @@
     
 
 
-    <!-- http://www.w3.org/ns/prov-o#actedOnBehalfOf -->
-
-    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#actedOnBehalfOf">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Component"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.w3.org/ns/prov-o#hadMember -->
-
-    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#hadMember">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StateCollection"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#DataGranule"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.w3.org/ns/prov-o#wasAttributedTo -->
-
-    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#wasAttributedTo">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Component"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionBundle"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionBundle"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.w3.org/ns/prov-o#wasDerivedFrom -->
-
-    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#wasDerivedFrom">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
-    </owl:ObjectProperty>
-    
-
-
     <!-- http://www.w3.org/ns/prov-o#wasInfluencedBy -->
 
     <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#wasInfluencedBy"/>
@@ -557,7 +518,7 @@
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#wasChangedWith">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentParameter"/>
+        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentParameters"/>
         <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Implementation"/>
         <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#SystemProcess"/>
         <rdfs:label xml:lang="en">wasChangedWith</rdfs:label>
@@ -661,7 +622,7 @@
 
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Change">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#InstantaneousEvent"/>
-        <rdfs:comment>An instance of s-prov:Change provides additional descriptions about the binary prov:wasChangedWith relation from an changed s-prov:ComponentInstance to the new prov:Entity that chaged the instance For example, :filter_Instance s-prov:wasChangedWith :new_parameters; prov:qualifiedChange [ a s-prov:Change; s-prov:ComponentParameter :new_parameters; :foo :bar ].</rdfs:comment>
+        <rdfs:comment>An instance of s-prov:Change provides additional descriptions about the binary prov:wasChangedWith relation from an changed s-prov:ComponentInstance to the new prov:Entity that chaged the instance For example, :filter_Instance s-prov:wasChangedWith :new_parameters; prov:qualifiedChange [ a s-prov:Change; s-prov:ComponentParameters :new_parameters; :foo :bar ].</rdfs:comment>
         <rdfs:label>Change</rdfs:label>
     </owl:Class>
     
@@ -688,9 +649,9 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentParameter -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentParameters -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentParameter">
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentParameters">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
         <rdfs:label>ComponentParameters</rdfs:label>
         <prov:definition>Each \emph{ComponentInstance} and therefore their \emph{Invocations} are parametrised. Parameters&apos; vaues gets assigned at the time of the configuration of the workflow execution and may change at runtime.</prov:definition>
@@ -802,11 +763,11 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionParameters -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionInputs -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionParameters">
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionInputs">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Collection"/>
-        <rdfs:label>WFExecutionInput</rdfs:label>
+        <rdfs:label>WFExecutionInputs</rdfs:label>
         <prov-o:definition>The Collection of entities used for the general parametrisation of a WFExecution. The Collection can contain or refer to entities of different kinds; eg. data and configuration files, archive files containing the workflow implementation scripts, references to other workflow executions etc. The latter can indicate the exploitation of information produced by other workflows&apos; runs, which indicates inter-workflow exchange.</prov-o:definition>
     </owl:Class>
 </rdf:RDF>
