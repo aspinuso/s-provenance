@@ -239,6 +239,7 @@
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#hadInformer">
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#FlowDerivation"/>
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StateDerivation"/>
+        <rdfs:range rdf:resource="http://purl.dataone.org/provone/2015/01/15/ontology#Execution"/>
         <rdfs:label>hadInformer</rdfs:label>
         <prov:definition>Indicates the invocation that informed the activity involved in the current derivation</prov:definition>
     </owl:ObjectProperty>
