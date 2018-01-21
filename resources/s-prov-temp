@@ -1,0 +1,53 @@
+document
+  prefix provone <http://purl.dataone.org/provone/2015/01/15/ontology#>
+  prefix foaf <http://xmlns.com/foaf/0.1/>
+  prefix tmpl <http://openprovenance.org/tmpl#>
+  prefix s-prov <http://s-prov/ns/#>
+  prefix vcard <http://www.w3.org/2006/vcard/ns#>
+  prefix ex <http://www.ex.org/>
+  prefix pre_0 <http://www.w3.org/2001/XMLSchema>
+  prefix var <http://openprovenance.org/var#>
+  prefix dcterms <http://purl.org/dc/terms/>
+  prefix vargen <http://openprovenance.org/vargen#>
+  
+  agent(var:user, [prov:type="prov:Person", vcard:uid="var:name"])
+  bundle s-prov:WFExecutionBundle
+    prefix var <http://openprovenance.org/var#>
+    prefix tmpl <http://openprovenance.org/tmpl#>
+    prefix provone <http://vcvcomputing.com/provone/provone.owl#>
+    prefix s-prov <http://s-prov/ns/#>
+    
+    entity(var:WFExecutionInputs, [prov:type="prov:Collection", prov:type="s-prov:WFExecutionInputs"])
+    entity(var:StateData, [s-prov:format="var:e", prov:type='s-prov:Data', prov:location="var:x", tmpl:linked="var:DataGranule1", s-prov:lookupname='var:ln', s-prov:size="var:f"])
+    activity(var:WFExecution, 1970-01-01T01:00:00+01:00, 1970-01-01T01:01:00+01:00, [s-prov:type="s-prov:WFExecution", s-prov:description="var:e", tmpl:linked="var:user", s-prov:name="var:d", s-prov:tags="var:b", s-prov:runId="var:c", s-prov:mapping="var:a"])
+    activity(var:Invocation, 1970-01-01T01:00:00+01:00, 1970-01-01T01:01:00+01:00, [prov:type="s-prov:Invocation"])
+    wasDerivedFrom(var:DataOut, var:StateData, -, -, -)
+    wasDerivedFrom(var:StateData, var:DataIn, -, -, -)
+    wasDerivedFrom(var:DataOut, var:DataIn, -, -, -)
+    wasGeneratedBy(var:DataOut, var:Invocation, -)
+    wasGeneratedBy(var:StateData, var:Invocation, -)
+    hadMember(var:StateCollection, var:StateData)
+    hadMember(var:StateData, var:DataGranule1)
+    hadMember(var:DataOut, var:DataGranule2)
+    wasAssociatedWith(var:WFExecution, var:WFExecutionBun, -)
+    wasAssociatedWith(var:Invocation, var:ComponentInstance, var:Implementation)
+    wasAssociatedWith(var:WFExecution, var:Component, var:Implementation)
+    wasAssociatedWith(var:WFExecution, var:user, var:Workflow)
+    used(var:WFExecution, var:WFExecutionInputs, -)
+    used(var:Invocation, var:ComponentParameters, -)
+    used(var:Invocation, var:DataIn, -)
+    actedOnBehalfOf(var:ComponentInstance, var:Component, -)
+    wasAttributedTo(var:Implementation, var:Component)
+    wasAttributedTo(var:StateCollection, var:ComponentInstance)
+    agent(var:ComponentInstance, [prov:type='s-prov:ComponentInstance', prov:location="var:name", tmpl:linked="var:Invocation", tmpl:linked="var:StateCollection", s-prov:pid="var:p", s-prov:mapping="var:o"])
+    agent(var:Component, [prov:type="s-prov:Component", tmpl:linked="var:ComponentInstance", tmpl:linked="var:ComponentParameters", s-prov:functionSource="var:fvalue"])
+    entity(var:Workflow, [prov:type="provone:Workflow"])
+    entity(var:ComponentParameters, [prov:type='s-prov:ComponentParameters', var:par_="var:n"])
+    entity(var:DataGranule2, [var:term_="var:l"])
+    entity(var:DataIn, [prov:type='s-prov:Data', provone:port="var:pt"])
+    entity(var:DataGranule1, [var:term_="var:n"])
+    entity(var:DataOut, [prov:type='s-prov:Data', prov:location="var:g", tmpl:linked="var:DataGranule2", s-prov:size="var:i", s-prov:format="var:h"])
+    entity(var:Implementation, [s-prov:functionName='var:fname', s-prov:type='var:stype', prov:type='s-prov:Implementation', s-prov:source="var:source"])
+    entity(var:StateCollection, [prov:type='prov:Collection', prov:type='s-prov:StateCollection', tmpl:linked="var:StateData"])
+  endBundle
+endDocument
