@@ -12,8 +12,7 @@
      xmlns:vcard="http://www.w3.org/2006/vcard/ns#"
      xmlns:prov="http://www.w3.org/ns/prov#">
     <owl:Ontology rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl">
-        <owl:imports rdf:resource="http://purl.org/provone/ontology"/>
-        <owl:imports rdf:resource="http://www.w3.org/ns/prov-o-20130430"/>
+        <owl:imports rdf:resource="http://purl.dataone.org/provone/2015/01/15/ontology#"/>
     </owl:Ontology>
     
 
@@ -78,17 +77,33 @@
     
 
 
+    <!-- http://www.w3.org/ns/prov#influenced -->
+
+    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov#influenced"/>
+    
+
+
     <!-- http://www.w3.org/ns/prov#qualifiedInfluence -->
 
-    <rdf:Description rdf:about="http://www.w3.org/ns/prov#qualifiedInfluence">
+    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov#qualifiedInfluence">
         <rdfs:comment>If this ComponentIntance prov:wasChangedWith Entity :e, then it can qualify the Change using prov:qualifiedChange [ a prov:Change;  prov:entity :ag; :foo :bar ].</rdfs:comment>
-    </rdf:Description>
+    </owl:ObjectProperty>
     
 
 
     <!-- http://www.w3.org/ns/prov-o#wasInfluencedBy -->
 
     <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#wasInfluencedBy"/>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#atResource -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#atResource">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#SystemProcess"/>
+        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#CResource"/>
+    </owl:ObjectProperty>
     
 
 
@@ -147,7 +162,7 @@
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
             </owl:Restriction>
         </rdfs:range>
-        <rdfs:comment>The URL that states the first known destination of a copy of the data</rdfs:comment>
+        <prov:definition>The URL that states the first known destination of a copy of the data. Useful in combination of the immediate-access property to trigger and record runtime transfer operations.</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -298,7 +313,6 @@
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#mapping">
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecution"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionBundle"/>
         <rdfs:range>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
@@ -323,7 +337,7 @@
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#modules -->
 
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#modules">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionBundle"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#CResource"/>
         <rdfs:label xml:lang="en">modules</rdfs:label>
         <prov:definition xml:lang="en">Collection of software modules used within the current execution; eg. python modules with their version indication, &quot;matplotlib==1.4.3&quot;</prov:definition>
     </owl:ObjectProperty>
@@ -360,7 +374,6 @@
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/prov#qualifiedInfluence"/>
         <owl:inverseOf rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#qualifiedChangeOf"/>
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
         <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Change"/>
         <rdfs:comment>If this ComponentInstance prov:wasChangedWith Entity :en, then it can qualify the Chenge using prov:qualifiedChange [ a prov:Change;  s-prov:Entity :en; :foo :bar ].</rdfs:comment>
         <rdfs:label>qualifiedChange</rdfs:label>
@@ -601,11 +614,51 @@
     
 
 
+    <!-- http://purl.dataone.org/provone/2015/01/15/ontology#Data -->
+
+    <rdf:Description rdf:about="http://purl.dataone.org/provone/2015/01/15/ontology#Data">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Collection"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://www.w3.org/ns/prov#Bundle -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#Bundle"/>
+    
+
+
     <!-- http://www.w3.org/ns/prov#Collection -->
 
-    <rdf:Description rdf:about="http://www.w3.org/ns/prov#Collection">
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#Collection">
         <owl:equivalentClass rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StreamOut"/>
-    </rdf:Description>
+    </owl:Class>
+    
+
+
+    <!-- http://www.w3.org/ns/prov#Derivation -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#Derivation"/>
+    
+
+
+    <!-- http://www.w3.org/ns/prov#InstantaneousEvent -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#InstantaneousEvent"/>
+    
+
+
+    <!-- http://www.w3.org/ns/prov#Location -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#Location"/>
+    
+
+
+    <!-- http://www.w3.org/ns/prov#SoftwareAgent -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#SoftwareAgent">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Agent"/>
+    </owl:Class>
     
 
 
@@ -613,7 +666,7 @@
 
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#CResource">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Location"/>
-        <prov:definition>The computational Resource where the workflow is submitted and executed</prov:definition>
+        <prov:definition>The computational Resource where the workflow or its programs are submitted and executed</prov:definition>
     </owl:Class>
     
 
@@ -663,8 +716,9 @@
 
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Collection"/>
+        <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
         <rdfs:label>Data</rdfs:label>
-        <prov:definition>Any data produced or used by an \emph{Invocation}.  Each entity gets time-stamped it can refer to  the \emph{url} of its location. We redefine the ProvONE Data entity as being a subclass of a Collection. S-PROV treats data entities as characterised by a generic container containing one or more data granules. This guarantees separation between a baseline of generic information, such as location, format, size and annotations, and domain specific metadata which are instead attributed to the granules.</prov:definition>
+        <prov:definition>Any data produced or used by an Invocation. Each entity gets time-stamped it can refer to the url of its location. We extend the provone:Data considering also the possibility of having the data itself as a Collection. S-PROV treats data entities as characterised by a generic container containing one or more data granules. This guarantees separation be- tween a baseline of generic information, such as location, format, size and annotations, and domain specific metadata, which are instead attributed to the data-granules.</prov:definition>
     </owl:Class>
     
 
@@ -672,9 +726,9 @@
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#DataGranule -->
 
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#DataGranule">
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:subClassOf rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
         <rdfs:label>DataGranule</rdfs:label>
-        <prov:definition>A \emph{DataGranule} is part of a \emph{Data} collection. It contains contextual metadata related to the specific research topic and domain. Metadata can be associated with data formats and community schemas, as well as user-defined. The latter fosters the adoption of provenance for the rapid cataloguing and exploration of experimental properties that are extracted from intermediate results.</prov:definition>
+        <prov:definition>A DataGranule is part of a Data collection. It contains contextual metadata related to the specific research topic and domain. Metadata can be associated with data formats and community schemas, as well as user-defined. The latter fosters the adoption of provenance for the rapid cataloguing and exploration of experimental properties that are ex- tracted from intermediate results.</prov:definition>
     </owl:Class>
     
 
@@ -691,8 +745,9 @@
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Implementation -->
 
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Implementation">
+        <rdfs:subClassOf rdf:resource="http://purl.dataone.org/provone/2015/01/15/ontology#Program"/>
         <rdfs:label>Implementation</rdfs:label>
-        <prov:definition>A \emp{provone:Process} representing an atomic operation constituting a workflow component. It is described by its source code or by a link or to an external versioning system. If applicable, it also indicates information about its type in the context of the native programming language. This is a subclass of \emph{provone:Process} therefore it has input and outport ports and allows for the traceability of its evolution.</prov:definition>
+        <prov:definition>A provone:Program representing an atomic operation con- stituting a workflow component. It is described by its source code or by a link or to an external versioning system. If ap- plicable, it also indicates information about its type in the context of the native programming language. This is a sub- class of provone:Program therefore it has input and outport ports and allows for the traceability of its evolution.</prov:definition>
     </owl:Class>
     
 
@@ -700,8 +755,9 @@
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation -->
 
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation">
+        <rdfs:subClassOf rdf:resource="http://purl.dataone.org/provone/2015/01/15/ontology#Execution"/>
         <rdfs:label>Invocation</rdfs:label>
-        <prov-o:definition>The \emph{Activity} performed by a \emph{ComponentInstance} over incoming data.  Each \emph{Invocation} can produce more \emph{Data}. It uses a collection of  \emph{ComponentParameters}.</prov-o:definition>
+        <prov-o:definition>The prov:Activity performed by a ComponentInstance over incoming data. Each Invocation can produce more Data. It uses a collection of ComponentParameters.</prov-o:definition>
     </owl:Class>
     
 
@@ -739,7 +795,17 @@
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#SystemProcess">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Location"/>
         <rdfs:label>SystemProcess</rdfs:label>
-        <prov:definition>The location of a \emph{ComponentInstance} in a runtime environment. It describes information about the computational worker node of a cluster and the operative system process pid. Multiple \emph{ComponentInstances} can be allocated to the same worker and also to the same process.</prov:definition>
+        <prov:definition>The location of a ComponentInstance in a runtime environment. It describes information about the computational worker node of a cluster and the operating system process pid. Multiple ComponentInstances can be allocated to the same worker and also to the same process.</prov:definition>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFDataTraceBundle -->
+
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFDataTraceBundle">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Bundle"/>
+        <rdfs:label>WFDataTraceBundle</rdfs:label>
+        <prov:definition>This prov:Bundle represents the view associated to all the entities, agents, activities involved in the generation of a specific Data element and their relationships.</prov:definition>
     </owl:Class>
     
 
@@ -747,6 +813,7 @@
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecution -->
 
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecution">
+        <rdfs:subClassOf rdf:resource="http://purl.dataone.org/provone/2015/01/15/ontology#Execution"/>
         <rdfs:label>WFExecution</rdfs:label>
         <prov-o:definition>The \emph{prov:Activity} representing the execution of a workflow run. From this activity qualified associations to agents such as users and logical components are established. The class links also to details about the location where the workflow is deployed (\emph{CResource}).</prov-o:definition>
     </owl:Class>
