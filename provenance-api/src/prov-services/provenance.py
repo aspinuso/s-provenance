@@ -52,6 +52,7 @@ def toW3Cprov(ling,bundl,format='xml'):
         g = ProvDocument()
         vc = Namespace("s-prov", "http://s-prov/ns/#")  # namespaces do not need to be explicitly added to a document
         knmi = Namespace("knmi", "http://knmi.nl/ns/#")
+        prov = Namespace("prov", "http://www.w3.org/ns/prov#")
         provone = Namespace("provone", "http://vcvcomputing.com/provone/provone.owl#")
         con = Namespace("con", "http://verce.eu/control")
         g.add_namespace("dcterms", "http://purl.org/dc/terms/")
@@ -100,21 +101,21 @@ def toW3Cprov(ling,bundl,format='xml'):
                 dic={}
                 i=0
 
-                if 'source' in trace or 'subProcesses' in trace:
-                    wfp = bundle.entity(knmi["WF_"+trace["_id"]+"_"+str(i)], other_attributes={'prov:type':'provone:Workflow'})
-                    for y in trace['source']:
-                        dic={'prov:type': vc['Implementation'],
-                             's-prov:source':"github://",
-                             's-prov:type':trace['source'][y]['type'],
-                             's-prov:functionName':trace['source'][y]['functionName'] if 'functionName' in trace['source'][y] else None
-                             }
+                #if 'source' in trace or 'subProcesses' in trace:
+                #    wfp = bundle.entity(knmi["WF_"+trace["_id"]+"_"+str(i)], other_attributes={'prov:type':'provone:Workflow'})
+                #    for y in trace['source']:
+                #        dic={'prov:type': vc['Implementation'],
+                #             's-prov:source':"github://",
+                #             's-prov:type':trace['source'][y]['type'],
+                #             's-prov:functionName':trace['source'][y]['functionName'] if 'functionName' in trace['source'][y] else None
+                #             }
 
-                        dic=clean_empty(dic)                                                             
-                        imp=bundle.entity(knmi["Imp_"+"_"+dic["s-prov:functionName"]], other_attributes=dic)
-                        bundle.wasAttributedTo(imp,knmi["Component_"+y+"_"+trace["_id"]])
-                        bundle.hadMember(wfp,imp)
-                        i=i+1
-                    bundle.wasAssociatedWith(WFE,wfp)
+                        #dic=clean_empty(dic)                                                             
+                        #imp=bundle.entity(knmi["Imp_"+"_"+dic["s-prov:functionName"]], other_attributes=dic)
+                        #bundle.wasAttributedTo(imp,knmi["Component_"+y+"_"+trace["_id"]])
+                        #bundle.hadMember(wfp,imp)
+                #        i=i+1
+                #    bundle.wasAssociatedWith(WFE,wfp)
                  
                 if 'input' in trace:
                     if type(trace['input'])!=list:
@@ -288,7 +289,9 @@ def toW3Cprov(ling,bundl,format='xml'):
                                 
                             
                                 if ':' in key:
+
                                     dic.update({key: val})
+
                                 else:
                                     dic.update({knmi[key]: val})
                         else:
@@ -296,12 +299,18 @@ def toW3Cprov(ling,bundl,format='xml'):
                     
                         dic.update({'prov:type':vc['DataGranule']})
                  
-                    #dic.update({"verce:parent_entity": vc["data_"+x["id"]]})
+                     
                     
                         e1=bundle.entity(knmi["DataGranule_"+x["id"]+"_"+str(i)], dic)
                     
+                    # add further semantics classes to the data    
+                        
+                        if 'prov:type' in y:
+                            print(g._namespaces)
+                            cla=g._namespaces[y['prov:type'].split(':')[0]]
+                            e1._attributes[prov['type']].add(cla[y['prov:type'].split(':')[1]])
                          
-                        bundle.hadMember(knmi["Data_"+x["id"]], knmi["DataGranule_"+x["id"]+"_"+str(i)])
+                        bundle.hadMember(knmi["Data_"+x["id"]], e1)
                     
                     i=i+1
 
