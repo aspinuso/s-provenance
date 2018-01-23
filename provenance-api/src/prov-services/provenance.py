@@ -306,7 +306,7 @@ def toW3Cprov(ling,bundl,format='xml'):
                     # add further semantics classes to the data    
                         
                         if 'prov:type' in y:
-                            print(g._namespaces)
+                            #print(g._namespaces)
                             cla=g._namespaces[y['prov:type'].split(':')[0]]
                             e1._attributes[prov['type']].add(cla[y['prov:type'].split(':')[1]])
                          
