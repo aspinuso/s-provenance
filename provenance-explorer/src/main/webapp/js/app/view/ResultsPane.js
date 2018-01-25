@@ -202,6 +202,8 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
    edgecol=colour.lightblue
    col = colour.red
   }
+
+
  
     if (data['s-prov:Data'].port=='_d4p_state')
     { //console.log(data['s-prov:Data'].port)
@@ -211,11 +213,8 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
    
    
   }
-  //var node = graph.addNode(data["id"],{label:data["_id"].substring(0,5),'color':col, 'shape':'dot', 'radius':19,'alpha':1,mass:2})
-  //node.runId=data["runId"]
-  //_d4p_state
+ 
   
- // if (!data.streams.port or data.streams.port=='')
   
  
   var nodea = graph.addNode(data['s-prov:Data']["@id"], {
@@ -231,6 +230,14 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
   if (parent) {
     
   var edgecolour
+  // check uncertainties tag
+  if (data["up:assertionType"] && (data["up:assertionType"]=="up:Incomplete"))
+  {
+   console.log(data["up:assertionType"])
+   edgecol=colour.lightgrey
+    
+  }
+  else
     if(nodea.data.data.runId!=parent.data.data.runId)
   {      
       deriv_run=nodea.data.data.runId
@@ -585,7 +592,7 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
     text: 'Refresh',
     handler: function() {
       this.up('form').getForm().reset();
-      workflowStore.getProxy().api.read = PROV_SERVICE_BASEURL + 'workflowexecutions?usernamesw=' + userSN;
+      workflowStore.getProxy().api.read = PROV_SERVICE_BASEURL + 'workflowexecutions?usernames=' + userSN;
       workflowStore.load();
     }
   }, {
@@ -1019,7 +1026,7 @@ Ext.define('CF.view.StreamValuesRangeSearch', {
        if (form.isValid()) {
         artifactStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + 'data?generatedBy=' + currentRun + 
+          url: PROV_SERVICE_BASEURL + 'data?wasGeneratedBy=' + currentRun + 
                                       qerystring+          
                                       "&mode="+mode,
 
@@ -1721,6 +1728,7 @@ Ext.define('CF.view.provenanceGraphsViewer', {
         '<li><span style="background:'+colour.lightblue+'"></span>stateful</li>'+
         '<li><span style="background:'+colour.red+'"></span>cross-run</li>'+
         '<li><span style="background:'+colour.orange+'"></span>file</li>'+
+        '<li><span style="background:'+colour.lightgrey+'"></span>Incomplete</li>'+
         '</ul></div></div><br/><center>'+
         '<div style="width:100%" height="700"><canvas id="viewportprov" width="1200" height="500"></canvas></div></center>'
   }],
