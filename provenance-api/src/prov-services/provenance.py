@@ -55,8 +55,10 @@ def toW3Cprov(ling,bundl,format='xml'):
         prov = Namespace("prov", "http://www.w3.org/ns/prov#")
         provone = Namespace("provone", "http://vcvcomputing.com/provone/provone.owl#")
         con = Namespace("con", "http://verce.eu/control")
+        var = Namespace("var", "http://scheama.org#")
         g.add_namespace("dcterms", "http://purl.org/dc/terms/")
         g.add_namespace("vcard", "http://www.w3.org/2006/vcard/ns")
+
         
         'specify bundle'
         bundle=None
@@ -178,7 +180,21 @@ def toW3Cprov(ling,bundl,format='xml'):
             
             
             if "ComponentInstance_"+trace["instanceId"] not in entities:
-                ag=bundle.agent(knmi["ComponentInstance_"+trace["instanceId"]], other_attributes={"prov:type":vc["ComponentInstance"],vc["worker"]:trace['worker'],vc["pid"]:trace['pid']})
+                #print(str(y[trace['prov_cluster'].split(':')[0]]))
+                provtype=""
+
+                #check whether qualified
+                try:
+                    cla=g._namespaces[str(trace['prov_cluster'].split(':')[0])]
+                    provtype=cla[trace['prov_cluster'].split(':')[1]]
+                except:
+                    provtype=var[str(trace['prov_cluster'])]
+
+
+
+                  
+                        
+                ag=bundle.agent(knmi["ComponentInstance_"+trace["instanceId"]], other_attributes={"prov:type":vc["ComponentInstance"],"prov:type":provtype,vc["worker"]:trace['worker'],vc["pid"]:trace['pid']})
                 entities["ComponentInstance_"+trace["instanceId"]]=1
                 bundle.actedOnBehalfOf(knmi["ComponentInstance_"+trace["instanceId"]],knmi["Component_"+trace["actedOnBehalfOf"]+"_"+trace["runId"]])
                 
