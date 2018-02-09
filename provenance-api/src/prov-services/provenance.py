@@ -2217,7 +2217,8 @@ class ProvenanceStore(object):
                 "system_id":1,
                 "description":1,
                 "workflowName":1,
-                "username":1  
+                "username":1,
+                "eventDate":1  
             }
         ).sort("startTime",direction=-1).skip(start).limit(limit)
 
@@ -2248,7 +2249,8 @@ class ProvenanceStore(object):
                 "system_id":1,
                 "description":1,
                 "workflowName":1,
-                "username":1  
+                "username":1,
+                "eventDate":1  
             }
         ).sort("startTime",direction=-1).skip(start).limit(limit)
 
