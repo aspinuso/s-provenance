@@ -1191,7 +1191,7 @@ Ext.define('CF.view.FilterOnAncestorValuesRange', {
       if (form.isValid()) {
         FilterAjax.request({
           method: 'POST',
-          url: PROV_SERVICE_BASEURL + 'entities/filterOnAncestorsValuesRange',
+          url: PROV_SERVICE_BASEURL + 'data/filterOnAncestors',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },

@@ -30,9 +30,7 @@
 
     <!-- http://purl.dataone.org/provone/2015/01/15/ontology#hadInPort -->
 
-    <owl:AnnotationProperty rdf:about="http://purl.dataone.org/provone/2015/01/15/ontology#hadInPort">
-        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov#Derivation"/>
-    </owl:AnnotationProperty>
+    <owl:AnnotationProperty rdf:about="http://purl.dataone.org/provone/2015/01/15/ontology#hadInPort"/>
     
 
 
@@ -58,6 +56,14 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
+    
+
+
+    <!-- http://purl.dataone.org/provone/2015/01/15/ontology#hadInPort -->
+
+    <rdf:Description rdf:about="http://purl.dataone.org/provone/2015/01/15/ontology#hadInPort">
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov#Derivation"/>
+    </rdf:Description>
     
 
 
@@ -372,7 +378,10 @@
     <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#provCluster -->
 
     <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#provCluster">
-        <rdfs:comment xml:lang="en">Name of the Cluster to which the Component belongs for runtime provenance analysis</rdfs:comment>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Component"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:comment xml:lang="en">Name of the provenance cluster to which the Component belongs.
+It refers to concepts belonging to external ontologies or defined by the user. A cluster can be associated to a \emph{ProvenanceSensor} for runtime provenance analysis, as we introduced in Section \ref{sensors}. It correspond to the \emph{prov:type} attribute.</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -623,6 +632,14 @@
     
 
 
+    <!-- http://purl.dataone.org/provone/2015/01/15/ontology#Program -->
+
+    <rdf:Description rdf:about="http://purl.dataone.org/provone/2015/01/15/ontology#Program">
+        <owl:equivalentClass rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Implementation"/>
+    </rdf:Description>
+    
+
+
     <!-- http://www.w3.org/ns/prov#Bundle -->
 
     <owl:Class rdf:about="http://www.w3.org/ns/prov#Bundle"/>
@@ -728,7 +745,7 @@
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#DataGranule">
         <rdfs:subClassOf rdf:resource="http://purl.dataone.org/provone/2015/01/15/ontology#Data"/>
         <rdfs:label>DataGranule</rdfs:label>
-        <prov:definition>A DataGranule is part of a Data collection. It contains contextual metadata related to the specific research topic and domain. Metadata can be associated with data formats and community schemas, as well as user-defined. The latter fosters the adoption of provenance for the rapid cataloguing and exploration of experimental properties that are ex- tracted from intermediate results.</prov:definition>
+        <prov:definition>We extend the prov:Collection considering as such each output produced or used by an Invocation. S-PROV treats data entities as characterised by a generic container of one or more DataGranules. This guarantees separation between a baseline of generic information, such as location, format, size and annotations, and domain specific metadata, which are instead attributed to the granules.</prov:definition>
     </owl:Class>
     
 
@@ -785,7 +802,7 @@
 
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#StreamOut">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
-        <prov:definition>Equivalent to a Collection. It is used to characterised a set of \emph{Data} elements as being produced in output by a streaming operator.</prov:definition>
+        <prov:definition>A \emph{prov:Collection} used to characterise a set of \emph{Data} elements written by a streaming operator to a \emph{provone:Port}, that have the same derivations.</prov:definition>
     </owl:Class>
     
 
@@ -815,7 +832,7 @@
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#WFExecution">
         <rdfs:subClassOf rdf:resource="http://purl.dataone.org/provone/2015/01/15/ontology#Execution"/>
         <rdfs:label>WFExecution</rdfs:label>
-        <prov:definition>The \emph{prov:Activity} representing the execution of a workflow run. From this activity qualified associations to agents such as users and logical components are established. The class links also to details about the location where the workflow is deployed (\emph{CResource}).</prov:definition>
+        <prov:definition>A \emph{provone:Execution} representing the execution of a workflow run. From this activity qualified associations to agents such as users and logical components are established. The class links also to high-level details about the locations where the workflow is deployed (\emph{CResource}).</prov:definition>
     </owl:Class>
     
 

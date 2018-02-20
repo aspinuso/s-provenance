@@ -139,12 +139,22 @@ def summariesHandler():
         response.headers['Content-type'] = 'application/json'    
         return response
 
+import time
 @app.route("/wasDerivedFrom/<id>")
 def wasDerivedFrom(id):
     level = request.args['level']
     if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET wasDerivedFrom - "+id+" PID:"+str(os.getpid()));
+    app.db.count=0
+
+    
+
+    start_time = time.time()
+
     result=app.db.getTrace(id,int(level))
-    result=app.db.addLDContext(result)
+    #elapsed_time = time.time() - start_time
+    #print(app.db.count)
+    #print("ETIME "+str(elapsed_time))
+    result=app.db.addLDContext(result[0])
     response = Response(json.dumps(result))
     response.headers['Content-type'] = 'application/json'       
     return response
@@ -160,8 +170,8 @@ def derivedData(id):
 
 
 # the <method> can indicate value-range, hasAncherstorWith or the id of the resource
-@app.route("/entities/<method>", methods=['GET','POST'])
-def getEntitiesByMethod(method):
+@app.route("/data/filterOnAncestor", methods=['GET','POST'])
+def getEntitiesByMethod():
         keylist = None
         vluelist= None
         mxvaluelist= None
@@ -206,19 +216,19 @@ def getEntitiesByMethod(method):
     
         # BEGIN kept for backwards compatibility
         
-        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET wasGeneratedBy - "+" PID:"+str(os.getpid()));
+        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET filterOnAncestor PID:"+str(os.getpid()));
         ' test http://localhost:8082/entities/hasAnchestor?dataId=lxa88-9865-09df5b44-8f1c-11e3-9f3a-bcaec52d20a2&keys=magnitude&values=3.49&_dc=&page=1&start=0&limit=300'        
         
        # if (self.path=="hasAncestorWith"):
         #    response = Response(json.dumps(self.provenanceStore.hasAncestorWith(dataid,keylist,valuelist)))
         # END kept for backwards compatibility
         
-        if (method=="hasAncestorWith"):
-            response = Response(json.dumps(app.db.hasAncestorWith(dataid,keylist,valuelist)))
-        elif (method=="filterOnAncestorsValuesRange"):
-            response = Response(json.dumps(app.db.filterOnAncestorsValuesRange(idlist,keylist,mnvaluelist,mxvaluelist)))
-        else:
-            response = Response(json.dumps(app.db.getEntitiesBy(method,keylist,mxvaluelist,mnvaluelist,vluelist,**request.args)))
+        #if (method=="hasAncestorWith"):
+        #    response = Response(json.dumps(app.db.hasAncestorWith(dataid,keylist,valuelist)))
+        #elif (method=="filterOnAncestor"):
+        response = Response(json.dumps(app.db.filterOnAncestorsValuesRange(idlist,keylist,mnvaluelist,mxvaluelist)))
+        #else:
+        #response = Response(json.dumps(app.db.getEntitiesBy(method,keylist,mxvaluelist,mnvaluelist,vluelist,**request.args)))
         response.headers['Content-type'] = 'application/json'       
         return response
     
@@ -263,20 +273,7 @@ def exportDataProvenance(id):
         return response 
 
 
-' domain specific methods '
-'VERCE'
-
-@app.route("/solver/<solver_id>")
-def getSolver(solver_id):
-    userId = request.args['userId'] if 'userId' in request.args else None
-    response = Response(json.dumps(app.db.getSolverConf(solver_id,userId=userId)))
-    response.headers['Content-type'] = 'application/json'
-    if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET VERCE method for solver parameters  - "+" PID:"+str(os.getpid()));
-    return response   
-
-
-' new methods: '
-
+ 
 # Thomas
 # Insert sequences of provenance documents, these can be bundles or lineage. The documents can be in JSON or JSON-LD. Format adaptation for storage purposes is handled by the acquisition function.
 @app.route("/workflowexecutions/insert", methods=['POST'])
@@ -357,8 +354,8 @@ def getWorkflowExecutions():
     response = Response()
     # chec functions above in root "/workflow/user/<user>""
 
-    # 
-    if keylist == None and implementations == None and formats==None:
+    
+    if keylist == None and implementations == None and formats==None and usernames!=None:
         response = Response(json.dumps(app.db.getWorkflowExecution(int(start),int(limit),usernames=usernames)))
     else: 
         response = Response(json.dumps(app.db.getWorkflowExecutionByLineage(int(start),int(limit),usernames=usernames, associatedWith=wasAssociatedWith, implementations=implementations, keylist=keylist,maxvalues=maxvalues,minvalues=minvalues, mode=mode, formats=formats)))
@@ -435,8 +432,12 @@ def getData():
         limit = request.args['limit'] 
         start = request.args['start']
         if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET data collection - PID:"+str(os.getpid()));
+        #run
         genby = request.args['wasGeneratedBy'] if 'wasGeneratedBy' in request.args else None
+        #component
         attrTo = request.args['wasAttributedTo'] if 'wasAttributedTo' in request.args else None
+        #implementation
+        implementations = request.args['implementations'] if 'implementations' in request.args else None
         keylist = csv.reader(StringIO.StringIO(request.args['terms'])).next() if 'terms' in request.args else None
         maxvalues = csv.reader(StringIO.StringIO(request.args['maxvalues'])).next() if 'maxvalues' in request.args else None
         minvalues = csv.reader(StringIO.StringIO(request.args['minvalues'])).next() if 'minvalues' in request.args else None
@@ -444,7 +445,7 @@ def getData():
         mode = request.args['mode'] if 'mode' in request.args else 'OR'
         id = request.args['id'] if 'id' in request.args else None
         
-        response = Response(json.dumps(app.db.getData(int(start),int(limit),genBy=genby,attrTo=attrTo,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues,id=id,format=format,mode=mode)))
+        response = Response(json.dumps(app.db.getData(int(start),int(limit),impl=implementations,genBy=genby,attrTo=attrTo,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues,id=id,format=format,mode=mode)))
 
         response.headers['Content-type'] = 'application/json'
 
