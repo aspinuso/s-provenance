@@ -24,7 +24,7 @@ The S-ProvFlow system offers a visual tool (Monitoring and Validation Visualiser
 #### The Bulk Dependencies Visualiser (BDV)
 
 The BVD produces comprehensive views for a single execution of a scientific data-intensive task or involving many runs and users. It exploits an approach to visual-analytics of the information captured that combines radial diagrams, selective grouping and Edge Bundles technique. Views of the provenance repository are generated interactively for multiple levels of granularity and for different kinds of expertise and roles. It offers facilities to tune and organise the views. We consider two classes of usage, respectively addressing details of a single computational tasks or the interaction between more tasks and users, according to specific data properties.
-![alt tag](https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/radial_duo.png)
+![alt tag](https://raw.githubusercontent.com/aspinuso/s-provenance/master/resources/radial_duo.png)
 
 - S-ProvFlow manages provenance traces provided by data-intesive systems such has dispel4py and its integration within the WPS (Web Processing Services), implemented with the PyWPS framework, is currently ongoing (https://github.com/KNMI/wps_workflow). 
 
