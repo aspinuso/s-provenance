@@ -7,7 +7,7 @@ Provenance framework for storage and access of data-intensive streaming lineage.
 
 - A collection of services including a WEB-API (provenance-api) and a front-end GUI (provenance-explorer) allowing acquisition and exploration of provenance data which is produced at a run-time by a computational engine. Below a schematic representation of the architecture and interaction with external resources, followed by screenshots of the interactive tools.
 
-The API
+#### The API
 
 S-ProvFlow system exposes a RESTful web API which offers high-level services on top of the storage backend. The API methods are classified in provenance acquisition, monitoring, data discovery and traceability, comprehensive-summaries, and provenance export. This is the service layer on top of which all the above visualisation and exploration tools are built.
 
@@ -15,13 +15,13 @@ The API returns information in JSON and JSON-LD, which includes PROV and S-PROV 
 
 ![alt tag](https://raw.githubusercontent.com/aspinuso/s-provenance/master/resources/sprovflowpnf.png)
 
-Monitoring and Validation Visualiser (MVV)
+#### Monitoring and Validation Visualiser (MVV)
 
 The S-ProvFlow system offers a visual tool (Monitoring and Validation Visualiser- MVV) that allows different sorts of operations through the interactive access and manipulation of the provenance information. These include monitoring of the progress of the execution with runtime indication on the production of data and the occurrence of errors, dependency navigation, data discovery, data preview, download and selective staging.
 
 ![alt tag](https://raw.githubusercontent.com/aspinuso/s-provenance/master/resources/totalv.png)
 
-The Bulk Dependencies Visualiser (BDV)
+#### The Bulk Dependencies Visualiser (BDV)
 
 The BVD produces comprehensive views for a single execution of a scientific data-intensive task or involving many runs and users. It exploits an approach to visual-analytics of the information captured that combines radial diagrams, selective grouping and Edge Bundles technique. Views of the provenance repository are generated interactively for multiple levels of granularity and for different kinds of expertise and roles. It offers facilities to tune and organise the views. We consider two classes of usage, respectively addressing details of a single computational tasks or the interaction between more tasks and users, according to specific data properties.
 ![alt tag](https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/vis-prov006.png)
