@@ -41,7 +41,6 @@ s-prov viewer
 - Java proxy j2ep v1.0
  
 ### provenance-api
-- twisted >= v16.2.0 (deprecated)
 - gunicorn >= 19.7.1 (or any WSGI webserver)
 - flask >= v0.12.1
 - pymongo >= v3.4.0
