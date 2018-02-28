@@ -44,7 +44,7 @@ s-prov viewer
 - gunicorn >= 19.7.1 (or any WSGI webserver)
 - flask >= v0.12.1
 - pymongo >= v3.4.0
-- Mongodb >= v2.4.4
+- Mongodb >= v3.4.7
 
 ### Related Projects
 
