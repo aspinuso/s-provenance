@@ -23,8 +23,14 @@ The S-ProvFlow system offers a visual tool (Monitoring and Validation Visualiser
 
 #### The Bulk Dependencies Visualiser (BDV)
 
-The BVD produces comprehensive views for a single execution of a scientific data-intensive task or involving many runs and users. It exploits an approach to visual-analytics of the information captured that combines radial diagrams, selective grouping and Edge Bundles technique. Views of the provenance repository are generated interactively for multiple levels of granularity and for different kinds of expertise and roles. It offers facilities to tune and organise the views. We consider two classes of usage, respectively addressing details of a single computational tasks or the interaction between more tasks and users, according to specific data properties.
+The BVD produces comprehensive views for a single execution of a scientific data-intensive task or involving many runs and users. It exploits an approach to visual-analytics of the information captured that combines radial diagrams, selective grouping and Edge Bundles technique. Views of the provenance repository are generated interactively for multiple levels of granularity and for different kinds of expertise and roles. It offers facilities to tune and organise the views. 
+
+![alt tag](https://raw.githubusercontent.com/aspinuso/s-provenance/master/resources/bdv_combined_1_lscape1.png)
+We consider two classes of usage, respectively addressing details of a single computational tasks (above) or the interaction between user and their methods, tuneable on configurable metadata properties and values-ranges.
+
 ![alt tag](https://raw.githubusercontent.com/aspinuso/s-provenance/master/resources/radial_duo.png)
+
+#### Supporting Projects
 
 - S-ProvFlow manages provenance traces provided by data-intesive systems such has dispel4py and its integration within the WPS (Web Processing Services), implemented with the PyWPS framework, is currently ongoing (https://github.com/KNMI/wps_workflow). 
 
@@ -65,7 +71,7 @@ s-prov viewer
 - pymongo >= v3.4.0
 - Mongodb >= v3.4.7
 
-### Related Projects
+### Related Developments
 
 - WPS-WORKFLOW: https://github.com/KNMI/wps_workflow
 - dispel4py: https://github.com/dispel4py/dispel4py
