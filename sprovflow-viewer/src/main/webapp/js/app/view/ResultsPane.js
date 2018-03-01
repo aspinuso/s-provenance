@@ -231,9 +231,10 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
     
   var edgecolour
   // check uncertainties tag
+  console.log(data)
   if (data["up:assertionType"] && (data["up:assertionType"]=="up:Incomplete"))
   {
-   console.log(data["up:assertionType"])
+   
    edgecol=colour.lightgrey
     
   }
@@ -1106,7 +1107,7 @@ Ext.define('CF.view.FilterOnAncestor', {
         FilterAjax.request({
 
           method: 'POST',
-          url: PROV_SERVICE_BASEURL + 'data/filterOnAncestorsMeta',
+          url: PROV_SERVICE_BASEURL + 'data/filterOnAncestors',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
@@ -1191,7 +1192,7 @@ Ext.define('CF.view.FilterOnAncestorValuesRange', {
       if (form.isValid()) {
         FilterAjax.request({
           method: 'POST',
-          url: PROV_SERVICE_BASEURL + 'data/filterOnAncestors',
+          url: PROV_SERVICE_BASEURL + 'data/filterOnAncestor',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
@@ -1390,7 +1391,7 @@ var filterOnAncestorspane = Ext.create('Ext.window.Window', {
 
 
 var renderStream = function(value, p, record) {
-  
+  console.log(record)
   var location = "</br>"
   var contenthtm = ""
   var prov='<a href=\"'+PROV_SERVICE_BASEURL + '/data/'+record.data.ID+'/export?all=true\" target=\"_blank">Download Provenance</a><br/>'
@@ -1411,7 +1412,7 @@ var renderStream = function(value, p, record) {
     }
   }
 
-  console.log(contenthtm)
+ 
   return Ext.String.format(
     '<div class="search-item" style="border:2px solid; box-shadow: 10px 10px 5px #888888;"><br/>' +
     '<strong>Data ID: {0} </strong> <br/> <br/></strong><hr/>' +
@@ -1447,7 +1448,7 @@ var renderStream = function(value, p, record) {
 
 var renderStreamSingle = function(value, p, record) {
   var location = '</br>'
-   
+   console.log(record)
   if (record.data.location != "")
     location = '<a href="javascript:viewData(\'' + record.data.location + '\'.split(\',\'),true)">Open</a><br/>'
   console.log(record.data)

@@ -231,15 +231,15 @@ if (RAD_MODE=='data')
       								//console.log(d.source.name.instanceId+" "+size) 
       								if (size<100)
       									return 'rgb(255,0,0)'
-									if (size>=100 && size<500)
+									if (size>=100 && size<1000)
 										return '#FF8621'	
-									if (size>=500 && size<1000)
+									if (size>=1000 && size<3000)
 										return 'rgb(59,230,0)'	
-									if (size>=1000 && size<5000)
+									if (size>=3000 && size<10000)
 										return 'rgb(0,102,255)'	
-									if (size>=5000 && size<10000)
+									if (size>=10000 && size<15000)
 										return 'rgb(119,0,255)'	
-									if (size>=10000)
+									if (size>=20000)
 										return 'rgb(247,0,255)'	
 									});
   
@@ -712,7 +712,7 @@ function reload(par,sel){
   	
   	url=updateURLParameter(url,'minidx',document.forms[0].minidx.value)
   	url=updateURLParameter(url,'maxidx',document.forms[0].maxidx.value)
-  	url=updateURLParameter(url,'starttime',document.forms[0].starttime.value)
+  	url=updateURLParameter(url,'mintime',document.forms[0].starttime.value)
   	window.location=url
   
   	}
@@ -794,6 +794,7 @@ function reload(par,sel){
   <option value="actedOnBehalfOf">actedOnBehalfOf</option>
   <option value="runId">runId</option>
   <option value="name">name</option>
+  <option value="prov_cluster">prov_cluster</option>
 </select> 
 <br/><br/>
 <div class='legend-source'>Tags: <strong><%= request.getParameter("tags") %></strong></div>
