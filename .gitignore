@@ -2,3 +2,9 @@
 *.svn-base
 
 provenance-api/src/prov-services/helper.py
+
+sprovflow-viewer/.classpath
+
+sprovflow-viewer/.project
+
+sprovflow-viewer/bin/.project
