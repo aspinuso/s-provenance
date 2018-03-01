@@ -149,7 +149,7 @@ var svg = d3.select("body").append("svg")
 
 var link = svg.append("g").selectAll(".link"), node = svg.append("g").selectAll(".node");
 
-d3.json(PROV_SERVICE_BASEURL + "workflow/summaries?"+qstring, function(error, classes) {
+d3.json(PROV_SERVICE_BASEURL + "summaries/workflowexecution?"+qstring, function(error, classes) {
   if (error) throw error;
 
 if (RAD_MODE=='data') 
