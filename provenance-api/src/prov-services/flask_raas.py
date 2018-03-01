@@ -25,148 +25,6 @@ def bootstrap_app():
 def hello():
     return "This is the s-prov service"
 
-@app.route("/activities/<runId>")
-def activitiesHandler(runId):
-    limit = request.args['limit'] 
-    start = request.args['start']
-     
-    if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET activities - "+runId+" PID:"+str(os.getpid()));
-    response = Response()
-    response = Response(json.dumps(app.db.getActivities(runId,int(start),int(limit))))
-    response.headers['Content-type'] = 'application/json'    
-    return response
-
-
-@app.route("/workflow/")
-def workflowsHandler():
-         
-        response = Response(json.dumps(app.db.getWorkflows(**request.args)))
-        response.headers['Content-type'] = 'application/json'
-        return response
-    
-@app.route("/workflow/user/<user>")  
-def getUserRuns(user):
-        
-        keylist = None
-        vluelist= None
-        mxvaluelist= None
-        mnvaluelist= None
-       
-        limit = request.args['limit']
-        start = request.args['start']
-         
-         
-        try:
-            memory_file = StringIO.StringIO(request.args['keys']);
-            keylist = csv.reader(memory_file).next()
-            
-            memory_file = StringIO.StringIO(request.args['maxvalues']);
-            mxvaluelist = csv.reader(memory_file).next()
-            memory_file = StringIO.StringIO(request.args['minvalues']);
-            mnvaluelist = csv.reader(memory_file).next()
-            
-        except Exception, err:
-            None
-            
-         
-        if (keylist==None and 'activities' not in request.args):
-            
-            if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET getUserRuns - "+user+" PID:"+str(os.getpid()));
-            response = Response(json.dumps(app.db.getUserRuns(user,**request.args)))
-            response.headers['Content-type'] = 'application/json'
-            return response
-        else:
-             
-            if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET getUserRunsValuesRange - "+user+" PID:"+str(os.getpid()));
-            response = Response(json.dumps(app.db.getUserRunsValuesRange(user,keylist,mxvaluelist,mnvaluelist,**request.args)))
-            response.headers['Content-type'] = 'application/json'
-            return response
-        
-
-@app.route("/workflow/edit/<runid>", methods=['POST'])
-def workflowInfoHandlerEdit(runid):
-        
-        #if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":POST WorkflowRunInfo - "+runid);
-        print(request.form)
-        response = Response(json.dumps(app.db.editRun(runid,json.loads(str(request.form["doc"])))))
-        response.headers['Content-type'] = 'application/json'
-        return response
-    
-
-@app.route("/workflow/delete/<runid>", methods=['POST'])
-def workflowInfoHandlerDelete(runid):
-         
-        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":POST WorkflowRunInfo - "+runid+" PID:"+str(os.getpid()));
-        print(request.form)
-        response = Response(json.dumps(app.db.deleteRun(runid)))
-        response.headers['Content-type'] = 'application/json'
-        return response
-
-@app.route("/workflow/insert", methods=['POST'])
-def insertData():
-        payload = request.form["prov"] if "prov" in request.form else request.content.read()
-        payload = json.loads(str(payload))
-        response = Response(json.dumps(app.db.insertData(payload)))
-        response.headers['Content-type'] = 'application/json'
-        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":POST insertData  - "+" PID:"+str(os.getpid()));
-        return response  
-    
-    
-@app.route("/workflow/<runid>", methods=['GET', 'DELETE'])
-def workflowInfoHandler(runid):
-        response=None
-        if request.method == 'GET':
-            response = Response(json.dumps(app.db.getRunInfo(runid)))
-        
-        elif request.method == 'DELETE' :
-             if (len(runid)<=40):
-             
-                  response = Response(self.provenanceStore.deleteRun(runid))
-             else: 
-                  response = {'success':False, 'error':'Invalid Run Id'}
-            
-                  if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":DELETE WorkflowRunInfo - "+self.path+" PID:"+str(os.getpid()));
-        response.headers['Content-type'] = 'application/json'   
-        return response
-
-
-@app.route("/workflow/summaries")
-def summariesHandler():
-        
-        
-        #if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET getSummaries - level="+request.args['level']);
-        response = Response(json.dumps(app.db.getActivitiesSummaries(**request.args)))
-        response.headers['Content-type'] = 'application/json'    
-        return response
-
-import time
-@app.route("/wasDerivedFrom/<id>")
-def wasDerivedFrom(id):
-    level = request.args['level']
-    if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET wasDerivedFrom - "+id+" PID:"+str(os.getpid()));
-    app.db.count=0
-
-    
-
-    start_time = time.time()
-
-    result=app.db.getTrace(id,int(level))
-    #elapsed_time = time.time() - start_time
-    #print(app.db.count)
-    #print("ETIME "+str(elapsed_time))
-    result=app.db.addLDContext(result[0])
-    response = Response(json.dumps(result))
-    response.headers['Content-type'] = 'application/json'       
-    return response
-
-@app.route("/derivedData/<id>")    
-def derivedData(id):
-    level = request.args['level']
-    if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET derivedData - "+id+" PID:"+str(os.getpid()));
-    response = Response(json.dumps(app.db.getDerivedDataTrace(id,int(level))))
-    response.headers['Content-type'] = 'application/json'       
-    return response
-
 
 
 # the <method> can indicate value-range, hasAncherstorWith or the id of the resource
@@ -528,10 +386,33 @@ def summariesHandlerCollab():
         return response
 
 #Thomas
-#@app.route("data/<data_id>/derivedData")
+@app.route("/data/<data_id>/derivedData")
+def derivedData(data_id):
+    level = request.args['level']
+    if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET derivedData - "+data_id+" PID:"+str(os.getpid()));
+    response = Response(json.dumps(app.db.getDerivedDataTrace(data_id,int(level))))
+    response.headers['Content-type'] = 'application/json'       
+    return response
 
 #Thomas
-#@app.route("data/<data_id>/wasDerivedFrom")
+@app.route("/data/<data_id>/wasDerivedFrom")
+def wasDerivedFrom(data_id):
+    level = request.args['level']
+    if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET wasDerivedFrom - "+data_id+" PID:"+str(os.getpid()));
+    app.db.count=0
+
+    
+
+    #start_time = time.time()
+
+    result=app.db.getTrace(data_id,int(level))
+    #elapsed_time = time.time() - start_time
+    #print(app.db.count)
+    #print("ETIME "+str(elapsed_time))
+    result=app.db.addLDContext(result[0])
+    response = Response(json.dumps(result))
+    response.headers['Content-type'] = 'application/json'       
+    return response
 
 
 # EXPORT to PROV methods
