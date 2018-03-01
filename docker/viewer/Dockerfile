@@ -1,6 +1,6 @@
 FROM tomcat
 
-LABEL "TITLE"="Docker file for provenance-explorer"
+LABEL "TITLE"="Docker file for sprovflow-viewer"
 LABEL "MAINTAINER"="prov@knmi.nl"
 
 RUN apt-get update && apt-get install -y maven curl less vim 
@@ -14,11 +14,11 @@ RUN unzip master.zip
 RUN rm master.zip
 
 # compile viewer.war
-WORKDIR /prov/s-provenance-master/provenance-explorer
+WORKDIR /prov/s-provenance-master/sprovflow-viewer
 
 RUN mvn compile war:war
 		
-RUN cp ./target/provenance-explorer.war /usr/local/tomcat/webapps
+RUN cp ./target/sprovflow-viewer.war /usr/local/tomcat/webapps
 
 RUN cp /prov/s-provenance-master/resources/j2ep-1.0.war /usr/local/tomcat/webapps
 
@@ -30,6 +30,6 @@ RUN cp /prov/s-provenance-master/resources/j2ep-1.0.war /usr/local/tomcat/webapp
 ## RUN /usr/local/tomcat/bin/shutdown.sh
  
 
-# docker run -it -p 9000:8080 explorer
+# docker run -it -p 9000:8080 viewer
 
 

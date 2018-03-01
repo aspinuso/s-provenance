@@ -22,7 +22,7 @@ services:
         #command: ./docker_entry.sh #tail -f /prov/access.log
     explorer:
         build: .
-        container_name: "explorer"
+        container_name: "viewer"
         image: explorer:latest
         ports:
           - 9000:8082
