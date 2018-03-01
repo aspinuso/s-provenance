@@ -540,7 +540,7 @@ def _exportDataProvenance(data_id):
     return exportDataProvenance(data_id)
 
 
-@app.route("/workflowexecution/<run_id>/export")
+@app.route("/workflowexecutions/<run_id>/export")
 def _exportRunProvenance(run_id):
     return exportRunProvenance(run_id)
 

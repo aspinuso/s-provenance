@@ -270,7 +270,7 @@
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
             </owl:Restriction>
         </rdfs:range>
-        <rdfs:comment>Indicates whether an Agent such as a CompentInstace has changed any of the behaviour associated to its Component</rdfs:comment>
+        <rdfs:comment>Indicates whether an Agent such as a CompentInstace has changed any of the behaviour associated with its Component</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -370,7 +370,7 @@
             </owl:Restriction>
         </rdfs:range>
         <rdfs:label xml:lang="en">parameterName</rdfs:label>
-        <prov:definition xml:lang="en">Name associated to a Data element. Used to name a workflow parameter</prov:definition>
+        <prov:definition xml:lang="en">Name associated with a Data element. Used to name a workflow parameter</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -381,7 +381,7 @@
         <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Component"/>
         <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
         <rdfs:comment xml:lang="en">Name of the provenance cluster to which the Component belongs.
-It refers to concepts belonging to external ontologies or defined by the user. A cluster can be associated to a \emph{ProvenanceSensor} for runtime provenance analysis, as we introduced in Section \ref{sensors}. It correspond to the \emph{prov:type} attribute.</rdfs:comment>
+It refers to concepts belonging to external ontologies or defined by the user. A cluster can be associated with a \emph{ProvenanceSensor} for runtime provenance analysis, as we introduced in Section \ref{sensors}. It correspond to the \emph{prov:type} attribute.</rdfs:comment>
     </owl:ObjectProperty>
     
 
@@ -539,7 +539,7 @@ It refers to concepts belonging to external ontologies or defined by the user. A
             </owl:Restriction>
         </rdfs:range>
         <rdfs:label xml:lang="en">type</rdfs:label>
-        <prov:definition xml:lang="en">Runtime type of the \emph{Component}. Multiple types can indicate the computational class and the provenance pattern or metadata schema associated to the Component.</prov:definition>
+        <prov:definition xml:lang="en">Runtime type of the \emph{Component}. Multiple types can indicate the computational class and the provenance pattern or metadata schema associated with the Component.</prov:definition>
     </owl:ObjectProperty>
     
 
@@ -822,7 +822,7 @@ It refers to concepts belonging to external ontologies or defined by the user. A
     <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#WFDataTraceBundle">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Bundle"/>
         <rdfs:label>WFDataTraceBundle</rdfs:label>
-        <prov:definition>This prov:Bundle represents the view associated to all the entities, agents, activities involved in the generation of a specific Data element and their relationships.</prov:definition>
+        <prov:definition>This prov:Bundle represents the view associated with all the entities, agents, activities involved in the generation of a specific Data element and their relationships.</prov:definition>
     </owl:Class>
     
 
