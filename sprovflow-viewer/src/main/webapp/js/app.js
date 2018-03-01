@@ -16,7 +16,7 @@ Ext.Loader.setConfig({
     enabled: true,
     disableCaching: false,
     paths: {
-        GeoExt: "../../../provenance-explorer/js/src/GeoExt",
+        GeoExt: "../../../sprovflow-viewer/js/src/GeoExt",
         // for dev use
         Ext: "http://cdn.sencha.io/ext-4.1.0-gpl/src"
         // for build purpose
@@ -31,7 +31,7 @@ Ext.Loader.setConfig({
  */
 Ext.application({
     name: 'CF',
-    appFolder: '../../../provenance-explorer/js/app',
+    appFolder: '../../../sprovflow-viewer/js/app',
     controllers: [
          
     ],
