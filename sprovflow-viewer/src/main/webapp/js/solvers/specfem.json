@@ -1,0 +1,286 @@
+{
+ "fields" :[ {
+   			 "name":"NPROC",
+   			 "xtype" : "numberfield",
+   			 "desc": "number of MPI processors",
+   			 "req":"true"
+   			 },
+   			 {
+   			 "name": "NSTEP",
+   			 "xtype": "numberfield",
+   			 "desc" : "The number of time steps",
+   			 "req":"true"
+   			 },
+   			 {
+   			 "name": "DT",
+   			 "xtype": "numberfield",
+   			 "desc" : "The time increment in seconds",
+   			 "req":"true"
+   			 },
+   			 {
+   			 "name": "SIMULATION_TYPE",
+   			 "xtype": "numberfield",
+   			 "desc" : "forward or adjoint simulation, 1 = forward, 2 = adjoint, 3 = both simultaneously",
+   			 "req":"true"
+   			 },
+   			 {
+   			 "name":"NOISE_TOMOGRAPHY",
+   			 "xtype" : "numberfield",
+   			 "desc": "noise tomography simulation, 0 = earthquake simulation, 1/2/3 = three steps in noise simulation",
+   			 "value": 0,
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"SAVE_FORWARD",
+   			 "xtype" : "textfield",
+   			 "desc": "save forward wavefield",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"UTM_PROJECTION_ZONE",
+   			 "xtype" : "numberfield",
+   			 "desc": "set up the utm zone, if SUPPRESS_UTM_PROJECTION is false",
+   			 "value": 11,
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"SUPPRESS_UTM_PROJECTION",
+   			 "xtype" : "textfield",
+   			 "desc": "suppress the utm projection",
+   			 "value": "true",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"NOISE_TOMOGRAPHY",
+   			 "xtype" : "numberfield",
+   			 "desc": "number of nodes for 2D and 3D shape functions for hexahedral,we use either 8-node mesh elements (bricks) or 27-node elements.If you use our internal mesher, the only option is 8-node  bricks (27-node elements are not supported)",
+   			 "value": 8,
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"MODEL",
+   			 "xtype" : "textfield",
+   			 "desc": "setup the geological models, options are: default (model parameters described by mesh properties), 1d_prem, 1d_socal,1d_cascadia,aniso,external,gll,salton_trough,tomo",
+   			 "value": "default",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"APPROXIMATE_OCEAN_LOAD",
+   			 "xtype" : "textfield",
+   			 "desc": "see SPECFEM3D_CARTESIAN manual",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"TOPOGRAPHY",
+   			 "xtype" : "textfield",
+   			 "desc": "see SPECFEM3D_CARTESIAN manual",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"ATTENUATION",
+   			 "xtype" : "textfield",
+   			 "desc": "see SPECFEM3D_CARTESIAN manual",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"FULL_ATTENUATION_SOLID",
+   			 "xtype" : "textfield",
+   			 "desc": "see SPECFEM3D_CARTESIAN manual",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"ANISOTROPY",
+   			 "xtype" : "textfield",
+   			 "desc": "see SPECFEM3D_CARTESIAN manual",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"GRAVITY",
+   			 "xtype" : "textfield",
+   			 "desc": "see SPECFEM3D_CARTESIAN manual",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"TOMOGRAPHY_PATH",
+   			 "xtype" : "textfield",
+   			 "desc": "path for external tomographic models files",
+   			 "value": "",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"USE_OLSEN_ATTENUATION",
+   			 "xtype" : "textfield",
+   			 "desc": "use the Olsen attenuation, Q_mu = constant * v_s attenuation rule",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"PML_CONDITIONS",
+   			 "xtype" : "textfield",
+   			 "desc": "C-PML boundary conditions for a regional simulation",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"OLSEN_ATTENUATION_RATIO",
+   			 "xtype" : "numberfield",
+   			 "desc": "see SPECFEM3D_CARTESIAN manual",
+   			 "value": "0.05",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"PML_CONDITIONS",
+   			 "xtype" : "textfield",
+   			 "desc": "C-PML boundary conditions for a regional simulation",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"PML_INSTEAD_OF_FREE_SURFACE",
+   			 "xtype" : "textfield",
+   			 "desc": "see SPECFEM3D_CARTESIAN manual",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"f0_FOR_PML",
+   			 "xtype" : "numberfield",
+   			 "desc": "C-PML dominant frequency,see manual",
+   			 "value": "12.7",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"STACEY_ABSORBING_CONDITIONS",
+   			 "xtype" : "textfield",
+   			 "desc": "Stacey absorbing boundary conditions for a regional simulation",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"STACEY_INSTEAD_OF_FREE_SURFACE",
+   			 "xtype" : "textfield",
+   			 "desc": "Stacey absorbing top surface (defined in mesh as 'free_surface_file')",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"CREATE_SHAKEMAP",
+   			 "xtype" : "textfield",
+   			 "desc": "save shakemap files",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"MOVIE_SURFACE",
+   			 "xtype" : "textfield",
+   			 "desc":  "save velocity snapshot files only for surfaces",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"MOVIE_TYPE",
+   			 "xtype" : "numberfield",
+   			 "desc": "save shakemap files",
+   			 "value": "1",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"MOVIE_VOLUME",
+   			 "xtype" : "textfield",
+   			 "desc": "save the entire volumetric velocity snapshot files ",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"SAVE_DISPLACEMENT",
+   			 "xtype" : "textfield",
+   			 "desc":  "save displacement instead velocity in the snapshot files",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"USE_HIGHRES_FOR_MOVIES",
+   			 "xtype" : "textfield",
+   			 "desc": "save high resolution snapshot files (all GLL points)",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"NTSTEP_BETWEEN_FRAMES",
+   			 "xtype" : "numberfield",
+   			 "desc": "number of timesteps between 2 consecutive snapshots",
+   			 "value": "200",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"HDUR_MOVIE",
+   			 "xtype" : "numberfield",
+   			 "desc": "half duration for snapshot files",
+   			 "value": "0.0",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"SAVE_MESH_FILES",
+   			 "xtype" : "textfield",
+   			 "desc": "save shakemap files",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"LOCAL_PATH",
+   			 "xtype" : "textfield",
+   			 "desc": "path to store the local database file on each node",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"NTSTEP_BETWEEN_OUTPUT_INFO",
+   			 "xtype" : "numberfield",
+   			 "desc": "interval at which we output time step info and max of norm of displacement",
+   			 "value": "500",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"NTSTEP_BETWEEN_OUTPUT_SEISMOS",
+   			 "xtype" : "numberfield",
+   			 "desc": "interval in time steps for writing of seismograms",
+   			 "value": "10000",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"NTSTEP_BETWEEN_READ_ADJSRC",
+   			 "xtype" : "numberfield",
+   			 "desc": "interval in time steps for reading adjoint traces,0 = read the whole adjoint sources at the same time",
+   			 "value": "0",
+   			 "req":"false"
+   			 },
+   			 {
+   			 "name":"USE_FORCE_POINT_SOURCE",
+   			 "xtype" : "textfield",
+   			 "desc":  "# use a (tilted) FORCESOLUTION force point source (or several) instead of a CMTSOLUTION moment-tensor source. If this flag is turned on, the FORCESOLUTION file must be edited by precising:\n- the corresponding time-shift parameter,\n - the half duration parameter of the source,\n - the coordinates of the source,\n - the magnitude of the force source,\n - the components of a (non-unitary) direction vector for the force source in the E/N/Z_UP basis.\n The direction vector is made unitary internally in the code and thus only its direction matters here;\n its norm is ignored and the norm of the force used is the factor force source times the source time function.",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"USE_RICKER_TIME_FUNCTION",
+   			 "xtype" : "textfield",
+   			 "desc": "set to true to use a Ricker source time function instead of the source time functions set by default to represent a (tilted) FORCESOLUTION force point source or a CMTSOLUTION moment-tensor source.",
+   			 "value": "false",
+   			 "req":"false"
+   			 },
+   			  {
+   			 "name":"GPU_MODE",
+   			 "xtype" : "textfield",
+   			 "desc": "set .true. for GPU support",
+   			 "value": "false",
+   			 "req":"false"
+   			 }
+   			 ]
+   		}

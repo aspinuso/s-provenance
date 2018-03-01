@@ -1,0 +1,78 @@
+[
+  {
+    "name": "source",
+    "connlist": [
+      
+    ]
+  },
+  {
+    "name": "PE_readn",
+    "connlist": [
+      {
+        "name": "source"
+      },
+      {
+        "name": "PE_readn"
+      },
+      {
+        "name": "PE_readn"
+      },
+      {
+        "name": "source"
+      },
+      {
+        "name": "source"
+      },
+      {
+        "name": "PE_readn"
+      },
+      {
+        "name": "source"
+      },
+      {
+        "name": "source"
+      },
+      {
+        "name": "source"
+      },
+      {
+        "name": "source"
+      },
+      {
+        "name": "source"
+      },
+      {
+        "name": "PE_readn"
+      },
+      {
+        "name": "source"
+      },
+      {
+        "name": "source"
+      },
+      {
+        "name": "PE_readn"
+      }
+    ]
+  },
+  {
+    "name": "PE_multn",
+    "connlist": [
+      {
+        "name": "PE_readn"
+      },
+      {
+        "name": "PE_readn"
+      },
+      {
+        "name": "PE_readn"
+      },
+      {
+        "name": "PE_readn"
+      },
+      {
+        "name": "PE_readn"
+      }
+    ]
+  }
+]
