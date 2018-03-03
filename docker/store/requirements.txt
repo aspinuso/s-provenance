@@ -5,3 +5,4 @@ pymongo
 python-dateutil
 lxml
 rdflib
+flask-apispec

@@ -1,351 +1,1066 @@
-swagger: '2.0'
-info:
-  description: | 
-    #### S-ProvFlow provenance api Provenance framework for storage
-    and access of data-intensive streaming lineage. It offers a a web API and a range
-    of dedicated visualisation tools and a provenance model (S-PROV) which utilises
-    and extends PROV and ProvONE models.
-    
-  title: Provenance Store
-  version: 1.0.0
-schemes:
-- http
-host: prov.knmi.nl
-basePath: /
-paths:
-  /:
-    get:
-      responses:
-        200:
-          description: GET /
-      summary: 'def hello():'
-  /activities/{runId}:
-    get:
-      parameters:
-      - description: runId
-        in: path
-        name: runId
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /activities/{runId}
-      summary: 'def activitiesHandler(runId):'
-  /components/{compid}:
-    get:
-      parameters:
-      - description: compid
-        in: path
-        name: compid
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /components/{compid}
-      summary: 'def getComponentDetails(compid):'
-  /data:
-    get:
-      responses:
-        200:
-          description: GET /data
-      summary: 'def getData():'
-  /data/{data_id}/export:
-    get:
-      parameters:
-      - description: data_id
-        in: path
-        name: data_id
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /data/{data_id}/export
-      summary: 'def _exportDataProvenance(data_id):'
-  /dataGranuleTerms:
-    get:
-      responses:
-        200:
-          description: GET /dataGranuleTerms
-      summary: 'def getDataGranuleTerms():'
-  /derivedData/{id}:
-    get:
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /derivedData/{id}
-      summary: 'def derivedData(id):'
-  /entities/{method}:
-    get:
-      parameters:
-      - description: method
-        in: path
-        name: method
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /entities/{method}
-      summary: 'def getEntitiesByMethod(method):'
-    post:
-      parameters:
-      - description: method
-        in: path
-        name: method
-        required: true
-        type: string
-      responses:
-        200:
-          description: POST /entities/{method}
-  /instances/{instid}:
-    get:
-      parameters:
-      - description: instid
-        in: path
-        name: instid
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /instances/{instid}
-      summary: 'def getInstanceDetails(instid): '
-  /invocations/{invocid}:
-    get:
-      parameters:
-      - description: invocid
-        in: path
-        name: invocid
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /invocations/{invocid}
-      summary: 'def getInvocationDetails(invocid):'
-  /solver/{solver_id}:
-    get:
-      parameters:
-      - description: solver_id
-        in: path
-        name: solver_id
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /solver/{solver_id}
-      summary: 'def getSolver(solver_id):'
-  /summaries/collaborative:
-    get:
-      responses:
-        200:
-          description: GET /summaries/collaborative
-      summary: 'def summariesHandlerCollab():'
-  /summaries/workflowexecution:
-    get:
-      responses:
-        200:
-          description: GET /summaries/workflowexecution
-      summary: 'def summariesHandlerWorkflow():'
-  /wasDerivedFrom/{id}:
-    get:
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /wasDerivedFrom/{id}
-      summary: 'def wasDerivedFrom(id):'
-  /workflow/:
-    get:
-      responses:
-        200:
-          description: GET /workflow/
-      summary: 'def workflowsHandler():'
-  /workflow/delete/{runid}:
-    post:
-      parameters:
-      - description: runid
-        in: path
-        name: runid
-        required: true
-        type: string
-      responses:
-        200:
-          description: POST /workflow/delete/{runid}
-  /workflow/edit/{runid}:
-    post:
-      parameters:
-      - description: runid
-        in: path
-        name: runid
-        required: true
-        type: string
-      responses:
-        200:
-          description: POST /workflow/edit/{runid}
-  /workflow/export/data/{id}:
-    get:
-      parameters:
-      - description: id
-        in: path
-        name: id
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /workflow/export/data/{id}
-      summary: 'def exportDataProvenance(id):'
-  /workflow/export/{runid}:
-    get:
-      parameters:
-      - description: runid
-        in: path
-        name: runid
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /workflow/export/{runid}
-      summary: 'def exportRunProvenance(runid):'
-  /workflow/insert:
-    post:
-      responses:
-        200:
-          description: POST /workflow/insert
-  /workflow/summaries:
-    get:
-      responses:
-        200:
-          description: GET /workflow/summaries
-      summary: 'def summariesHandler():'
-  /workflow/user/{user}:
-    get:
-      parameters:
-      - description: user
-        in: path
-        name: user
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /workflow/user/{user}
-      summary: 'def getUserRuns(user):'
-  /workflow/{runid}:
-    delete:
-      parameters:
-      - description: runid
-        in: path
-        name: runid
-        required: true
-        type: string
-      responses:
-        200:
-          description: DELET /workflow/{runid}
-    get:
-      parameters:
-      - description: runid
-        in: path
-        name: runid
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /workflow/{runid}
-      summary: 'def workflowInfoHandler(runid):'
-  /workflowexecution/{run_id}/export:
-    get:
-      parameters:
-      - description: run_id
-        in: path
-        name: run_id
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /workflowexecution/{run_id}/export
-      summary: 'def _exportRunProvenance(run_id):'
-  /workflowexecutions:
-    get:
-      responses:
-        200:
-          description: GET /workflowexecutions
-      summary: 'def getWorkflowExecutions():'
-  /workflowexecutions/insert:
-    post:
-      responses:
-        200:
-          description: POST /workflowexecutions/insert
-  /workflowexecutions/{runid}:
-    delete:
-      parameters:
-      - description: runid
-        in: path
-        name: runid
-        required: true
-        type: string
-      responses:
-        200:
-          description: DELET /workflowexecutions/{runid}
-    get:
-      parameters:
-      - description: runid
-        in: path
-        name: runid
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /workflowexecutions/{runid}
-      summary: 'def getWorkflowInfo(runid):'
-  /workflowexecutions/{runid}/delete:
-    post:
-      parameters:
-      - description: runid
-        in: path
-        name: runid
-        required: true
-        type: string
-      responses:
-        200:
-          description: POST /workflowexecutions/{runid}/delete
-  /workflowexecutions/{runid}/edit:
-    post:
-      parameters:
-      - description: runid
-        in: path
-        name: runid
-        required: true
-        type: string
-      responses:
-        200:
-          description: POST /workflowexecutions/{runid}/edit
-  /workflowexecutions/{runid}/instances:
-    get:
-      parameters:
-      - description: runid
-        in: path
-        name: runid
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /workflowexecutions/{runid}/instances
-      summary: 'def getInstancesMonitoring(runid):'
-  /workflowexecutions/{runid}/showactivity:
-    get:
-      parameters:
-      - description: runid
-        in: path
-        name: runid
-        required: true
-        type: string
-      responses:
-        200:
-          description: GET /workflowexecutions/{runid}/showactivity
-      summary: 'def getMonitoring(runid):'
+{
+  "definitions": {}, 
+  "description": "S-ProvFlow provenance api Provenance framework for storage and access of data-intensive streaming lineage. It offers a a web API and a range of dedicated visualisation tools and a provenance model (S-PROV) which utilises and extends PROV and ProvONE model", 
+  "info": {
+    "title": "s-prov", 
+    "version": "v1"
+  }, 
+  "parameters": {}, 
+  "paths": {
+    "/data": {
+      "get": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "format": {
+                  "type": "string"
+                }, 
+                "implementations": {
+                  "type": "string"
+                }, 
+                "limit": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "maxvalues": {
+                  "type": "string"
+                }, 
+                "minvalues": {
+                  "type": "string"
+                }, 
+                "mode": {
+                  "type": "string"
+                }, 
+                "rformat": {
+                  "default": "json", 
+                  "type": "string"
+                }, 
+                "start": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "terms": {
+                  "type": "string"
+                }, 
+                "types": {
+                  "type": "string"
+                }, 
+                "usernames": {
+                  "type": "string"
+                }, 
+                "wasAssociatedWith": {
+                  "type": "string"
+                }, 
+                "wasAttributedTo": {
+                  "type": "string"
+                }, 
+                "wasGeneratedBy": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "limit", 
+                "start"
+              ], 
+              "type": "object"
+            }
+          }
+        ], 
+        "responses": {}
+      }, 
+      "options": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "format": {
+                  "type": "string"
+                }, 
+                "implementations": {
+                  "type": "string"
+                }, 
+                "limit": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "maxvalues": {
+                  "type": "string"
+                }, 
+                "minvalues": {
+                  "type": "string"
+                }, 
+                "mode": {
+                  "type": "string"
+                }, 
+                "rformat": {
+                  "default": "json", 
+                  "type": "string"
+                }, 
+                "start": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "terms": {
+                  "type": "string"
+                }, 
+                "types": {
+                  "type": "string"
+                }, 
+                "usernames": {
+                  "type": "string"
+                }, 
+                "wasAssociatedWith": {
+                  "type": "string"
+                }, 
+                "wasAttributedTo": {
+                  "type": "string"
+                }, 
+                "wasGeneratedBy": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "limit", 
+                "start"
+              ], 
+              "type": "object"
+            }
+          }
+        ], 
+        "responses": {}
+      }
+    }, 
+    "/data/filterOnAncestor": {
+      "get": {
+        "parameters": [], 
+        "responses": {}
+      }, 
+      "options": {
+        "parameters": [], 
+        "responses": {}
+      }, 
+      "post": {
+        "parameters": [], 
+        "responses": {}
+      }
+    }, 
+    "/data/{data_id}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "data_id", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }, 
+      "options": {
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "data_id", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }
+    }, 
+    "/data/{data_id}/derivedData": {
+      "get": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "level": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "level"
+              ], 
+              "type": "object"
+            }
+          }, 
+          {
+            "in": "path", 
+            "name": "data_id", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }, 
+      "options": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "level": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "level"
+              ], 
+              "type": "object"
+            }
+          }, 
+          {
+            "in": "path", 
+            "name": "data_id", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }
+    }, 
+    "/data/{data_id}/export": {
+      "get": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "level": {
+                  "type": "string"
+                }, 
+                "limit": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "start": {
+                  "format": "int32", 
+                  "type": "integer"
+                }
+              }, 
+              "required": [
+                "level", 
+                "limit", 
+                "start"
+              ], 
+              "type": "object"
+            }
+          }, 
+          {
+            "in": "path", 
+            "name": "data_id", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {
+          "default": {
+            "description": "", 
+            "schema": {
+              "items": {
+                "properties": {
+                  "category": {
+                    "type": "string"
+                  }, 
+                  "name": {
+                    "type": "string"
+                  }, 
+                  "size": {
+                    "type": "string"
+                  }
+                }, 
+                "type": "object"
+              }, 
+              "type": "array"
+            }
+          }
+        }
+      }, 
+      "options": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "level": {
+                  "type": "string"
+                }, 
+                "limit": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "start": {
+                  "format": "int32", 
+                  "type": "integer"
+                }
+              }, 
+              "required": [
+                "level", 
+                "limit", 
+                "start"
+              ], 
+              "type": "object"
+            }
+          }, 
+          {
+            "in": "path", 
+            "name": "data_id", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {
+          "default": {
+            "description": "", 
+            "schema": {
+              "items": {
+                "properties": {
+                  "category": {
+                    "type": "string"
+                  }, 
+                  "name": {
+                    "type": "string"
+                  }, 
+                  "size": {
+                    "type": "string"
+                  }
+                }, 
+                "type": "object"
+              }, 
+              "type": "array"
+            }
+          }
+        }
+      }
+    }, 
+    "/data/{data_id}/wasDerivedFrom": {
+      "get": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "level": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "level"
+              ], 
+              "type": "object"
+            }
+          }, 
+          {
+            "in": "path", 
+            "name": "data_id", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }, 
+      "options": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "level": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "level"
+              ], 
+              "type": "object"
+            }
+          }, 
+          {
+            "in": "path", 
+            "name": "data_id", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }
+    }, 
+    "/instances/{instid}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "limit": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "start": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "wasAssociateFor": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "limit", 
+                "start"
+              ], 
+              "type": "object"
+            }
+          }, 
+          {
+            "in": "path", 
+            "name": "instid", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }, 
+      "options": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "limit": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "start": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "wasAssociateFor": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "limit", 
+                "start"
+              ], 
+              "type": "object"
+            }
+          }, 
+          {
+            "in": "path", 
+            "name": "instid", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }
+    }, 
+    "/invocations/{invocid}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "invocid", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }, 
+      "options": {
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "invocid", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }
+    }, 
+    "/summaries/collaborative": {
+      "get": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "format": {
+                  "type": "string"
+                }, 
+                "groupby": {
+                  "type": "string"
+                }, 
+                "implementations": {
+                  "type": "string"
+                }, 
+                "level": {
+                  "type": "string"
+                }, 
+                "maxvalues": {
+                  "type": "string"
+                }, 
+                "minvalues": {
+                  "type": "string"
+                }, 
+                "mode": {
+                  "type": "string"
+                }, 
+                "rformat": {
+                  "default": "json", 
+                  "type": "string"
+                }, 
+                "terms": {
+                  "type": "string"
+                }, 
+                "types": {
+                  "type": "string"
+                }, 
+                "usernames": {
+                  "type": "string"
+                }, 
+                "wasAssociatedWith": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "level"
+              ], 
+              "type": "object"
+            }
+          }
+        ], 
+        "responses": {}
+      }, 
+      "options": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "format": {
+                  "type": "string"
+                }, 
+                "groupby": {
+                  "type": "string"
+                }, 
+                "implementations": {
+                  "type": "string"
+                }, 
+                "level": {
+                  "type": "string"
+                }, 
+                "maxvalues": {
+                  "type": "string"
+                }, 
+                "minvalues": {
+                  "type": "string"
+                }, 
+                "mode": {
+                  "type": "string"
+                }, 
+                "rformat": {
+                  "default": "json", 
+                  "type": "string"
+                }, 
+                "terms": {
+                  "type": "string"
+                }, 
+                "types": {
+                  "type": "string"
+                }, 
+                "usernames": {
+                  "type": "string"
+                }, 
+                "wasAssociatedWith": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "level"
+              ], 
+              "type": "object"
+            }
+          }
+        ], 
+        "responses": {}
+      }
+    }, 
+    "/summaries/workflowexecution": {
+      "get": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "clusters": {
+                  "type": "string"
+                }, 
+                "groupby": {
+                  "type": "string"
+                }, 
+                "level": {
+                  "type": "string"
+                }, 
+                "maxtme": {
+                  "type": "string"
+                }, 
+                "mintime": {
+                  "type": "string"
+                }, 
+                "runId": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "level"
+              ], 
+              "type": "object"
+            }
+          }
+        ], 
+        "responses": {}
+      }, 
+      "options": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "clusters": {
+                  "type": "string"
+                }, 
+                "groupby": {
+                  "type": "string"
+                }, 
+                "level": {
+                  "type": "string"
+                }, 
+                "maxtme": {
+                  "type": "string"
+                }, 
+                "mintime": {
+                  "type": "string"
+                }, 
+                "runId": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "level"
+              ], 
+              "type": "object"
+            }
+          }
+        ], 
+        "responses": {}
+      }
+    }, 
+    "/terms": {
+      "get": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "aggregationLevel": {
+                  "type": "string"
+                }, 
+                "runIds": {
+                  "type": "string"
+                }, 
+                "usernames": {
+                  "type": "string"
+                }
+              }, 
+              "type": "object"
+            }
+          }
+        ], 
+        "responses": {}
+      }, 
+      "options": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "aggregationLevel": {
+                  "type": "string"
+                }, 
+                "runIds": {
+                  "type": "string"
+                }, 
+                "usernames": {
+                  "type": "string"
+                }
+              }, 
+              "type": "object"
+            }
+          }
+        ], 
+        "responses": {}
+      }
+    }, 
+    "/workflowexecutions/insert": {
+      "options": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "prov": {
+                  "type": "string"
+                }
+              }, 
+              "type": "object"
+            }
+          }
+        ], 
+        "responses": {}
+      }, 
+      "post": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "prov": {
+                  "type": "string"
+                }
+              }, 
+              "type": "object"
+            }
+          }
+        ], 
+        "responses": {}
+      }
+    }, 
+    "/workflowexecutions/{run_id}/export": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "run_id", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }, 
+      "options": {
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "run_id", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }
+    }, 
+    "/workflowexecutions/{runid}": {
+      "delete": {
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "runid", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }, 
+      "get": {
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "runid", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }, 
+      "options": {
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "runid", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }
+    }, 
+    "/workflowexecutions/{runid}/delete": {
+      "options": {
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "runid", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }, 
+      "post": {
+        "parameters": [
+          {
+            "in": "path", 
+            "name": "runid", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }
+    }, 
+    "/workflowexecutions/{runid}/edit": {
+      "options": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "doc": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "doc"
+              ], 
+              "type": "object"
+            }
+          }, 
+          {
+            "in": "path", 
+            "name": "runid", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }, 
+      "post": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "doc": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "doc"
+              ], 
+              "type": "object"
+            }
+          }, 
+          {
+            "in": "path", 
+            "name": "runid", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }
+    }, 
+    "/workflowexecutions/{runid}/instances": {
+      "get": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "limit": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "start": {
+                  "format": "int32", 
+                  "type": "integer"
+                }
+              }, 
+              "required": [
+                "limit", 
+                "start"
+              ], 
+              "type": "object"
+            }
+          }, 
+          {
+            "in": "path", 
+            "name": "runid", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }, 
+      "options": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "limit": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "start": {
+                  "format": "int32", 
+                  "type": "integer"
+                }
+              }, 
+              "required": [
+                "limit", 
+                "start"
+              ], 
+              "type": "object"
+            }
+          }, 
+          {
+            "in": "path", 
+            "name": "runid", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }
+    }, 
+    "/workflowexecutions/{runid}/showactivity": {
+      "get": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "level": {
+                  "type": "string"
+                }, 
+                "limit": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "start": {
+                  "format": "int32", 
+                  "type": "integer"
+                }
+              }, 
+              "required": [
+                "level", 
+                "limit", 
+                "start"
+              ], 
+              "type": "object"
+            }
+          }, 
+          {
+            "in": "path", 
+            "name": "runid", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }, 
+      "options": {
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "level": {
+                  "type": "string"
+                }, 
+                "limit": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "start": {
+                  "format": "int32", 
+                  "type": "integer"
+                }
+              }, 
+              "required": [
+                "level", 
+                "limit", 
+                "start"
+              ], 
+              "type": "object"
+            }
+          }, 
+          {
+            "in": "path", 
+            "name": "runid", 
+            "required": true, 
+            "type": "string"
+          }
+        ], 
+        "responses": {}
+      }
+    }
+  }, 
+  "swagger": "2.0", 
+  "tags": []
+}
