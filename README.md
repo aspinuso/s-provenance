@@ -9,7 +9,7 @@ Provenance framework for storage and access of data-intensive streaming lineage.
 
 #### The API
 
-S-ProvFlow system exposes a RESTful web API which offers high-level services on top of the storage backend. The API methods are classified in provenance acquisition, monitoring, data discovery and traceability, comprehensive-summaries, and provenance export. This is the service layer on top of which all the above visualisation and exploration tools are built.
+S-ProvFlow system exposes a RESTful web API which offers high-level services on top of the storage backend. The API methods are classified in provenance acquisition, monitoring, data discovery and traceability, comprehensive-summaries, and provenance export. This is the service layer on top of which all the above visualisation and exploration tools are built. The API support the OpenAPI specs via automatically generated swagger_ file
 
 The API returns information in JSON and JSON-LD, which includes PROV and S-PROV semantics and references to external controlled vocabularies for the domain metadata describng the data entities and the agents participating in their production. It allows clients to selectively export provenance traces in PROV-XML and RDF for a single data results, as well as for the entire computation.
 
@@ -76,3 +76,6 @@ s-prov viewer
 - WPS-WORKFLOW: https://github.com/KNMI/wps_workflow
 - dispel4py: https://github.com/dispel4py/dispel4py
 - VERCE: https://github.com/KNMI/VERCE
+
+
+.. _swagger: https://github.com/aspinuso/s-provenance/blob/master/provenance-api/resources/swagger.yaml
