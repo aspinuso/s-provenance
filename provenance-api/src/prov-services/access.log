@@ -37319,3 +37319,1418 @@ TypeError: export_run_provenance() got an unexpected keyword argument 'format'
 [2018-03-06 14:12:24 +0100] [10426] [DEBUG] 9 workers
 [2018-03-06 14:12:24 +0100] [98924] [INFO] Booting worker with pid: 98924
 [2018-03-06 14:12:24 +0100] [98925] [INFO] Booting worker with pid: 98925
+[2018-03-06 14:15:59 +0100] [98887] [DEBUG] GET /terms
+[2018-03-06 14:15:59 +0100] [98890] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:16:01 +0100] [98887] [DEBUG] GET /workflowexecutions/CAW_JUP_orfeus-as-97994-633d1928-213e-11e8-b7fb-f45c89acf865/showactivity
+[2018-03-06 14:16:07 +0100] [98887] [DEBUG] GET /workflowexecutions/CAW_JUP_orfeus-as-97994-633d1928-213e-11e8-b7fb-f45c89acf865/export
+[2018-03-06 14:16:12 +0100] [98890] [DEBUG] GET /data
+[2018-03-06 14:16:15 +0100] [98883] [DEBUG] GET /data/orfeus-as-97994-65308828-213e-11e8-91a9-f45c89acf865/export
+[2018-03-06 14:17:17 +0100] [98921] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:17 +0100] [98884] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:17 +0100] [98912] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:17 +0100] [98914] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:17 +0100] [98883] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:17 +0100] [98923] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:17 +0100] [98889] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:17 +0100] [98885] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:17 +0100] [98924] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:17 +0100] [98887] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:17 +0100] [98888] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:17 +0100] [98922] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:18 +0100] [98890] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:18 +0100] [98886] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:18 +0100] [98910] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:18 +0100] [98891] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:18 +0100] [98925] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:18 +0100] [98920] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:17:21 +0100] [98910] [INFO] Worker exiting (pid: 98910)
+[2018-03-06 14:17:21 +0100] [98912] [INFO] Worker exiting (pid: 98912)
+[2018-03-06 14:17:21 +0100] [98914] [INFO] Worker exiting (pid: 98914)
+[2018-03-06 14:17:21 +0100] [99088] [INFO] Booting worker with pid: 99088
+[2018-03-06 14:17:22 +0100] [99089] [INFO] Booting worker with pid: 99089
+[2018-03-06 14:17:22 +0100] [10426] [DEBUG] 8 workers
+[2018-03-06 14:17:22 +0100] [99090] [INFO] Booting worker with pid: 99090
+[2018-03-06 14:17:22 +0100] [10426] [DEBUG] 9 workers
+[2018-03-06 14:17:23 +0100] [98920] [INFO] Worker exiting (pid: 98920)
+[2018-03-06 14:17:23 +0100] [99096] [INFO] Booting worker with pid: 99096
+[2018-03-06 14:17:24 +0100] [98921] [INFO] Worker exiting (pid: 98921)
+[2018-03-06 14:17:24 +0100] [99097] [INFO] Booting worker with pid: 99097
+[2018-03-06 14:17:24 +0100] [98922] [INFO] Worker exiting (pid: 98922)
+[2018-03-06 14:17:24 +0100] [98923] [INFO] Worker exiting (pid: 98923)
+[2018-03-06 14:17:24 +0100] [98924] [INFO] Worker exiting (pid: 98924)
+[2018-03-06 14:17:25 +0100] [98925] [INFO] Worker exiting (pid: 98925)
+[2018-03-06 14:17:25 +0100] [99098] [INFO] Booting worker with pid: 99098
+[2018-03-06 14:17:25 +0100] [99099] [INFO] Booting worker with pid: 99099
+[2018-03-06 14:17:25 +0100] [10426] [DEBUG] 8 workers
+[2018-03-06 14:17:25 +0100] [99100] [INFO] Booting worker with pid: 99100
+[2018-03-06 14:17:25 +0100] [10426] [DEBUG] 9 workers
+[2018-03-06 14:17:25 +0100] [99101] [INFO] Booting worker with pid: 99101
+[2018-03-06 14:17:47 +0100] [98885] [INFO] Worker exiting (pid: 98885)
+[2018-03-06 14:17:47 +0100] [98888] [INFO] Worker exiting (pid: 98888)
+[2018-03-06 14:17:47 +0100] [99112] [INFO] Booting worker with pid: 99112
+[2018-03-06 14:17:47 +0100] [99113] [INFO] Booting worker with pid: 99113
+[2018-03-06 14:18:07 +0100] [98889] [INFO] Worker exiting (pid: 98889)
+[2018-03-06 14:18:08 +0100] [99129] [INFO] Booting worker with pid: 99129
+[2018-03-06 14:18:12 +0100] [98887] [INFO] Worker exiting (pid: 98887)
+[2018-03-06 14:18:12 +0100] [98890] [INFO] Worker exiting (pid: 98890)
+[2018-03-06 14:18:13 +0100] [99130] [INFO] Booting worker with pid: 99130
+[2018-03-06 14:18:13 +0100] [99131] [INFO] Booting worker with pid: 99131
+[2018-03-06 14:18:14 +0100] [98886] [INFO] Worker exiting (pid: 98886)
+[2018-03-06 14:18:14 +0100] [98884] [INFO] Worker exiting (pid: 98884)
+[2018-03-06 14:18:14 +0100] [98891] [INFO] Worker exiting (pid: 98891)
+[2018-03-06 14:18:14 +0100] [99137] [INFO] Booting worker with pid: 99137
+[2018-03-06 14:18:14 +0100] [99138] [INFO] Booting worker with pid: 99138
+[2018-03-06 14:18:14 +0100] [99139] [INFO] Booting worker with pid: 99139
+[2018-03-06 14:18:16 +0100] [98883] [INFO] Worker exiting (pid: 98883)
+[2018-03-06 14:18:16 +0100] [99140] [INFO] Booting worker with pid: 99140
+[2018-03-06 14:18:42 +0100] [99129] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:42 +0100] [99112] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:42 +0100] [99096] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:42 +0100] [99137] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:42 +0100] [99099] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:42 +0100] [99100] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:42 +0100] [99098] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:42 +0100] [99090] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:42 +0100] [99138] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:42 +0100] [99130] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:42 +0100] [99088] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:42 +0100] [99089] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:42 +0100] [99140] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:42 +0100] [99131] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:42 +0100] [99139] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:43 +0100] [99101] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:43 +0100] [99097] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:43 +0100] [99113] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:18:47 +0100] [99112] [INFO] Worker exiting (pid: 99112)
+[2018-03-06 14:18:48 +0100] [99113] [INFO] Worker exiting (pid: 99113)
+[2018-03-06 14:18:48 +0100] [99156] [INFO] Booting worker with pid: 99156
+[2018-03-06 14:18:48 +0100] [99156] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:18:48 +0100] [10709] [DEBUG] 8 workers
+[2018-03-06 14:18:48 +0100] [99157] [INFO] Booting worker with pid: 99157
+[2018-03-06 14:18:48 +0100] [10709] [DEBUG] 9 workers
+[2018-03-06 14:18:48 +0100] [99157] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:08 +0100] [99129] [INFO] Worker exiting (pid: 99129)
+[2018-03-06 14:19:08 +0100] [99168] [INFO] Booting worker with pid: 99168
+[2018-03-06 14:19:08 +0100] [99168] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:10 +0100] [99156] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:10 +0100] [99157] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:10 +0100] [99168] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:13 +0100] [99130] [INFO] Worker exiting (pid: 99130)
+[2018-03-06 14:19:13 +0100] [99131] [INFO] Worker exiting (pid: 99131)
+[2018-03-06 14:19:14 +0100] [99174] [INFO] Booting worker with pid: 99174
+[2018-03-06 14:19:14 +0100] [99174] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:14 +0100] [99175] [INFO] Booting worker with pid: 99175
+[2018-03-06 14:19:14 +0100] [99137] [INFO] Worker exiting (pid: 99137)
+[2018-03-06 14:19:14 +0100] [99175] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:14 +0100] [99138] [INFO] Worker exiting (pid: 99138)
+[2018-03-06 14:19:14 +0100] [99139] [INFO] Worker exiting (pid: 99139)
+[2018-03-06 14:19:14 +0100] [99176] [INFO] Booting worker with pid: 99176
+[2018-03-06 14:19:14 +0100] [99176] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:15 +0100] [99177] [INFO] Booting worker with pid: 99177
+[2018-03-06 14:19:15 +0100] [99177] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:15 +0100] [99178] [INFO] Booting worker with pid: 99178
+[2018-03-06 14:19:15 +0100] [99178] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:16 +0100] [99140] [INFO] Worker exiting (pid: 99140)
+[2018-03-06 14:19:17 +0100] [99179] [INFO] Booting worker with pid: 99179
+[2018-03-06 14:19:17 +0100] [99179] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:22 +0100] [99088] [INFO] Worker exiting (pid: 99088)
+[2018-03-06 14:19:22 +0100] [99089] [INFO] Worker exiting (pid: 99089)
+[2018-03-06 14:19:22 +0100] [99090] [INFO] Worker exiting (pid: 99090)
+[2018-03-06 14:19:22 +0100] [99180] [INFO] Booting worker with pid: 99180
+[2018-03-06 14:19:22 +0100] [99181] [INFO] Booting worker with pid: 99181
+[2018-03-06 14:19:22 +0100] [99180] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:22 +0100] [10426] [DEBUG] 8 workers
+[2018-03-06 14:19:22 +0100] [99182] [INFO] Booting worker with pid: 99182
+[2018-03-06 14:19:22 +0100] [99181] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:22 +0100] [99182] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:22 +0100] [10426] [DEBUG] 9 workers
+[2018-03-06 14:19:23 +0100] [99096] [INFO] Worker exiting (pid: 99096)
+[2018-03-06 14:19:24 +0100] [99188] [INFO] Booting worker with pid: 99188
+[2018-03-06 14:19:24 +0100] [99188] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:24 +0100] [99097] [INFO] Worker exiting (pid: 99097)
+[2018-03-06 14:19:25 +0100] [99189] [INFO] Booting worker with pid: 99189
+[2018-03-06 14:19:25 +0100] [99189] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:26 +0100] [99099] [INFO] Worker exiting (pid: 99099)
+[2018-03-06 14:19:26 +0100] [99098] [INFO] Worker exiting (pid: 99098)
+[2018-03-06 14:19:26 +0100] [99100] [INFO] Worker exiting (pid: 99100)
+[2018-03-06 14:19:26 +0100] [99101] [INFO] Worker exiting (pid: 99101)
+[2018-03-06 14:19:26 +0100] [99190] [INFO] Booting worker with pid: 99190
+[2018-03-06 14:19:26 +0100] [99190] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:26 +0100] [99191] [INFO] Booting worker with pid: 99191
+[2018-03-06 14:19:26 +0100] [10426] [DEBUG] 7 workers
+[2018-03-06 14:19:26 +0100] [99192] [INFO] Booting worker with pid: 99192
+[2018-03-06 14:19:26 +0100] [99191] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:26 +0100] [99192] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:26 +0100] [99193] [INFO] Booting worker with pid: 99193
+[2018-03-06 14:19:26 +0100] [10426] [DEBUG] 9 workers
+[2018-03-06 14:19:26 +0100] [99193] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:43 +0100] [99191] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:43 +0100] [99192] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:43 +0100] [99193] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:43 +0100] [99180] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:43 +0100] [99182] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:43 +0100] [99181] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:43 +0100] [99176] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:44 +0100] [99177] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:44 +0100] [99189] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:44 +0100] [99188] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:44 +0100] [99178] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:44 +0100] [99174] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:44 +0100] [99179] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:44 +0100] [99175] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:44 +0100] [99190] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:19:48 +0100] [99156] [INFO] Worker exiting (pid: 99156)
+[2018-03-06 14:19:48 +0100] [99204] [INFO] Booting worker with pid: 99204
+[2018-03-06 14:19:48 +0100] [99204] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:19:48 +0100] [99157] [INFO] Worker exiting (pid: 99157)
+[2018-03-06 14:19:48 +0100] [99205] [INFO] Booting worker with pid: 99205
+[2018-03-06 14:19:48 +0100] [99205] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:04 +0100] [99204] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:04 +0100] [99205] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:08 +0100] [99168] [INFO] Worker exiting (pid: 99168)
+[2018-03-06 14:20:08 +0100] [99217] [INFO] Booting worker with pid: 99217
+[2018-03-06 14:20:08 +0100] [99217] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:14 +0100] [99174] [INFO] Worker exiting (pid: 99174)
+[2018-03-06 14:20:14 +0100] [99218] [INFO] Booting worker with pid: 99218
+[2018-03-06 14:20:14 +0100] [99218] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:14 +0100] [99175] [INFO] Worker exiting (pid: 99175)
+[2018-03-06 14:20:14 +0100] [99219] [INFO] Booting worker with pid: 99219
+[2018-03-06 14:20:14 +0100] [99219] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:14 +0100] [99176] [INFO] Worker exiting (pid: 99176)
+[2018-03-06 14:20:14 +0100] [99225] [INFO] Booting worker with pid: 99225
+[2018-03-06 14:20:14 +0100] [99225] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:15 +0100] [99177] [INFO] Worker exiting (pid: 99177)
+[2018-03-06 14:20:15 +0100] [99226] [INFO] Booting worker with pid: 99226
+[2018-03-06 14:20:15 +0100] [99226] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:15 +0100] [99178] [INFO] Worker exiting (pid: 99178)
+[2018-03-06 14:20:15 +0100] [10709] [DEBUG] 8 workers
+[2018-03-06 14:20:15 +0100] [99227] [INFO] Booting worker with pid: 99227
+[2018-03-06 14:20:15 +0100] [99227] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:15 +0100] [10709] [DEBUG] 9 workers
+[2018-03-06 14:20:17 +0100] [99179] [INFO] Worker exiting (pid: 99179)
+[2018-03-06 14:20:17 +0100] [99228] [INFO] Booting worker with pid: 99228
+[2018-03-06 14:20:17 +0100] [99228] [ERROR] invalid syntax (provenance.py, line 83)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 83
+    if mode='run':
+           ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:17 +0100] [99217] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:17 +0100] [99225] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:18 +0100] [99226] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:18 +0100] [99227] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:18 +0100] [99218] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:18 +0100] [99219] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:22 +0100] [99226] [INFO] Worker exiting (pid: 99226)
+[2018-03-06 14:20:22 +0100] [99225] [INFO] Worker exiting (pid: 99225)
+[2018-03-06 14:20:22 +0100] [99227] [INFO] Worker exiting (pid: 99227)
+[2018-03-06 14:20:22 +0100] [99228] [DEBUG] GET /data/orfeus-as-97994-65308828-213e-11e8-91a9-f45c89acf865/export
+[2018-03-06 14:20:22 +0100] [99229] [INFO] Booting worker with pid: 99229
+[2018-03-06 14:20:22 +0100] [10709] [DEBUG] 8 workers
+[2018-03-06 14:20:22 +0100] [99230] [INFO] Booting worker with pid: 99230
+[2018-03-06 14:20:22 +0100] [99229] [ERROR] invalid syntax (provenance.py, line 84)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 84
+    bundle._attributes[prov['type']].add(vc["WFExecutionBundle")
+                                                               ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:22 +0100] [99231] [INFO] Booting worker with pid: 99231
+[2018-03-06 14:20:22 +0100] [99180] [INFO] Worker exiting (pid: 99180)
+[2018-03-06 14:20:22 +0100] [99230] [ERROR] invalid syntax (provenance.py, line 84)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 84
+    bundle._attributes[prov['type']].add(vc["WFExecutionBundle")
+                                                               ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:22 +0100] [99231] [ERROR] invalid syntax (provenance.py, line 84)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 84
+    bundle._attributes[prov['type']].add(vc["WFExecutionBundle")
+                                                               ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:22 +0100] [99181] [INFO] Worker exiting (pid: 99181)
+[2018-03-06 14:20:22 +0100] [99182] [INFO] Worker exiting (pid: 99182)
+[2018-03-06 14:20:22 +0100] [10709] [DEBUG] 9 workers
+[2018-03-06 14:20:22 +0100] [99232] [INFO] Booting worker with pid: 99232
+[2018-03-06 14:20:22 +0100] [99232] [ERROR] invalid syntax (provenance.py, line 84)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 84
+    bundle._attributes[prov['type']].add(vc["WFExecutionBundle")
+                                                               ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:22 +0100] [99233] [INFO] Booting worker with pid: 99233
+[2018-03-06 14:20:22 +0100] [99234] [INFO] Booting worker with pid: 99234
+[2018-03-06 14:20:22 +0100] [99233] [ERROR] invalid syntax (provenance.py, line 84)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 84
+    bundle._attributes[prov['type']].add(vc["WFExecutionBundle")
+                                                               ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:22 +0100] [99234] [ERROR] invalid syntax (provenance.py, line 84)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 84
+    bundle._attributes[prov['type']].add(vc["WFExecutionBundle")
+                                                               ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:24 +0100] [99188] [INFO] Worker exiting (pid: 99188)
+[2018-03-06 14:20:24 +0100] [99235] [INFO] Booting worker with pid: 99235
+[2018-03-06 14:20:24 +0100] [99235] [ERROR] invalid syntax (provenance.py, line 84)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 84
+    bundle._attributes[prov['type']].add(vc["WFExecutionBundle")
+                                                               ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:25 +0100] [99189] [INFO] Worker exiting (pid: 99189)
+[2018-03-06 14:20:25 +0100] [99241] [INFO] Booting worker with pid: 99241
+[2018-03-06 14:20:25 +0100] [99241] [ERROR] invalid syntax (provenance.py, line 84)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 84
+    bundle._attributes[prov['type']].add(vc["WFExecutionBundle")
+                                                               ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:26 +0100] [99190] [INFO] Worker exiting (pid: 99190)
+[2018-03-06 14:20:26 +0100] [99242] [INFO] Booting worker with pid: 99242
+[2018-03-06 14:20:26 +0100] [99191] [INFO] Worker exiting (pid: 99191)
+[2018-03-06 14:20:26 +0100] [99192] [INFO] Worker exiting (pid: 99192)
+[2018-03-06 14:20:26 +0100] [99242] [ERROR] invalid syntax (provenance.py, line 84)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 84
+    bundle._attributes[prov['type']].add(vc["WFExecutionBundle")
+                                                               ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:26 +0100] [10426] [DEBUG] 8 workers
+[2018-03-06 14:20:26 +0100] [99243] [INFO] Booting worker with pid: 99243
+[2018-03-06 14:20:26 +0100] [99244] [INFO] Booting worker with pid: 99244
+[2018-03-06 14:20:26 +0100] [99243] [ERROR] invalid syntax (provenance.py, line 84)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 84
+    bundle._attributes[prov['type']].add(vc["WFExecutionBundle")
+                                                               ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:26 +0100] [99244] [ERROR] invalid syntax (provenance.py, line 84)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 84
+    bundle._attributes[prov['type']].add(vc["WFExecutionBundle")
+                                                               ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:26 +0100] [99193] [INFO] Worker exiting (pid: 99193)
+[2018-03-06 14:20:26 +0100] [99245] [INFO] Booting worker with pid: 99245
+[2018-03-06 14:20:26 +0100] [99245] [ERROR] invalid syntax (provenance.py, line 84)
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/base.py", line 135, in load_wsgi
+    self.wsgi = self.app.wsgi()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/base.py", line 67, in wsgi
+    self.callable = self.load()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 65, in load
+    return self.load_wsgiapp()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/app/wsgiapp.py", line 52, in load_wsgiapp
+    return util.import_app(self.app_uri)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/util.py", line 352, in import_app
+    __import__(module)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 1, in <module>
+    import provenance as provenance
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 84
+    bundle._attributes[prov['type']].add(vc["WFExecutionBundle")
+                                                               ^
+SyntaxError: invalid syntax
+[2018-03-06 14:20:26 +0100] [10426] [DEBUG] 9 workers
+[2018-03-06 14:20:42 +0100] [99245] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:42 +0100] [99231] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:42 +0100] [99230] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:42 +0100] [99229] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:43 +0100] [99232] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:43 +0100] [99233] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:43 +0100] [99234] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:43 +0100] [99241] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:43 +0100] [99235] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:43 +0100] [99228] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:43 +0100] [99242] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:43 +0100] [99244] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:43 +0100] [99243] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:20:48 +0100] [99204] [INFO] Worker exiting (pid: 99204)
+[2018-03-06 14:20:48 +0100] [99256] [INFO] Booting worker with pid: 99256
+[2018-03-06 14:20:48 +0100] [99205] [INFO] Worker exiting (pid: 99205)
+[2018-03-06 14:20:48 +0100] [10709] [DEBUG] 8 workers
+[2018-03-06 14:20:48 +0100] [99257] [INFO] Booting worker with pid: 99257
+[2018-03-06 14:20:48 +0100] [10709] [DEBUG] 9 workers
+[2018-03-06 14:20:51 +0100] [99256] [DEBUG] GET /data/orfeus-as-97994-65308828-213e-11e8-91a9-f45c89acf865/export
+[2018-03-06 14:20:52 +0100] [99256] [ERROR] Error handling request /data/orfeus-as-97994-65308828-213e-11e8-91a9-f45c89acf865/export?level=200
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/sync.py", line 135, in handle
+    self.handle_request(listener, req, client, addr)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/sync.py", line 176, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask_apispec/annotations.py", line 117, in wrapped
+    return wrapper(*args, **kwargs)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask_apispec/wrapper.py", line 23, in __call__
+    response = self.call_view(*args, **kwargs)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask_apispec/wrapper.py", line 42, in call_view
+    return self.func(*args, **kwargs)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 429, in export_data_provenance
+    response = Response(str(app.db.exportDataProvenance(data_id,**kwargs)).encode('ascii','ignore'))
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 514, in exportDataProvenance
+    return toW3Cprov(tracelist,bundle)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 84, in toW3Cprov
+    bundle._attributes[prov['type']].add(vc["WFExecutionBundle"])
+AttributeError: 'ProvBundle' object has no attribute '_attributes'
+[2018-03-06 14:21:08 +0100] [99217] [INFO] Worker exiting (pid: 99217)
+[2018-03-06 14:21:08 +0100] [99268] [INFO] Booting worker with pid: 99268
+[2018-03-06 14:21:14 +0100] [99218] [INFO] Worker exiting (pid: 99218)
+[2018-03-06 14:21:14 +0100] [99269] [INFO] Booting worker with pid: 99269
+[2018-03-06 14:21:14 +0100] [99219] [INFO] Worker exiting (pid: 99219)
+[2018-03-06 14:21:14 +0100] [99270] [INFO] Booting worker with pid: 99270
+[2018-03-06 14:21:22 +0100] [99228] [INFO] Worker exiting (pid: 99228)
+[2018-03-06 14:21:22 +0100] [99276] [INFO] Booting worker with pid: 99276
+[2018-03-06 14:21:22 +0100] [99229] [INFO] Worker exiting (pid: 99229)
+[2018-03-06 14:21:22 +0100] [99277] [INFO] Booting worker with pid: 99277
+[2018-03-06 14:21:22 +0100] [99230] [INFO] Worker exiting (pid: 99230)
+[2018-03-06 14:21:22 +0100] [99231] [INFO] Worker exiting (pid: 99231)
+[2018-03-06 14:21:22 +0100] [99278] [INFO] Booting worker with pid: 99278
+[2018-03-06 14:21:22 +0100] [10709] [DEBUG] 8 workers
+[2018-03-06 14:21:22 +0100] [99279] [INFO] Booting worker with pid: 99279
+[2018-03-06 14:21:22 +0100] [99232] [INFO] Worker exiting (pid: 99232)
+[2018-03-06 14:21:22 +0100] [10709] [DEBUG] 9 workers
+[2018-03-06 14:21:22 +0100] [99280] [INFO] Booting worker with pid: 99280
+[2018-03-06 14:21:22 +0100] [99233] [INFO] Worker exiting (pid: 99233)
+[2018-03-06 14:21:22 +0100] [99234] [INFO] Worker exiting (pid: 99234)
+[2018-03-06 14:21:23 +0100] [10426] [DEBUG] 8 workers
+[2018-03-06 14:21:23 +0100] [99281] [INFO] Booting worker with pid: 99281
+[2018-03-06 14:21:23 +0100] [99282] [INFO] Booting worker with pid: 99282
+[2018-03-06 14:21:23 +0100] [10426] [DEBUG] 9 workers
+[2018-03-06 14:21:24 +0100] [99235] [INFO] Worker exiting (pid: 99235)
+[2018-03-06 14:21:24 +0100] [99283] [INFO] Booting worker with pid: 99283
+[2018-03-06 14:21:25 +0100] [99241] [INFO] Worker exiting (pid: 99241)
+[2018-03-06 14:21:25 +0100] [99289] [INFO] Booting worker with pid: 99289
+[2018-03-06 14:21:26 +0100] [99242] [INFO] Worker exiting (pid: 99242)
+[2018-03-06 14:21:26 +0100] [99290] [INFO] Booting worker with pid: 99290
+[2018-03-06 14:21:26 +0100] [99243] [INFO] Worker exiting (pid: 99243)
+[2018-03-06 14:21:26 +0100] [99244] [INFO] Worker exiting (pid: 99244)
+[2018-03-06 14:21:26 +0100] [99291] [INFO] Booting worker with pid: 99291
+[2018-03-06 14:21:26 +0100] [10426] [DEBUG] 8 workers
+[2018-03-06 14:21:26 +0100] [99292] [INFO] Booting worker with pid: 99292
+[2018-03-06 14:21:26 +0100] [99245] [INFO] Worker exiting (pid: 99245)
+[2018-03-06 14:21:26 +0100] [99293] [INFO] Booting worker with pid: 99293
+[2018-03-06 14:21:26 +0100] [10426] [DEBUG] 9 workers
+[2018-03-06 14:21:59 +0100] [99278] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:21:59 +0100] [99281] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:21:59 +0100] [99289] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:21:59 +0100] [99283] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:21:59 +0100] [99269] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:21:59 +0100] [99291] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:00 +0100] [99270] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:00 +0100] [99293] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:00 +0100] [99292] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:00 +0100] [99276] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:00 +0100] [99277] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:00 +0100] [99279] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:00 +0100] [99257] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:00 +0100] [99256] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:00 +0100] [99280] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:00 +0100] [99282] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:00 +0100] [99290] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:00 +0100] [99268] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:04 +0100] [99256] [INFO] Worker exiting (pid: 99256)
+[2018-03-06 14:22:04 +0100] [99279] [INFO] Worker exiting (pid: 99279)
+[2018-03-06 14:22:04 +0100] [99278] [INFO] Worker exiting (pid: 99278)
+[2018-03-06 14:22:04 +0100] [99257] [INFO] Worker exiting (pid: 99257)
+[2018-03-06 14:22:04 +0100] [99277] [INFO] Worker exiting (pid: 99277)
+[2018-03-06 14:22:04 +0100] [99270] [INFO] Worker exiting (pid: 99270)
+[2018-03-06 14:22:04 +0100] [99269] [INFO] Worker exiting (pid: 99269)
+[2018-03-06 14:22:04 +0100] [99268] [INFO] Worker exiting (pid: 99268)
+[2018-03-06 14:22:04 +0100] [99276] [INFO] Worker exiting (pid: 99276)
+[2018-03-06 14:22:04 +0100] [99309] [INFO] Booting worker with pid: 99309
+[2018-03-06 14:22:04 +0100] [99310] [INFO] Booting worker with pid: 99310
+[2018-03-06 14:22:04 +0100] [10709] [DEBUG] 8 workers
+[2018-03-06 14:22:04 +0100] [99311] [INFO] Booting worker with pid: 99311
+[2018-03-06 14:22:04 +0100] [99312] [INFO] Booting worker with pid: 99312
+[2018-03-06 14:22:04 +0100] [10709] [DEBUG] 9 workers
+[2018-03-06 14:22:04 +0100] [99313] [INFO] Booting worker with pid: 99313
+[2018-03-06 14:22:04 +0100] [99314] [INFO] Booting worker with pid: 99314
+[2018-03-06 14:22:04 +0100] [10709] [DEBUG] 8 workers
+[2018-03-06 14:22:04 +0100] [99315] [INFO] Booting worker with pid: 99315
+[2018-03-06 14:22:04 +0100] [99316] [INFO] Booting worker with pid: 99316
+[2018-03-06 14:22:04 +0100] [10709] [DEBUG] 9 workers
+[2018-03-06 14:22:05 +0100] [99320] [INFO] Booting worker with pid: 99320
+[2018-03-06 14:22:05 +0100] [99309] [DEBUG] GET /data/orfeus-as-97994-65308828-213e-11e8-91a9-f45c89acf865/export
+[2018-03-06 14:22:06 +0100] [99309] [ERROR] Error handling request /data/orfeus-as-97994-65308828-213e-11e8-91a9-f45c89acf865/export?level=200
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/sync.py", line 135, in handle
+    self.handle_request(listener, req, client, addr)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/sync.py", line 176, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask_apispec/annotations.py", line 117, in wrapped
+    return wrapper(*args, **kwargs)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask_apispec/wrapper.py", line 23, in __call__
+    response = self.call_view(*args, **kwargs)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask_apispec/wrapper.py", line 42, in call_view
+    return self.func(*args, **kwargs)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 429, in export_data_provenance
+    response = Response(str(app.db.exportDataProvenance(data_id,**kwargs)).encode('ascii','ignore'))
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 514, in exportDataProvenance
+    return toW3Cprov(tracelist,bundle)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 81, in toW3Cprov
+    bundle=g.bundle(knmi["Bundle_"+trace["runId"]],other_attributes={"prov:type":vc["WFExecutionBundle"]})
+TypeError: bundle() got an unexpected keyword argument 'other_attributes'
+[2018-03-06 14:22:23 +0100] [99280] [INFO] Worker exiting (pid: 99280)
+[2018-03-06 14:22:23 +0100] [99282] [INFO] Worker exiting (pid: 99282)
+[2018-03-06 14:22:23 +0100] [99281] [INFO] Worker exiting (pid: 99281)
+[2018-03-06 14:22:23 +0100] [99329] [INFO] Booting worker with pid: 99329
+[2018-03-06 14:22:23 +0100] [10426] [DEBUG] 8 workers
+[2018-03-06 14:22:23 +0100] [99330] [INFO] Booting worker with pid: 99330
+[2018-03-06 14:22:23 +0100] [99331] [INFO] Booting worker with pid: 99331
+[2018-03-06 14:22:23 +0100] [10426] [DEBUG] 9 workers
+[2018-03-06 14:22:24 +0100] [99283] [INFO] Worker exiting (pid: 99283)
+[2018-03-06 14:22:25 +0100] [99332] [INFO] Booting worker with pid: 99332
+[2018-03-06 14:22:25 +0100] [99289] [INFO] Worker exiting (pid: 99289)
+[2018-03-06 14:22:26 +0100] [99338] [INFO] Booting worker with pid: 99338
+[2018-03-06 14:22:27 +0100] [99290] [INFO] Worker exiting (pid: 99290)
+[2018-03-06 14:22:27 +0100] [99291] [INFO] Worker exiting (pid: 99291)
+[2018-03-06 14:22:27 +0100] [99292] [INFO] Worker exiting (pid: 99292)
+[2018-03-06 14:22:27 +0100] [99293] [INFO] Worker exiting (pid: 99293)
+[2018-03-06 14:22:27 +0100] [99339] [INFO] Booting worker with pid: 99339
+[2018-03-06 14:22:27 +0100] [99340] [INFO] Booting worker with pid: 99340
+[2018-03-06 14:22:27 +0100] [10426] [DEBUG] 8 workers
+[2018-03-06 14:22:27 +0100] [99341] [INFO] Booting worker with pid: 99341
+[2018-03-06 14:22:27 +0100] [99342] [INFO] Booting worker with pid: 99342
+[2018-03-06 14:22:27 +0100] [10426] [DEBUG] 9 workers
+[2018-03-06 14:22:57 +0100] [99314] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:57 +0100] [99320] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:57 +0100] [99339] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:57 +0100] [99340] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:58 +0100] [99311] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:58 +0100] [99309] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:58 +0100] [99310] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:58 +0100] [99341] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:58 +0100] [99313] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:58 +0100] [99332] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:58 +0100] [99342] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:58 +0100] [99338] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:58 +0100] [99315] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:58 +0100] [99316] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:58 +0100] [99312] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:58 +0100] [99331] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:58 +0100] [99329] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:22:58 +0100] [99330] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:23:05 +0100] [99310] [INFO] Worker exiting (pid: 99310)
+[2018-03-06 14:23:05 +0100] [99311] [INFO] Worker exiting (pid: 99311)
+[2018-03-06 14:23:06 +0100] [99309] [INFO] Worker exiting (pid: 99309)
+[2018-03-06 14:23:06 +0100] [99316] [INFO] Worker exiting (pid: 99316)
+[2018-03-06 14:23:06 +0100] [99312] [INFO] Worker exiting (pid: 99312)
+[2018-03-06 14:23:06 +0100] [99313] [INFO] Worker exiting (pid: 99313)
+[2018-03-06 14:23:06 +0100] [99314] [INFO] Worker exiting (pid: 99314)
+[2018-03-06 14:23:06 +0100] [99315] [INFO] Worker exiting (pid: 99315)
+[2018-03-06 14:23:06 +0100] [99320] [INFO] Worker exiting (pid: 99320)
+[2018-03-06 14:23:06 +0100] [99363] [INFO] Booting worker with pid: 99363
+[2018-03-06 14:23:06 +0100] [99364] [INFO] Booting worker with pid: 99364
+[2018-03-06 14:23:06 +0100] [99365] [INFO] Booting worker with pid: 99365
+[2018-03-06 14:23:06 +0100] [99366] [INFO] Booting worker with pid: 99366
+[2018-03-06 14:23:06 +0100] [99367] [INFO] Booting worker with pid: 99367
+[2018-03-06 14:23:06 +0100] [10709] [DEBUG] 7 workers
+[2018-03-06 14:23:06 +0100] [99368] [INFO] Booting worker with pid: 99368
+[2018-03-06 14:23:06 +0100] [99369] [INFO] Booting worker with pid: 99369
+[2018-03-06 14:23:06 +0100] [10709] [DEBUG] 8 workers
+[2018-03-06 14:23:06 +0100] [99370] [INFO] Booting worker with pid: 99370
+[2018-03-06 14:23:06 +0100] [99371] [INFO] Booting worker with pid: 99371
+[2018-03-06 14:23:06 +0100] [10709] [DEBUG] 9 workers
+[2018-03-06 14:23:12 +0100] [99366] [DEBUG] GET /data/orfeus-as-97994-65308828-213e-11e8-91a9-f45c89acf865/export
+[2018-03-06 14:23:12 +0100] [99366] [ERROR] Error handling request /data/orfeus-as-97994-65308828-213e-11e8-91a9-f45c89acf865/export?level=200
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/sync.py", line 135, in handle
+    self.handle_request(listener, req, client, addr)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/sync.py", line 176, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask_apispec/annotations.py", line 117, in wrapped
+    return wrapper(*args, **kwargs)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask_apispec/wrapper.py", line 23, in __call__
+    response = self.call_view(*args, **kwargs)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask_apispec/wrapper.py", line 42, in call_view
+    return self.func(*args, **kwargs)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 429, in export_data_provenance
+    response = Response(str(app.db.exportDataProvenance(data_id,**kwargs)).encode('ascii','ignore'))
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 514, in exportDataProvenance
+    return toW3Cprov(tracelist,bundle)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 81, in toW3Cprov
+    bundle=g.bundle(knmi["Bundle_"+trace["runId"]],attributes={"prov:type":vc["WFExecutionBundle"]})
+TypeError: bundle() got an unexpected keyword argument 'attributes'
+[2018-03-06 14:23:23 +0100] [99363] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:23:23 +0100] [99364] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:23:23 +0100] [99367] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:23:24 +0100] [99365] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:23:24 +0100] [99366] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:23:24 +0100] [99368] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:23:24 +0100] [99369] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:23:24 +0100] [99370] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:23:24 +0100] [99371] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:23:24 +0100] [99329] [INFO] Worker exiting (pid: 99329)
+[2018-03-06 14:23:24 +0100] [99330] [INFO] Worker exiting (pid: 99330)
+[2018-03-06 14:23:24 +0100] [99331] [INFO] Worker exiting (pid: 99331)
+[2018-03-06 14:23:24 +0100] [99377] [INFO] Booting worker with pid: 99377
+[2018-03-06 14:23:24 +0100] [10426] [DEBUG] 7 workers
+[2018-03-06 14:23:24 +0100] [99378] [INFO] Booting worker with pid: 99378
+[2018-03-06 14:23:24 +0100] [99379] [INFO] Booting worker with pid: 99379
+[2018-03-06 14:23:24 +0100] [10426] [DEBUG] 9 workers
+[2018-03-06 14:23:25 +0100] [99332] [INFO] Worker exiting (pid: 99332)
+[2018-03-06 14:23:25 +0100] [99385] [INFO] Booting worker with pid: 99385
+[2018-03-06 14:23:26 +0100] [99338] [INFO] Worker exiting (pid: 99338)
+[2018-03-06 14:23:26 +0100] [99386] [INFO] Booting worker with pid: 99386
+[2018-03-06 14:23:27 +0100] [99371] [INFO] Worker exiting (pid: 99371)
+[2018-03-06 14:23:27 +0100] [99366] [INFO] Worker exiting (pid: 99366)
+[2018-03-06 14:23:27 +0100] [99363] [INFO] Worker exiting (pid: 99363)
+[2018-03-06 14:23:27 +0100] [99364] [INFO] Worker exiting (pid: 99364)
+[2018-03-06 14:23:27 +0100] [99369] [INFO] Worker exiting (pid: 99369)
+[2018-03-06 14:23:27 +0100] [99365] [INFO] Worker exiting (pid: 99365)
+[2018-03-06 14:23:27 +0100] [99368] [INFO] Worker exiting (pid: 99368)
+[2018-03-06 14:23:27 +0100] [99370] [INFO] Worker exiting (pid: 99370)
+[2018-03-06 14:23:27 +0100] [99367] [INFO] Worker exiting (pid: 99367)
+[2018-03-06 14:23:27 +0100] [99387] [INFO] Booting worker with pid: 99387
+[2018-03-06 14:23:28 +0100] [99339] [INFO] Worker exiting (pid: 99339)
+[2018-03-06 14:23:28 +0100] [99341] [INFO] Worker exiting (pid: 99341)
+[2018-03-06 14:23:28 +0100] [99342] [INFO] Worker exiting (pid: 99342)
+[2018-03-06 14:23:28 +0100] [99340] [INFO] Worker exiting (pid: 99340)
+[2018-03-06 14:23:28 +0100] [99388] [INFO] Booting worker with pid: 99388
+[2018-03-06 14:23:28 +0100] [99389] [INFO] Booting worker with pid: 99389
+[2018-03-06 14:23:28 +0100] [99387] [DEBUG] GET /data/orfeus-as-97994-65308828-213e-11e8-91a9-f45c89acf865/export
+[2018-03-06 14:23:28 +0100] [99390] [INFO] Booting worker with pid: 99390
+[2018-03-06 14:23:28 +0100] [10709] [DEBUG] 8 workers
+[2018-03-06 14:23:28 +0100] [99391] [INFO] Booting worker with pid: 99391
+[2018-03-06 14:23:28 +0100] [99392] [INFO] Booting worker with pid: 99392
+[2018-03-06 14:23:28 +0100] [99393] [INFO] Booting worker with pid: 99393
+[2018-03-06 14:23:28 +0100] [99394] [INFO] Booting worker with pid: 99394
+[2018-03-06 14:23:28 +0100] [10709] [DEBUG] 9 workers
+[2018-03-06 14:23:28 +0100] [99395] [INFO] Booting worker with pid: 99395
+[2018-03-06 14:23:28 +0100] [99396] [INFO] Booting worker with pid: 99396
+[2018-03-06 14:23:28 +0100] [99397] [INFO] Booting worker with pid: 99397
+[2018-03-06 14:23:28 +0100] [99387] [ERROR] Error handling request /data/orfeus-as-97994-65308828-213e-11e8-91a9-f45c89acf865/export?level=200
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/sync.py", line 135, in handle
+    self.handle_request(listener, req, client, addr)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/sync.py", line 176, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask_apispec/annotations.py", line 117, in wrapped
+    return wrapper(*args, **kwargs)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask_apispec/wrapper.py", line 23, in __call__
+    response = self.call_view(*args, **kwargs)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask_apispec/wrapper.py", line 42, in call_view
+    return self.func(*args, **kwargs)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 429, in export_data_provenance
+    response = Response(str(app.db.exportDataProvenance(data_id,**kwargs)).encode('ascii','ignore'))
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 514, in exportDataProvenance
+    return toW3Cprov(tracelist,bundle)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 81, in toW3Cprov
+    bundle=g.bundle(knmi["Bundle_"+trace["runId"]],{"prov:type":vc["WFExecutionBundle"]})
+TypeError: bundle() takes exactly 2 arguments (3 given)
+[2018-03-06 14:23:28 +0100] [99398] [INFO] Booting worker with pid: 99398
+[2018-03-06 14:23:28 +0100] [99399] [INFO] Booting worker with pid: 99399
+[2018-03-06 14:37:25 +0100] [99394] [DEBUG] GET /workflowexecutions/CAW_JUP_orfeus-as-97994-633d1928-213e-11e8-b7fb-f45c89acf865
+[2018-03-06 14:37:48 +0100] [99393] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:37:48 +0100] [99394] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:38:00 +0100] [99393] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:38:00 +0100] [99387] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:38:33 +0100] [99390] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:38:33 +0100] [99395] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:38:33 +0100] [99390] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:38:33 +0100] [99394] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:38:40 +0100] [99394] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:38:40 +0100] [99387] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:38:48 +0100] [99394] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:38:48 +0100] [99393] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:38:53 +0100] [99393] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:38:53 +0100] [99391] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:38:57 +0100] [99394] [DEBUG] GET /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536/showactivity
+[2018-03-06 14:39:00 +0100] [99394] [DEBUG] GET /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536
+[2018-03-06 14:39:07 +0100] [99394] [DEBUG] GET /workflowexecutions/download_abruzzo160000_1443707335437_1447780147623/showactivity
+[2018-03-06 14:39:08 +0100] [99392] [DEBUG] GET /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536/showactivity
+[2018-03-06 14:39:23 +0100] [99392] [DEBUG] GET /workflow/export/processing_abruzzo16000000000_1456299744469_1460467117601
+[2018-03-06 14:41:58 +0100] [99391] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:41:58 +0100] [99393] [DEBUG] GET /terms
+[2018-03-06 14:42:12 +0100] [99394] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:42:12 +0100] [99392] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:42:15 +0100] [99394] [DEBUG] GET /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536/showactivity
+[2018-03-06 14:42:19 +0100] [99388] [DEBUG] GET /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536
+[2018-03-06 14:42:30 +0100] [99388] [DEBUG] GET /workflow/export/simulation_abruzzo16000000000_1456299744469
+[2018-03-06 14:48:14 +0100] [99389] [DEBUG] GET /workflow/export/simulation_abruzzo16000000000_1456299744469
+[2018-03-06 14:51:23 +0100] [99395] [DEBUG] GET /terms
+[2018-03-06 14:51:23 +0100] [99394] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:51:39 +0100] [99390] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:51:39 +0100] [99392] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:51:52 +0100] [99390] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:51:52 +0100] [99389] [DEBUG] GET /workflowexecutions
+[2018-03-06 14:51:54 +0100] [99392] [DEBUG] GET /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536/showactivity
+[2018-03-06 14:51:57 +0100] [99391] [DEBUG] GET /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536/export
+[2018-03-06 14:51:57 +0100] [99391] [ERROR] Error handling request /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536/export?format=rdf
+Traceback (most recent call last):
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/sync.py", line 135, in handle
+    self.handle_request(listener, req, client, addr)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/gunicorn/workers/sync.py", line 176, in handle_request
+    respiter = self.wsgi(environ, resp.start_response)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1997, in __call__
+    return self.wsgi_app(environ, start_response)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1985, in wsgi_app
+    response = self.handle_exception(e)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1540, in handle_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1982, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1614, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1517, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1612, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask/app.py", line 1598, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask_apispec/annotations.py", line 117, in wrapped
+    return wrapper(*args, **kwargs)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask_apispec/wrapper.py", line 23, in __call__
+    response = self.call_view(*args, **kwargs)
+  File "/Users/aspinuso2/Library/Enthought/Canopy_64bit/User/lib/python2.7/site-packages/flask_apispec/wrapper.py", line 42, in call_view
+    return self.func(*args, **kwargs)
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/flask_raas.py", line 442, in export_run_provenance
+    response = Response(str(app.db.exportRunProvenance(run_id,**kwargs)).encode('ascii','ignore'))
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 538, in exportRunProvenance
+    return toW3Cprov(lineage,[bundle],format = kwargs['format'])
+  File "/Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py", line 81, in toW3Cprov
+    bundle=g.bundle(knmi["Bundle_"+trace["runId"]],{"prov:type":vc["WFExecutionBundle"]})
+TypeError: bundle() takes exactly 2 arguments (3 given)
+[2018-03-06 14:52:32 +0100] [99385] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:32 +0100] [99379] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:32 +0100] [99399] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:32 +0100] [99393] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:32 +0100] [99386] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:33 +0100] [99396] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:33 +0100] [99398] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:33 +0100] [99388] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:33 +0100] [99397] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:33 +0100] [99390] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:33 +0100] [99394] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:33 +0100] [99395] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:33 +0100] [99389] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:33 +0100] [99387] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:33 +0100] [99392] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:33 +0100] [99377] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:33 +0100] [99378] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:33 +0100] [99391] [INFO] Worker reloading: /Users/aspinuso2/github/s-provenance/provenance-api/src/prov-services/provenance.py modified
+[2018-03-06 14:52:37 +0100] [99388] [INFO] Worker exiting (pid: 99388)
+[2018-03-06 14:52:37 +0100] [99394] [INFO] Worker exiting (pid: 99394)
+[2018-03-06 14:52:37 +0100] [99393] [INFO] Worker exiting (pid: 99393)
+[2018-03-06 14:52:37 +0100] [99387] [INFO] Worker exiting (pid: 99387)
+[2018-03-06 14:52:37 +0100] [99391] [INFO] Worker exiting (pid: 99391)
+[2018-03-06 14:52:37 +0100] [99390] [INFO] Worker exiting (pid: 99390)
+[2018-03-06 14:52:37 +0100] [99389] [INFO] Worker exiting (pid: 99389)
+[2018-03-06 14:52:37 +0100] [99395] [INFO] Worker exiting (pid: 99395)
+[2018-03-06 14:52:37 +0100] [99392] [INFO] Worker exiting (pid: 99392)
+[2018-03-06 14:52:37 +0100] [665] [INFO] Booting worker with pid: 665
+[2018-03-06 14:52:37 +0100] [666] [INFO] Booting worker with pid: 666
+[2018-03-06 14:52:37 +0100] [10709] [DEBUG] 8 workers
+[2018-03-06 14:52:37 +0100] [668] [INFO] Booting worker with pid: 668
+[2018-03-06 14:52:37 +0100] [670] [INFO] Booting worker with pid: 670
+[2018-03-06 14:52:37 +0100] [10709] [DEBUG] 9 workers
+[2018-03-06 14:52:37 +0100] [671] [INFO] Booting worker with pid: 671
+[2018-03-06 14:52:37 +0100] [10709] [DEBUG] 6 workers
+[2018-03-06 14:52:37 +0100] [673] [INFO] Booting worker with pid: 673
+[2018-03-06 14:52:37 +0100] [676] [INFO] Booting worker with pid: 676
+[2018-03-06 14:52:38 +0100] [677] [INFO] Booting worker with pid: 677
+[2018-03-06 14:52:38 +0100] [10709] [DEBUG] 8 workers
+[2018-03-06 14:52:38 +0100] [678] [INFO] Booting worker with pid: 678
+[2018-03-06 14:52:38 +0100] [10709] [DEBUG] 9 workers
+[2018-03-06 14:52:39 +0100] [670] [DEBUG] GET /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536/export
+[2018-03-06 14:53:09 +0100] [678] [DEBUG] GET /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536/export
+[2018-03-06 14:53:14 +0100] [678] [DEBUG] GET /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536
+[2018-03-06 14:53:25 +0100] [99377] [INFO] Worker exiting (pid: 99377)
+[2018-03-06 14:53:25 +0100] [99378] [INFO] Worker exiting (pid: 99378)
+[2018-03-06 14:53:25 +0100] [99379] [INFO] Worker exiting (pid: 99379)
+[2018-03-06 14:53:25 +0100] [709] [INFO] Booting worker with pid: 709
+[2018-03-06 14:53:25 +0100] [710] [INFO] Booting worker with pid: 710
+[2018-03-06 14:53:25 +0100] [10426] [DEBUG] 8 workers
+[2018-03-06 14:53:25 +0100] [711] [INFO] Booting worker with pid: 711
+[2018-03-06 14:53:25 +0100] [10426] [DEBUG] 9 workers
+[2018-03-06 14:53:26 +0100] [99385] [INFO] Worker exiting (pid: 99385)
+[2018-03-06 14:53:26 +0100] [712] [INFO] Booting worker with pid: 712
+[2018-03-06 14:53:27 +0100] [99386] [INFO] Worker exiting (pid: 99386)
+[2018-03-06 14:53:27 +0100] [727] [INFO] Booting worker with pid: 727
+[2018-03-06 14:53:30 +0100] [99396] [INFO] Worker exiting (pid: 99396)
+[2018-03-06 14:53:30 +0100] [99397] [INFO] Worker exiting (pid: 99397)
+[2018-03-06 14:53:30 +0100] [99398] [INFO] Worker exiting (pid: 99398)
+[2018-03-06 14:53:30 +0100] [99399] [INFO] Worker exiting (pid: 99399)
+[2018-03-06 14:53:30 +0100] [728] [INFO] Booting worker with pid: 728
+[2018-03-06 14:53:30 +0100] [10426] [DEBUG] 8 workers
+[2018-03-06 14:53:30 +0100] [729] [INFO] Booting worker with pid: 729
+[2018-03-06 14:53:30 +0100] [10426] [DEBUG] 9 workers
+[2018-03-06 14:53:30 +0100] [730] [INFO] Booting worker with pid: 730
+[2018-03-06 14:53:30 +0100] [731] [INFO] Booting worker with pid: 731
+[2018-03-06 14:53:31 +0100] [678] [DEBUG] GET /data
+[2018-03-06 15:03:15 +0100] [677] [DEBUG] GET /workflowexecutions
+[2018-03-06 15:03:15 +0100] [678] [DEBUG] GET /terms
+[2018-03-06 15:03:17 +0100] [678] [DEBUG] GET /workflowexecutions/CAW_JUP_orfeus-as-97994-633d1928-213e-11e8-b7fb-f45c89acf865/showactivity
+[2018-03-06 15:03:19 +0100] [671] [DEBUG] GET /workflowexecutions/JUP_COMBINE_orfeus-as-83893-950f1147-20d4-11e8-b1ba-f45c89acf865/showactivity
+[2018-03-06 15:03:36 +0100] [671] [DEBUG] GET /workflowexecutions
+[2018-03-06 15:03:36 +0100] [678] [DEBUG] GET /workflowexecutions
+[2018-03-06 15:03:38 +0100] [671] [DEBUG] GET /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536/showactivity
+[2018-03-06 15:03:43 +0100] [676] [DEBUG] GET /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536
+[2018-03-06 15:08:26 +0100] [677] [DEBUG] GET /workflowexecutions/processing_abruzzo16000000000_1456299744469_1460467117601/showactivity
+[2018-03-06 15:08:26 +0100] [677] [DEBUG] GET /workflowexecutions/processing_abruzzo16000000000_1456299744469_1460467117601/showactivity
+[2018-03-06 15:08:27 +0100] [677] [DEBUG] GET /workflowexecutions/download_abruzzo160000_1443707335437_1447780147623/showactivity
+[2018-03-06 15:08:30 +0100] [678] [DEBUG] GET /workflowexecutions/simulation_abruzzo16000000000_1456299744469/showactivity
+[2018-03-06 15:08:53 +0100] [668] [DEBUG] GET /workflowexecutions/simulation_abruzzo16000000000_1456299744469
+[2018-03-06 15:09:04 +0100] [668] [DEBUG] GET /workflowexecutions/simulation_abruzzo16000000000_1456299744469
+[2018-03-06 15:09:07 +0100] [668] [DEBUG] GET /workflowexecutions/simulation_abruzzo16000000000_1456299744469
+[2018-03-06 15:09:44 +0100] [673] [DEBUG] GET /workflowexecutions
+[2018-03-06 15:10:06 +0100] [676] [DEBUG] GET /workflowexecutions
+[2018-03-06 15:10:06 +0100] [666] [DEBUG] GET /workflowexecutions
+[2018-03-06 15:10:09 +0100] [668] [DEBUG] GET /workflowexecutions/simulation_abruzzo16000000000_1456299744469
+[2018-03-06 15:10:18 +0100] [668] [DEBUG] GET /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536/showactivity
+[2018-03-06 15:10:21 +0100] [666] [DEBUG] GET /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536
+[2018-03-06 15:10:27 +0100] [670] [DEBUG] GET /workflowexecutions/misfit_abruzzo16000000000_1456299744469_1460467117601_1460562860536
+[2018-03-06 15:11:37 +0100] [677] [DEBUG] GET /workflowexecutions
+[2018-03-06 15:11:37 +0100] [665] [DEBUG] GET /terms
+[2018-03-06 15:11:38 +0100] [677] [DEBUG] GET /workflowexecutions/CAW_JUP_orfeus-as-97994-633d1928-213e-11e8-b7fb-f45c89acf865/showactivity

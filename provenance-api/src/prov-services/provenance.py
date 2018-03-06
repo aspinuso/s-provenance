@@ -48,7 +48,7 @@ def resolveMissingTerms(trace):
     return trace
      
      
-def toW3Cprov(ling,bundl,format='xml'):
+def toW3Cprov(ling,bundl,format='xml',mode="run"):
         entities={}
         g = ProvDocument()
         vc = Namespace("s-prov", "http://s-prov/ns/#")  # namespaces do not need to be explicitly added to a document

@@ -28,6 +28,8 @@ var mimetypesStore = Ext.create('CF.store.Mimetype');
 
 var modeStore = Ext.create('CF.store.ModeStore');
 
+var mon_level="instance"
+
 // specifies the userhome of whom we are going to access the data from (for sharing purposes)
 owner = userSN
 var dn_regex=/file:\/\/?([\w-]|([\da-z\.-]+)\.([a-z\.]{2,6}))+/
@@ -80,7 +82,7 @@ function openRun(id)
       this.currentRun=id
         activityStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + '/workflowexecutions/'+encodeURIComponent(currentRun)+'/showactivity',
+          url: PROV_SERVICE_BASEURL + '/workflowexecutions/'+encodeURIComponent(currentRun)+'/showactivity?level='+mon_level,
           
 
           reader: {
@@ -746,7 +748,7 @@ Ext.define('CF.view.ActivityMonitor', {
 
       handler: openRun
     }, {
-      tooltip: 'View Run Inputs',
+      tooltip: 'View Run Inputs',  
       text: 'View Inputs',
       id: 'viewworkflowinput',
       disabled: 'true',
@@ -793,7 +795,7 @@ Ext.define('CF.view.ActivityMonitor', {
         id: 'exportrun',
 
         handler: function() {
-         window.open(PROV_SERVICE_BASEURL + 'workflowexecutions/'+encodeURIComponent(currentRun)+'/export?'+'all=True', 'Download')
+         window.open(PROV_SERVICE_BASEURL + 'workflowexecutions/'+encodeURIComponent(currentRun)+'/export?format=rdf', 'Download')
           
       }
     },
@@ -1394,7 +1396,7 @@ var renderStream = function(value, p, record) {
   console.log(record)
   var location = "</br>"
   var contenthtm = ""
-  var prov='<a href=\"'+PROV_SERVICE_BASEURL + '/data/'+record.data.ID+'/export?all=true\" target=\"_blank">Download Provenance</a><br/>'
+  var prov='<a href=\"'+PROV_SERVICE_BASEURL + '/data/'+record.data.ID+'/export?level=200\" target=\"_blank">Download Provenance</a><br/>'
 
   if (record.data.location != "") {
     location = '<a href="javascript:viewData(\'' + record.data.location + '\'.split(\',\'),true)">Open</a><br/>'
@@ -1495,7 +1497,6 @@ var renderWorkflowInput = function(value, p, record) {
     
     return Ext.String.format(
     '<br/><strong>Workflow: </strong>{0} - <a href="javascript:openRun(\'{3}\')">{3}</a><br/><br/>' +
-    '<strong><a href="{1}" target="_blank">Get W3C-PROV Document</a><br/><br/>' +
     '<strong><a href="javascript: openRun(\'{4}\')">Refresh Current</a><br/>',
     record.data.name,
     record.data.url,
