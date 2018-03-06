@@ -331,7 +331,7 @@ def toW3Cprov(ling,bundl,format='xml'):
                              
                             cla=g._namespaces[y['prov:type'].split(':')[0]]
                             e1._attributes[prov['type']].add(cla[y['prov:type'].split(':')[1]])
-                            print(e1._attributes)
+                            #print(e1._attributes)
                          
                         bundle.hadMember(knmi["Data_"+x["id"]], e1)
                     
@@ -488,7 +488,7 @@ class ProvenanceStore(object):
     
     
     
-    def exportDataProvenance(self, id,**kwargs):
+    def exportDataProvenance(self, id, **kwargs):
         
         
         # db = self.connection["verce-prov"]
@@ -497,20 +497,17 @@ class ProvenanceStore(object):
         totalCount=self.lineage.find({'runId':id}).count()
         
         tracelist=[]
-        if 'all' in kwargs and kwargs['all'][0].upper()=='TRUE':
-             
-            self.getTraceList(id, 10000,tracelist) 
-        elif 'level' in kwargs:  
-            self.getTraceList(id, helper.num(kwargs['level'][0]),tracelist) 
+        if 'level' in kwargs:  
+            self.getTraceList(id, helper.num(kwargs['level']),tracelist) 
             
               #self.lineage.find({'runId':id}).sort("endTime",direction=-1)
             
         bundle=self.workflow.find({"_id":tracelist[0]['runId']}).sort("startTime",direction=-1)
         
         if 'format' in kwargs:
-            return toW3Cprov(tracelist,bundle,format = kwargs['format'][0]),0
+            return toW3Cprov(tracelist,bundle,format = kwargs['format'])
         else:
-            return toW3Cprov(tracelist,bundle),0
+            return toW3Cprov(tracelist,bundle)
             
             
     
@@ -524,29 +521,22 @@ class ProvenanceStore(object):
         #totalCount=self.lineage.find({'runId':id}).count()
         cursorsList=list()
         
-        if 'all' in kwargs and kwargs['all'][0].upper()=='TRUE':
+       
+        bundle=self.workflow.find_one({"_id":id})
+        username=bundle['username']
+        lineage=self.lineage.find({'runId':id,'username':username})
+        #.sort("endTime",direction=-1)
+         
+       # bundle=self.workflow.find({"_id":id}).sort("startTime",direction=-1)
+        
+        if 'format' in kwargs:
 
-
-            bundle=self.workflow.find_one({"_id":id})
-            username=bundle['username']
-            lineage=self.lineage.find({'runId':id,'username':username})
-            #.sort("endTime",direction=-1)
-             
-           # bundle=self.workflow.find({"_id":id}).sort("startTime",direction=-1)
+            return toW3Cprov(lineage,[bundle],format = kwargs['format'])
+        else:
             
-            if 'format' in kwargs:
-
-                return toW3Cprov(lineage,[bundle],format = kwargs['format'][0]),0
-            else:
-                
-                return toW3Cprov(lineage,[bundle]),0
+            return toW3Cprov(lineage,[bundle])
             
-                    
-                    
-        output = {"w3c-prov":exportDocList};
-        output.update({"totalCount": totalCount})
-      
-        return  (output,totalCount)
+       
     
     def exportAllRunProvenance(self, id,**kwargs):
         
@@ -1336,7 +1326,7 @@ class ProvenanceStore(object):
                 elementsDict.update({x:maxval})
             else:
                 elementsDict.update({x:{"$lte":maxval,"$gte":minval }})
-        print elementsDict
+        #print elementsDict
         xx = self.lineage.find_one({"streams.id":id},{"runId":1,"derivationIds":1});
         if xx!= None and len(xx["derivationIds"])>0:    
             for derid in xx["derivationIds"]:
@@ -1430,7 +1420,7 @@ class ProvenanceStore(object):
         tags=None
         run=None
         users=None
-        print(kwargs)
+        #print(kwargs)
 
         if 'runId' in kwargs:
              runId = kwargs['runId']
@@ -1516,7 +1506,7 @@ class ProvenanceStore(object):
                 try:
                     
                     trigger_cursor=self.workflow.aggregate(pipeline=[{'$match':{'_id':x['_id']['runId']}},{'$unwind':'$input'},{'$match':{'$or':[{'input.prov:type':'wfrun'},{'input.prov-type':'wfrun'}]}},{'$project':{'input.url':1,'_id':0}}])
-                    print 'TRIG '+str(x['_id'])+' '+ json.dumps(triggers)
+                    #print 'TRIG '+str(x['_id'])+' '+ json.dumps(triggers)
                 except:
                     traceback.print_exc()
                     triggers=[]
@@ -1532,7 +1522,7 @@ class ProvenanceStore(object):
                         #print "wfname"+str(wfitem['workflowName'])
                 except:
                     traceback.print_exc()
-                    print "wf ID "+str(x['_id']['runId'])+" not found inf workflow collection"
+                    #print "wf ID "+str(x['_id']['runId'])+" not found inf workflow collection"
                     del x
                     continue
                      
@@ -1547,7 +1537,7 @@ class ProvenanceStore(object):
             triggers=[]
             
             for t in trigger_cursor:
-                print(t)
+                #print(t)
                 if '_id' in t and t['_id']!=None:
                     
                     
@@ -1594,7 +1584,7 @@ class ProvenanceStore(object):
                     
                 x.update({'name':x['_id'], 'connlist':pelist})
                 
-                print "connections done for: "+str(x['_id'])+" PES:"+str(pelist)
+                #print "connections done for: "+str(x['_id'])+" PES:"+str(pelist)
                 #print "size for: "+str(x['_id'])+" PES:"+str(pelist)
                 
                 
@@ -1658,7 +1648,7 @@ class ProvenanceStore(object):
                     }
                 }
             ]
-            print(aggregate_pipeline)
+            #print(aggregate_pipeline)
             aggregate_results = self.lineage.aggregate(pipeline=aggregate_pipeline)
             for aggregate_result in aggregate_results:    
                 obj.append(aggregate_result)
