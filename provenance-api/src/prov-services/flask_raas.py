@@ -94,7 +94,6 @@ def filter_on_ancestor():
 @use_kwargs({'prov': fields.Str()})
 def insert_provenance(**kwargs):
         
-        print("DADADA "+str(kwargs))
          
         payload = kwargs["prov"] if "prov" in kwargs else request.content.read()
         payload = json.loads(str(payload))
@@ -217,7 +216,7 @@ def get_instances_monitoring(runid,**kwargs):
     return response
 
 levelargsnp=dict({"level":fields.Str(required=True)})
-levelargs=dict({"level":fields.Str(required=True)},**paging)
+levelargs=dict({"level":fields.Str()},**paging)
 
 @app.route("/workflowexecutions/<runid>/showactivity")
 @use_kwargs(levelargs)
@@ -421,19 +420,32 @@ def summaries_handler_collab(**kwargs):
 
 
 
-
+export=dict({'format':fields.Str()},**levelargsnp)
 # EXPORT to PROV methods
 @app.route("/data/<data_id>/export")
 @doc(params={'level': {'description': 'The number of dependencies levels to extract'}})
-@use_kwargs(levelargs)
-@marshal_with(PetSchema(many=True))
+@use_kwargs(export)
 def export_data_provenance(data_id,**kwargs):
-    return exportDataProvenance(data_id,kwargs)
+    response = Response(str(app.db.exportDataProvenance(data_id,**kwargs)).encode('ascii','ignore'))
+    if 'format' in kwargs and kwargs['format']=='rdf':
+        response.headers['Content-type'] = 'application/turtle' 
+
+    else:
+        response.headers['Content-type'] = 'application/xml' 
+    return response
 
 
+format=dict({'format':fields.Str()})
 @app.route("/workflowexecutions/<run_id>/export")
-def export_run_provenance(run_id):
-    return exportRunProvenance(run_id)
+@use_kwargs(format)
+def export_run_provenance(run_id,**kwargs):
+    response = Response(str(app.db.exportRunProvenance(run_id,**kwargs)).encode('ascii','ignore'))
+    if 'format' in kwargs and kwargs['format']=='rdf':
+        response.headers['Content-type'] = 'application/turtle' 
+    else:
+        response.headers['Content-type'] = 'application/xml' 
+    return response
+
 
 @app.errorhandler(422)
 def handle_validation_error(err):
