@@ -1,6 +1,6 @@
 {
   "definitions": {}, 
-  "description": "S-ProvFlow provenance api Provenance framework for storage and access of data-intensive streaming lineage. It offers a a web API and a range of dedicated visualisation tools and a provenance model (S-PROV) which utilises and extends PROV and ProvONE model", 
+  "description": "S-ProvFlow provenance API - Provenance framework for storage and access of data-intensive streaming lineage. It offers a a web API and a range of dedicated visualisation tools and a provenance model (S-PROV) which utilises and extends PROV and ProvONE model", 
   "info": {
     "title": "s-prov", 
     "version": "v1"
@@ -240,22 +240,15 @@
             "required": false, 
             "schema": {
               "properties": {
-                "level": {
+                "format": {
                   "type": "string"
                 }, 
-                "limit": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "start": {
-                  "format": "int32", 
-                  "type": "integer"
+                "level": {
+                  "type": "string"
                 }
               }, 
               "required": [
-                "level", 
-                "limit", 
-                "start"
+                "level"
               ], 
               "type": "object"
             }
@@ -267,28 +260,7 @@
             "type": "string"
           }
         ], 
-        "responses": {
-          "default": {
-            "description": "", 
-            "schema": {
-              "items": {
-                "properties": {
-                  "category": {
-                    "type": "string"
-                  }, 
-                  "name": {
-                    "type": "string"
-                  }, 
-                  "size": {
-                    "type": "string"
-                  }
-                }, 
-                "type": "object"
-              }, 
-              "type": "array"
-            }
-          }
-        }
+        "responses": {}
       }, 
       "options": {
         "parameters": [
@@ -298,22 +270,15 @@
             "required": false, 
             "schema": {
               "properties": {
-                "level": {
+                "format": {
                   "type": "string"
                 }, 
-                "limit": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "start": {
-                  "format": "int32", 
-                  "type": "integer"
+                "level": {
+                  "type": "string"
                 }
               }, 
               "required": [
-                "level", 
-                "limit", 
-                "start"
+                "level"
               ], 
               "type": "object"
             }
@@ -325,28 +290,7 @@
             "type": "string"
           }
         ], 
-        "responses": {
-          "default": {
-            "description": "", 
-            "schema": {
-              "items": {
-                "properties": {
-                  "category": {
-                    "type": "string"
-                  }, 
-                  "name": {
-                    "type": "string"
-                  }, 
-                  "size": {
-                    "type": "string"
-                  }
-                }, 
-                "type": "object"
-              }, 
-              "type": "array"
-            }
-          }
-        }
+        "responses": {}
       }
     }, 
     "/data/{data_id}/wasDerivedFrom": {
@@ -781,6 +725,19 @@
       "get": {
         "parameters": [
           {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "format": {
+                  "type": "string"
+                }
+              }, 
+              "type": "object"
+            }
+          }, 
+          {
             "in": "path", 
             "name": "run_id", 
             "required": true, 
@@ -791,6 +748,19 @@
       }, 
       "options": {
         "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "format": {
+                  "type": "string"
+                }
+              }, 
+              "type": "object"
+            }
+          }, 
           {
             "in": "path", 
             "name": "run_id", 
@@ -1006,7 +976,6 @@
                 }
               }, 
               "required": [
-                "level", 
                 "limit", 
                 "start"
               ], 
@@ -1043,7 +1012,6 @@
                 }
               }, 
               "required": [
-                "level", 
                 "limit", 
                 "start"
               ], 
