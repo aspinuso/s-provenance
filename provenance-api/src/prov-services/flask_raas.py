@@ -387,40 +387,43 @@ def export_data_provenance(data_id,**kwargs):
     return response
 
 queryargsanc=dict(dict({'ids':fields.Str()},**queryargsnp),**levelargsnp)
-@app.route("/data/filterOnAncestor", methods=['GET','POST'])
+@app.route("/data/filterOnAncestor", methods=['POST'])
 @use_kwargs(queryargsanc)
 def filter_on_ancestor(**kwargs):
+
         keylist = None
         vluelist= None
         mxvaluelist= None
         mnvaluelist= None
         idlist=None
         level=None
-        response = Response()
+       
 
-        if request.method == 'POST':
-            try:
-                memory_file = StringIO.StringIO(kwargs['ids']);
-                idlist = csv.reader(memory_file).next()
-                memory_file = StringIO.StringIO(kwargs['terms']);
-                keylist = csv.reader(memory_file).next()
-            #if (self.path=="values-range"):
-                memory_file = StringIO.StringIO(kwargs['maxvalues']) if 'maxvalues' in kwargs else None
-                mxvaluelist = csv.reader(memory_file).next()
-                memory_file2 = StringIO.StringIO(kwargs['minvalues']) if 'minvalues' in kwargs else None
-                mnvaluelist = csv.reader(memory_file2).next()
-                #memory_file2 = StringIO.StringIO(kwargs['values']) if 'values' in kwargs else None
-                vluelist = csv.reader(memory_file2).next()
-                #dataid =StringIO.StringIO(kwargs['dataid']) if 'dataid' in kwargs else None
-                level =StringIO.StringIO(kwargs['level']) if 'level' in kwargs else None
-        
-            except Exception, err:
-                None
-      
-        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET filterOnAncestor PID:"+str(os.getpid()));
-        response = Response(json.dumps(app.db.filterOnAncestorsValuesRange(idlist,keylist,mnvaluelist,mxvaluelist,level)))
-        response.headers['Content-type'] = 'application/json'       
+    
+        memory_file = StringIO.StringIO(kwargs['ids']);
+        idlist = csv.reader(memory_file).next()
+        memory_file = StringIO.StringIO(kwargs['terms']);
+        keylist = csv.reader(memory_file).next()
+
+        #if (self.path=="values-range"):
+        memory_file = StringIO.StringIO(kwargs['maxvalues']) if 'maxvalues' in kwargs else None
+        mxvaluelist = csv.reader(memory_file).next()
+        memory_file2 = StringIO.StringIO(kwargs['minvalues']) if 'minvalues' in kwargs else None
+        mnvaluelist = csv.reader(memory_file2).next()
+        #memory_file2 = StringIO.StringIO(kwargs['values']) if 'values' in kwargs else None
+        #vluelist = csv.reader(memory_file2).next()
+        #dataid =StringIO.StringIO(kwargs['dataid']) if 'dataid' in kwargs else None
+        level =int(kwargs['level']) if 'level' in kwargs else 100
+
+        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":POST filterOnAncestor PID:"+str(os.getpid()));
+        res=json.dumps(app.db.filterOnAncestorsValuesRange(idlist,keylist,mnvaluelist,mxvaluelist,level))
+        print(res)
+        response = Response(res)
+        response.headers['Content-type'] = 'application/json'    
         return response
+
+
+
 
 format=dict({'format':fields.Str()})
 @app.route("/workflowexecutions/<run_id>/export")

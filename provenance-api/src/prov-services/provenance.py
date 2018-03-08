@@ -2588,7 +2588,7 @@ class ProvenanceStore(object):
 
     def hasAncestorWith_new(self, streamId, maxDepth, keylist, maxvalues, minvalues, setContained = False):
         #lineage = db['lineage']
-
+        print(maxDepth)
         start_node = self.lineage.find_one({
                 'streams.id': streamId
             },
@@ -2615,14 +2615,15 @@ class ProvenanceStore(object):
                 '$or': helper.getIndexedMetaQueryList(key_value_pairs),
                 'runId': start_node['runId']
             }
-            # print('--- min_possible_match_query----->', min_possible_match_query)
+            print('--- min_possible_match_query----->', min_possible_match_query)
             min_possible_match_cursor = self.lineage.find(min_possible_match_query).sort("startTime",direction=1).limit(1)
 
             min_possible_match = None
             for i in min_possible_match_cursor:
                 min_possible_match = i
-            # print('---min_possible_match -->', min_possible_match)
+            print('---min_possible_match -->', min_possible_match)
             if min_possible_match == None:
+                print('---return false -->', )
                 return False
             else: 
                 min_date = min_possible_match['startTime']
@@ -2634,6 +2635,7 @@ class ProvenanceStore(object):
                     derivationIds.append(derivationId['DerivedFromDatasetID'])
 
         depth = 1;
+        print('depth : ', depth, derivationIds, maxDepth)
         while len(derivationIds) > 0 and maxDepth > 0:
             print('depth : ', depth, derivationIds, maxDepth)
             depth += 1 
