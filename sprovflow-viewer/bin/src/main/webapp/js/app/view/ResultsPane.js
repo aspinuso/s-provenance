@@ -28,6 +28,8 @@ var mimetypesStore = Ext.create('CF.store.Mimetype');
 
 var modeStore = Ext.create('CF.store.ModeStore');
 
+var mon_level="instance"
+
 // specifies the userhome of whom we are going to access the data from (for sharing purposes)
 owner = userSN
 var dn_regex=/file:\/\/?([\w-]|([\da-z\.-]+)\.([a-z\.]{2,6}))+/
@@ -80,7 +82,7 @@ function openRun(id)
       this.currentRun=id
         activityStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + '/workflowexecutions/'+encodeURIComponent(currentRun)+'/showactivity',
+          url: PROV_SERVICE_BASEURL + '/workflowexecutions/'+encodeURIComponent(currentRun)+'/showactivity?level='+mon_level,
           
 
           reader: {
@@ -202,6 +204,8 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
    edgecol=colour.lightblue
    col = colour.red
   }
+
+
  
     if (data['s-prov:Data'].port=='_d4p_state')
     { //console.log(data['s-prov:Data'].port)
@@ -211,11 +215,8 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
    
    
   }
-  //var node = graph.addNode(data["id"],{label:data["_id"].substring(0,5),'color':col, 'shape':'dot', 'radius':19,'alpha':1,mass:2})
-  //node.runId=data["runId"]
-  //_d4p_state
+ 
   
- // if (!data.streams.port or data.streams.port=='')
   
  
   var nodea = graph.addNode(data['s-prov:Data']["@id"], {
@@ -231,6 +232,15 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
   if (parent) {
     
   var edgecolour
+  // check uncertainties tag
+  console.log(data)
+  if (data["up:assertionType"] && (data["up:assertionType"]=="up:Incomplete"))
+  {
+   
+   edgecol=colour.lightgrey
+    
+  }
+  else
     if(nodea.data.data.runId!=parent.data.data.runId)
   {      
       deriv_run=nodea.data.data.runId
@@ -738,7 +748,7 @@ Ext.define('CF.view.ActivityMonitor', {
 
       handler: openRun
     }, {
-      tooltip: 'View Run Inputs',
+      tooltip: 'View Run Inputs',  
       text: 'View Inputs',
       id: 'viewworkflowinput',
       disabled: 'true',
@@ -785,7 +795,7 @@ Ext.define('CF.view.ActivityMonitor', {
         id: 'exportrun',
 
         handler: function() {
-         window.open(PROV_SERVICE_BASEURL + 'workflowexecutions/'+encodeURIComponent(currentRun)+'/export?'+'all=True', 'Download')
+         window.open(PROV_SERVICE_BASEURL + 'workflowexecutions/'+encodeURIComponent(currentRun)+'/export?format=rdf', 'Download')
           
       }
     },
@@ -1019,7 +1029,7 @@ Ext.define('CF.view.StreamValuesRangeSearch', {
        if (form.isValid()) {
         artifactStore.setProxy({
           type: 'ajax',
-          url: PROV_SERVICE_BASEURL + 'data?generatedBy=' + currentRun + 
+          url: PROV_SERVICE_BASEURL + 'data?wasGeneratedBy=' + currentRun + 
                                       qerystring+          
                                       "&mode="+mode,
 
@@ -1099,7 +1109,7 @@ Ext.define('CF.view.FilterOnAncestor', {
         FilterAjax.request({
 
           method: 'POST',
-          url: PROV_SERVICE_BASEURL + 'data/filterOnAncestorsMeta',
+          url: PROV_SERVICE_BASEURL + 'data/filterOnAncestors',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
@@ -1164,7 +1174,11 @@ Ext.define('CF.view.FilterOnAncestorValuesRange', {
     inputAttrTpl: " data-qtip='Insert here a sequence of max values related to the indicated Terms, divided by commas.<br/> Eg. 5,AQU' ",
 
     allowBlank: false
-  }],
+  },
+   {
+          xtype: 'modecombo',
+          margin: '10 0 10 10'
+        }],
 
   buttons: [{
     text: 'Filter',
@@ -1184,7 +1198,7 @@ Ext.define('CF.view.FilterOnAncestorValuesRange', {
       if (form.isValid()) {
         FilterAjax.request({
           method: 'POST',
-          url: PROV_SERVICE_BASEURL + 'entities/filterOnAncestorsValuesRange',
+          url: PROV_SERVICE_BASEURL + 'data/filterOnAncestor',
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
           },
@@ -1209,9 +1223,11 @@ Ext.define('CF.view.FilterOnAncestorValuesRange', {
           },
           params: {
             ids: dataids,
+            level: 100,
             terms: form.findField("terms").getRawValue(false).trim(),
             minvalues: form.findField("minvalues").getValue().trim(),
-            maxvalues: form.findField("maxvalues").getValue().trim()
+            maxvalues: form.findField("maxvalues").getValue().trim(),
+            mode: form.findField("mode").getValue().trim()
           }
         });
       }
@@ -1383,10 +1399,10 @@ var filterOnAncestorspane = Ext.create('Ext.window.Window', {
 
 
 var renderStream = function(value, p, record) {
-  
+  console.log(record)
   var location = "</br>"
   var contenthtm = ""
-  var prov='<a href=\"'+PROV_SERVICE_BASEURL + '/data/'+record.data.ID+'/export?all=true\" target=\"_blank">Download Provenance</a><br/>'
+  var prov='<a href=\"'+PROV_SERVICE_BASEURL + '/data/'+record.data.ID+'/export?level=200\" target=\"_blank">Download Provenance</a><br/>'
 
   if (record.data.location != "") {
     location = '<a href="javascript:viewData(\'' + record.data.location + '\'.split(\',\'),true)">Open</a><br/>'
@@ -1404,13 +1420,13 @@ var renderStream = function(value, p, record) {
     }
   }
 
-  console.log(contenthtm)
+ 
   return Ext.String.format(
     '<div class="search-item" style="border:2px solid; box-shadow: 10px 10px 5px #888888;"><br/>' +
     '<strong>Data ID: {0} </strong> <br/> <br/></strong><hr/>' +
     '<strong>Lineage:</strong><br/><br/>' +
-    '<strong><a href="javascript:wasDerivedFromNewGraph(\'' + PROV_SERVICE_BASEURL + 'wasDerivedFrom/{0}\')">Trace Backwards</a><br/><br/></strong>' +
-    '<strong><a href="javascript:derivedDataNewGraph(\'' + PROV_SERVICE_BASEURL + 'derivedData/{0}\')">Trace Forward</a><br/><br/></strong>' +
+    '<strong><a href="javascript:wasDerivedFromNewGraph(\'' + PROV_SERVICE_BASEURL + 'data/{0}/wasDerivedFrom\')">Trace Backwards</a><br/><br/></strong>' +
+    '<strong><a href="javascript:derivedDataNewGraph(\'' + PROV_SERVICE_BASEURL + 'data/{0}/derivedData\')">Trace Forward</a><br/><br/></strong>' +
     '<strong>{10}</strong><br/><hr/><br/>' +
     '<strong>Generated By :</strong> {1} <br/> <br/>' +
     '<strong>Run Id :</strong> {6} <br/> <br/>' +
@@ -1440,7 +1456,7 @@ var renderStream = function(value, p, record) {
 
 var renderStreamSingle = function(value, p, record) {
   var location = '</br>'
-   
+   console.log(record)
   if (record.data.location != "")
     location = '<a href="javascript:viewData(\'' + record.data.location + '\'.split(\',\'),true)">Open</a><br/>'
   console.log(record.data)
@@ -1448,8 +1464,8 @@ var renderStreamSingle = function(value, p, record) {
     '<div class="search-item" style="border:2px solid; box-shadow: 10px 10px 5px #888888;"><br/>' +
     '<strong>Data ID: {0} </strong> <br/> <br/></strong><hr/>' +
     '<strong>Lineage:</strong><br/><br/>' +
-    '<strong><a href="javascript:wasDerivedFromNewGraph(\'' + PROV_SERVICE_BASEURL + 'wasDerivedFrom/{0}\')">Trace Backwards</a><br/><br/></strong>' +
-    '<strong><a href="javascript:derivedDataNewGraph(\'' + PROV_SERVICE_BASEURL + 'derivedData/{0}\)">Trace Forward</a><br/><br/><hr/></strong>' +
+    '<strong><a href="javascript:wasDerivedFromNewGraph(\'' + PROV_SERVICE_BASEURL + 'data/{0}/wasDerivedFrom\')">Trace Backwards</a><br/><br/></strong>' +
+    '<strong><a href="javascript:derivedDataNewGraph(\'' + PROV_SERVICE_BASEURL + 'data/0}/derivedData\)">Trace Forward</a><br/><br/><hr/></strong>' +
     '<strong>Generated By :</strong> {1} <br/> <br/>' +
     '<strong>Run Id :</strong> {6} <br/> <br/>' +
     '<strong>Start Time Iteration :</strong>{10}<br/> <br/>' +
@@ -1487,7 +1503,6 @@ var renderWorkflowInput = function(value, p, record) {
     
     return Ext.String.format(
     '<br/><strong>Workflow: </strong>{0} - <a href="javascript:openRun(\'{3}\')">{3}</a><br/><br/>' +
-    '<strong><a href="{1}" target="_blank">Get W3C-PROV Document</a><br/><br/>' +
     '<strong><a href="javascript: openRun(\'{4}\')">Refresh Current</a><br/>',
     record.data.name,
     record.data.url,
@@ -1721,6 +1736,7 @@ Ext.define('CF.view.provenanceGraphsViewer', {
         '<li><span style="background:'+colour.lightblue+'"></span>stateful</li>'+
         '<li><span style="background:'+colour.red+'"></span>cross-run</li>'+
         '<li><span style="background:'+colour.orange+'"></span>file</li>'+
+        '<li><span style="background:'+colour.lightgrey+'"></span>Incomplete</li>'+
         '</ul></div></div><br/><center>'+
         '<div style="width:100%" height="700"><canvas id="viewportprov" width="1200" height="500"></canvas></div></center>'
   }],
@@ -1782,15 +1798,15 @@ Ext.define('CF.view.provenanceGraphsViewer', {
         }
         selected = nearest = dragged = sys.nearest(p);
 
-        if (selected.node !== null) {
+        if (selected.node !== null) { 
           // dragged.node.tempMass = 10000
           dragged.node.fixed = true;
           if (graphMode == "WASDERIVEDFROM") {
-            wasDerivedFromAddBranch(PROV_SERVICE_BASEURL + 'wasDerivedFrom/' + selected.node.name + "?level=" + $("#navlevel").val())
+            wasDerivedFromAddBranch(PROV_SERVICE_BASEURL + 'data/'+selected.node.name +"/wasDerivedFrom?level=" + $("#navlevel").val())
           }
 
           if (graphMode == "DERIVEDDATA") {
-            derivedDataAddBranch(PROV_SERVICE_BASEURL + 'derivedData/' + selected.node.name + "?level=" + $("#navlevel").val())
+            derivedDataAddBranch(PROV_SERVICE_BASEURL + 'data/'+selected.node.name + "/derivedData?level=" + $("#navlevel").val())
           }
         }
         return false;
