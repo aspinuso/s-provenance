@@ -413,10 +413,12 @@ def filter_on_ancestor(**kwargs):
         #memory_file2 = StringIO.StringIO(kwargs['values']) if 'values' in kwargs else None
         #vluelist = csv.reader(memory_file2).next()
         #dataid =StringIO.StringIO(kwargs['dataid']) if 'dataid' in kwargs else None
+        
         level =int(kwargs['level']) if 'level' in kwargs else 100
+        mode = kwargs['mode'] if 'mode' in kwargs else 'OR'
 
-        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":POST filterOnAncestor PID:"+str(os.getpid()));
-        res=json.dumps(app.db.filterOnAncestorsValuesRange(idlist,keylist,mnvaluelist,mxvaluelist,level))
+        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":POST filterOnAncestor mode= "+str(mode)+" PID:"+str(os.getpid()));
+        res=json.dumps(app.db.filterOnAncestorsValuesRange(idlist,keylist,mnvaluelist,mxvaluelist,level=level,mode=mode))
         print(res)
         response = Response(res)
         response.headers['Content-type'] = 'application/json'    
