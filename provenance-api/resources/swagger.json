@@ -138,16 +138,114 @@
       }
     }, 
     "/data/filterOnAncestor": {
-      "get": {
-        "parameters": [], 
-        "responses": {}
-      }, 
       "options": {
-        "parameters": [], 
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "format": {
+                  "type": "string"
+                }, 
+                "ids": {
+                  "type": "string"
+                }, 
+                "implementations": {
+                  "type": "string"
+                }, 
+                "level": {
+                  "type": "string"
+                }, 
+                "maxvalues": {
+                  "type": "string"
+                }, 
+                "minvalues": {
+                  "type": "string"
+                }, 
+                "mode": {
+                  "type": "string"
+                }, 
+                "rformat": {
+                  "default": "json", 
+                  "type": "string"
+                }, 
+                "terms": {
+                  "type": "string"
+                }, 
+                "types": {
+                  "type": "string"
+                }, 
+                "usernames": {
+                  "type": "string"
+                }, 
+                "wasAssociatedWith": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "level"
+              ], 
+              "type": "object"
+            }
+          }
+        ], 
         "responses": {}
       }, 
       "post": {
-        "parameters": [], 
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "format": {
+                  "type": "string"
+                }, 
+                "ids": {
+                  "type": "string"
+                }, 
+                "implementations": {
+                  "type": "string"
+                }, 
+                "level": {
+                  "type": "string"
+                }, 
+                "maxvalues": {
+                  "type": "string"
+                }, 
+                "minvalues": {
+                  "type": "string"
+                }, 
+                "mode": {
+                  "type": "string"
+                }, 
+                "rformat": {
+                  "default": "json", 
+                  "type": "string"
+                }, 
+                "terms": {
+                  "type": "string"
+                }, 
+                "types": {
+                  "type": "string"
+                }, 
+                "usernames": {
+                  "type": "string"
+                }, 
+                "wasAssociatedWith": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "level"
+              ], 
+              "type": "object"
+            }
+          }
+        ], 
         "responses": {}
       }
     }, 
