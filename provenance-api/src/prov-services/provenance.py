@@ -1262,7 +1262,7 @@ class ProvenanceStore(object):
         for x in idlist:
             test=self.hasAncestorWith_new(x,level,keylist,minvaluelist,maxvaluelist)
          
-            if test!=None and test==True:
+            if test!=None and test["hasAncestorWith"]==True:
                 filteredIds.append(x)
         
         return filteredIds
@@ -2587,8 +2587,7 @@ class ProvenanceStore(object):
             }
 
     def hasAncestorWith_new(self, streamId, maxDepth, keylist, maxvalues, minvalues, setContained = False):
-        db = self.connection["verce-prov"]
-        lineage = db['lineage']
+        #lineage = db['lineage']
 
         start_node = self.lineage.find_one({
                 'streams.id': streamId
@@ -2599,7 +2598,7 @@ class ProvenanceStore(object):
                 'runId': 1
             })
 
-        key_value_pairs = helper.getKeyValuePairs(keylist, maxvalues, minvalues) 
+        (key_value_pairs, contains_range_operator) = helper.getKeyValuePairs(keylist, maxvalues, minvalues) 
         indexed_meta_query = helper.getAndQueryList(key_value_pairs)
         print('--->', start_node)
 
