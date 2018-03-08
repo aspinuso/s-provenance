@@ -36,60 +36,12 @@ def hello():
 
 
 
-# the <method> can indicate value-range, hasAncherstorWith or the id of the resource
-@app.route("/data/filterOnAncestor", methods=['GET','POST'])
-def filter_on_ancestor():
-        keylist = None
-        vluelist= None
-        mxvaluelist= None
-        mnvaluelist= None
-        idlist=None
-        response = Response()
 
-        if request.method == 'POST':
-            try:
-                memory_file = StringIO.StringIO(kwargs['ids']);
-                idlist = csv.reader(memory_file).next()
-                memory_file = StringIO.StringIO(kwargs['terms']);
-                keylist = csv.reader(memory_file).next()
-            #if (self.path=="values-range"):
-                memory_file = StringIO.StringIO(kwargs['maxvalues']) if 'maxvalues' in kwargs else None
-                mxvaluelist = csv.reader(memory_file).next()
-                memory_file2 = StringIO.StringIO(kwargs['minvalues']) if 'minvalues' in kwargs else None
-                mnvaluelist = csv.reader(memory_file2).next()
-                memory_file2 = StringIO.StringIO(kwargs['values']) if 'values' in kwargs else None
-                vluelist = csv.reader(memory_file2).next()
-                dataid =StringIO.StringIO(kwargs['dataid']) if 'dataid' in kwargs else None
-        
-            except Exception, err:
-                None
-      
-        
-        
-    
-        # BEGIN kept for backwards compatibility
-        
-        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET filterOnAncestor PID:"+str(os.getpid()));
-        ' test http://localhost:8082/entities/hasAnchestor?dataId=lxa88-9865-09df5b44-8f1c-11e3-9f3a-bcaec52d20a2&keys=magnitude&values=3.49&_dc=&page=1&start=0&limit=300'        
-        
-       # if (self.path=="hasAncestorWith"):
-        #    response = Response(json.dumps(self.provenanceStore.hasAncestorWith(dataid,keylist,valuelist)))
-        # END kept for backwards compatibility
-        
-        #if (method=="hasAncestorWith"):
-        #    response = Response(json.dumps(app.db.hasAncestorWith(dataid,keylist,valuelist)))
-        #elif (method=="filterOnAncestor"):
-        response = Response(json.dumps(app.db.filterOnAncestorsValuesRange(idlist,keylist,mnvaluelist,mxvaluelist)))
-        #else:
-        #response = Response(json.dumps(app.db.getEntitiesBy(method,keylist,mxvaluelist,mnvaluelist,vluelist,**request.args)))
-        response.headers['Content-type'] = 'application/json'       
-        return response
     
 
  
 # Thomas
 # Insert sequences of provenance documents, these can be bundles or lineage. The documents can be in JSON or JSON-LD. Format adaptation for storage purposes is handled by the acquisition function.
-
 @app.route("/workflowexecutions/insert", methods=['POST'])
 @use_kwargs({'prov': fields.Str()})
 def insert_provenance(**kwargs):
@@ -434,6 +386,41 @@ def export_data_provenance(data_id,**kwargs):
         response.headers['Content-type'] = 'application/xml' 
     return response
 
+queryargsanc=dict(dict({'ids':fields.Str()},**queryargsnp),**levelargsnp)
+@app.route("/data/filterOnAncestor", methods=['GET','POST'])
+@use_kwargs(queryargsanc)
+def filter_on_ancestor(**kwargs):
+        keylist = None
+        vluelist= None
+        mxvaluelist= None
+        mnvaluelist= None
+        idlist=None
+        level=None
+        response = Response()
+
+        if request.method == 'POST':
+            try:
+                memory_file = StringIO.StringIO(kwargs['ids']);
+                idlist = csv.reader(memory_file).next()
+                memory_file = StringIO.StringIO(kwargs['terms']);
+                keylist = csv.reader(memory_file).next()
+            #if (self.path=="values-range"):
+                memory_file = StringIO.StringIO(kwargs['maxvalues']) if 'maxvalues' in kwargs else None
+                mxvaluelist = csv.reader(memory_file).next()
+                memory_file2 = StringIO.StringIO(kwargs['minvalues']) if 'minvalues' in kwargs else None
+                mnvaluelist = csv.reader(memory_file2).next()
+                #memory_file2 = StringIO.StringIO(kwargs['values']) if 'values' in kwargs else None
+                vluelist = csv.reader(memory_file2).next()
+                #dataid =StringIO.StringIO(kwargs['dataid']) if 'dataid' in kwargs else None
+                level =StringIO.StringIO(kwargs['level']) if 'level' in kwargs else None
+        
+            except Exception, err:
+                None
+      
+        if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET filterOnAncestor PID:"+str(os.getpid()));
+        response = Response(json.dumps(app.db.filterOnAncestorsValuesRange(idlist,keylist,mnvaluelist,mxvaluelist,level)))
+        response.headers['Content-type'] = 'application/json'       
+        return response
 
 format=dict({'format':fields.Str()})
 @app.route("/workflowexecutions/<run_id>/export")
@@ -445,6 +432,7 @@ def export_run_provenance(run_id,**kwargs):
     else:
         response.headers['Content-type'] = 'application/xml' 
     return response
+
 
 
 @app.errorhandler(422)

@@ -1257,12 +1257,12 @@ class ProvenanceStore(object):
         
     
     
-    def filterOnAncestorsValuesRange(self,idlist,keylist,minvaluelist,maxvaluelist):
+    def filterOnAncestorsValuesRange(self,idlist,keylist,minvaluelist,maxvaluelist,level=100):
         filteredIds=[]
         for x in idlist:
-            test=self.hasAncestorWithValuesRange(x,keylist,minvaluelist,maxvaluelist)
+            test=self.hasAncestorWith_new(x,level,keylist,minvaluelist,maxvaluelist)
          
-            if test!=None and test["hasAncestorWith"]==True:
+            if test!=None and test==True:
                 filteredIds.append(x)
         
         return filteredIds
@@ -2599,7 +2599,7 @@ class ProvenanceStore(object):
                 'runId': 1
             })
 
-        (key_value_pairs, contains_range_operator) = helper.getKeyValuePairs(keylist, maxvalues, minvalues) 
+        key_value_pairs = helper.getKeyValuePairs(keylist, maxvalues, minvalues) 
         indexed_meta_query = helper.getAndQueryList(key_value_pairs)
         print('--->', start_node)
 
