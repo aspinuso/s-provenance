@@ -2598,7 +2598,7 @@ class ProvenanceStore(object):
                 'runId': 1
             })
 
-        (key_value_pairs, contains_range_operator) = helper.getKeyValuePairs(keylist, maxvalues, minvalues) 
+        key_value_pairs = helper.getKeyValuePairs(keylist, maxvalues, minvalues) 
         indexed_meta_query = helper.getAndQueryList(key_value_pairs)
         print('--->', start_node)
 
