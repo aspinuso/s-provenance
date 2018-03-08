@@ -1262,7 +1262,7 @@ class ProvenanceStore(object):
         for x in idlist:
             test=self.hasAncestorWith_new(x,level,keylist,minvaluelist,maxvaluelist)
          
-            if test!=None and test["hasAncestorWith"]==True:
+            if test!=None and test==True:
                 filteredIds.append(x)
         
         return filteredIds
@@ -2600,6 +2600,7 @@ class ProvenanceStore(object):
 
         key_value_pairs = helper.getKeyValuePairs(keylist, maxvalues, minvalues) 
         indexed_meta_query = helper.getAndQueryList(key_value_pairs)
+        print(indexed_meta_query)
         print('--->', start_node)
 
         # TODO use endTime or startTime
