@@ -56,6 +56,9 @@ s-prov viewer
    $ docker run -it -p9000:8080 viewer 
 ```   
 
+Once the container are up and running the following enpoint will be exposed:
+- API: http://127.0.0.1:8082/swagger/
+- Visualiser: http://127.0.0.1:9000/sprovflow-viewer/html/view.jsp
 
 
 ## Requirements and dependencies
