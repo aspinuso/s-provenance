@@ -8,6 +8,7 @@ services:
         ports:
           - 27017:27017
       # mongod --logpath /prov/mongo.log --dbpath /prov/data/
+        user: mongodb
         command: mongod --dbpath /data/db # --quiet
     sprov:
         build: .
