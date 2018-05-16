@@ -1,19 +1,18 @@
 <?xml version="1.0"?>
-<rdf:RDF xmlns="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#"
-     xml:base="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl"
+<rdf:RDF xmlns="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#"
+     xml:base="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl"
      xmlns:core="http://purl.org/vocab/frbr/core#"
-     xmlns:prov-o="http://www.w3.org/ns/prov-o#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:provone="http://purl.dataone.org/provone/2015/01/15/ontology#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:dcterms="http://purl.org/dc/terms/"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:vcard="http://www.w3.org/2006/vcard/ns#"
      xmlns:prov="http://www.w3.org/ns/prov#">
-    <owl:Ontology rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl">
-        <owl:imports rdf:resource="http://purl.org/provone/ontology"/>
-        <owl:imports rdf:resource="http://www.w3.org/ns/prov-o-20130430"/>
+    <owl:Ontology rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl">
+        <owl:imports rdf:resource="http://purl.dataone.org/provone/2015/01/15/ontology#"/>
     </owl:Ontology>
     
 
@@ -29,15 +28,21 @@
     
 
 
-    <!-- http://www.w3.org/ns/prov-o#definition -->
+    <!-- http://purl.dataone.org/provone/2015/01/15/ontology#hadInPort -->
 
-    <owl:AnnotationProperty rdf:about="http://www.w3.org/ns/prov-o#definition"/>
+    <owl:AnnotationProperty rdf:about="http://purl.dataone.org/provone/2015/01/15/ontology#hadInPort"/>
     
 
 
-    <!-- http://www.w3.org/ns/prov-o#wasGeneratedBy -->
+    <!-- http://www.w3.org/ns/prov#definition -->
 
-    <owl:AnnotationProperty rdf:about="http://www.w3.org/ns/prov-o#wasGeneratedBy">
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/ns/prov#definition"/>
+    
+
+
+    <!-- http://www.w3.org/ns/prov#wasGeneratedBy -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/ns/prov#wasGeneratedBy">
         <rdfs:domain rdf:resource="http://www.semanticweb.org/ontologies/2017/6/s-prov#Data"/>
     </owl:AnnotationProperty>
     
@@ -54,10 +59,18 @@
     
 
 
+    <!-- http://purl.dataone.org/provone/2015/01/15/ontology#hadInPort -->
+
+    <rdf:Description rdf:about="http://purl.dataone.org/provone/2015/01/15/ontology#hadInPort">
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov#Derivation"/>
+    </rdf:Description>
+    
+
+
     <!-- http://purl.org/dc/terms/description -->
 
     <owl:ObjectProperty rdf:about="http://purl.org/dc/terms/description">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionBundle"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#WFExecutionBundle"/>
     </owl:ObjectProperty>
     
 
@@ -65,10 +78,10 @@
     <!-- http://purl.org/dc/terms/format -->
 
     <owl:ObjectProperty rdf:about="http://purl.org/dc/terms/format">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Data"/>
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
@@ -78,97 +91,53 @@
     
 
 
+    <!-- http://www.w3.org/ns/prov#influenced -->
+
+    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov#influenced"/>
+    
+
+
     <!-- http://www.w3.org/ns/prov#qualifiedInfluence -->
 
-    <rdf:Description rdf:about="http://www.w3.org/ns/prov#qualifiedInfluence">
+    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov#qualifiedInfluence">
         <rdfs:comment>If this ComponentIntance prov:wasChangedWith Entity :e, then it can qualify the Change using prov:qualifiedChange [ a prov:Change;  prov:entity :ag; :foo :bar ].</rdfs:comment>
-    </rdf:Description>
-    
-
-
-    <!-- http://www.w3.org/ns/prov-o#actedOnBehalfOf -->
-
-    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#actedOnBehalfOf">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Component"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://www.w3.org/ns/prov-o#atLocation -->
+    <!-- http://www.w3.org/ns/prov#wasInfluencedBy -->
 
-    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#atLocation">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecution"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionBundle"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#CResource"/>
+    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov#wasInfluencedBy"/>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#atResource -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#atResource">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#SystemProcess"/>
+        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#CResource"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://www.w3.org/ns/prov-o#hadMember -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#changed -->
 
-    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#hadMember">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StateCollection"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#DataGranule"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.w3.org/ns/prov-o#wasAssociatedWith -->
-
-    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#wasAssociatedWith">
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.w3.org/ns/prov-o#wasAttributedTo -->
-
-    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#wasAttributedTo">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Component"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionBundle"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionBundle"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.w3.org/ns/prov-o#wasDerivedFrom -->
-
-    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#wasDerivedFrom">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
-    </owl:ObjectProperty>
-    
-
-
-    <!-- http://www.w3.org/ns/prov-o#wasInfluencedBy -->
-
-    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov-o#wasInfluencedBy"/>
-    
-
-
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#changed -->
-
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#changed">
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#changed">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/prov#influenced"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Invocation"/>
+        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#ComponentInstance"/>
         <rdfs:comment>Establish a relation between the activity that applied the change to an instance</rdfs:comment>
         <rdfs:label>changed</rdfs:label>
     </owl:ObjectProperty>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#dataCount -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#dataCount -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#dataCount">
-        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov-o#SoftwareAgent"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Component"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#dataCount">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Component"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Invocation"/>
         <rdfs:range>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
@@ -180,11 +149,11 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#feedbackInvocation -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#feedbackInvocation -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#feedbackInvocation">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#feedbackInvocation">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Invocation"/>
+        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Invocation"/>
         <rdfs:range>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
@@ -197,13 +166,43 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#functionName -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#first-known-destination -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#functionName">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Implementation"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#first-known-destination">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Data"/>
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <prov:definition>The URL that states the first known destination of a copy of the data. Useful in combination of the immediate-access property to trigger and record runtime transfer operations.</prov:definition>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#format -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#format">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Data"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment>The format of the data, typically its mime-type</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#functionName -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#functionName">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Implementation"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
@@ -213,13 +212,13 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#generatedWithImmediateAccess -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#generatedWithImmediateAccess -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#generatedWithImmediateAccess">
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#generatedWithImmediateAccess">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Component"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Component"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#ComponentInstance"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Invocation"/>
         <rdfs:range>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
@@ -232,11 +231,11 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#generatedWithLocation -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#generatedWithLocation -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#generatedWithLocation">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#generatedWithLocation">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#ComponentInstance"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Invocation"/>
         <rdfs:range>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
@@ -249,40 +248,55 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#hadInformer -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#hadInformer -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#hadInformer">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#FlowDerivation"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StateDerivation"/>
-        <rdfs:range rdf:resource="http://purl.org/provone/ontology#ProcessExec"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#hadInformer">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#FlowDerivation"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#StateDerivation"/>
+        <rdfs:range rdf:resource="http://purl.dataone.org/provone/2015/01/15/ontology#Execution"/>
         <rdfs:label>hadInformer</rdfs:label>
         <prov:definition>Indicates the invocation that informed the activity involved in the current derivation</prov:definition>
     </owl:ObjectProperty>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#hasChanged -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#hasChanged -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#hasChanged">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#hasChanged">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#ComponentInstance"/>
         <rdfs:range>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
             </owl:Restriction>
         </rdfs:range>
-        <rdfs:comment>Indicates whether an Agent such as a CompentInstace has changed any of the behaviour associated to its Component</rdfs:comment>
+        <rdfs:comment>Indicates whether an Agent such as a CompentInstace has changed any of the behaviour associated with its Component</rdfs:comment>
     </owl:ObjectProperty>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#invocationIndex -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#immediate-access -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#invocationIndex">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#immediate-access">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Data"/>
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment>A boolean tag that indicates that the data needs to be transferred or copied as soon as possible to a target destination</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#invocationIndex -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#invocationIndex">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Invocation"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#positiveInteger"/>
             </owl:Restriction>
         </rdfs:range>
@@ -292,11 +306,11 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#lastEventTime -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#lastEventTime -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#lastEventTime">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#lastEventTime">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#ComponentInstance"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Invocation"/>
         <rdfs:range>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
@@ -309,15 +323,14 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#mapping -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#mapping -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#mapping">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecution"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionBundle"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#mapping">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#ComponentInstance"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#WFExecution"/>
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
             </owl:Restriction>
         </rdfs:range>
@@ -327,76 +340,78 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#message -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#message -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#message">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#message">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Invocation"/>
         <prov:definition>Any text message or code generated at runtime during an Invocation. A message is typically used to notify anomalies and errors</prov:definition>
     </owl:ObjectProperty>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#modules -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#modules -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#modules">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionBundle"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#modules">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#CResource"/>
         <rdfs:label xml:lang="en">modules</rdfs:label>
         <prov:definition xml:lang="en">Collection of software modules used within the current execution; eg. python modules with their version indication, &quot;matplotlib==1.4.3&quot;</prov:definition>
     </owl:ObjectProperty>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#parameterName -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#parameterName -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#parameterName">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#parameterName">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Data"/>
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
             </owl:Restriction>
         </rdfs:range>
         <rdfs:label xml:lang="en">parameterName</rdfs:label>
-        <prov-o:definition xml:lang="en">Name associated to a Data element. Used to name a workflow parameter</prov-o:definition>
+        <prov:definition xml:lang="en">Name associated with a Data element. Used to name a workflow parameter</prov:definition>
     </owl:ObjectProperty>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#provCluster -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#provCluster -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#provCluster">
-        <rdfs:comment xml:lang="en">Name of the Cluster to which the Component belongs for runtime provenance analysis</rdfs:comment>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#provCluster">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Component"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:comment xml:lang="en">Name of the provenance cluster to which the Component belongs.
+It refers to concepts belonging to external ontologies or defined by the user. A cluster can be associated with a \emph{ProvenanceSensor} for runtime provenance analysis, as we introduced in Section \ref{sensors}. It correspond to the \emph{prov:type} attribute.</rdfs:comment>
     </owl:ObjectProperty>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#qualifiedChange -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#qualifiedChange -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#qualifiedChange">
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#qualifiedChange">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/prov#qualifiedInfluence"/>
-        <owl:inverseOf rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#qualifiedChangeOf"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Change"/>
+        <owl:inverseOf rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#qualifiedChangeOf"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#ComponentInstance"/>
+        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Change"/>
         <rdfs:comment>If this ComponentInstance prov:wasChangedWith Entity :en, then it can qualify the Chenge using prov:qualifiedChange [ a prov:Change;  s-prov:Entity :en; :foo :bar ].</rdfs:comment>
         <rdfs:label>qualifiedChange</rdfs:label>
     </owl:ObjectProperty>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#qualifiedChangeOf -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#qualifiedChangeOf -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#qualifiedChangeOf"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#qualifiedChangeOf"/>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#queue -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#queue -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#queue">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#CResource"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#queue">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#CResource"/>
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
@@ -405,13 +420,13 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#resourceName -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#resourceName -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#resourceName">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#CResource"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#resourceName">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#CResource"/>
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
@@ -420,13 +435,13 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#resourceType -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#resourceType -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#resourceType">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#CResource"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#resourceType">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#CResource"/>
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
@@ -435,13 +450,13 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#resourceUrl -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#resourceUrl -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#resourceUrl">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#CResource"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#resourceUrl">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#CResource"/>
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
             </owl:Restriction>
         </rdfs:range>
@@ -450,19 +465,34 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#source -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#size -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#source">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Implementation"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#size">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Data"/>
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#byte"/>
+            </owl:Restriction>
+        </rdfs:range>
+        <rdfs:comment>The size of the data or an estimate</rdfs:comment>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#source -->
+
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#source">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Implementation"/>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
             </owl:Restriction>
         </rdfs:range>
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
@@ -471,13 +501,13 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#stateLookupTerm -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#stateLookupTerm -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#stateLookupTerm">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#stateLookupTerm">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Data"/>
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
@@ -487,54 +517,54 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#toStateCollection -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#toStateCollection -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#toStateCollection">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StateCollection"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#toStateCollection">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Data"/>
+        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#StateCollection"/>
         <rdfs:label xml:lang="en">dataToStateCollection</rdfs:label>
         <prov:definition xml:lang="en">This relationship indicates that a \emph{Data} is sent to the \emph{StateCollection} .</prov:definition>
     </owl:ObjectProperty>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#type -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#type -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#type">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Component"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#type">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Component"/>
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
         <rdfs:label xml:lang="en">type</rdfs:label>
-        <prov:definition xml:lang="en">Runtime type of the \emph{Component}. Multiple types can indicate the computational class and the provenance pattern or metadata schema associated to the Component.</prov:definition>
+        <prov:definition xml:lang="en">Runtime type of the \emph{Component}. Multiple types can indicate the computational class and the provenance pattern or metadata schema associated with the Component.</prov:definition>
     </owl:ObjectProperty>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#wasChangedWith -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#wasChangedWith -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#wasChangedWith">
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#wasChangedWith">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentParameters"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Implementation"/>
-        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#SystemProcess"/>
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#ComponentInstance"/>
+        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#ComponentParameters"/>
+        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Implementation"/>
+        <rdfs:range rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#SystemProcess"/>
         <rdfs:label xml:lang="en">wasChangedWith</rdfs:label>
         <prov:definition xml:lang="en">This relationship indicates that a \emph{ComponentInstance} changed its \emph{ComponentParameters}, \emph{Implementation} or \emph{SystemProcess}.</prov:definition>
     </owl:ObjectProperty>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#wcount -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#wcount -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#wcount">
-        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#wcount">
+        <rdfs:domain rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Data"/>
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#positiveInteger"/>
             </owl:Restriction>
         </rdfs:range>
@@ -544,13 +574,12 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#workflowId -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#workflowId -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#workflowId">
-        <rdfs:domain rdf:resource="http://purl.org/provone/ontology#Workflow"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#workflowId">
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
@@ -560,13 +589,12 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#workflowName -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#workflowName -->
 
-    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#workflowName">
-        <rdfs:domain rdf:resource="http://purl.org/provone/ontology#Workflow"/>
+    <owl:ObjectProperty rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#workflowName">
         <rdfs:range>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov-o#value"/>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#value"/>
                 <owl:someValuesFrom rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
             </owl:Restriction>
         </rdfs:range>
@@ -587,9 +615,9 @@
     
 
 
-    <!-- http://www.w3.org/ns/prov-o#value -->
+    <!-- http://www.w3.org/ns/prov#value -->
 
-    <owl:DatatypeProperty rdf:about="http://www.w3.org/ns/prov-o#value"/>
+    <owl:DatatypeProperty rdf:about="http://www.w3.org/ns/prov#value"/>
     
 
 
@@ -604,44 +632,76 @@
     
 
 
-    <!-- http://www.w3.org/ns/prov#Collection -->
+    <!-- http://purl.dataone.org/provone/2015/01/15/ontology#Program -->
 
-    <rdf:Description rdf:about="http://www.w3.org/ns/prov#Collection">
-        <owl:equivalentClass rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StreamOut"/>
+    <rdf:Description rdf:about="http://purl.dataone.org/provone/2015/01/15/ontology#Program">
+        <owl:equivalentClass rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Implementation"/>
     </rdf:Description>
     
 
 
-    <!-- http://www.w3.org/ns/prov-o#SoftwareAgent -->
+    <!-- http://www.w3.org/ns/prov#Bundle -->
 
-    <owl:Class rdf:about="http://www.w3.org/ns/prov-o#SoftwareAgent">
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#SoftwareAgent"/>
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#Bundle"/>
+    
+
+
+    <!-- http://www.w3.org/ns/prov#Collection -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#Collection">
+        <owl:equivalentClass rdf:resource="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#StreamOut"/>
     </owl:Class>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#CResource -->
+    <!-- http://www.w3.org/ns/prov#Derivation -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#CResource">
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#Derivation"/>
+    
+
+
+    <!-- http://www.w3.org/ns/prov#InstantaneousEvent -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#InstantaneousEvent"/>
+    
+
+
+    <!-- http://www.w3.org/ns/prov#Location -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#Location"/>
+    
+
+
+    <!-- http://www.w3.org/ns/prov#SoftwareAgent -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#SoftwareAgent">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Agent"/>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#CResource -->
+
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#CResource">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Location"/>
-        <prov:definition>The computational Resource where the workflow is submitted and executed</prov:definition>
+        <prov:definition>The computational Resource where the workflow or its programs are submitted and executed</prov:definition>
     </owl:Class>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Change -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Change -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Change">
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Change">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#InstantaneousEvent"/>
-        <rdfs:comment>An instance of s-prov:Change provides additional descriptions about the binary prov:wasChangedWith relation from an changed s-prov:ComponentInstance to the new prov:Entity that chaged the instance For example, :filter_Instance s-prov:wasChangedWith :new_parameters; prov:qualifiedChange [ a s-prov:Change; s-prov:ComponentParameter :new_parameters; :foo :bar ].</rdfs:comment>
+        <rdfs:comment>An instance of s-prov:Change provides additional descriptions about the binary prov:wasChangedWith relation from an changed s-prov:ComponentInstance to the new prov:Entity that chaged the instance For example, :filter_Instance s-prov:wasChangedWith :new_parameters; prov:qualifiedChange [ a s-prov:Change; s-prov:ComponentParameters :new_parameters; :foo :bar ].</rdfs:comment>
         <rdfs:label>Change</rdfs:label>
     </owl:Class>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Component -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Component -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Component">
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Component">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Agent"/>
         <rdfs:label>Component</rdfs:label>
         <prov:definition>The agent responsible to perform a task in the workflow.  It represent an abstract structural element of the workflow and delegates to its instances the actual concurrent computation on the incoming data stream. More \emph{Component} agents cooperate in a \emph{WFExecution}</prov:definition>
@@ -649,10 +709,10 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#ComponentInstance -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentInstance">
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov-o#SoftwareAgent"/>
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#ComponentInstance">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#SoftwareAgent"/>
         <rdfs:label>ComponentInstance</rdfs:label>
         <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</owl:versionInfo>
         <prov:definition>This is a \emph{prov:SoftwareAgent} that acts on behalf of a logical \emph{Component}. In a parallel execution multiple \emph{ComponentInstance} act on behalf of the same \emph{Component} by performing the same \emph{Implementation}.</prov:definition>
@@ -660,9 +720,9 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentParameters -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#ComponentParameters -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#ComponentParameters">
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#ComponentParameters">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
         <rdfs:label>ComponentParameters</rdfs:label>
         <prov:definition>Each \emph{ComponentInstance} and therefore their \emph{Invocations} are parametrised. Parameters&apos; vaues gets assigned at the time of the configuration of the workflow execution and may change at runtime.</prov:definition>
@@ -670,58 +730,58 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Data -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Data">
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Data">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Collection"/>
         <rdfs:label>Data</rdfs:label>
-        <prov:definition>Any data produced or used by an \emph{Invocation}.  Each entity gets time-stamped it can refer to  the \emph{url} of its location. We redefine the ProvONE Data entity as being a subclass of a Collection. S-PROV treats data entities as characterised by a generic container containing one or more data granules. This guarantees separation between a baseline of generic information, such as location, format, size and annotations, and domain specific metadata which are instead attributed to the granules.</prov:definition>
+        <prov:definition>Any data produced or used by an Invocation. Each entity gets time-stamped it can refer to the url of its location. We extend the provone:Data considering also the possibility of having the data itself as a Collection. S-PROV treats data entities as characterised by a generic container containing one or more data granules. This guarantees separation be- tween a baseline of generic information, such as location, format, size and annotations, and domain specific metadata, which are instead attributed to the data-granules.</prov:definition>
     </owl:Class>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#DataGranule -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#DataGranule -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#DataGranule">
-        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#DataGranule">
+        <rdfs:subClassOf rdf:resource="http://purl.dataone.org/provone/2015/01/15/ontology#Data"/>
         <rdfs:label>DataGranule</rdfs:label>
-        <prov:definition>A \emph{DataGranule} is part of a \emph{Data} collection. It contains contextual metadata related to the specific research topic and domain. Metadata can be associated with data formats and community schemas, as well as user-defined. The latter fosters the adoption of provenance for the rapid cataloguing and exploration of experimental properties that are extracted from intermediate results.</prov:definition>
+        <prov:definition>We extend the prov:Collection considering as such each output produced or used by an Invocation. S-PROV treats data entities as characterised by a generic container of one or more DataGranules. This guarantees separation between a baseline of generic information, such as location, format, size and annotations, and domain specific metadata, which are instead attributed to the granules.</prov:definition>
     </owl:Class>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#FlowDerivation -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#FlowDerivation -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#FlowDerivation">
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#FlowDerivation">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Derivation"/>
         <prov:definition>A \id{wasDerivedFrom(a,b)} relationship, where $a$ is derived from an entity $b$ which was ingested by the current of any of the past Invocations through a specific provone:InputPort and generated by a certain invocation $i$</prov:definition>
     </owl:Class>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Implementation -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Implementation -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Implementation">
-        <rdfs:subClassOf rdf:resource="http://purl.org/provone/ontology#Process"/>
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Implementation">
+        <rdfs:subClassOf rdf:resource="http://purl.dataone.org/provone/2015/01/15/ontology#Program"/>
         <rdfs:label>Implementation</rdfs:label>
-        <prov:definition>A \emp{provone:Process} representing an atomic operation constituting a workflow component. It is described by its source code or by a link or to an external versioning system. If applicable, it also indicates information about its type in the context of the native programming language. This is a subclass of \emph{provone:Process} therefore it has input and outport ports and allows for the traceability of its evolution.</prov:definition>
+        <prov:definition>A provone:Program representing an atomic operation con- stituting a workflow component. It is described by its source code or by a link or to an external versioning system. If ap- plicable, it also indicates information about its type in the context of the native programming language. This is a sub- class of provone:Program therefore it has input and outport ports and allows for the traceability of its evolution.</prov:definition>
     </owl:Class>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Invocation -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#Invocation">
-        <rdfs:subClassOf rdf:resource="http://purl.org/provone/ontology#ProcessExec"/>
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#Invocation">
+        <rdfs:subClassOf rdf:resource="http://purl.dataone.org/provone/2015/01/15/ontology#Execution"/>
         <rdfs:label>Invocation</rdfs:label>
-        <prov-o:definition>The \emph{Activity} performed by a \emph{ComponentInstance} over incoming data.  Each \emph{Invocation} can produce more \emph{Data}. It uses a collection of  \emph{ComponentParameters}.</prov-o:definition>
+        <prov:definition>The prov:Activity performed by a ComponentInstance over incoming data. Each Invocation can produce more Data. It uses a collection of ComponentParameters.</prov:definition>
     </owl:Class>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StateCollection -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#StateCollection -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StateCollection">
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#StateCollection">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Collection"/>
         <rdfs:label>StateCollection</rdfs:label>
         <prov:definition>The internal state of a \emph{ComponentInstance}. Contains references to \emph{Data} entities that gets updated by an \emph{Invocation} during stateful operations.</prov:definition>
@@ -729,60 +789,70 @@
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StateDerivation -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#StateDerivation -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StateDerivation">
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#StateDerivation">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Derivation"/>
         <prov:definition>A \id{wasDerivedFrom(:a,:b)} relationship, where a depends on an entity $:b$ of a certain StateCollection :s with lookupterm :a and that was generated by a certain invocation $i$</prov:definition>
     </owl:Class>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StreamOut -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#StreamOut -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#StreamOut">
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#StreamOut">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
-        <prov:definition>Equivalent to a Collection. It is used to characterised a set of \emph{Data} elements as being produced in output by a streaming operator.</prov:definition>
+        <prov:definition>A \emph{prov:Collection} used to characterise a set of \emph{Data} elements written by a streaming operator to a \emph{provone:Port}, that have the same derivations.</prov:definition>
     </owl:Class>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#SystemProcess -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#SystemProcess -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#SystemProcess">
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#SystemProcess">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Location"/>
         <rdfs:label>SystemProcess</rdfs:label>
-        <prov:definition>The location of a \emph{ComponentInstance} in a runtime environment. It describes information about the computational worker node of a cluster and the operative system process pid. Multiple \emph{ComponentInstances} can be allocated to the same worker and also to the same process.</prov:definition>
+        <prov:definition>The location of a ComponentInstance in a runtime environment. It describes information about the computational worker node of a cluster and the operating system process pid. Multiple ComponentInstances can be allocated to the same worker and also to the same process.</prov:definition>
     </owl:Class>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecution -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#WFDataTraceBundle -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecution">
-        <rdfs:subClassOf rdf:resource="http://purl.org/provone/ontology#ProcessExec"/>
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#WFDataTraceBundle">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Bundle"/>
+        <rdfs:label>WFDataTraceBundle</rdfs:label>
+        <prov:definition>This prov:Bundle represents the view associated with all the entities, agents, activities involved in the generation of a specific Data element and their relationships.</prov:definition>
+    </owl:Class>
+    
+
+
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#WFExecution -->
+
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#WFExecution">
+        <rdfs:subClassOf rdf:resource="http://purl.dataone.org/provone/2015/01/15/ontology#Execution"/>
         <rdfs:label>WFExecution</rdfs:label>
-        <prov-o:definition>The \emph{prov:Activity} representing the execution of a workflow run. From this activity qualified associations to agents such as users and logical components are established. The class links also to details about the location where the workflow is deployed (\emph{CResource}).</prov-o:definition>
+        <prov:definition>A \emph{provone:Execution} representing the execution of a workflow run. From this activity qualified associations to agents such as users and logical components are established. The class links also to high-level details about the locations where the workflow is deployed (\emph{CResource}).</prov:definition>
     </owl:Class>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionBundle -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#WFExecutionBundle -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionBundle">
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#WFExecutionBundle">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Bundle"/>
         <rdfs:label>WFExecutionBundle</rdfs:label>
-        <prov-o:definition>The Bundel representing the workflow execution setup. The related Entity presents attribution information and details of the execution environment.</prov-o:definition>
+        <prov:definition>The Bundel representing the workflow execution setup. The related Entity presents attribution information and details of the execution environment.</prov:definition>
     </owl:Class>
     
 
 
-    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionParameters -->
+    <!-- https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#WFExecutionInputs -->
 
-    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov-o.owl#WFExecutionParameters">
+    <owl:Class rdf:about="https://raw.githubusercontent.com/KNMI/s-provenance/master/resources/s-prov.owl#WFExecutionInputs">
         <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Collection"/>
-        <rdfs:label>WFExecutionInput</rdfs:label>
-        <prov-o:definition>The Collection of entities used for the general parametrisation of a WFExecution. The Collection can contain or refer to entities of different kinds; eg. data and configuration files, archive files containing the workflow implementation scripts, references to other workflow executions etc. The latter can indicate the exploitation of information produced by other workflows&apos; runs, which indicates inter-workflow exchange.</prov-o:definition>
+        <rdfs:label>WFExecutionInputs</rdfs:label>
+        <prov:definition>The Collection of entities used for the general parametrisation of a WFExecution. The Collection can contain or refer to entities of different kinds; eg. data and configuration files, archive files containing the workflow implementation scripts, references to other workflow executions etc. The latter can indicate the exploitation of information produced by other workflows&apos; runs, which indicates inter-workflow exchange.</prov:definition>
     </owl:Class>
 </rdf:RDF>
 

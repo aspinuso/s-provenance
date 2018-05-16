@@ -15,14 +15,17 @@
             "s-prov:Data" : {
                 "@id" : "orfeus-as-95144-ba926c57-d657-11e6-84fd-f45c89acf865"
             },
-            "provone:InputPort" : "input2",
-            "@type" : "s-prov:FlowDerivation"
+            "provone:Port" : {"@id":"port1"},
+            "@type" : "s-prov:FlowDerivation",
+            "s-prov:hadInformer" : {"@id":"Source-orfeus-as-951ff4-bas9f2d45-d657-11e6-8a03-f45c89acf865"}
         }, 
         {   "@id":"_:n2",
             "s-prov:Data" : {
                 "@id" : "orfeus-as-95144-ba9f33f3-d657-11e6-bb16-f45c89acf865"
             },
-            "@type" : "s-prov:StateDerivation"
+            "@type" : "s-prov:StateDerivation",
+            "s-prov:lookupterm":"vars_0_1",
+            "s-prov:hadInformer" : {"@id":"CorrCoef-orfeus-as-951ff4-ba9f2d45-d657-11e6-8a03-f45c89acf865"}
         }
     ],
     "s-prov:StreamOut" : [ 
@@ -30,15 +33,18 @@
             "prov:type" : "s-prov:Data",
             "oa:annotations" : [],
             "s-prov:format" : "",
+            "provone:Port" : "rho",
             "prov:wasGeneratedBy" : {
                 "@id" : "CorrCoef-orfeus-as-95144-ba9f2d45-d657-11e6-8a03-f45c89acf865"
             },
             "prov:hadMember" : [ 
                 {
-                    "prov:type" : "s-prov:DataGranule",
+                    
                     "@type" : "s-prov:DataGranule",
-                    "ex:batch2" : "[99.69114131423181,18.42938275423983]",
-                    "ex:name" : "batch2_1"
+                    "iteration": 1,
+                    "rho": 0.4393365562,
+                    "vars": "0_1"
+                    
                 }
             ],
             "prov:location" : "",
@@ -60,15 +66,13 @@
         "s-prov:iterationIndex" : 1,
         "s-prov:feedbackInvocation" : false,
         "s-prov:message" : "",
-        "provone:OutputPort" : "corr",
         "prov:wasAssociatedWith" : {
-            "@id" : "CorrCoef-Instance--orfeus-as-95144-ba923bc0-d657-11e6-a750-f45c89acf865",
+            "@id" : "CorrCoef-Instance--orfeus-as-95144-ba923bc0-d657-11e6-a750-f45c89acf865"
         }
     },
-    "prov:Person" : "aspinuso",
-    "s-prov:stateful" : true,
-    "prov:generatedAtTime" : "2017-01-09 10:38:16.287421"
-    "s-prov:ComponentInstance"{
+    "provone:User" : "aspinuso",
+    "prov:generatedAtTime" : "2017-01-09 10:38:16.287421",
+    "s-prov:ComponentInstance":{
             "@id" : "CorrCoef-Instance--orfeus-as-95144-ba923bc0-d657-11e6-a750-f45c89acf865",
             "@type" : "s-prov:ComponentInstance",
             "prov:type" : "s-prov:ComponentInstance",
@@ -85,6 +89,11 @@
                 "@type" : "s-prov:Component",
                 "@id" : "CorrCoef39",
                 "s-prov:provCluster" : "record1"
+            },
+            "prov:wasAssociateFor" : {
+                "@type" : "s-prov:WFExecution",
+                "@id" : "CorrCoef-ba923bc0-d6ssd57-1w1e6-a750-f45c89acf865"
+                
             }
         }
 }

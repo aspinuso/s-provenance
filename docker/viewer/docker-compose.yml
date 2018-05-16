@@ -1,0 +1,32 @@
+version: '2'
+services:
+    mongo-db:
+        image: mongo:3.4.9
+        container_name: "mongo-db"
+        volumes:
+          - /tmp/:/data/db
+        ports:
+          - 27017:27017
+      # mongod --logpath /prov/mongo.log --dbpath /prov/data/
+        command: mongod --dbpath /data/db # --quiet
+    sprov:
+        build: ../store/
+        container_name: "sprov"
+        image: sprov:latest
+        ports:
+          - 8082:8082
+        links:
+          - mongo-db
+        depends_on:
+          - mongo-db
+        #command: ./docker_entry.sh #tail -f /prov/access.log
+    explorer:
+        build: .
+        container_name: "viewer"
+        image: explorer:latest
+        ports:
+          - 9000:8082
+        links:
+          - sprov
+        depends_on:
+          - sprov

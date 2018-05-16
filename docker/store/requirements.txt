@@ -3,3 +3,6 @@ twisted
 gunicorn
 pymongo
 python-dateutil
+lxml
+rdflib
+flask-apispec
