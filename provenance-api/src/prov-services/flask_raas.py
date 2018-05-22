@@ -332,7 +332,10 @@ summaryargs=dict({'runId':fields.Str(),
                   'groupby':fields.Str(),
                   'clusters':fields.Str(),
                   'mintime':fields.Str(),
-                  'maxtme':fields.Str()
+                  'maxtme':fields.Str(),
+                  'minidx':fields.Int(required=True),
+                  'maxidx':fields.Int(required=True)
+
                   },**levelargsnp)
 
 @app.route("/summaries/workflowexecution")
