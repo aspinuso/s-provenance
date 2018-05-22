@@ -2168,7 +2168,7 @@ class ProvenanceStore(object):
             indexed_meta_query = helper.getIndexedMetaQueryList(key_value_pairs)
             parameters_query = helper.getParametersQueryList(key_value_pairs)
             aggregate_match['$or'] = indexed_meta_query + parameters_query
-            
+
             if formats is not None:
                 aggregate_match['$or'] += [{
                     'streams': {
@@ -2200,7 +2200,9 @@ class ProvenanceStore(object):
             aggregateResults = self.lineage.aggregate(pipeline = aggregate_pipeline)
 
         elif mode == 'AND':
-            and_query = helper.getAndQueryList(key_value_pairs)
+
+            and_query = helper.getAndQueryIndexedMetaAndParameters(key_value_pairs)
+
             aggregate_pipeline = [
                 {
                     '$match': aggregate_match,
@@ -2214,11 +2216,20 @@ class ProvenanceStore(object):
                         'preserveNullAndEmptyArrays': True
                     }
                 },
+                {   
+                    '$unwind': {
+                        'path': '$parameters',
+                        'preserveNullAndEmptyArrays': True
+                    }
+                },
                 {
                    '$group': {
                         '_id':'$runId',
                         'indexedMeta': { 
                             '$addToSet': "$streams.indexedMeta"    
+                        },
+                        'parameters': {
+                            '$addToSet': "$parameters" 
                         }
                     },  
                 },

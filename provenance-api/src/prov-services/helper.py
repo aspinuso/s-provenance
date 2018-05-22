@@ -101,6 +101,25 @@ def getAndQueryList(KeyValuePairs):
         })
     return parametersQueryList
 
+def getAndQueryIndexedMetaAndParameters(KeyValuePairs):
+    query = []
+    for key_value_pair in KeyValuePairs:
+        query.append({
+            '$or': [
+                {
+                    'indexedMeta': {
+                        '$elemMatch': key_value_pair
+                    }
+                },
+                {
+                    'parameters': {
+                        '$elemMatch': key_value_pair
+                    }
+                }
+            ]
+        })
+    return query
+
 
 def getUnwindedStreamIndexedMetaQuery(KeyValuePairs, optionalFormat=None):
     parametersQueryList = []
