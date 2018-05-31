@@ -44,6 +44,7 @@ def hello():
 # Insert sequences of provenance documents, these can be bundles or lineage. The documents can be in JSON or JSON-LD. Format adaptation for storage purposes is handled by the acquisition function.
 @app.route("/workflowexecutions/insert", methods=['POST'])
 @use_kwargs({'prov': fields.Str()})
+@doc(tags=['acquisition'], description='Bulk insert of bundle or lineage documents in JSON format. These must be provided as encoded stirng in a POST request')
 def insert_provenance(**kwargs):
         
          
@@ -58,6 +59,7 @@ def insert_provenance(**kwargs):
 #Update of the user's description of a provenance bundle document. This allow users to explore and improve the description of a run depending from their findings.
 @app.route("/workflowexecutions/<runid>/edit", methods=['POST'])
 @use_kwargs({'doc': fields.Str(required=True)})
+@doc(tags=['acquisition'], description='Update of the description of a workflow execution. Users can improve this information in free-tex')
 def wfexec_description_edit(runid,**kwargs):
         
         #if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":POST WorkflowRunInfo - "+runid);
@@ -69,6 +71,7 @@ def wfexec_description_edit(runid,**kwargs):
 #Deletes the bundle and all the lineage documents related to the \emph{run\_id}.
 
 @app.route("/workflowexecutions/<runid>/delete", methods=['POST'])
+@doc(tags=['acquisition'], description='Delete a workflow execution trace, including its bundle and all its lineage documents')
 def delete_workflow_run(runid):
          
         if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":POST workflowexecution delete - "+runid+" PID:"+str(os.getpid()));
@@ -101,6 +104,7 @@ queryargsnp = {'usernames': fields.Str(),
 queryargs =dict(queryargsnp,**paging)
 
 @app.route("/workflowexecutions/<runid>", methods=['GET', 'DELETE'])
+@doc(tags=['discovery'], description='Extract documents from the bundle collection by the runid of a WFExecution. The method will return input data and infomation about the components and the libraries used for the specific run')
 def get_workflow_info(runid):
         response=None
         if request.method == 'GET':
@@ -121,7 +125,8 @@ def get_workflow_info(runid):
 #Extract documents from the bundle collection according to a query string which may include \id{username}, \id{type} of the workflow, its \id{functionNames} and domain metadata \id{terms} and \emph{value-ranges}. 
 @app.route("/workflowexecutions")
 @use_kwargs(queryargs)
-def get_workflow_executions(**kwargs):
+@doc(tags=['discovery'], description='Extract documents from the bundle collection according to a query string which may include usernames, type of the workflow, the components the run wasAssociatedWith and their implementations. Data results\' metadata and parameters can also be queried by specifying the terms and their min and max values-ranges and data formats. Mode of the search can also be indicated (mode ::= (OR j AND). It will apply to the search upon metadata and parameters values of each run')
+def get_workflowexecutions(**kwargs):
     # Required parameters
     limit = kwargs['limit'] 
     start = kwargs['start']
@@ -169,9 +174,10 @@ def get_instances_monitoring(runid,**kwargs):
 
 levelargsnp=dict({"level":fields.Str(required=True)})
 levelargs=dict({"level":fields.Str()},**paging)
-
+ 
 @app.route("/workflowexecutions/<runid>/showactivity")
 @use_kwargs(levelargs)
+@doc(tags=['monitor'], description='Extract detailed information related to the activity related to a WFExecution (id). The result-set can be grouped by invocations, instances or components (parameter level) and shows progress, anomalies (such as exceptions or systems\' and users messages), occurrence of changes and the rapid availability of accessible data bearing intermediate results. This method can also be used for runtime monitoring')
 def get_monitoring(runid,**kwargs):
     limit = kwargs['limit'] 
     start = kwargs['start']
@@ -184,6 +190,7 @@ def get_monitoring(runid,**kwargs):
 
 #Extract details about a single invocation or an instance by specifying their $id$.
 @app.route("/invocations/<invocid>")
+@doc(tags=['lineage'], description='Extract details about a single invocation by specifying its id')
 def get_invocation_details(invocid):
         
         if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET invocation details - "+invocid+" PID:"+str(os.getpid()));
@@ -194,24 +201,31 @@ def get_invocation_details(invocid):
 
 
 #Extract details about a single invocation or an instance by specifying their $id$.
-instances=dict({"wasAssociateFor":fields.Str()},**paging)
+associatefor=dict({"wasAssociateFor":fields.Str()},**paging)
 @app.route("/instances/<instid>")
-@use_kwargs(instances)
+@use_kwargs(associatefor)
+@doc(tags=['lineage'], description='Extract details about a single instance or component by specifying its id. The returning document will indicate the changes that occurred, reporting the first invocation affected. It support the specification of a list of runIds the instance was wasAssociateFor, considering that the same instance could be used across multiple runs')
 def get_instance_details(instid,**kwargs): 
         limit = int(kwargs['limit']) if 'limit' in kwargs else None
         start = int(kwargs['start']) if 'start' in kwargs else None
         runIds = csv.reader(StringIO.StringIO(kwargs['wasAssociateFor'])).next() if 'wasAssociateFor' in kwargs else None
         if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET instance details - "+instid+" PID:"+str(os.getpid()));
         response = Response()
-        response = Response(json.dumps(app.db.getComponentInstance(instid,runIds=wasAssociateFor,start=start,limit=limit)))
+        response = Response(json.dumps(app.db.getComponentInstance(instid,runIds=runIds,start=start,limit=limit)))
         response.headers['Content-type'] = 'application/json'       
         return response
 
+#instances=dict({"wasAssociateFor":fields.Str()},**paging)
 @app.route("/components/<compid>")
-def getComponentDetails(compid):
+@doc(tags=['lineage'], description='Extract details about a single instance or component by specifying its id. The returning document will indicate the changes that occurred, reporting the first invocation affected. It support the specification of a list of runIds the instance was wasAssociateFor, considering that the the same components could be used across multiple runs')
+@use_kwargs(associatefor)
+def getComponentDetails(compid, **kwargs):
+        limit = int(kwargs['limit']) if 'limit' in kwargs else None
+        start = int(kwargs['start']) if 'start' in kwargs else None
+        runIds = csv.reader(StringIO.StringIO(kwargs['wasAssociateFor'])).next() if 'wasAssociateFor' in kwargs else None
         if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET component details - "+compid+" PID:"+str(os.getpid()));
         response = Response()
-        response = Response(json.dumps(app.db.getComponent(compid)))
+        response = Response(json.dumps(app.db.getComponent(compid,runIds=runIds,start=start,limit=limit)))
         response.headers['Content-type'] = 'application/json'       
         return response
 
@@ -491,7 +505,8 @@ docs.register(wfexec_description_edit)
 docs.register(delete_workflow_run)
 
 docs.register(get_workflow_info)
-docs.register(get_instances_monitoring)
+docs.register(get_workflowexecutions)
+#docs.register(get_instances_monitoring)
 docs.register(get_monitoring)
 docs.register(get_invocation_details)
 docs.register(get_instance_details)

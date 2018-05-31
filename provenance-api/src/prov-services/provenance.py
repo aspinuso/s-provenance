@@ -1973,7 +1973,7 @@ class ProvenanceStore(object):
         return output
 
 
-    def getInvocation(self, id):
+    def getInvocation(self, id): 
         # db = self.connection["verce-prov"]
         # lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         obj = self.lineage.aggregate(pipeline=[{'$match':{'iterationId':id}},
@@ -1983,7 +1983,7 @@ class ProvenanceStore(object):
                                                      #"worker":{"$first":"$worker"}, 
                                                      #"s-prov:generatedWithImmediateAccess":{"$push":"$streams.con:immediateAccess"},
                                                      #"s-prov:generatedWithLocation":{"$push":"$streams.location"},
-                                                     #"s-prov:dataCount":{"$push":"$streams.id"},
+                                                     "s-prov:dataCount":{"$push":"$streams.id"},
                                                      #"pid" : {"$first":"$pid"},
                                                      #"mapping" : {"$first":"$mapping"},
                                                      "s-prov:qualifiedChange": {"$push":"$s-prov:qualifiedChange"},
@@ -2030,46 +2030,56 @@ class ProvenanceStore(object):
         return output
 
 
-    def getComponent(self, id):
+    def getComponent(self, id,runIds=None,start=None,limit=None):
         # db = self.connection["verce-prov"]
         # workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
         # lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
-        obj = self.workflow.aggregate(pipeline=[{"$match":{"provone:hasSubProcess.prov:wasAttributedTo.@id": id}},
-                                           { "$unwind": "$provone:hasSubProcess" },
-                                           {"$group":{"_id":"$provone:hasSubProcess.prov:wasAttributedTo.@id",
-                                            "@type":{"$first":"$provone:hasSubProcess.prov:wasAttributedTo.@type"},
-                                            "s-prov:CName":{"$first":"$provone:hasSubProcess.prov:wasAttributedTo.s-prov:CName"},
-                                            "prov:hadPlan":{"$first":"$provone:hasSubProcess"},
-                                            "runId":{"$first":"$runId"}
-                                            }},
-                                           {'$match': {"_id": {"$eq": id}}}
-                                           ])
 
-        ln = self.lineage.aggregate(pipeline=[{'$match':{'actedOnBehalfOf':id}},
-                                                    {'$group':{'_id':'$instanceId', 
+        obj = self.workflow.find({"source": {"$exists":{id:True}}, "_id":{"$in":runIds}},{'runId':1, 'source':1})
+
+#{ "$unwind": "$provone:hasSubProcess" },
+#                                           {"$group":{"_id":"$provone:hasSubProcess.prov:wasAttributedTo.@id",
+#                                            "@type":{"$first":"$provone:hasSubProcess.prov:wasAttributedTo.@type"},
+#                                            "s-prov:CName":{"$first":"$provone:hasSubProcess.prov:wasAttributedTo.s-prov:CName"},
+#                                            "prov:hadPlan":{"$first":"$provone:hasSubProcess"},
+#                                            "runId":{"$first":"$runId"}
+#                                            }},
+#                                           {'$match': {"_id": {"$eq": id}}
+        ln = self.lineage.aggregate(pipeline=[{'$match':{'actedOnBehalfOf':id, "runIds": {"$in":runIds}}},
+                                                    {'$group':{'_id':'$actedOnBehalfOf', 
                                                      "s-prov:qualifiedChange": {"$push":"$s-prov:qualifiedChange"},
                                                      "s-prov:ComponentParameters": {"$first":"$parameters"},
                                                      "prov_cluster":{"$first":"$prov_cluster"}}}
+                                                      
                                                      #{ "$project": { "@id":"$_id", "_id":0, "s-prov:worker":1, "s-prov:lastEventTime":1, "s-prov:message":1,"s-prov:generatedWithImmediateAccess":1,"s-prov:generatedWithLocation":1,"s-prov:count":1}}
                                                     ]) 
         
        
-        
+       
         x=obj.next()
         
         x["prov:wasAssociateFor"]={"@type":"s-prov:WFExecution","@id":x["runId"]}
+        
         for inst in ln:
             if "s-prov:qualifiedChange" in inst and (len(inst["s-prov:qualifiedChange"])>0):
                 x["s-prov:qualifiedChange"]=inst["s-prov:qualifiedChange"]
                 for change in x["s-prov:qualifiedChange"]:
                     change.update({"s-prov:ComponentInstance":{"@id":inst["_id"]}})
 
-        x["@id"]=x["_id"]
-
+        x["@id"]=id
+        x["CName"]=id
+        x["@type"]="s-prov:Component"
+        x["prov:wasAssociateFor"]["prov:hadPlan"]={}
+        x["prov:wasAssociateFor"]["prov:hadPlan"]["s-prov:source"]=x["source"][id]["code"]
+        x["prov:wasAssociateFor"]["prov:hadPlan"]
+        x["prov:wasAssociateFor"]["prov:hadPlan"]["@type"]="s-prov:Implementation"
+        x["prov:wasAssociateFor"]["prov:hadPlan"]["s-prov:functionName"]=x["source"][id]["functionName"]
+        x["s-prov:type"]=x["source"][id]["type"]
         del x["_id"]
         del x["runId"]
-        del x["prov:hadPlan"]["prov:wasAttributedTo"]
-        #output["totalCount"]= totalCount
+        del x["source"]
+
+        
         self.addLDContext(x)
         return x
 
