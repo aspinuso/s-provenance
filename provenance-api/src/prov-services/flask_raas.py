@@ -88,6 +88,14 @@ paging ={ 'start': fields.Int(required=True),
           }
 
  
+queryargsbasic = {
+             'terms': fields.Str(),
+             'maxvalues': fields.Str(),
+             'minvalues': fields.Str(),
+             'wasAssociatedWith': fields.Str(),
+             'mode': fields.Str(),
+             'rformat': fields.Str(missing="json")
+              }
 
 queryargsnp = {'usernames': fields.Str(),
              'terms': fields.Str(),
@@ -217,7 +225,7 @@ def get_instance_details(instid,**kwargs):
 
 #instances=dict({"wasAssociateFor":fields.Str()},**paging)
 @app.route("/components/<compid>")
-@doc(tags=['lineage'], description='Extract details about a single instance or component by specifying its id. The returning document will indicate the changes that occurred, reporting the first invocation affected. It support the specification of a list of runIds the instance was wasAssociateFor, considering that the the same components could be used across multiple runs')
+@doc(tags=['lineage'], description='Extract details about a single component by specifying its id and the workflow run it wasAssociateFor, considering that the the same components could be used across multiple runs. The returning document will indicate the changes that occurred, reporting the first invocation affected')
 @use_kwargs(associatefor)
 def getComponentDetails(compid, **kwargs):
         limit = int(kwargs['limit']) if 'limit' in kwargs else None
@@ -231,6 +239,7 @@ def getComponentDetails(compid, **kwargs):
 
 
 @app.route("/data/<data_id>")
+@doc(tags=['lineage'], description='Extract Data and their DataGranules by the Data id')
 def get_data_item(data_id): 
        
     response = Response(json.dumps(app.db.getData(0,1,id=str(data_id))))
@@ -244,32 +253,34 @@ dataargs=dict({'wasGeneratedBy':fields.Str(),
 
 @app.route("/data")
 @use_kwargs(dataargs)
+@doc(tags=['lineage'], description='The data is selected by specifying a query string. Query parameters allow to search by attribution to a component or to an implementation, generation by a workflow execution and by combining more metadata and parameters terms with their min and max valuesranges. Mode of the search can also be indicated (mode ::= (OR | AND). It will apply to the search upon metadata and parameters values-ranges')
 def get_data(**kwargs):
-        limit = kwargs['limit'] 
-        start = kwargs['start']
-        if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET data collection - PID:"+str(os.getpid()));
-        #run
-        genby = kwargs['wasGeneratedBy'] if 'wasGeneratedBy' in kwargs else None
-        #component
-        attrTo = kwargs['wasAttributedTo'] if 'wasAttributedTo' in kwargs else None
-        #implementation
-        implementations = kwargs['implementations'] if 'implementations' in kwargs else None
-        keylist = csv.reader(StringIO.StringIO(kwargs['terms'])).next() if 'terms' in kwargs else None
-        maxvalues = csv.reader(StringIO.StringIO(kwargs['maxvalues'])).next() if 'maxvalues' in kwargs else None
-        minvalues = csv.reader(StringIO.StringIO(kwargs['minvalues'])).next() if 'minvalues' in kwargs else None
-        format = kwargs['format'] if 'format' in kwargs else None
-        mode = kwargs['mode'] if 'mode' in kwargs else 'OR'
-        #id = kwargs['id'] if 'id' in kwargs else None
-        
-        response = Response(json.dumps(app.db.getData(int(start),int(limit),impl=implementations,genBy=genby,attrTo=attrTo,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues,id=None,format=format,mode=mode)))
+    limit = kwargs['limit'] 
+    start = kwargs['start']
+    if logging == "True" : app.logger.info(str(datetime.datetime.now().time())+":GET data collection - PID:"+str(os.getpid()));
+    #run
+    genby = kwargs['wasGeneratedBy'] if 'wasGeneratedBy' in kwargs else None
+    #component
+    attrTo = kwargs['wasAttributedTo'] if 'wasAttributedTo' in kwargs else None
+    #implementation
+    implementations = kwargs['implementations'] if 'implementations' in kwargs else None
+    keylist = csv.reader(StringIO.StringIO(kwargs['terms'])).next() if 'terms' in kwargs else None
+    maxvalues = csv.reader(StringIO.StringIO(kwargs['maxvalues'])).next() if 'maxvalues' in kwargs else None
+    minvalues = csv.reader(StringIO.StringIO(kwargs['minvalues'])).next() if 'minvalues' in kwargs else None
+    format = kwargs['format'] if 'format' in kwargs else None
+    mode = kwargs['mode'] if 'mode' in kwargs else 'OR'
+    #id = kwargs['id'] if 'id' in kwargs else None
+    
+    response = Response(json.dumps(app.db.getData(int(start),int(limit),impl=implementations,genBy=genby,attrTo=attrTo,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues,id=None,format=format,mode=mode)))
 
-        response.headers['Content-type'] = 'application/json'
+    response.headers['Content-type'] = 'application/json'
 
-        return response
+    return response
 
 #Thomas
 @app.route("/data/<data_id>/derivedData")
 @use_kwargs(levelargsnp)
+@doc(tags=['lineage'], description='Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element\'s data dependencies. The number of traversal steps is provided as a parameter (level).')
 def derived_data(data_id,**kwargs):
     level = kwargs['level']
     if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+":GET derivedData - "+data_id+" PID:"+str(os.getpid()));
@@ -280,6 +291,7 @@ def derived_data(data_id,**kwargs):
 #Thomas
 @app.route("/data/<data_id>/wasDerivedFrom")
 @use_kwargs(levelargsnp)
+@doc(tags=['lineage'], description='Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element\'s data dependencies. The number of traversal steps is provided as a parameter (level).')
 def was_derived_from(data_id,**kwargs):
     print(kwargs)
     level = kwargs['level']
@@ -316,6 +328,7 @@ termsargs=dict({'runIds':fields.Str(),
 
 @app.route("/terms")
 @use_kwargs(termsargs)
+@doc(tags=['lineage'], description='Return a list of discoverable metadata terms based on their appearance for a list of runIds, usernames, or for the whole provenance archive. Terms are returned indicating their type (when consistently used), min and max values and their number occurrences within the scope of the search')
 def get_data_granule_terms(**kwargs):
         aggregationLevel = kwargs['aggregationLevel'] if 'aggregationLevel' in kwargs else 'all'
         runIdList = csv.reader(StringIO.StringIO(kwargs['runIds'])).next() if 'runIds' in kwargs else None
@@ -354,6 +367,7 @@ summaryargs=dict({'runId':fields.Str(),
 
 @app.route("/summaries/workflowexecution")
 @use_kwargs(summaryargs)
+@doc(tags=['summaries'], description='Produce a detailed overview of the distribution of the computation, reporting the size of data movements between the workflow components, their instances or invocations across worker nodes, depending on the specified granularity level. Additional information, such as process pid, worker, instance or component of the workflow (depending on the level of granularity) can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views')
 def summaries_handler_workflow(**kwargs):
         if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+": GET getSummaries workflow - level= "+kwargs['level']);
         
@@ -369,6 +383,7 @@ colargs=dict(dict({'groupby':fields.Str()},**queryargsnp),**levelargsnp)
 
 @app.route("/summaries/collaborative")
 @use_kwargs(colargs)
+@doc(tags=['summaries'], description='Extract information about the reuse and exchange of data between workflow executions based on terms\' valuesranges and a group of users. The API method allows for inclusive or exclusive (mode ::= (OR j AND) queries on the terms\' values. As above, additional details, such as running infrastructure, type and name of the workflow can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views')
 def summaries_handler_collab(**kwargs):
         users = csv.reader(StringIO.StringIO(kwargs['usernames'])).next() if 'usernames' in kwargs else None
         groupby = kwargs['groupby'] if 'groupby' in kwargs else None
@@ -392,7 +407,7 @@ def summaries_handler_collab(**kwargs):
 export=dict({'format':fields.Str()},**levelargsnp)
 # EXPORT to PROV methods
 @app.route("/data/<data_id>/export")
-@doc(params={'level': {'description': 'The number of dependencies levels to extract'}})
+@doc(tags=['export'], description='Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace')
 @use_kwargs(export)
 def export_data_provenance(data_id,**kwargs):
     response = Response(str(app.db.exportDataProvenance(data_id,**kwargs)).encode('ascii','ignore'))
@@ -403,9 +418,10 @@ def export_data_provenance(data_id,**kwargs):
         response.headers['Content-type'] = 'application/xml' 
     return response
 
-queryargsanc=dict(dict({'ids':fields.Str()},**queryargsnp),**levelargsnp)
+queryargsanc=dict(dict({'ids':fields.Str()},**queryargsbasic),**levelargsnp)
 @app.route("/data/filterOnAncestor", methods=['POST'])
 @use_kwargs(queryargsanc)
+@doc(tags=['lineage'], description='Filter a list of data ids based on the existence of at least one ancestor in their data dependency graph, according to a list of metadata terms and their min and max values-ranges. Maximum depth level and mode of the search can also be indicated (mode ::= (OR | AND)')
 def filter_on_ancestor(**kwargs):
 
         keylist = None
@@ -447,6 +463,7 @@ def filter_on_ancestor(**kwargs):
 format=dict({'format':fields.Str()})
 @app.route("/workflowexecutions/<run_id>/export")
 @use_kwargs(format)
+@doc(tags=['export'], description='Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace')
 def export_run_provenance(run_id,**kwargs):
     response = Response(str(app.db.exportRunProvenance(run_id,**kwargs)).encode('ascii','ignore'))
     if 'format' in kwargs and kwargs['format']=='rdf':

@@ -9,6 +9,7 @@
   "paths": {
     "/data": {
       "get": {
+        "description": "The data is selected by specifying a query string. Query parameters allow to search by attribution to a component or to an implementation, generation by a workflow execution and by combining more metadata and parameters terms with their min and max valuesranges. Mode of the search can also be indicated (mode ::= (OR | AND). It will apply to the search upon metadata and parameters values-ranges", 
         "parameters": [
           {
             "in": "body", 
@@ -70,9 +71,13 @@
             }
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }, 
       "options": {
+        "description": "The data is selected by specifying a query string. Query parameters allow to search by attribution to a component or to an implementation, generation by a workflow execution and by combining more metadata and parameters terms with their min and max valuesranges. Mode of the search can also be indicated (mode ::= (OR | AND). It will apply to the search upon metadata and parameters values-ranges", 
         "parameters": [
           {
             "in": "body", 
@@ -134,11 +139,15 @@
             }
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }
     }, 
     "/data/filterOnAncestor": {
       "options": {
+        "description": "Filter a list of data ids based on the existence of at least one ancestor in their data dependency graph, according to a list of metadata terms and their min and max values-ranges. Maximum depth level and mode of the search can also be indicated (mode ::= (OR | AND)", 
         "parameters": [
           {
             "in": "body", 
@@ -146,13 +155,7 @@
             "required": false, 
             "schema": {
               "properties": {
-                "format": {
-                  "type": "string"
-                }, 
                 "ids": {
-                  "type": "string"
-                }, 
-                "implementations": {
                   "type": "string"
                 }, 
                 "level": {
@@ -174,12 +177,6 @@
                 "terms": {
                   "type": "string"
                 }, 
-                "types": {
-                  "type": "string"
-                }, 
-                "usernames": {
-                  "type": "string"
-                }, 
                 "wasAssociatedWith": {
                   "type": "string"
                 }
@@ -191,9 +188,13 @@
             }
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }, 
       "post": {
+        "description": "Filter a list of data ids based on the existence of at least one ancestor in their data dependency graph, according to a list of metadata terms and their min and max values-ranges. Maximum depth level and mode of the search can also be indicated (mode ::= (OR | AND)", 
         "parameters": [
           {
             "in": "body", 
@@ -201,13 +202,7 @@
             "required": false, 
             "schema": {
               "properties": {
-                "format": {
-                  "type": "string"
-                }, 
                 "ids": {
-                  "type": "string"
-                }, 
-                "implementations": {
                   "type": "string"
                 }, 
                 "level": {
@@ -229,12 +224,6 @@
                 "terms": {
                   "type": "string"
                 }, 
-                "types": {
-                  "type": "string"
-                }, 
-                "usernames": {
-                  "type": "string"
-                }, 
                 "wasAssociatedWith": {
                   "type": "string"
                 }
@@ -246,11 +235,15 @@
             }
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }
     }, 
     "/data/{data_id}": {
       "get": {
+        "description": "Extract Data and their DataGranules by the Data id", 
         "parameters": [
           {
             "in": "path", 
@@ -259,9 +252,13 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }, 
       "options": {
+        "description": "Extract Data and their DataGranules by the Data id", 
         "parameters": [
           {
             "in": "path", 
@@ -270,11 +267,15 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }
     }, 
     "/data/{data_id}/derivedData": {
       "get": {
+        "description": "Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element's data dependencies. The number of traversal steps is provided as a parameter (level).", 
         "parameters": [
           {
             "in": "body", 
@@ -299,9 +300,13 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }, 
       "options": {
+        "description": "Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element's data dependencies. The number of traversal steps is provided as a parameter (level).", 
         "parameters": [
           {
             "in": "body", 
@@ -326,11 +331,15 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }
     }, 
     "/data/{data_id}/export": {
       "get": {
+        "description": "Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace", 
         "parameters": [
           {
             "in": "body", 
@@ -358,9 +367,13 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "export"
+        ]
       }, 
       "options": {
+        "description": "Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace", 
         "parameters": [
           {
             "in": "body", 
@@ -388,11 +401,15 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "export"
+        ]
       }
     }, 
     "/data/{data_id}/wasDerivedFrom": {
       "get": {
+        "description": "Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element's data dependencies. The number of traversal steps is provided as a parameter (level).", 
         "parameters": [
           {
             "in": "body", 
@@ -417,9 +434,13 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }, 
       "options": {
+        "description": "Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element's data dependencies. The number of traversal steps is provided as a parameter (level).", 
         "parameters": [
           {
             "in": "body", 
@@ -444,7 +465,10 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }
     }, 
     "/instances/{instid}": {
@@ -563,6 +587,7 @@
     }, 
     "/summaries/collaborative": {
       "get": {
+        "description": "Extract information about the reuse and exchange of data between workflow executions based on terms' valuesranges and a group of users. The API method allows for inclusive or exclusive (mode ::= (OR j AND) queries on the terms' values. As above, additional details, such as running infrastructure, type and name of the workflow can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views", 
         "parameters": [
           {
             "in": "body", 
@@ -615,9 +640,13 @@
             }
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "summaries"
+        ]
       }, 
       "options": {
+        "description": "Extract information about the reuse and exchange of data between workflow executions based on terms' valuesranges and a group of users. The API method allows for inclusive or exclusive (mode ::= (OR j AND) queries on the terms' values. As above, additional details, such as running infrastructure, type and name of the workflow can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views", 
         "parameters": [
           {
             "in": "body", 
@@ -670,11 +699,15 @@
             }
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "summaries"
+        ]
       }
     }, 
     "/summaries/workflowexecution": {
       "get": {
+        "description": "Produce a detailed overview of the distribution of the computation, reporting the size of data movements between the workflow components, their instances or invocations across worker nodes, depending on the specified granularity level. Additional information, such as process pid, worker, instance or component of the workflow (depending on the level of granularity) can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views", 
         "parameters": [
           {
             "in": "body", 
@@ -718,9 +751,13 @@
             }
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "summaries"
+        ]
       }, 
       "options": {
+        "description": "Produce a detailed overview of the distribution of the computation, reporting the size of data movements between the workflow components, their instances or invocations across worker nodes, depending on the specified granularity level. Additional information, such as process pid, worker, instance or component of the workflow (depending on the level of granularity) can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views", 
         "parameters": [
           {
             "in": "body", 
@@ -764,11 +801,15 @@
             }
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "summaries"
+        ]
       }
     }, 
     "/terms": {
       "get": {
+        "description": "Return a list of discoverable metadata terms based on their appearance for a list of runIds, usernames, or for the whole provenance archive. Terms are returned indicating their type (when consistently used), min and max values and their number occurrences within the scope of the search", 
         "parameters": [
           {
             "in": "body", 
@@ -790,9 +831,13 @@
             }
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }, 
       "options": {
+        "description": "Return a list of discoverable metadata terms based on their appearance for a list of runIds, usernames, or for the whole provenance archive. Terms are returned indicating their type (when consistently used), min and max values and their number occurrences within the scope of the search", 
         "parameters": [
           {
             "in": "body", 
@@ -814,7 +859,10 @@
             }
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }
     }, 
     "/workflowexecutions": {
@@ -991,6 +1039,7 @@
     }, 
     "/workflowexecutions/{run_id}/export": {
       "get": {
+        "description": "Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace", 
         "parameters": [
           {
             "in": "body", 
@@ -1012,9 +1061,13 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "export"
+        ]
       }, 
       "options": {
+        "description": "Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace", 
         "parameters": [
           {
             "in": "body", 
@@ -1036,7 +1089,10 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "export"
+        ]
       }
     }, 
     "/workflowexecutions/{runid}": {
