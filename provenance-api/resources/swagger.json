@@ -449,6 +449,7 @@
     }, 
     "/instances/{instid}": {
       "get": {
+        "description": "Extract details about a single instance or component by specifying its id. The returning document will indicate the changes that occurred, reporting the first invocation affected. It support the specification of a list of runIds the instance was wasAssociateFor, considering that the same instance could be used across multiple runs", 
         "parameters": [
           {
             "in": "body", 
@@ -482,9 +483,13 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }, 
       "options": {
+        "description": "Extract details about a single instance or component by specifying its id. The returning document will indicate the changes that occurred, reporting the first invocation affected. It support the specification of a list of runIds the instance was wasAssociateFor, considering that the same instance could be used across multiple runs", 
         "parameters": [
           {
             "in": "body", 
@@ -518,11 +523,15 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }
     }, 
     "/invocations/{invocid}": {
       "get": {
+        "description": "Extract details about a single invocation by specifying its id", 
         "parameters": [
           {
             "in": "path", 
@@ -531,9 +540,13 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }, 
       "options": {
+        "description": "Extract details about a single invocation by specifying its id", 
         "parameters": [
           {
             "in": "path", 
@@ -542,7 +555,10 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "lineage"
+        ]
       }
     }, 
     "/summaries/collaborative": {
@@ -675,8 +691,16 @@
                 "level": {
                   "type": "string"
                 }, 
+                "maxidx": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
                 "maxtme": {
                   "type": "string"
+                }, 
+                "minidx": {
+                  "format": "int32", 
+                  "type": "integer"
                 }, 
                 "mintime": {
                   "type": "string"
@@ -686,7 +710,9 @@
                 }
               }, 
               "required": [
-                "level"
+                "level", 
+                "maxidx", 
+                "minidx"
               ], 
               "type": "object"
             }
@@ -711,8 +737,16 @@
                 "level": {
                   "type": "string"
                 }, 
+                "maxidx": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
                 "maxtme": {
                   "type": "string"
+                }, 
+                "minidx": {
+                  "format": "int32", 
+                  "type": "integer"
                 }, 
                 "mintime": {
                   "type": "string"
@@ -722,7 +756,9 @@
                 }
               }, 
               "required": [
-                "level"
+                "level", 
+                "maxidx", 
+                "minidx"
               ], 
               "type": "object"
             }
@@ -781,8 +817,135 @@
         "responses": {}
       }
     }, 
+    "/workflowexecutions": {
+      "get": {
+        "description": "Extract documents from the bundle collection according to a query string which may include usernames, type of the workflow, the components the run wasAssociatedWith and their implementations. Data results' metadata and parameters can also be queried by specifying the terms and their min and max values-ranges and data formats. Mode of the search can also be indicated (mode ::= (OR j AND). It will apply to the search upon metadata and parameters values of each run", 
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "format": {
+                  "type": "string"
+                }, 
+                "implementations": {
+                  "type": "string"
+                }, 
+                "limit": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "maxvalues": {
+                  "type": "string"
+                }, 
+                "minvalues": {
+                  "type": "string"
+                }, 
+                "mode": {
+                  "type": "string"
+                }, 
+                "rformat": {
+                  "default": "json", 
+                  "type": "string"
+                }, 
+                "start": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "terms": {
+                  "type": "string"
+                }, 
+                "types": {
+                  "type": "string"
+                }, 
+                "usernames": {
+                  "type": "string"
+                }, 
+                "wasAssociatedWith": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "limit", 
+                "start"
+              ], 
+              "type": "object"
+            }
+          }
+        ], 
+        "responses": {}, 
+        "tags": [
+          "discovery"
+        ]
+      }, 
+      "options": {
+        "description": "Extract documents from the bundle collection according to a query string which may include usernames, type of the workflow, the components the run wasAssociatedWith and their implementations. Data results' metadata and parameters can also be queried by specifying the terms and their min and max values-ranges and data formats. Mode of the search can also be indicated (mode ::= (OR j AND). It will apply to the search upon metadata and parameters values of each run", 
+        "parameters": [
+          {
+            "in": "body", 
+            "name": "body", 
+            "required": false, 
+            "schema": {
+              "properties": {
+                "format": {
+                  "type": "string"
+                }, 
+                "implementations": {
+                  "type": "string"
+                }, 
+                "limit": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "maxvalues": {
+                  "type": "string"
+                }, 
+                "minvalues": {
+                  "type": "string"
+                }, 
+                "mode": {
+                  "type": "string"
+                }, 
+                "rformat": {
+                  "default": "json", 
+                  "type": "string"
+                }, 
+                "start": {
+                  "format": "int32", 
+                  "type": "integer"
+                }, 
+                "terms": {
+                  "type": "string"
+                }, 
+                "types": {
+                  "type": "string"
+                }, 
+                "usernames": {
+                  "type": "string"
+                }, 
+                "wasAssociatedWith": {
+                  "type": "string"
+                }
+              }, 
+              "required": [
+                "limit", 
+                "start"
+              ], 
+              "type": "object"
+            }
+          }
+        ], 
+        "responses": {}, 
+        "tags": [
+          "discovery"
+        ]
+      }
+    }, 
     "/workflowexecutions/insert": {
       "options": {
+        "description": "Bulk insert of bundle or lineage documents in JSON format. These must be provided as encoded stirng in a POST request", 
         "parameters": [
           {
             "in": "body", 
@@ -798,9 +961,13 @@
             }
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "acquisition"
+        ]
       }, 
       "post": {
+        "description": "Bulk insert of bundle or lineage documents in JSON format. These must be provided as encoded stirng in a POST request", 
         "parameters": [
           {
             "in": "body", 
@@ -816,7 +983,10 @@
             }
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "acquisition"
+        ]
       }
     }, 
     "/workflowexecutions/{run_id}/export": {
@@ -871,6 +1041,7 @@
     }, 
     "/workflowexecutions/{runid}": {
       "delete": {
+        "description": "Extract documents from the bundle collection by the runid of a WFExecution. The method will return input data and infomation about the components and the libraries used for the specific run", 
         "parameters": [
           {
             "in": "path", 
@@ -879,9 +1050,13 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "discovery"
+        ]
       }, 
       "get": {
+        "description": "Extract documents from the bundle collection by the runid of a WFExecution. The method will return input data and infomation about the components and the libraries used for the specific run", 
         "parameters": [
           {
             "in": "path", 
@@ -890,9 +1065,13 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "discovery"
+        ]
       }, 
       "options": {
+        "description": "Extract documents from the bundle collection by the runid of a WFExecution. The method will return input data and infomation about the components and the libraries used for the specific run", 
         "parameters": [
           {
             "in": "path", 
@@ -901,11 +1080,15 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "discovery"
+        ]
       }
     }, 
     "/workflowexecutions/{runid}/delete": {
       "options": {
+        "description": "Delete a workflow execution trace, including its bundle and all its lineage documents", 
         "parameters": [
           {
             "in": "path", 
@@ -914,9 +1097,13 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "acquisition"
+        ]
       }, 
       "post": {
+        "description": "Delete a workflow execution trace, including its bundle and all its lineage documents", 
         "parameters": [
           {
             "in": "path", 
@@ -925,11 +1112,15 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "acquisition"
+        ]
       }
     }, 
     "/workflowexecutions/{runid}/edit": {
       "options": {
+        "description": "Update of the description of a workflow execution. Users can improve this information in free-tex", 
         "parameters": [
           {
             "in": "body", 
@@ -954,9 +1145,13 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "acquisition"
+        ]
       }, 
       "post": {
+        "description": "Update of the description of a workflow execution. Users can improve this information in free-tex", 
         "parameters": [
           {
             "in": "body", 
@@ -981,79 +1176,15 @@
             "type": "string"
           }
         ], 
-        "responses": {}
-      }
-    }, 
-    "/workflowexecutions/{runid}/instances": {
-      "get": {
-        "parameters": [
-          {
-            "in": "body", 
-            "name": "body", 
-            "required": false, 
-            "schema": {
-              "properties": {
-                "limit": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "start": {
-                  "format": "int32", 
-                  "type": "integer"
-                }
-              }, 
-              "required": [
-                "limit", 
-                "start"
-              ], 
-              "type": "object"
-            }
-          }, 
-          {
-            "in": "path", 
-            "name": "runid", 
-            "required": true, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}
-      }, 
-      "options": {
-        "parameters": [
-          {
-            "in": "body", 
-            "name": "body", 
-            "required": false, 
-            "schema": {
-              "properties": {
-                "limit": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "start": {
-                  "format": "int32", 
-                  "type": "integer"
-                }
-              }, 
-              "required": [
-                "limit", 
-                "start"
-              ], 
-              "type": "object"
-            }
-          }, 
-          {
-            "in": "path", 
-            "name": "runid", 
-            "required": true, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "acquisition"
+        ]
       }
     }, 
     "/workflowexecutions/{runid}/showactivity": {
       "get": {
+        "description": "Extract detailed information related to the activity related to a WFExecution (id). The result-set can be grouped by invocations, instances or components (parameter level) and shows progress, anomalies (such as exceptions or systems' and users messages), occurrence of changes and the rapid availability of accessible data bearing intermediate results. This method can also be used for runtime monitoring", 
         "parameters": [
           {
             "in": "body", 
@@ -1087,9 +1218,13 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "monitor"
+        ]
       }, 
       "options": {
+        "description": "Extract detailed information related to the activity related to a WFExecution (id). The result-set can be grouped by invocations, instances or components (parameter level) and shows progress, anomalies (such as exceptions or systems' and users messages), occurrence of changes and the rapid availability of accessible data bearing intermediate results. This method can also be used for runtime monitoring", 
         "parameters": [
           {
             "in": "body", 
@@ -1123,7 +1258,10 @@
             "type": "string"
           }
         ], 
-        "responses": {}
+        "responses": {}, 
+        "tags": [
+          "monitor"
+        ]
       }
     }
   }, 
