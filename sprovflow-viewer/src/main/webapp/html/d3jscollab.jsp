@@ -3,7 +3,7 @@
 <style>
 
  
- .my-legend .legend-title {
+  .my-legend .legend-title {
     text-align: left;
     margin-bottom: 8px;
     font-weight: bold;
@@ -22,7 +22,7 @@
     width: 50px;
     margin-bottom: 6px;
     text-align: center;
-    font-size: 80%;
+    font-size: 90%;
     list-style: none;
     }
   .my-legend ul.legend-labels li span {
@@ -30,10 +30,12 @@
     float: left;
     height: 15px;
     width: 50px;
+    font-size: 30px;
     }
-  .my-legend .legend-source {
-    font-size: 120%;
+  .legend-source {
+    font-size: 110%;
     clear: both;
+
     }
   .my-legend a {
     color: #777;
@@ -98,7 +100,7 @@ RAD_MODE='<%= request.getParameter("level") %>'
 RAD_GB='<%= request.getParameter("groupby") %>'
 qstring='<%= request.getQueryString() %>'
 RUN_ID='<%= request.getParameter("runId") %>'
-USERS='<%= request.getParameter("users") %>'
+USERS='<%= request.getParameter("usernames") %>'
 
 
 USERS=USERS.split(',');
@@ -115,9 +117,12 @@ function getRandomColor() {
 
 usrclmap={}
 USERS.forEach(function(d) {
-							usrclmap[d]=getRandomColor()
+							usrclmap[d]=getRandomColor();
+               
 	 						}
 	 		 );
+
+
 
 var diameter = 960,
     radius = diameter / 2,
@@ -187,8 +192,8 @@ if (RAD_MODE=='data')
   if (RAD_MODE=='workflows') 
   {
    nodes = cluster.nodes(packageHierarchyPE(classes,RAD_GB));
-  
    links = packageConnlistPEs(nodes);
+   showRadiants()
    link = link
       .data(bundle(links))
       .enter().append("path")
@@ -375,12 +380,12 @@ d3.select(self.frameElement).style("height", diameter + "px");
 function packageHierarchyData(classes,gb) {
  var map = {};
  var parent
- //console.log(gb)
+ 
  var root = {name: 'process', children: []};
  classes.forEach(function(d) {
 //    find(d.name, d);
 	//if(!d.name.worker) d.name.worker="login";
-	
+	  
     if (!map[d.name[gb]])
     	{//console.log(d.name[gb])
     	 parent = {name: { name: d.name[gb]}, children: []};
@@ -406,12 +411,12 @@ function packageHierarchyData(classes,gb) {
 function packageHierarchyPE(classes,gb) {
  var map = {};
  var parent
- //console.log(gb)
+ 
  var root = {name: 'process', children: []};
  classes.forEach(function(d) {
 //    find(d.name, d);
 	//if(!d.name.worker) d.name.worker="login";
-	
+	//console.log(map[d.name[gb]])
     if (!map[d.name[gb]])
     	{//console.log(d.name[gb])
     	 parent = {name: { name: d.name[gb]}, children: []};
@@ -530,7 +535,7 @@ function packageHierarchyIterations(classes,gb) {
 }
 
 
-
+radiants=[]
 // Return a list of imports for the given array of nodes.
 function packageConnlistPEs(nodes) {
   var map = {},
@@ -539,6 +544,11 @@ function packageConnlistPEs(nodes) {
   // Compute a map from name to node.
   nodes.forEach(function(d) {
     map[d.name.runId] = d;
+    console.log(d.name)
+    if (d.name.name!=undefined) 
+      radiants[radiants.length]=d.name.name
+
+    
   });
 
   // For each import, construct a link from the source to target node.
@@ -714,7 +724,7 @@ function reload(par,sel){
   	url=updateURLParameter(url,'maxvalues',document.forms[0].maxvalues.value)
   	url=updateURLParameter(url,'terms',document.forms[0].terms.value)
     url=updateURLParameter(url,'mode',document.forms[0].mode.value)
-    url=updateURLParameter(url,'users',document.forms[0].users.value)
+    url=updateURLParameter(url,'usernames',document.forms[0].users.value)
   	window.location=url
   
   	}
@@ -723,6 +733,25 @@ function reload(par,sel){
   		window.location=updateURLParameter(url,par,myselect.value)
   
   
+}
+
+
+function showUsers(){
+
+USERS.forEach(function(d) {
+              
+              document.getElementById("userlist").innerHTML+="<span style='color:"+usrclmap[d]+"'>"+d+" </span>"
+              }
+       );
+
+}
+
+function showRadiants(){
+console.log(radiants)
+for (var i = 0; i < radiants.length; i++) {
+              console.log(radiants[i])
+              document.getElementById("radiants").innerHTML+="<span>"+radiants[i]+" </span>"
+              }
 }
 
 
@@ -762,16 +791,10 @@ function reload(par,sel){
 
 
 
-<div class='legend-source'>Level: <strong><%= request.getParameter("level") %></strong></div>
-
- <select onchange="reload('level','selectLevel')" id="selectLevel">
-  <option value="xx">Select Level</option>
-  <option value="workflows">workflows</option>
-  <option value="data">data</option>
-</select> 
+ 
 <form name="indexrange">
 
-<strong>Visualisation Parameters:</strong> 
+<div class='legend-source'>Visualisation Parameters:</div> <br/>
   terms
   <input type="string" name="terms"  value="<%= request.getParameter("terms") %>">
   minvalues
@@ -781,10 +804,10 @@ function reload(par,sel){
   mode
   <input type="string" name="mode" min="1" value="<%= request.getParameter("mode") %>">
   users
-  <input type="string" name="users" min="1" value="<%= request.getParameter("users") %>">
+  <input type="string" name="users" min="1" value="<%= request.getParameter("usernames") %>">
   
   
-  <input type="button" name="load" value="change range" onclick="reload('','setrange')" />
+  <input type="button" name="load" value="submit" onclick="reload('','setrange')" />
 
 </form>
 <br/><br/>
@@ -795,8 +818,24 @@ function reload(par,sel){
   <option value="username">username</option>
   <option value="prov:type">prov:type</option>
   <option value="grid">Infrastructure</option>
+  <option value="workflowName">workflowName</option>
 </select> 
+
+
 <br/><br/>
+<br/><br/>
+Users
+<div id="userlist">
+<script>
+showUsers()
+</script>
+</div>
+<br/><br/>
+Radiants (Clockwise)
+<div id="radiants">
+</div>
+
 <br/><br/>
 </center>
+
 </body>

@@ -102,10 +102,10 @@ queryargsnp = {'usernames': fields.Str(),
              'maxvalues': fields.Str(),
              'minvalues': fields.Str(),
              'wasAssociatedWith': fields.Str(),
-             'implementations' : fields.Str(),
+             'functionNames' : fields.Str(),
              'types': fields.Str(),
              'mode': fields.Str(),
-             'format': fields.Str(),
+             'formats': fields.Str(),
              'rformat': fields.Str(missing="json")
               }
 
@@ -146,10 +146,10 @@ def get_workflowexecutions(**kwargs):
     maxvalues = csv.reader(StringIO.StringIO(kwargs['maxvalues'])).next() if ('maxvalues' in kwargs and kwargs['maxvalues']!="") else None
     minvalues = csv.reader(StringIO.StringIO(kwargs['minvalues'])).next() if ('minvalues' in kwargs and kwargs['minvalues']!="") else None
     wasAssociatedWith = csv.reader(StringIO.StringIO(kwargs['wasAssociatedWith'])).next() if 'wasAssociatedWith' in kwargs else None
-    implementations = csv.reader(StringIO.StringIO(kwargs['implementations'])).next() if 'implementations' in kwargs else None
+    implementations = csv.reader(StringIO.StringIO(kwargs['functionNames'])).next() if ('functionNames' in kwargs and kwargs['functionNames']!="") else None
     
-    formats = csv.reader(StringIO.StringIO(kwargs['formats'])).next() if ('formats' in kwargs and kwargs['formats']!="") else None
-    types = csv.reader(StringIO.StringIO(kwargs['types'])).next() if 'types' in kwargs else None
+    formats = csv.reader(StringIO.StringIO(kwargs['formats'])).next() if ('formats' in kwargs and kwargs['formats']!="" and kwargs['formats']!="null") else None
+    types = csv.reader(StringIO.StringIO(kwargs['types'])).next() if ('types' in kwargs and kwargs['types']!="") in kwargs else None
     mode = kwargs['mode'] if 'mode' in kwargs else 'OR'
 
     # type = csv.reader(StringIO.StringIO(kwargs['type'])) if 'type' in request.args else None
@@ -267,7 +267,7 @@ def get_data(**kwargs):
     keylist = csv.reader(StringIO.StringIO(kwargs['terms'])).next() if 'terms' in kwargs else None
     maxvalues = csv.reader(StringIO.StringIO(kwargs['maxvalues'])).next() if 'maxvalues' in kwargs else None
     minvalues = csv.reader(StringIO.StringIO(kwargs['minvalues'])).next() if 'minvalues' in kwargs else None
-    format = kwargs['format'] if 'format' in kwargs else None
+    format = kwargs['formats'] if 'formats' in kwargs else None
     mode = kwargs['mode'] if 'mode' in kwargs else 'OR'
     #id = kwargs['id'] if 'id' in kwargs else None
     
@@ -360,8 +360,8 @@ summaryargs=dict({'runId':fields.Str(),
                   'clusters':fields.Str(),
                   'mintime':fields.Str(),
                   'maxtme':fields.Str(),
-                  'minidx':fields.Int(required=True),
-                  'maxidx':fields.Int(required=True)
+                  'minidx':fields.Int(),
+                  'maxidx':fields.Int()
 
                   },**levelargsnp)
 
