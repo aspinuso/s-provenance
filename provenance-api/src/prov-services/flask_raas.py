@@ -103,6 +103,20 @@ queryargsnp = {'usernames': fields.Str(),
              'minvalues': fields.Str(),
              'wasAssociatedWith': fields.Str(),
              'functionNames' : fields.Str(),
+             'clusters' : fields.Str(),
+             'types': fields.Str(),
+             'mode': fields.Str(),
+             'formats': fields.Str(),
+             'rformat': fields.Str(missing="json")
+              }
+
+
+queryargsnpdata = {'usernames': fields.Str(),
+             'terms': fields.Str(),
+             'maxvalues': fields.Str(),
+             'minvalues': fields.Str(),
+             'functionNames' : fields.Str(),
+             'clusters' : fields.Str(),
              'types': fields.Str(),
              'mode': fields.Str(),
              'formats': fields.Str(),
@@ -147,7 +161,8 @@ def get_workflowexecutions(**kwargs):
     minvalues = csv.reader(StringIO.StringIO(kwargs['minvalues'])).next() if ('minvalues' in kwargs and kwargs['minvalues']!="") else None
     wasAssociatedWith = csv.reader(StringIO.StringIO(kwargs['wasAssociatedWith'])).next() if 'wasAssociatedWith' in kwargs else None
     implementations = csv.reader(StringIO.StringIO(kwargs['functionNames'])).next() if ('functionNames' in kwargs and kwargs['functionNames']!="") else None
-    
+    clusters = csv.reader(StringIO.StringIO(kwargs['clusters'])).next() if ('clusters' in kwargs and kwargs['clusters']!="") else None
+    print clusters
     formats = csv.reader(StringIO.StringIO(kwargs['formats'])).next() if ('formats' in kwargs and kwargs['formats']!="" and kwargs['formats']!="null") else None
     types = csv.reader(StringIO.StringIO(kwargs['types'])).next() if ('types' in kwargs and kwargs['types']!="") in kwargs else None
     mode = kwargs['mode'] if 'mode' in kwargs else 'OR'
@@ -159,10 +174,10 @@ def get_workflowexecutions(**kwargs):
     # chec functions above in root "/workflow/user/<user>""
 
     
-    if keylist == None and implementations == None and formats==None and usernames!=None:
+    if keylist == None and implementations == None and formats==None and usernames!=None and clusters == None:
         response = Response(json.dumps(app.db.getWorkflowExecution(int(start),int(limit),usernames=usernames)))
     else: 
-        response = Response(json.dumps(app.db.getWorkflowExecutionByLineage(int(start),int(limit),usernames=usernames, associatedWith=wasAssociatedWith, implementations=implementations, keylist=keylist,maxvalues=maxvalues,minvalues=minvalues, mode=mode, types=types,formats=formats)))
+        response = Response(json.dumps(app.db.getWorkflowExecutionByLineage(int(start),int(limit),usernames=usernames, associatedWith=wasAssociatedWith, implementations=implementations, keylist=keylist,maxvalues=maxvalues,minvalues=minvalues, mode=mode, types=types,formats=formats,clusters=clusters)))
 
     response.headers['Content-type'] = 'application/json'    
     return response
@@ -249,7 +264,9 @@ def get_data_item(data_id):
 # Thomas
 #The data is selected by specifying its id or a $query\_string$. Query parameters allow to search by \emph{attribution}, \emph{generation} and by combining more metadata terms with their \emph{value-ranges}. Attribution will match all entities of the S-PROV model such as \emph{ComponentInstances}, \emph{Components}, \emph{prov:Person},  while generation will consider \emph{Invocation} and \emph{WorkflowExecution}.
 dataargs=dict({'wasGeneratedBy':fields.Str(),
-               'wasAttributedTo':fields.Str()},**queryargs)
+               'wasAttributedTo':fields.Str()},**queryargsnpdata)
+
+dataargs =dict(dataargs,**paging)
 
 @app.route("/data")
 @use_kwargs(dataargs)
@@ -263,7 +280,8 @@ def get_data(**kwargs):
     #component
     attrTo = kwargs['wasAttributedTo'] if 'wasAttributedTo' in kwargs else None
     #implementation
-    implementations = kwargs['implementations'] if 'implementations' in kwargs else None
+    implementations = kwargs['functionNames'] if ('functionNames' in kwargs and kwargs['functionNames']!="") else None
+    clusters = kwargs['clusters'] if ('clusters' in kwargs and kwargs['clusters']!="") else None
     keylist = csv.reader(StringIO.StringIO(kwargs['terms'])).next() if 'terms' in kwargs else None
     maxvalues = csv.reader(StringIO.StringIO(kwargs['maxvalues'])).next() if 'maxvalues' in kwargs else None
     minvalues = csv.reader(StringIO.StringIO(kwargs['minvalues'])).next() if 'minvalues' in kwargs else None
@@ -271,7 +289,7 @@ def get_data(**kwargs):
     mode = kwargs['mode'] if 'mode' in kwargs else 'OR'
     #id = kwargs['id'] if 'id' in kwargs else None
     
-    response = Response(json.dumps(app.db.getData(int(start),int(limit),impl=implementations,genBy=genby,attrTo=attrTo,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues,id=None,format=format,mode=mode)))
+    response = Response(json.dumps(app.db.getData(int(start),int(limit),impl=implementations,genBy=genby,attrTo=attrTo,keylist=keylist,maxvalues=maxvalues,minvalues=minvalues,id=None,format=format,mode=mode,clusters=clusters)))
 
     response.headers['Content-type'] = 'application/json'
 
@@ -359,7 +377,7 @@ summaryargs=dict({'runId':fields.Str(),
                   'groupby':fields.Str(),
                   'clusters':fields.Str(),
                   'mintime':fields.Str(),
-                  'maxtme':fields.Str(),
+                  'maxtime':fields.Str(),
                   'minidx':fields.Int(),
                   'maxidx':fields.Int()
 
@@ -370,7 +388,7 @@ summaryargs=dict({'runId':fields.Str(),
 @doc(tags=['summaries'], description='Produce a detailed overview of the distribution of the computation, reporting the size of data movements between the workflow components, their instances or invocations across worker nodes, depending on the specified granularity level. Additional information, such as process pid, worker, instance or component of the workflow (depending on the level of granularity) can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views')
 def summaries_handler_workflow(**kwargs):
         if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+": GET getSummaries workflow - level= "+kwargs['level']);
-        
+        print kwargs
         # the db function can be split in two to serve worklfow executions and collaborative views with explicit parameters
         response = Response(json.dumps(app.db.getActivitiesSummaries(**kwargs)))
         response.headers['Content-type'] = 'application/json'    

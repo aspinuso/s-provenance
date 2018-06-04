@@ -329,8 +329,13 @@ def toW3Cprov(ling,bundl,format='xml',mode="run"):
                         
                         if 'prov:type' in y:
                              
-                            cla=g._namespaces[y['prov:type'].split(':')[0]]
-                            e1._attributes[prov['type']].add(cla[y['prov:type'].split(':')[1]])
+                            try:
+                                cla=g._namespaces[y['prov:type'].split(':')[0]]
+                                e1._attributes[prov['type']].add(cla[y['prov:type'].split(':')[1]])
+                            except:
+
+                                e1._attributes[prov['type']].add(var['prov:type'])
+
                             #print(e1._attributes)
                          
                         bundle.hadMember(knmi["Data_"+x["id"]], e1)
@@ -1399,16 +1404,16 @@ class ProvenanceStore(object):
         start=dateutil.parser.parse(kwargs['mintime']) if 'mintime' in kwargs and kwargs['mintime']!='null' else None
         maxtime=dateutil.parser.parse(kwargs['maxtime']) if 'maxtime' in kwargs and kwargs['maxtime']!='null' else None
         matchdic=clean_empty(matchdic)
-         
+        
         if 'level' in kwargs and kwargs['level']=='prospective':
             if start!=None:
                 matchdic.update({'startTime':{'$gt':str(start)}})
             obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'actedOnBehalfOf':'$actedOnBehalfOf','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}]) 
             
         elif 'level' in kwargs and kwargs['level']=='iterations':
-            matchdic.update({'startTime':{'$gt':str(start)},'iterationIndex':{'$gte':int(kwargs['minidx']) ,'$lt':int(kwargs['maxidx'])}})
+            matchdic.update({'startTime':{'$lt':str(maxtime)},'iterationIndex':{'$gte':int(kwargs['minidx']) ,'$lt':int(kwargs['maxidx'])}})
             if start!=None:
-                matchdic.update({'startTime':{'$gt':str(start)}})
+                matchdic.update({'startTime':{'$lt':str(maxtime)}})
             matchdic=clean_empty(matchdic)
             matchdic.update({'iterationId':{'$ne':None}})
             #print(matchdic)
@@ -1416,7 +1421,7 @@ class ProvenanceStore(object):
         elif 'level' in kwargs and kwargs['level']=='instances':
             if maxtime!=None:
                 matchdic.update({'startTime':{'$lt':str(maxtime)}})
-            #print(matchdic)
+            print(matchdic)
             obj=self.lineage.aggregate(pipeline=[{'$match':matchdic},{'$unwind': "$streams"},{'$group':{'_id':{'instanceId':'$instanceId','mapping':'$mapping',str(groupby):'$'+str(groupby)}, 'time':{'$min': '$startTime'}}},{'$sort':{'time':1}}])
             
         elif 'level' in kwargs and (kwargs['level']=='vrange' or kwargs['level']=='data'):
@@ -2084,7 +2089,7 @@ class ProvenanceStore(object):
         self.addLDContext(x)
         return x
 
-    def getData(self,start,limit,impl=None,genBy=None,attrTo=None,keylist=None,maxvalues=None,minvalues=None,id=None,format=None,mode='OR'):
+    def getData(self,start,limit,impl=None,genBy=None,attrTo=None,keylist=None,maxvalues=None,minvalues=None,id=None,format=None,mode='OR',clusters=None):
         print('start getData--> start: ', start, ' limit: ', limit, ' genBy: ', genBy, 'format:',format,' attrTo: ', attrTo, ' keylist: ', keylist, ' maxvalues: ', maxvalues, ' minvalues: ', minvalues, ' id: ', id)
         # db = self.connection["verce-prov"]
         # lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
@@ -2117,6 +2122,10 @@ class ProvenanceStore(object):
             if impl!=None:
                 activities=impl.split(',')
                 searchImplementations=[{'name':{'$in':activities}}]
+
+            if clusters!=None:
+                pclusters=clusters.split(',')
+                searchImplementations=[{'prov_cluster':{'$in':pclusters}}]
             
             # TODO format
 
@@ -2138,8 +2147,8 @@ class ProvenanceStore(object):
         return  output
         
 
-    def getWorkflowExecutionByLineage(self, start, limit, usernames, associatedWith, implementations, keylist, maxvalues, minvalues, mode = 'OR', types=None,formats = None):
-        print('usernames: ', usernames, 'implementations:', implementations,'keylist: ', keylist, 'maxvalues: ', maxvalues, 'minvalues: ', minvalues, 'mode: ', mode, 'format: ', formats)
+    def getWorkflowExecutionByLineage(self, start, limit, usernames, associatedWith, implementations, keylist, maxvalues, minvalues, mode = 'OR', types=None,formats = None,clusters=None):
+        print('usernames: ', usernames, 'implementations:', implementations,'keylist: ', keylist, 'maxvalues: ', maxvalues, 'minvalues: ', minvalues, 'mode: ', mode, 'format: ', formats, 'cluster: ', clusters)
         # lineage = self.db[ProvenanceStore.LINEAGE_COLLECTION]
         # workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
         aggregateResults=None
@@ -2165,6 +2174,12 @@ class ProvenanceStore(object):
 
             aggregate_match['name'] = {
                     '$in': implementations
+                    }
+
+        if clusters is not None and len(clusters) > 0:
+
+            aggregate_match['prov_cluster'] = {
+                    '$in': clusters
                     }
         
         
@@ -2429,7 +2444,7 @@ class ProvenanceStore(object):
         else:
             
             key_value_pairs = helper.getKeyValuePairs(keylist, mxvaluelist, mnvaluelist)
-            indexed_meta_query = helper.getIndexedMetaQueryList(key_value_pairs, format)
+            indexed_meta_query = helper.getIndexedMetaQueryList(key_value_pairs, getSumm)
 
             if mode == 'OR': 
                 searchDic['$or'] = indexed_meta_query

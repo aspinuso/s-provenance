@@ -731,17 +731,47 @@ function updateURLParameter(url, param, paramVal){
 function reload(par,sel){
   var myselect = document.getElementById(sel);
   url=window.location+""
+
   if (sel=='setrange'){
   	
   	url=updateURLParameter(url,'minidx',document.forms[0].minidx.value)
   	url=updateURLParameter(url,'maxidx',document.forms[0].maxidx.value)
-  	url=updateURLParameter(url,'mintime',document.forms[0].starttime.value)
+  	url=updateURLParameter(url,'maxtime',document.forms[0].maxtime.value)
   	window.location=url
   
   	}
-  	else
-  	
-  		window.location=updateURLParameter(url,par,myselect.value)
+  	 
+    if (sel=='selectLevel'){
+      if (myselect.value=='iterations'){
+
+        url=updateURLParameter(url,par,myselect.value)
+        url=updateURLParameter(url,'mintime',2010)
+        window.location=url
+      }
+      else
+        window.location=updateURLParameter(url,par,myselect.value)
+    }
+   
+    if (sel=='selectGroup'){     
+
+	   		window.location=updateURLParameter(url,par,myselect.value)
+    }
+  
+}
+
+function setmaxtime(par,sel){
+  var myselect = document.getElementById(sel);
+  url=window.location+""
+  if (sel=='submit'){
+    
+     
+    url=updateURLParameter(url,'maxtime',document.forms[0].maxtime.value)
+    window.location=url
+  
+    }
+    else
+    
+      window.location=updateURLParameter(url,par,myselect.value)
   
   
 }
@@ -801,16 +831,29 @@ function showRadiants(){
   <option value="iterations">iterations</option>
 </select> 
 <form name="indexrange">
+  <br/>
 <% if (request.getParameter("level").equals("iterations")) { %>
-<strong>Iteration Range:</strong> 
+<div class='legend-source'>Iteration Range:<br/>
   minidx
   <input type="number" name="minidx" min="0" value="<%= request.getParameter("minidx") %>">
   maxidx
   <input type="number" name="maxidx" min="1" value="<%= request.getParameter("maxidx") %>">
-   start-time
-  <input type="string" name="starttime"  value="<%= request.getParameter("mintime") %>">
+   maxtime
+  <input type="string" name="maxtime"  value="<%= request.getParameter("maxtime") %>">
   
   <input type="button" name="setrange" value="change range" onclick="reload('','setrange')" />
+</div>
+<% 
+}
+%>
+<% if (request.getParameter("level").equals("instances")) { %>
+<div class='legend-source'>Max Time:</br>
+  
+ 
+  <input type="string" name="maxtime"  value="<%= request.getParameter("maxtime") %>">
+  <input type="button" name="submit" value="submit" onclick="setmaxtime('','submit')" />
+  
+ </div>   
 <% 
 }
 %>
@@ -821,11 +864,11 @@ function showRadiants(){
   <option value="xx">Select Grouping</option>
   <option value="pid">pid</option>
   <option value="worker">worker</option>
-  <option value="instanceId">instanceId</option>
-  <option value="actedOnBehalfOf">actedOnBehalfOf</option>
+  <option value="instanceId">ComponentInstance</option>
+  <option value="actedOnBehalfOf">Component</option>
   <option value="runId">runId</option>
-  <option value="name">name</option>
-  <option value="prov_cluster">prov_cluster</option>
+  <option value="name">functionName</option>
+  <option value="prov_cluster">cluster</option>
 </select> 
 <br/><br/>
 </div>

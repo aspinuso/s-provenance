@@ -5,7 +5,7 @@ delete Ext.tip.Tip.prototype.minWidth;
 iDROP='http://iren-web.renci.org/idrop-release/idrop.jnlp'
 RADIAL='d3js.jsp?minidx=0&maxidx=10&level=prospective&groupby=actedOnBehalfOf'	      	                    
 PROV_SERVICE_BASEURL="/j2ep-1.0/prov/"
-var IRODS_URL = "http://dir-irods.epcc.ed.ac.uk/irodsweb/rodsproxy/"+userSN+".UEDINZone@dir-irods.epcc.ed.ac.uk:1247/UEDINZone"
+var IRODS_URL = "127.0.0.1"
 var IRODS_URL_GSI = "gsiftp://dir-irods.epcc.ed.ac.uk/"
 var IRODS_URI=userSN+".UEDINZone@dir-irods.epcc.ed.ac.uk:1247/UEDINZone/home/"+userSN+"/verce/"
 var deleteWorkflowDataURL = "/j2ep-1.0/irods/irodsweb/services/delete.php"
@@ -106,7 +106,7 @@ Ext.define('CF.view.mimeCombo', {
   extend: 'Ext.form.field.ComboBox',
   alias: 'widget.mimecombo',
   fieldLabel: 'mime-type',
-  name: 'format',
+  name: 'formats',
   displayField: 'mime',
   width: 300,
   labelWidth: 90,
@@ -133,7 +133,7 @@ Ext.define('CF.view.modeCombo', {
   value:"OR",
   store: modeStore,
   queryMode: 'local',
-  inputAttrTpl: " data-qtip='Select AND or OR to indicate if the runs must match all the terms of the query or at least one<br/> Eg. magnitude,station' ",
+  inputAttrTpl: " data-qtip='Select AND or OR to indicate if the data must match all the terms of the query or at least one<br/> Eg. magnitude,station' ",
   getInnerTpl: function() {
     return '<div data-qtip="{AND, OR}">{mode}</div>';
   },
@@ -526,7 +526,7 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
   alias: 'widget.workflowvaluesrangesearch',
   // The fields
   title: 'Search',
-  height: 150,
+  height: 250,
 
   defaultType: 'textfield',
   layout: {
@@ -557,8 +557,13 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
         type: 'table',
         columns:3
       },
-      items: [{
-          xtype: 'metacombo'
+      items: [
+
+
+      
+      {
+          xtype: 'metacombo',
+          margin: '10 0 10 0'
         }, {
           xtype: 'textfield',
           fieldLabel: 'Min values',
@@ -578,14 +583,43 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
           allowBlank: true,
           margin: '10 0 10 0'
         },
-        {
-          xtype: 'modecombo',
-          margin: '10 0 10 10'
-        },
+        
         {
            xtype: 'mimecombo',
-           allowBlank: true
+           allowBlank: true,
+           margin: '10 0 10 0'
+
        },
+        {
+          xtype: 'modecombo',
+           
+          margin: '10 0 10 100',
+          colspan:2,
+          inputAttrTpl: " data-qtip='Select AND or OR to indicate if the runs must match all the terms of the query or at least one<br/> Eg. magnitude,station' ",
+  
+           
+        },
+      
+       {
+          xtype: 'textfield',
+          fieldLabel: 'AND Functions in',
+          labelAlign: 'right',
+          name: 'functionNames',
+          inputAttrTpl: " data-qtip='Insert here a sequence of function names. <br/> If specified above, these will be searched in congiunction with the properties of each data item'",
+          anchor: '80%',
+          allowBlank: true,
+          margin: '10 0 10 0'
+        },
+        {
+          xtype: 'textfield',
+          fieldLabel: 'AND Clusters in',
+          labelAlign: 'right',
+          name: 'clusters',
+          inputAttrTpl: " data-qtip='Insert here a sequence of clusters. <br/> If specified above, these will be searched in congiunction with the properties of each data item'",
+          anchor: '80%',
+          allowBlank: true,
+          margin: '10 0 10 0'
+        },
 
       ]
     }]
@@ -607,9 +641,11 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
       
       var terms = form.findField("terms").getRawValue(false).trim();
       var mode = form.findField("mode").getValue(false).trim();
-      var format = form.findField("format").getValue(false);
+      var format = form.findField("formats").getValue(false);
       var minvalues = encodeURIComponent(form.findField("minvalues").getValue(false).trim());
       var maxvalues = encodeURIComponent(form.findField("maxvalues").getValue(false).trim());
+      var functionNames = encodeURIComponent(form.findField("functionNames").getValue(false).trim());
+      var clusters = encodeURIComponent(form.findField("clusters").getValue(false).trim());
       owner = userSN;
 
       if (form.isValid()) {
@@ -618,6 +654,8 @@ Ext.define('CF.view.WorkflowValuesRangeSearch', {
                                                                   "&maxvalues=" + maxvalues + 
                                                                   "&minvalues=" + minvalues +
                                                                   "&mode=" + mode +
+                                                                  "&functionNames=" + functionNames +
+                                                                  "&clusters=" + clusters +
                                                                   "&formats=" + format;
       };
 
@@ -938,7 +976,7 @@ var is_image = function(url, callback, errorcallback) {
 var viewData = function(url, open) { //var loc=url.replace = function(/file:\/\/[\w-]+/,"/intermediate-nas/")
   htmlcontent = "<br/><center><strong>Link to data files or data images preview....</strong></center><br/>"
   for (var i = 0; i < url.length; i++) {
-    url[i] = url[i].replace(dn_regex, IRODS_URL + "/home/" + owner + "/verce/")
+    //url[i] = url[i].replace(dn_regex, IRODS_URL)
 
 
     htmlcontent = htmlcontent + "<center><div id='" + url[i] + "'><img   src='" + localResourcesPath + "/img/loading.gif'/></div></center><br/>"
@@ -997,12 +1035,34 @@ Ext.define('CF.view.StreamValuesRangeSearch', {
     inputAttrTpl: " data-qtip='Insert here a sequence of max values related to the indicated Terms, divided by commas.<br/> Eg. 5,AQU' ",
 
     allowBlank: true
-  }, {
+  }, 
+  {
+    xtype: 'modecombo'
+  },
+  {
+    fieldLabel: 'AND mime-type',
     xtype: 'mimecombo'
   },
   {
-    xtype: 'modecombo'
-  }],
+          xtype: 'textfield',
+          fieldLabel: 'AND Functions in',
+          labelAlign: 'right',
+          name: 'functionNames',
+          inputAttrTpl: " data-qtip='Insert here a sequence of function names. <br/> If specified above, these will be searched in congiunction with the properties of each data item'",
+          anchor: '80%',
+          allowBlank: true,
+          margin: '10 0 10 0'
+        },
+        {
+          xtype: 'textfield',
+          fieldLabel: 'AND Clusters in',
+          labelAlign: 'right',
+          name: 'clusters',
+          inputAttrTpl: " data-qtip='Insert here a sequence of cluster names. <br/> If specified above, these will be searched in congiunction with the properties of each data item'",
+          anchor: '80%',
+          allowBlank: true,
+          margin: '10 0 10 0'
+        }],
 
   buttons: [{
     text: 'Search',
@@ -1013,24 +1073,29 @@ Ext.define('CF.view.StreamValuesRangeSearch', {
       var terms = form.findField("terms").getRawValue(false).trim();
       var minvalues = encodeURIComponent(this.up('form').getForm().findField("minvalues").getValue(false));
       var maxvalues = encodeURIComponent(this.up('form').getForm().findField("maxvalues").getValue(false));
-      var mimetype = this.up('form').getForm().findField("format").getValue(false);
+      var mimetype = this.up('form').getForm().findField("formats").getValue(false);
       var mode = form.findField("mode").getValue(false).trim();
+      var functionNames = form.findField("functionNames").getValue(false).trim();
+      var clusters = form.findField("clusters").getValue(false).trim();
       
       
       qerystring=""
       if (terms!="" && maxvalues!="" && minvalues!="" && terms!=null)
           qerystring="&terms=" + terms + 
                      "&maxvalues=" + maxvalues + 
-                     "&minvalues=" + minvalues 
+                     "&minvalues=" + minvalues
+
        
       if (mimetype!=null && mimetype!="") 
-         qerystring=qerystring+"&format=" + mimetype
+         qerystring=qerystring+"&formats=" + mimetype
       
        if (form.isValid()) {
         artifactStore.setProxy({
           type: 'ajax',
           url: PROV_SERVICE_BASEURL + 'data?wasGeneratedBy=' + currentRun + 
-                                      qerystring+          
+                                      qerystring+
+                                      "&functionNames=" + functionNames+  
+                                      "&clusters=" + clusters+          
                                       "&mode="+mode,
 
           reader: {
@@ -1174,7 +1239,11 @@ Ext.define('CF.view.FilterOnAncestorValuesRange', {
     inputAttrTpl: " data-qtip='Insert here a sequence of max values related to the indicated Terms, divided by commas.<br/> Eg. 5,AQU' ",
 
     allowBlank: false
-  }],
+  },
+   {
+          xtype: 'modecombo',
+          margin: '10 0 10 10'
+        }],
 
   buttons: [{
     text: 'Filter',
@@ -1219,9 +1288,11 @@ Ext.define('CF.view.FilterOnAncestorValuesRange', {
           },
           params: {
             ids: dataids,
+            level: 100,
             terms: form.findField("terms").getRawValue(false).trim(),
             minvalues: form.findField("minvalues").getValue().trim(),
-            maxvalues: form.findField("maxvalues").getValue().trim()
+            maxvalues: form.findField("maxvalues").getValue().trim(),
+            mode: form.findField("mode").getValue().trim()
           }
         });
       }
@@ -1423,6 +1494,9 @@ var renderStream = function(value, p, record) {
     '<strong><a href="javascript:derivedDataNewGraph(\'' + PROV_SERVICE_BASEURL + 'data/{0}/derivedData\')">Trace Forward</a><br/><br/></strong>' +
     '<strong>{10}</strong><br/><hr/><br/>' +
     '<strong>Generated By :</strong> {1} <br/> <br/>' +
+    '<strong>Component:</strong> {13} <br/> <br/>' +
+    '<strong>Cluster:</strong> {12} <br/> <br/>' +
+    '<strong>Function:</strong> {14} <br/> <br/>' +
     '<strong>Run Id :</strong> {6} <br/> <br/>' +
     '<strong>Start Time Iteration :</strong>{11}<br/> <br/>' +
     '<strong>Production Time :</strong>{7}<br/> <br/>' +
@@ -1444,7 +1518,10 @@ var renderStream = function(value, p, record) {
     record.data.errors,
     record.data.port,
     prov,
-    record.data.startTime
+    record.data.startTime,
+    record.data.cluster,
+    record.data.component,
+    record.data.functionName
   );
 };
 
@@ -1502,9 +1579,23 @@ var renderWorkflowInput = function(value, p, record) {
     record.data.url,
     record.data.mimetype,
     wfid,
-    currentRun
+    currentRun,
+
+
   );
   }
+else
+     if (record.data.val!= null && record.data.val!=undefined){
+
+  return Ext.String.format(
+    '<br/><strong>name: </strong>{0} <br/> <br/>' +
+    '<strong>val: </strong>{1}<br/>',
+    record.data.name,
+    record.data.val
+     
+  );
+}
+
 else
 
   return Ext.String.format(

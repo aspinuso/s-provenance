@@ -1,0 +1,1 @@
+db.lineage.find({'runId':'simulation_abruzzo160000000000_1462183374557', 'mapping':'mpi'}).forEach(function(mydoc) {   db.lineage.update({_id: mydoc._id}, {$set: {'worker': 'drachenfels-0000'}}) })
