@@ -529,6 +529,7 @@ app.config.update({
         title='s-prov',
         version='v1',
         plugins=['apispec.ext.marshmallow'],
+         schemes=['http','https'],
         description="S-ProvFlow provenance API - Provenance framework for storage and access of data-intensive streaming lineage. It offers a a web API and a range of dedicated visualisation tools and a provenance model (S-PROV) which utilises and extends PROV and ProvONE model"
     
     ),
