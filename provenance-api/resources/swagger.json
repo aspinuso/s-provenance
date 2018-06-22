@@ -12,63 +12,91 @@
         "description": "The data is selected by specifying a query string. Query parameters allow to search by attribution to a component or to an implementation, generation by a workflow execution and by combining more metadata and parameters terms with their min and max valuesranges. Mode of the search can also be indicated (mode ::= (OR | AND). It will apply to the search upon metadata and parameters values-ranges", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "in": "q", 
+            "name": "usernames", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "format": {
-                  "type": "string"
-                }, 
-                "implementations": {
-                  "type": "string"
-                }, 
-                "limit": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "maxvalues": {
-                  "type": "string"
-                }, 
-                "minvalues": {
-                  "type": "string"
-                }, 
-                "mode": {
-                  "type": "string"
-                }, 
-                "rformat": {
-                  "default": "json", 
-                  "type": "string"
-                }, 
-                "start": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "terms": {
-                  "type": "string"
-                }, 
-                "types": {
-                  "type": "string"
-                }, 
-                "usernames": {
-                  "type": "string"
-                }, 
-                "wasAssociatedWith": {
-                  "type": "string"
-                }, 
-                "wasAttributedTo": {
-                  "type": "string"
-                }, 
-                "wasGeneratedBy": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "limit", 
-                "start"
-              ], 
-              "type": "object"
-            }
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "terms", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "functionNames", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "wasAttributedTo", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "minvalues", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "default": "json", 
+            "in": "q", 
+            "name": "rformat", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "start", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "limit", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "in": "q", 
+            "name": "mode", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "formats", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "clusters", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "maxvalues", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "types", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "wasGeneratedBy", 
+            "required": false, 
+            "type": "string"
           }
         ], 
         "responses": {}, 
@@ -80,63 +108,91 @@
         "description": "The data is selected by specifying a query string. Query parameters allow to search by attribution to a component or to an implementation, generation by a workflow execution and by combining more metadata and parameters terms with their min and max valuesranges. Mode of the search can also be indicated (mode ::= (OR | AND). It will apply to the search upon metadata and parameters values-ranges", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "in": "q", 
+            "name": "usernames", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "format": {
-                  "type": "string"
-                }, 
-                "implementations": {
-                  "type": "string"
-                }, 
-                "limit": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "maxvalues": {
-                  "type": "string"
-                }, 
-                "minvalues": {
-                  "type": "string"
-                }, 
-                "mode": {
-                  "type": "string"
-                }, 
-                "rformat": {
-                  "default": "json", 
-                  "type": "string"
-                }, 
-                "start": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "terms": {
-                  "type": "string"
-                }, 
-                "types": {
-                  "type": "string"
-                }, 
-                "usernames": {
-                  "type": "string"
-                }, 
-                "wasAssociatedWith": {
-                  "type": "string"
-                }, 
-                "wasAttributedTo": {
-                  "type": "string"
-                }, 
-                "wasGeneratedBy": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "limit", 
-                "start"
-              ], 
-              "type": "object"
-            }
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "terms", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "functionNames", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "wasAttributedTo", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "minvalues", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "default": "json", 
+            "in": "q", 
+            "name": "rformat", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "start", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "limit", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "in": "q", 
+            "name": "mode", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "formats", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "clusters", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "maxvalues", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "types", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "wasGeneratedBy", 
+            "required": false, 
+            "type": "string"
           }
         ], 
         "responses": {}, 
@@ -278,20 +334,10 @@
         "description": "Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element's data dependencies. The number of traversal steps is provided as a parameter (level).", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
-            "required": false, 
-            "schema": {
-              "properties": {
-                "level": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "level"
-              ], 
-              "type": "object"
-            }
+            "in": "q", 
+            "name": "level", 
+            "required": true, 
+            "type": "string"
           }, 
           {
             "in": "path", 
@@ -309,20 +355,10 @@
         "description": "Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element's data dependencies. The number of traversal steps is provided as a parameter (level).", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
-            "required": false, 
-            "schema": {
-              "properties": {
-                "level": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "level"
-              ], 
-              "type": "object"
-            }
+            "in": "q", 
+            "name": "level", 
+            "required": true, 
+            "type": "string"
           }, 
           {
             "in": "path", 
@@ -342,23 +378,16 @@
         "description": "Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "in": "q", 
+            "name": "format", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "format": {
-                  "type": "string"
-                }, 
-                "level": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "level"
-              ], 
-              "type": "object"
-            }
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "level", 
+            "required": true, 
+            "type": "string"
           }, 
           {
             "in": "path", 
@@ -376,23 +405,16 @@
         "description": "Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "in": "q", 
+            "name": "format", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "format": {
-                  "type": "string"
-                }, 
-                "level": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "level"
-              ], 
-              "type": "object"
-            }
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "level", 
+            "required": true, 
+            "type": "string"
           }, 
           {
             "in": "path", 
@@ -412,20 +434,10 @@
         "description": "Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element's data dependencies. The number of traversal steps is provided as a parameter (level).", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
-            "required": false, 
-            "schema": {
-              "properties": {
-                "level": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "level"
-              ], 
-              "type": "object"
-            }
+            "in": "q", 
+            "name": "level", 
+            "required": true, 
+            "type": "string"
           }, 
           {
             "in": "path", 
@@ -443,20 +455,10 @@
         "description": "Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element's data dependencies. The number of traversal steps is provided as a parameter (level).", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
-            "required": false, 
-            "schema": {
-              "properties": {
-                "level": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "level"
-              ], 
-              "type": "object"
-            }
+            "in": "q", 
+            "name": "level", 
+            "required": true, 
+            "type": "string"
           }, 
           {
             "in": "path", 
@@ -476,29 +478,24 @@
         "description": "Extract details about a single instance or component by specifying its id. The returning document will indicate the changes that occurred, reporting the first invocation affected. It support the specification of a list of runIds the instance was wasAssociateFor, considering that the same instance could be used across multiple runs", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "format": "int32", 
+            "in": "q", 
+            "name": "start", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "limit", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "in": "q", 
+            "name": "wasAssociateFor", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "limit": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "start": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "wasAssociateFor": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "limit", 
-                "start"
-              ], 
-              "type": "object"
-            }
+            "type": "string"
           }, 
           {
             "in": "path", 
@@ -516,29 +513,24 @@
         "description": "Extract details about a single instance or component by specifying its id. The returning document will indicate the changes that occurred, reporting the first invocation affected. It support the specification of a list of runIds the instance was wasAssociateFor, considering that the same instance could be used across multiple runs", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "format": "int32", 
+            "in": "q", 
+            "name": "start", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "limit", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "in": "q", 
+            "name": "wasAssociateFor", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "limit": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "start": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "wasAssociateFor": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "limit", 
-                "start"
-              ], 
-              "type": "object"
-            }
+            "type": "string"
           }, 
           {
             "in": "path", 
@@ -590,54 +582,83 @@
         "description": "Extract information about the reuse and exchange of data between workflow executions based on terms' valuesranges and a group of users. The API method allows for inclusive or exclusive (mode ::= (OR j AND) queries on the terms' values. As above, additional details, such as running infrastructure, type and name of the workflow can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "in": "q", 
+            "name": "wasAssociatedWith", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "format": {
-                  "type": "string"
-                }, 
-                "groupby": {
-                  "type": "string"
-                }, 
-                "implementations": {
-                  "type": "string"
-                }, 
-                "level": {
-                  "type": "string"
-                }, 
-                "maxvalues": {
-                  "type": "string"
-                }, 
-                "minvalues": {
-                  "type": "string"
-                }, 
-                "mode": {
-                  "type": "string"
-                }, 
-                "rformat": {
-                  "default": "json", 
-                  "type": "string"
-                }, 
-                "terms": {
-                  "type": "string"
-                }, 
-                "types": {
-                  "type": "string"
-                }, 
-                "usernames": {
-                  "type": "string"
-                }, 
-                "wasAssociatedWith": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "level"
-              ], 
-              "type": "object"
-            }
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "usernames", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "terms", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "functionNames", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "level", 
+            "required": true, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "minvalues", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "default": "json", 
+            "in": "q", 
+            "name": "rformat", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "maxvalues", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "formats", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "clusters", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "groupby", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "types", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "mode", 
+            "required": false, 
+            "type": "string"
           }
         ], 
         "responses": {}, 
@@ -649,54 +670,83 @@
         "description": "Extract information about the reuse and exchange of data between workflow executions based on terms' valuesranges and a group of users. The API method allows for inclusive or exclusive (mode ::= (OR j AND) queries on the terms' values. As above, additional details, such as running infrastructure, type and name of the workflow can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "in": "q", 
+            "name": "wasAssociatedWith", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "format": {
-                  "type": "string"
-                }, 
-                "groupby": {
-                  "type": "string"
-                }, 
-                "implementations": {
-                  "type": "string"
-                }, 
-                "level": {
-                  "type": "string"
-                }, 
-                "maxvalues": {
-                  "type": "string"
-                }, 
-                "minvalues": {
-                  "type": "string"
-                }, 
-                "mode": {
-                  "type": "string"
-                }, 
-                "rformat": {
-                  "default": "json", 
-                  "type": "string"
-                }, 
-                "terms": {
-                  "type": "string"
-                }, 
-                "types": {
-                  "type": "string"
-                }, 
-                "usernames": {
-                  "type": "string"
-                }, 
-                "wasAssociatedWith": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "level"
-              ], 
-              "type": "object"
-            }
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "usernames", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "terms", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "functionNames", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "level", 
+            "required": true, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "minvalues", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "default": "json", 
+            "in": "q", 
+            "name": "rformat", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "maxvalues", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "formats", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "clusters", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "groupby", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "types", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "mode", 
+            "required": false, 
+            "type": "string"
           }
         ], 
         "responses": {}, 
@@ -710,45 +760,54 @@
         "description": "Produce a detailed overview of the distribution of the computation, reporting the size of data movements between the workflow components, their instances or invocations across worker nodes, depending on the specified granularity level. Additional information, such as process pid, worker, instance or component of the workflow (depending on the level of granularity) can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "in": "q", 
+            "name": "level", 
+            "required": true, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "mintime", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "clusters": {
-                  "type": "string"
-                }, 
-                "groupby": {
-                  "type": "string"
-                }, 
-                "level": {
-                  "type": "string"
-                }, 
-                "maxidx": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "maxtme": {
-                  "type": "string"
-                }, 
-                "minidx": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "mintime": {
-                  "type": "string"
-                }, 
-                "runId": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "level", 
-                "maxidx", 
-                "minidx"
-              ], 
-              "type": "object"
-            }
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "groupby", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "runId", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "clusters", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "maxtime", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "maxidx", 
+            "required": false, 
+            "type": "integer"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "minidx", 
+            "required": false, 
+            "type": "integer"
           }
         ], 
         "responses": {}, 
@@ -760,45 +819,54 @@
         "description": "Produce a detailed overview of the distribution of the computation, reporting the size of data movements between the workflow components, their instances or invocations across worker nodes, depending on the specified granularity level. Additional information, such as process pid, worker, instance or component of the workflow (depending on the level of granularity) can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "in": "q", 
+            "name": "level", 
+            "required": true, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "mintime", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "clusters": {
-                  "type": "string"
-                }, 
-                "groupby": {
-                  "type": "string"
-                }, 
-                "level": {
-                  "type": "string"
-                }, 
-                "maxidx": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "maxtme": {
-                  "type": "string"
-                }, 
-                "minidx": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "mintime": {
-                  "type": "string"
-                }, 
-                "runId": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "level", 
-                "maxidx", 
-                "minidx"
-              ], 
-              "type": "object"
-            }
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "groupby", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "runId", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "clusters", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "maxtime", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "maxidx", 
+            "required": false, 
+            "type": "integer"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "minidx", 
+            "required": false, 
+            "type": "integer"
           }
         ], 
         "responses": {}, 
@@ -812,23 +880,22 @@
         "description": "Return a list of discoverable metadata terms based on their appearance for a list of runIds, usernames, or for the whole provenance archive. Terms are returned indicating their type (when consistently used), min and max values and their number occurrences within the scope of the search", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "in": "q", 
+            "name": "aggregationLevel", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "aggregationLevel": {
-                  "type": "string"
-                }, 
-                "runIds": {
-                  "type": "string"
-                }, 
-                "usernames": {
-                  "type": "string"
-                }
-              }, 
-              "type": "object"
-            }
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "usernames", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "runIds", 
+            "required": false, 
+            "type": "string"
           }
         ], 
         "responses": {}, 
@@ -840,23 +907,22 @@
         "description": "Return a list of discoverable metadata terms based on their appearance for a list of runIds, usernames, or for the whole provenance archive. Terms are returned indicating their type (when consistently used), min and max values and their number occurrences within the scope of the search", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "in": "q", 
+            "name": "aggregationLevel", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "aggregationLevel": {
-                  "type": "string"
-                }, 
-                "runIds": {
-                  "type": "string"
-                }, 
-                "usernames": {
-                  "type": "string"
-                }
-              }, 
-              "type": "object"
-            }
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "usernames", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "runIds", 
+            "required": false, 
+            "type": "string"
           }
         ], 
         "responses": {}, 
@@ -870,57 +936,85 @@
         "description": "Extract documents from the bundle collection according to a query string which may include usernames, type of the workflow, the components the run wasAssociatedWith and their implementations. Data results' metadata and parameters can also be queried by specifying the terms and their min and max values-ranges and data formats. Mode of the search can also be indicated (mode ::= (OR j AND). It will apply to the search upon metadata and parameters values of each run", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "in": "q", 
+            "name": "wasAssociatedWith", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "format": {
-                  "type": "string"
-                }, 
-                "implementations": {
-                  "type": "string"
-                }, 
-                "limit": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "maxvalues": {
-                  "type": "string"
-                }, 
-                "minvalues": {
-                  "type": "string"
-                }, 
-                "mode": {
-                  "type": "string"
-                }, 
-                "rformat": {
-                  "default": "json", 
-                  "type": "string"
-                }, 
-                "start": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "terms": {
-                  "type": "string"
-                }, 
-                "types": {
-                  "type": "string"
-                }, 
-                "usernames": {
-                  "type": "string"
-                }, 
-                "wasAssociatedWith": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "limit", 
-                "start"
-              ], 
-              "type": "object"
-            }
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "usernames", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "terms", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "functionNames", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "minvalues", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "default": "json", 
+            "in": "q", 
+            "name": "rformat", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "start", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "limit", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "in": "q", 
+            "name": "maxvalues", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "formats", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "clusters", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "types", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "mode", 
+            "required": false, 
+            "type": "string"
           }
         ], 
         "responses": {}, 
@@ -932,57 +1026,85 @@
         "description": "Extract documents from the bundle collection according to a query string which may include usernames, type of the workflow, the components the run wasAssociatedWith and their implementations. Data results' metadata and parameters can also be queried by specifying the terms and their min and max values-ranges and data formats. Mode of the search can also be indicated (mode ::= (OR j AND). It will apply to the search upon metadata and parameters values of each run", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "in": "q", 
+            "name": "wasAssociatedWith", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "format": {
-                  "type": "string"
-                }, 
-                "implementations": {
-                  "type": "string"
-                }, 
-                "limit": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "maxvalues": {
-                  "type": "string"
-                }, 
-                "minvalues": {
-                  "type": "string"
-                }, 
-                "mode": {
-                  "type": "string"
-                }, 
-                "rformat": {
-                  "default": "json", 
-                  "type": "string"
-                }, 
-                "start": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "terms": {
-                  "type": "string"
-                }, 
-                "types": {
-                  "type": "string"
-                }, 
-                "usernames": {
-                  "type": "string"
-                }, 
-                "wasAssociatedWith": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "limit", 
-                "start"
-              ], 
-              "type": "object"
-            }
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "usernames", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "terms", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "functionNames", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "minvalues", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "default": "json", 
+            "in": "q", 
+            "name": "rformat", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "start", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "limit", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "in": "q", 
+            "name": "maxvalues", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "formats", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "clusters", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "types", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "in": "q", 
+            "name": "mode", 
+            "required": false, 
+            "type": "string"
           }
         ], 
         "responses": {}, 
@@ -1042,17 +1164,10 @@
         "description": "Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "in": "q", 
+            "name": "format", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "format": {
-                  "type": "string"
-                }
-              }, 
-              "type": "object"
-            }
+            "type": "string"
           }, 
           {
             "in": "path", 
@@ -1070,17 +1185,10 @@
         "description": "Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "in": "q", 
+            "name": "format", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "format": {
-                  "type": "string"
-                }
-              }, 
-              "type": "object"
-            }
+            "type": "string"
           }, 
           {
             "in": "path", 
@@ -1243,29 +1351,24 @@
         "description": "Extract detailed information related to the activity related to a WFExecution (id). The result-set can be grouped by invocations, instances or components (parameter level) and shows progress, anomalies (such as exceptions or systems' and users messages), occurrence of changes and the rapid availability of accessible data bearing intermediate results. This method can also be used for runtime monitoring", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "format": "int32", 
+            "in": "q", 
+            "name": "start", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "limit", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "in": "q", 
+            "name": "level", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "level": {
-                  "type": "string"
-                }, 
-                "limit": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "start": {
-                  "format": "int32", 
-                  "type": "integer"
-                }
-              }, 
-              "required": [
-                "limit", 
-                "start"
-              ], 
-              "type": "object"
-            }
+            "type": "string"
           }, 
           {
             "in": "path", 
@@ -1283,29 +1386,24 @@
         "description": "Extract detailed information related to the activity related to a WFExecution (id). The result-set can be grouped by invocations, instances or components (parameter level) and shows progress, anomalies (such as exceptions or systems' and users messages), occurrence of changes and the rapid availability of accessible data bearing intermediate results. This method can also be used for runtime monitoring", 
         "parameters": [
           {
-            "in": "body", 
-            "name": "body", 
+            "format": "int32", 
+            "in": "q", 
+            "name": "start", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "format": "int32", 
+            "in": "q", 
+            "name": "limit", 
+            "required": true, 
+            "type": "integer"
+          }, 
+          {
+            "in": "q", 
+            "name": "level", 
             "required": false, 
-            "schema": {
-              "properties": {
-                "level": {
-                  "type": "string"
-                }, 
-                "limit": {
-                  "format": "int32", 
-                  "type": "integer"
-                }, 
-                "start": {
-                  "format": "int32", 
-                  "type": "integer"
-                }
-              }, 
-              "required": [
-                "limit", 
-                "start"
-              ], 
-              "type": "object"
-            }
+            "type": "string"
           }, 
           {
             "in": "path", 

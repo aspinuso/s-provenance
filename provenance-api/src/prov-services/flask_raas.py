@@ -9,6 +9,7 @@ from prov.model import ProvDocument, Namespace, Literal, PROV, Identifier
 from flask import Flask
 from flask import request
 from flask import Response
+from flask_cors import CORS
 import logging
 import sys
 import os
@@ -20,6 +21,7 @@ from marshmallow import fields, Schema
 app = Flask(__name__)
 app.config['DEBUG'] = True
 logging=os.environ['RAAS_LOGGING']
+CORS(app)
 
 class PetSchema(Schema):
     class Meta:
@@ -146,7 +148,7 @@ def get_workflow_info(runid):
 # Thomas
 #Extract documents from the bundle collection according to a query string which may include \id{username}, \id{type} of the workflow, its \id{functionNames} and domain metadata \id{terms} and \emph{value-ranges}. 
 @app.route("/workflowexecutions")
-@use_kwargs(queryargs)
+@use_kwargs(queryargs, locations=["querystring"])
 @doc(tags=['discovery'], description='Extract documents from the bundle collection according to a query string which may include usernames, type of the workflow, the components the run wasAssociatedWith and their implementations. Data results\' metadata and parameters can also be queried by specifying the terms and their min and max values-ranges and data formats. Mode of the search can also be indicated (mode ::= (OR j AND). It will apply to the search upon metadata and parameters values of each run')
 def get_workflowexecutions(**kwargs):
     # Required parameters
@@ -185,7 +187,7 @@ def get_workflowexecutions(**kwargs):
 
 #Extract information about the invocation or instances related to specified \emph{WFExecution} (\id{run\_id}), such as \emph{lastEventTime}, runtime \emph{messages}, indication on the generation of data, its accessibility and its total count. Such a result-set can be used for runtime monitoring, showing progress, data availability and anomalies. Details about a single invocation or  an instance can also be accessed by specifying its $id$. 
 @app.route("/workflowexecutions/<runid>/instances")
-@use_kwargs(paging)
+@use_kwargs(paging,locations=["querystring"])
 def get_instances_monitoring(runid,**kwargs):
     limit = kwargs['limit'] 
     start = kwargs['start']
@@ -199,7 +201,7 @@ levelargsnp=dict({"level":fields.Str(required=True)})
 levelargs=dict({"level":fields.Str()},**paging)
  
 @app.route("/workflowexecutions/<runid>/showactivity")
-@use_kwargs(levelargs)
+@use_kwargs(levelargs,locations=["querystring"])
 @doc(tags=['monitor'], description='Extract detailed information related to the activity related to a WFExecution (id). The result-set can be grouped by invocations, instances or components (parameter level) and shows progress, anomalies (such as exceptions or systems\' and users messages), occurrence of changes and the rapid availability of accessible data bearing intermediate results. This method can also be used for runtime monitoring')
 def get_monitoring(runid,**kwargs):
     limit = kwargs['limit'] 
@@ -226,7 +228,7 @@ def get_invocation_details(invocid):
 #Extract details about a single invocation or an instance by specifying their $id$.
 associatefor=dict({"wasAssociateFor":fields.Str()},**paging)
 @app.route("/instances/<instid>")
-@use_kwargs(associatefor)
+@use_kwargs(associatefor,locations=["querystring"])
 @doc(tags=['lineage'], description='Extract details about a single instance or component by specifying its id. The returning document will indicate the changes that occurred, reporting the first invocation affected. It support the specification of a list of runIds the instance was wasAssociateFor, considering that the same instance could be used across multiple runs')
 def get_instance_details(instid,**kwargs): 
         limit = int(kwargs['limit']) if 'limit' in kwargs else None
@@ -241,7 +243,7 @@ def get_instance_details(instid,**kwargs):
 #instances=dict({"wasAssociateFor":fields.Str()},**paging)
 @app.route("/components/<compid>")
 @doc(tags=['lineage'], description='Extract details about a single component by specifying its id and the workflow run it wasAssociateFor, considering that the the same components could be used across multiple runs. The returning document will indicate the changes that occurred, reporting the first invocation affected')
-@use_kwargs(associatefor)
+@use_kwargs(associatefor,locations=["querystring"])
 def getComponentDetails(compid, **kwargs):
         limit = int(kwargs['limit']) if 'limit' in kwargs else None
         start = int(kwargs['start']) if 'start' in kwargs else None
@@ -268,9 +270,9 @@ dataargs=dict({'wasGeneratedBy':fields.Str(),
 
 dataargs =dict(dataargs,**paging)
 
-@app.route("/data")
-@use_kwargs(dataargs)
+@app.route("/data",methods=['GET'])
 @doc(tags=['lineage'], description='The data is selected by specifying a query string. Query parameters allow to search by attribution to a component or to an implementation, generation by a workflow execution and by combining more metadata and parameters terms with their min and max valuesranges. Mode of the search can also be indicated (mode ::= (OR | AND). It will apply to the search upon metadata and parameters values-ranges')
+@use_kwargs(dataargs,locations=["querystring"])
 def get_data(**kwargs):
     limit = kwargs['limit'] 
     start = kwargs['start']
@@ -297,7 +299,7 @@ def get_data(**kwargs):
 
 #Thomas
 @app.route("/data/<data_id>/derivedData")
-@use_kwargs(levelargsnp)
+@use_kwargs(levelargsnp,locations=["querystring"])
 @doc(tags=['lineage'], description='Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element\'s data dependencies. The number of traversal steps is provided as a parameter (level).')
 def derived_data(data_id,**kwargs):
     level = kwargs['level']
@@ -308,7 +310,7 @@ def derived_data(data_id,**kwargs):
 
 #Thomas
 @app.route("/data/<data_id>/wasDerivedFrom")
-@use_kwargs(levelargsnp)
+@use_kwargs(levelargsnp,locations=["querystring"])
 @doc(tags=['lineage'], description='Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element\'s data dependencies. The number of traversal steps is provided as a parameter (level).')
 def was_derived_from(data_id,**kwargs):
     print(kwargs)
@@ -345,7 +347,7 @@ termsargs=dict({'runIds':fields.Str(),
                 'aggregationLevel':fields.Str()})
 
 @app.route("/terms")
-@use_kwargs(termsargs)
+@use_kwargs(termsargs,locations=["querystring"])
 @doc(tags=['lineage'], description='Return a list of discoverable metadata terms based on their appearance for a list of runIds, usernames, or for the whole provenance archive. Terms are returned indicating their type (when consistently used), min and max values and their number occurrences within the scope of the search')
 def get_data_granule_terms(**kwargs):
         aggregationLevel = kwargs['aggregationLevel'] if 'aggregationLevel' in kwargs else 'all'
@@ -384,7 +386,7 @@ summaryargs=dict({'runId':fields.Str(),
                   },**levelargsnp)
 
 @app.route("/summaries/workflowexecution")
-@use_kwargs(summaryargs)
+@use_kwargs(summaryargs,locations=["querystring"])
 @doc(tags=['summaries'], description='Produce a detailed overview of the distribution of the computation, reporting the size of data movements between the workflow components, their instances or invocations across worker nodes, depending on the specified granularity level. Additional information, such as process pid, worker, instance or component of the workflow (depending on the level of granularity) can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views')
 def summaries_handler_workflow(**kwargs):
         if logging == "True" :  app.logger.info(str(datetime.datetime.now().time())+": GET getSummaries workflow - level= "+kwargs['level']);
@@ -400,7 +402,7 @@ def summaries_handler_workflow(**kwargs):
 colargs=dict(dict({'groupby':fields.Str()},**queryargsnp),**levelargsnp)
 
 @app.route("/summaries/collaborative")
-@use_kwargs(colargs)
+@use_kwargs(colargs,locations=["querystring"])
 @doc(tags=['summaries'], description='Extract information about the reuse and exchange of data between workflow executions based on terms\' valuesranges and a group of users. The API method allows for inclusive or exclusive (mode ::= (OR j AND) queries on the terms\' values. As above, additional details, such as running infrastructure, type and name of the workflow can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views')
 def summaries_handler_collab(**kwargs):
         users = csv.reader(StringIO.StringIO(kwargs['usernames'])).next() if 'usernames' in kwargs else None
@@ -426,7 +428,7 @@ export=dict({'format':fields.Str()},**levelargsnp)
 # EXPORT to PROV methods
 @app.route("/data/<data_id>/export")
 @doc(tags=['export'], description='Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace')
-@use_kwargs(export)
+@use_kwargs(export,locations=["querystring"])
 def export_data_provenance(data_id,**kwargs):
     response = Response(str(app.db.exportDataProvenance(data_id,**kwargs)).encode('ascii','ignore'))
     if 'format' in kwargs and kwargs['format']=='rdf':
@@ -480,7 +482,7 @@ def filter_on_ancestor(**kwargs):
 
 format=dict({'format':fields.Str()})
 @app.route("/workflowexecutions/<run_id>/export")
-@use_kwargs(format)
+@use_kwargs(format,locations=["querystring"])
 @doc(tags=['export'], description='Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace')
 def export_run_provenance(run_id,**kwargs):
     response = Response(str(app.db.exportRunProvenance(run_id,**kwargs)).encode('ascii','ignore'))
