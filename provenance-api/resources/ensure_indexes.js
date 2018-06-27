@@ -95,6 +95,13 @@ var indexes = [
         },
         'collection': 'lineage',
         'name': 'lineage streams port'
+    },
+    {
+        'index': {
+            'prov_cluster' : 1
+        },
+        'collection': 'lineage',
+        'name': 'provenance clusters'
     }
 ]
 print('start indexing')
