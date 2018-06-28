@@ -1676,7 +1676,7 @@ class ProvenanceStore(object):
             try:
 
                 wfitem=self.workflow.find_one({'_id':x['_id']['runId']},{groupby:1,'_id':0})
-                if groupby in wfitem:
+                if wfitem is not None and groupby in wfitem:
                     x['_id'].update(wfitem) 
                 else:
                     continue
