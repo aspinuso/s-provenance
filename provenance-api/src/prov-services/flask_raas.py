@@ -425,18 +425,22 @@ def summaries_handler_collab(**kwargs):
 
 
 
-export=dict({'format':fields.Str()},**levelargsnp)
+export=dict({'format':fields.Str(),'creator':fields.Str()},**levelargsnp)
 # EXPORT to PROV methods
 @app.route("/data/<data_id>/export")
 @doc(tags=['export'], description='Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace')
 @use_kwargs(export,locations=["querystring"])
 def export_data_provenance(data_id,**kwargs):
-    response = Response(str(app.db.exportDataProvenance(data_id,**kwargs)).encode('ascii','ignore'))
+    
+    creator = kwargs['creator'] if 'creator' in kwargs else "anonymous"
+    del kwargs['creator']
+    response = Response(str(app.db.exportDataProvenance(data_id,creator,**kwargs)).encode('ascii','ignore'))
     if 'format' in kwargs and kwargs['format']=='rdf':
         response.headers['Content-type'] = 'application/turtle' 
 
     else:
         response.headers['Content-type'] = 'application/xml' 
+
     return response
 
 queryargsanc=dict(dict({'ids':fields.Str()},**queryargsbasic),**levelargsnp)
@@ -481,12 +485,16 @@ def filter_on_ancestor(**kwargs):
 
 
 
-format=dict({'format':fields.Str()})
+exprun=dict({'format':fields.Str(),'creator':fields.Str()})
+
 @app.route("/workflowexecutions/<run_id>/export")
-@use_kwargs(format,locations=["querystring"])
+@use_kwargs(exprun,locations=["querystring"])
 @doc(tags=['export'], description='Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace')
 def export_run_provenance(run_id,**kwargs):
-    response = Response(str(app.db.exportRunProvenance(run_id,**kwargs)).encode('ascii','ignore'))
+
+    creator = kwargs['creator'] if 'creator' in kwargs else "anonymous"
+    del kwargs['creator']
+    response = Response(str(app.db.exportRunProvenance(run_id,creator,**kwargs)).encode('ascii','ignore'))
     if 'format' in kwargs and kwargs['format']=='rdf':
         response.headers['Content-type'] = 'application/turtle' 
     else:

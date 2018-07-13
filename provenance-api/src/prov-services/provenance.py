@@ -83,7 +83,7 @@ def toW3Cprov(ling,bundl,format='xml',mode="run",bundle_type=None,bundle_creator
         for trace in bundl:
             'specifing user that executed the workflow'
             
-            ag=g.agent(knmi[trace["username"]],other_attributes={"prov:type":"provone:User", "vcard:uuid":trace["username"]})  # first time the ex namespace was used, it is added to the document automatically
+            ag=bundle.agent(var[trace["username"]],other_attributes={"prov:type":"provone:User", "vcard:uuid":trace["username"]})  # first time the ex namespace was used, it is added to the document automatically
             
             if 'ns' in trace:
                 for x in trace['ns']:
@@ -512,7 +512,7 @@ class ProvenanceStore(object):
     
     
     
-    def exportDataProvenance(self, id, **kwargs):
+    def exportDataProvenance(self, id, creator, **kwargs):
         
         
         # db = self.connection["verce-prov"]
@@ -529,14 +529,14 @@ class ProvenanceStore(object):
         bundle=self.workflow.find({"_id":tracelist[0]['runId']}).sort("startTime",direction=-1)
         
         if 'format' in kwargs:
-            return toW3Cprov(tracelist,bundle,format = kwargs['format'],bundle_type="WFDataTraceBundle")
+            return toW3Cprov(tracelist,bundle,format = kwargs['format'],bundle_type="WFDataTraceBundle",bundle_creator=creator)
         else:
-            return toW3Cprov(tracelist,bundle,bundle_type="WFDataTraceBundle")
+            return toW3Cprov(tracelist,bundle,bundle_type="WFDataTraceBundle",bundle_creator=creator)
             
             
     
     
-    def exportRunProvenance(self, id,**kwargs):
+    def exportRunProvenance(self, id,creator,**kwargs):
         
         
         # db = self.connection["verce-prov"]
@@ -555,10 +555,10 @@ class ProvenanceStore(object):
         
         if 'format' in kwargs:
 
-            return toW3Cprov(lineage,[bundle],format = kwargs['format'],bundle_type="WFExecutioinBundle")
+            return toW3Cprov(lineage,[bundle],format = kwargs['format'],bundle_type="WFExecutioinBundle",bundle_creator=creator)
         else:
             
-            return toW3Cprov(lineage,[bundle],bundle_type="WFExecutioinBundle")
+            return toW3Cprov(lineage,[bundle],bundle_type="WFExecutioinBundle",bundle_creator=creator)
             
        
     
