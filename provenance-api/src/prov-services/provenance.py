@@ -18,6 +18,16 @@ import sys
 import helper as helper
 
 sys.setrecursionlimit(10000)
+
+def getUniqueId(data=None):
+    if data is None:
+        return socket.gethostname() + "-" + \
+            str(os.getpid()) + "-" + str(uuid.uuid1())
+    else:
+        print("ID: "+str(id(data))+" DATA: "+str(data))
+        return socket.gethostname() + "-" + \
+            str(os.getpid()) + "-" + str(self.instanceId)+ "-" +str(id(data))
+
 def makeHashableList(listobj,field):
      listobj=[x[field] for x in listobj]
      return listobj
@@ -48,7 +58,7 @@ def resolveMissingTerms(trace):
     return trace
      
      
-def toW3Cprov(ling,bundl,format='xml',mode="run"):
+def toW3Cprov(ling,bundl,format='xml',mode="run",bundle_type=None,bundle_creator="anonymous"):
         entities={}
         g = ProvDocument()
         vc = Namespace("s-prov", "http://s-prov/ns/#")  # namespaces do not need to be explicitly added to a document
@@ -59,12 +69,19 @@ def toW3Cprov(ling,bundl,format='xml',mode="run"):
         var = Namespace("var", "http://schema.org#")
         g.add_namespace("dcterms", "http://purl.org/dc/terms/")
         g.add_namespace("vcard", "http://www.w3.org/2006/vcard/ns")
-
         
         'specify bundle'
-        bundle=None
+        
+        bundleid=getUniqueId()
+        bundle=g.bundle(var[bundleid])
+        be=g.entity(var[bundleid], {'prov:type': vc[bundle_type]})
+        'specifing user that asked for the bundle'
+        bcreator=g.agent(knmi["ag_"+bundle_creator],other_attributes={"dcterms:creator":bundle_creator})  # first time the ex namespace was used, it is added to the document automatically
+        g.wasAttributedTo(be,bcreator)
+
+        
         for trace in bundl:
-            'specifing user'
+            'specifing user that executed the workflow'
             
             ag=g.agent(knmi[trace["username"]],other_attributes={"prov:type":"provone:User", "vcard:uuid":trace["username"]})  # first time the ex namespace was used, it is added to the document automatically
             
@@ -78,8 +95,9 @@ def toW3Cprov(ling,bundl,format='xml',mode="run"):
             if trace['type']=='workflow_run':
                 
                 trace.update({'runId':trace['_id']})
-                bundle=g.bundle(knmi["Bundle_"+trace["runId"]])
-                bundle.wasAssociatedWith(knmi[trace["runId"]], ag)
+                #bundle.wasAttributedTo(knmi[trace["runId"]], knmi["ag_"+trace["creator"]])
+               
+                
                 
                 dic={}
                 i=0
@@ -100,6 +118,7 @@ def toW3Cprov(ling,bundl,format='xml',mode="run"):
                         #    dic.update({knmi[key]: trace[key]})
                 dic.update({'prov:type': vc['WFExecution']})
                 WFE=bundle.activity(knmi[trace["runId"]], None, None, dic)
+                WFE.wasAssociatedWith(knmi[trace["runId"]], ag)
                 
                 dic={}
                 i=0
@@ -146,9 +165,9 @@ def toW3Cprov(ling,bundl,format='xml',mode="run"):
            
             'specifing creator of the activity (to be collected from the registy)'
         
-            if 'creator' in trace:
-                bundle.agent(knmi["ag_"+trace["creator"]],other_attributes={"dcterms:creator":trace["creator"]})  # first time the ex namespace was used, it is added to the document automatically
-                bundle.wasAttributedTo(knmi[trace["runId"]], knmi["ag_"+trace["creator"]])
+            #if 'creator' in trace:
+            #    bundle.agent(knmi["ag_"+trace["creator"]],other_attributes={"dcterms:creator":trace["creator"]})  # first time the ex namespace was used, it is added to the document automatically
+            #    bundle.wasAttributedTo(knmi[trace["runId"]], knmi["ag_"+trace["creator"]])
                 
             'adding activity information for lineage'
             dic={}
@@ -510,9 +529,9 @@ class ProvenanceStore(object):
         bundle=self.workflow.find({"_id":tracelist[0]['runId']}).sort("startTime",direction=-1)
         
         if 'format' in kwargs:
-            return toW3Cprov(tracelist,bundle,format = kwargs['format'])
+            return toW3Cprov(tracelist,bundle,format = kwargs['format'],bundle_type="WFDataTraceBundle")
         else:
-            return toW3Cprov(tracelist,bundle)
+            return toW3Cprov(tracelist,bundle,bundle_type="WFDataTraceBundle")
             
             
     
@@ -536,10 +555,10 @@ class ProvenanceStore(object):
         
         if 'format' in kwargs:
 
-            return toW3Cprov(lineage,[bundle],format = kwargs['format'])
+            return toW3Cprov(lineage,[bundle],format = kwargs['format'],bundle_type="WFExecutioinBundle")
         else:
             
-            return toW3Cprov(lineage,[bundle])
+            return toW3Cprov(lineage,[bundle],bundle_type="WFExecutioinBundle")
             
        
     
