@@ -432,8 +432,12 @@ export=dict({'format':fields.Str(),'creator':fields.Str()},**levelargsnp)
 @use_kwargs(export,locations=["querystring"])
 def export_data_provenance(data_id,**kwargs):
     
-    creator = kwargs['creator'] if 'creator' in kwargs else "anonymous"
-    del kwargs['creator']
+    if 'creator' in kwargs:
+      creator = kwargs['creator'] 
+      del kwargs['creator']
+    else:
+      creator =  "anonymous"
+      
     response = Response(str(app.db.exportDataProvenance(data_id,creator,**kwargs)).encode('ascii','ignore'))
     if 'format' in kwargs and kwargs['format']=='rdf':
         response.headers['Content-type'] = 'application/turtle' 
@@ -492,8 +496,13 @@ exprun=dict({'format':fields.Str(),'creator':fields.Str()})
 @doc(tags=['export'], description='Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace')
 def export_run_provenance(run_id,**kwargs):
 
-    creator = kwargs['creator'] if 'creator' in kwargs else "anonymous"
-    del kwargs['creator']
+    
+    if 'creator' in kwargs:
+      creator = kwargs['creator'] 
+      del kwargs['creator']
+    else:
+      creator =  "anonymous"
+    
     response = Response(str(app.db.exportRunProvenance(run_id,creator,**kwargs)).encode('ascii','ignore'))
     if 'format' in kwargs and kwargs['format']=='rdf':
         response.headers['Content-type'] = 'application/turtle' 
