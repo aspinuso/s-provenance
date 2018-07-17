@@ -2463,7 +2463,7 @@ class ProvenanceStore(object):
         else:
             
             key_value_pairs = helper.getKeyValuePairs(keylist, mxvaluelist, mnvaluelist)
-            indexed_meta_query = helper.getIndexedMetaQueryList(key_value_pairs, getSumm)
+            indexed_meta_query = helper.getIndexedMetaQueryList(key_value_pairs)
 
             if mode == 'OR': 
                 searchDic['$or'] = indexed_meta_query
