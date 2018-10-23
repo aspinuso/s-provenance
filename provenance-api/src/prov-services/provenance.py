@@ -180,7 +180,7 @@ def toW3Cprov(ling,bundl,format='xml',mode="run",bundle_type=None,bundle_creator
                         
                         if key=='location':
                             
-                            dic.update({"prov:location": trace[key]})    
+                            dic.update({"prov:atLocation": trace[key]})    
                         else:
                             dic.update({knmi[key]: trace[key]})
             
@@ -280,7 +280,7 @@ def toW3Cprov(ling,bundl,format='xml',mode="run",bundle_type=None,bundle_creator
                             
                             parent_dic.update({knmi['immediateAccess']: x[key]}) 
                         elif key=='location':
-                            parent_dic.update({"prov:location": str(x[key])})
+                            parent_dic.update({"prov:atlocation": str(x[key])})
                         elif key=='port':
                             None
                         elif key == 'content':
@@ -1174,7 +1174,7 @@ class ProvenanceStore(object):
                 
                 xx["s-prov:Data"]=xx['streams'][0]
                 xx["s-prov:Data"]['@id']=xx["s-prov:Data"]['id']
-                xx["s-prov:Data"]['prov:location']=xx["s-prov:Data"]['location']
+                xx["s-prov:Data"]['prov:atLocation']=xx["s-prov:Data"]['location']
                 xx["s-prov:Data"]['prov:hadMember']=xx["s-prov:Data"]['content']
                 
                 for g in xx["s-prov:Data"]['prov:hadMember']:
@@ -1237,7 +1237,7 @@ class ProvenanceStore(object):
             
             xx["s-prov:Data"]=xx['streams'][0]
             xx["s-prov:Data"]['@id']=xx["s-prov:Data"]['id']
-            xx["s-prov:Data"]['prov:location']=xx["s-prov:Data"]['location']
+            xx["s-prov:Data"]['prov:atLocation']=xx["s-prov:Data"]['location']
             xx["s-prov:Data"]['prov:hadMember']=xx["s-prov:Data"]['content']
             xx["s-prov:Data"]['prov:Derivation']=xx["derivationIds"]
             xx["s-prov:Data"]["prov:wasGeneratedBy"]={}
