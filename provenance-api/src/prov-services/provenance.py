@@ -105,19 +105,30 @@ def toW3Cprov(ling,bundl,format='xml',mode="run",bundle_type=None,bundle_creator
                 for key in trace:
                     
                 
-                    if key != "input":
+                    if key != "input" and key!='startTime' and key!='endTime':
                         if ':' in key:
                             dic.update({key: trace[key]})
                         
-                        if key == "modules" or key == "source":
+                        elif key == "modules" or key == "source":
                                 continue
                         
-                        elif key == "tags":
+                        if key == "tags":
                             dic.update({vc[key]: str(trace[key])})
-                        #else:
-                        #    dic.update({knmi[key]: trace[key]})
+                        
+                        else:
+                            dic.update({vc[key]: str(trace[key])})
+
+
                 dic.update({'prov:type': vc['WFExecution']})
-                WFE=bundle.activity(knmi[trace["runId"]], None, None, dic)
+                if 'endTime' in trace:
+                    WFE=bundle.activity(knmi[trace["runId"]], trace['startTime'], trace['endTime'], dic)
+                else:
+                    WFE=bundle.activity(knmi[trace["runId"]], trace['startTime'], None, dic)
+
+
+               
+
+    
                 WFE.wasAssociatedWith(knmi[trace["runId"]], ag)
                 
                 dic={}
@@ -555,10 +566,10 @@ class ProvenanceStore(object):
         
         if 'format' in kwargs:
 
-            return toW3Cprov(lineage,[bundle],format = kwargs['format'],bundle_type="WFExecutioinBundle",bundle_creator=creator)
+            return toW3Cprov(lineage,[bundle],format = kwargs['format'],bundle_type="WFExecutionBundle",bundle_creator=creator)
         else:
             
-            return toW3Cprov(lineage,[bundle],bundle_type="WFExecutioinBundle",bundle_creator=creator)
+            return toW3Cprov(lineage,[bundle],bundle_type="WFExecutionBundle",bundle_creator=creator)
             
        
     
@@ -1000,7 +1011,7 @@ class ProvenanceStore(object):
         #workflow = self.db[ProvenanceStore.BUNDLE_COLLECTION]
         ret=[]
         response={}
-        
+       
         try:
             if type(json) =='list':
         
@@ -1008,6 +1019,8 @@ class ProvenanceStore(object):
                     
                     ret.append(self.workflow.insert(x))
             else:
+                print "UPPDATING_new"
+
                 ret.append(self.workflow.insert(json))
         
             response={"success":True}
@@ -1035,7 +1048,8 @@ class ProvenanceStore(object):
                 # else: 
                 #     raise Exception("Workflow Run not found")
 
-            if prov["type"]=="workflow_run":    
+            if prov["type"]=="workflow_run":  
+                print "UPPDATING"  
                 return self.workflow.update_one({'runId':prov['runId']},{"$set":prov},upsert=True).raw_result
         
         except Exception, err:
@@ -1060,7 +1074,7 @@ class ProvenanceStore(object):
                        ret.append({"error":str(err)})
             else:
                 try:
-                 
+                     
                     ret.append(self.updateCollections(prov))
                 except Exception, err:
                        ret.append({"error":str(err)})
