@@ -1361,7 +1361,7 @@ class ProvBundle(object):
         :param class_or_type_or_tuple: A filter on the type for which records are
             to be returned (default: None). The filter checks by the type of the
             record using the `isinstance` check on the record.
-        :return: List of :py:class:`ProvRecord`s
+        :return: List of :py:class:`ProvRecord` objects.
         """
         results = list(self._records)
         if class_or_type_or_tuple:
@@ -2465,10 +2465,11 @@ def sorted_attributes(element, attributes):
     # sorting. We now interpret it as sorting by tag including the prefix
     # first and then sorting by the text, also including the namespace
     # prefix if given.
-    sort_fct = lambda x: (
-        six.text_type(x[0]),
-        six.text_type(x[1].value if hasattr(x[1], "value") else x[1])
-    )
+    def sort_fct(x):
+        return (
+            six.text_type(x[0]),
+            six.text_type(x[1].value if hasattr(x[1], "value") else x[1])
+        )
 
     sorted_elements = []
     for item in order:

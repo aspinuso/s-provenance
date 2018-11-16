@@ -17,6 +17,12 @@ from itertools import chain
 import sys
 import helper as helper
 
+
+
+
+
+
+
 sys.setrecursionlimit(10000)
 
 def getUniqueId(data=None):
@@ -58,7 +64,8 @@ def resolveMissingTerms(trace):
     return trace
      
      
-def toW3Cprov(ling,bundl,format='xml',mode="run",bundle_type=None,bundle_creator="anonymous"):
+def toW3Cprov(ling,bundl,format='xml',mode="run",bundle_type=None,bundle_creator="anonymous",rdfout='trig'):
+         
         entities={}
         g = ProvDocument()
         vc = Namespace("s-prov", "http://s-prov/ns/#")  # namespaces do not need to be explicitly added to a document
@@ -378,8 +385,11 @@ def toW3Cprov(ling,bundl,format='xml',mode="run",bundle_type=None,bundle_creator
             output = StringIO.StringIO()
             g.plot('test.png')
             return output
+        elif format =='rdf':
+            return g.serialize(format=format,rdf_format=rdfout)
         else:
             return g.serialize(format=format)
+
 
 class ProvenanceStore(object):
 
@@ -538,11 +548,11 @@ class ProvenanceStore(object):
               #self.lineage.find({'runId':id}).sort("endTime",direction=-1)
             
         bundle=self.workflow.find({"_id":tracelist[0]['runId']}).sort("startTime",direction=-1)
-        
-        if 'format' in kwargs:
-            return toW3Cprov(tracelist,bundle,format = kwargs['format'],bundle_type="WFDataTraceBundle",bundle_creator=creator)
-        else:
-            return toW3Cprov(tracelist,bundle,bundle_type="WFDataTraceBundle",bundle_creator=creator)
+        del kwargs['level']
+        #if 'format' in kwargs:
+        #    return toW3Cprov(tracelist,bundle,bundle_type="WFDataTraceBundle",bundle_creator=creator,**kwargs)
+        #else:
+        return toW3Cprov(tracelist,bundle,bundle_type="WFDataTraceBundle",bundle_creator=creator,**kwargs)
             
             
     

@@ -424,12 +424,13 @@ def summaries_handler_collab(**kwargs):
         return response
 
 
-
-export=dict({'format':fields.Str(),'creator':fields.Str()},**levelargsnp)
+exportprov=dict({'format':fields.Str(enum=['rdf', 'json','xml','provn']),'rdfout':fields.Str(missing='trig',enum=['xml', 'n3', 'nt', 'trix','trig','turtle']),'creator':fields.Str()})
+exportdata=dict(exportprov,**levelargsnp)
 # EXPORT to PROV methods
+
 @app.route("/data/<data_id>/export")
 @doc(tags=['export'], description='Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace')
-@use_kwargs(export,locations=["querystring"])
+@use_kwargs(exportdata,locations=["querystring"])
 def export_data_provenance(data_id,**kwargs):
     
     if 'creator' in kwargs:
@@ -437,14 +438,16 @@ def export_data_provenance(data_id,**kwargs):
       del kwargs['creator']
     else:
       creator =  "anonymous"
-      
+     
     response = Response(str(app.db.exportDataProvenance(data_id,creator,**kwargs)).encode('ascii','ignore'))
     if 'format' in kwargs and kwargs['format']=='rdf':
         response.headers['Content-type'] = 'application/turtle' 
-
-    else:
+    elif 'format' in kwargs and kwargs['format']=='json':
+        response.headers['Content-type'] = 'application/json'
+    elif 'format' in kwargs and kwargs['format']=='xml':
         response.headers['Content-type'] = 'application/xml' 
-
+    else:
+        response.headers['Content-type'] = 'application/octet-streams' 
     return response
 
 queryargsanc=dict(dict({'ids':fields.Str()},**queryargsbasic),**levelargsnp)
@@ -489,10 +492,9 @@ def filter_on_ancestor(**kwargs):
 
 
 
-exprun=dict({'format':fields.Str(),'creator':fields.Str()})
 
 @app.route("/workflowexecutions/<run_id>/export")
-@use_kwargs(exprun,locations=["querystring"])
+@use_kwargs(exportprov,locations=["querystring"])
 @doc(tags=['export'], description='Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace')
 def export_run_provenance(run_id,**kwargs):
 
@@ -504,10 +506,15 @@ def export_run_provenance(run_id,**kwargs):
       creator =  "anonymous"
     
     response = Response(str(app.db.exportRunProvenance(run_id,creator,**kwargs)).encode('ascii','ignore'))
+
     if 'format' in kwargs and kwargs['format']=='rdf':
         response.headers['Content-type'] = 'application/turtle' 
-    else:
+    elif 'format' in kwargs and kwargs['format']=='json':
+        response.headers['Content-type'] = 'application/json'
+    elif 'format' in kwargs and kwargs['format']=='xml':
         response.headers['Content-type'] = 'application/xml' 
+    else:
+        response.headers['Content-type'] = 'application/octet-streams' 
     return response
 
 

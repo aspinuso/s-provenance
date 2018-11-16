@@ -1,12 +1,19 @@
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
+import networkx as nx
+from prov.model import (
+    ProvDocument, ProvRecord, ProvElement, ProvEntity, ProvActivity, ProvAgent,
+    ProvRelation, PROV_ATTR_ENTITY, PROV_ATTR_ACTIVITY, PROV_ATTR_AGENT,
+    PROV_ATTR_TRIGGER, PROV_ATTR_GENERATED_ENTITY, PROV_ATTR_USED_ENTITY,
+    PROV_ATTR_DELEGATE, PROV_ATTR_RESPONSIBLE, PROV_ATTR_SPECIFIC_ENTITY,
+    PROV_ATTR_GENERAL_ENTITY, PROV_ATTR_ALTERNATE1, PROV_ATTR_ALTERNATE2,
+    PROV_ATTR_COLLECTION, PROV_ATTR_INFORMED, PROV_ATTR_INFORMANT
+)
+
 __author__ = 'Trung Dong Huynh'
 __email__ = 'trungdong@donggiang.com'
 
-import networkx as nx
-
-from prov.model import *
 
 INFERRED_ELEMENT_CLASS = {
     PROV_ATTR_ENTITY: ProvEntity,
@@ -28,8 +35,9 @@ INFERRED_ELEMENT_CLASS = {
 
 
 def prov_to_graph(prov_document):
-    """ Convert a :class:`~prov.model.ProvDocument` to a `MultiDiGraph
-    <http://networkx.github.io/documentation/latest/reference/classes.multidigraph.html>`_
+    """
+    Convert a :class:`~prov.model.ProvDocument` to a `MultiDiGraph
+    <https://networkx.readthedocs.io/en/stable/reference/classes.multigraph.html>`_
     instance of the `NetworkX <https://networkx.github.io/>`_ library.
 
     :param prov_document: The :class:`~prov.model.ProvDocument` instance to convert.
@@ -62,16 +70,19 @@ def prov_to_graph(prov_document):
 
 
 def graph_to_prov(g):
-    """ Convert a `MultiDiGraph <http://networkx.github.io/documentation/latest/reference/classes.multidigraph.html>`_
-        back to a :class:`~prov.model.ProvDocument`.
+    """
+    Convert a `MultiDiGraph
+    <https://networkx.readthedocs.io/en/stable/reference/classes.multigraph.html>`_
+    that was previously produced by :func:`prov_to_graph` back to a
+    :class:`~prov.model.ProvDocument`.
 
-        :param g: The graph instance to convert.
+    :param g: The graph instance to convert.
     """
     prov_doc = ProvDocument()
-    for n in g.nodes_iter():
+    for n in g.nodes():
         if isinstance(n, ProvRecord) and n.bundle is not None:
             prov_doc.add_record(n)
-    for _, _, edge_data in g.edges_iter(data=True):
+    for _, _, edge_data in g.edges(data=True):
         try:
             relation = edge_data['relation']
             if isinstance(relation, ProvRecord):
