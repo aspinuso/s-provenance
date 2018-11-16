@@ -424,6 +424,7 @@ def summaries_handler_collab(**kwargs):
         return response
 
 
+
 exportprov=dict({'format':fields.Str(enum=['rdf', 'json','xml','provn']),'rdfout':fields.Str(missing='trig',enum=['xml', 'n3', 'nt', 'trix','trig','turtle']),'creator':fields.Str()})
 exportdata=dict(exportprov,**levelargsnp)
 # EXPORT to PROV methods

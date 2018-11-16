@@ -574,12 +574,12 @@ class ProvenanceStore(object):
          
        # bundle=self.workflow.find({"_id":id}).sort("startTime",direction=-1)
         
-        if 'format' in kwargs:
+        #if 'format' in kwargs:
 
-            return toW3Cprov(lineage,[bundle],format = kwargs['format'],bundle_type="WFExecutionBundle",bundle_creator=creator)
-        else:
+        #    return toW3Cprov(lineage,[bundle],bundle_type="WFExecutionBundle",bundle_creator=creator,**kwargs)
+        #else:
             
-            return toW3Cprov(lineage,[bundle],bundle_type="WFExecutionBundle",bundle_creator=creator)
+        return toW3Cprov(lineage,[bundle],bundle_type="WFExecutionBundle",bundle_creator=creator,**kwargs)
             
        
     
