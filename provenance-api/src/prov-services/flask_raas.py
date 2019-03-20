@@ -11,22 +11,129 @@ from flask import request
 from flask import Response
 from flask_cors import CORS
 
+
 import logging
 import sys
 import os
 
 from flask_apispec import use_kwargs, marshal_with, doc, FlaskApiSpec
+from flask._compat import reraise, string_types, text_type, integer_types
+from flask.helpers import _PackageBoundObject, url_for, get_flashed_messages, \
+     locked_cached_property, _endpoint_from_view_func, find_package, \
+     get_debug_flag
 from marshmallow import fields, Schema
 
+
+
+
+#Redefined add_url_rule to disable default generation of OPTION method handler
+
+def add_url_rule_no_options(self, rule, endpoint=None, view_func=None, **options):
+    """Connects a URL rule.  Works exactly like the :meth:`route`
+    decorator.  If a view_func is provided it will be registered with the
+    endpoint.
+
+    Basically this example::
+
+        @app.route('/')
+        def index():
+            pass
+
+    Is equivalent to the following::
+
+        def index():
+            pass
+        app.add_url_rule('/', 'index', index)
+
+    If the view_func is not provided you will need to connect the endpoint
+    to a view function like so::
+
+        app.view_functions['index'] = index
+
+    Internally :meth:`route` invokes :meth:`add_url_rule` so if you want
+    to customize the behavior via subclassing you only need to change
+    this method.
+
+    For more information refer to :ref:`url-route-registrations`.
+
+    .. versionchanged:: 0.2
+       `view_func` parameter added.
+
+    .. versionchanged:: 0.6
+       ``OPTIONS`` is added automatically as method.
+
+    :param rule: the URL rule as string
+    :param endpoint: the endpoint for the registered URL rule.  Flask
+                     itself assumes the name of the view function as
+                     endpoint
+    :param view_func: the function to call when serving a request to the
+                      provided endpoint
+    :param options: the options to be forwarded to the underlying
+                    :class:`~werkzeug.routing.Rule` object.  A change
+                    to Werkzeug is handling of method options.  methods
+                    is a list of methods this rule should be limited
+                    to (``GET``, ``POST`` etc.).  By default a rule
+                    just listens for ``GET`` (and implicitly ``HEAD``).
+                    Starting with Flask 0.6, ``OPTIONS`` is implicitly
+                    added and handled by the standard request handling.
+    """
+    if endpoint is None:
+        endpoint = _endpoint_from_view_func(view_func)
+    options['endpoint'] = endpoint
+    methods = options.pop('methods', None)
+
+    # if the methods are not given and the view_func object knows its
+    # methods we can use that instead.  If neither exists, we go with
+    # a tuple of only ``GET`` as default.
+    if methods is None:
+        methods = getattr(view_func, 'methods', None) or ('GET',)
+    if isinstance(methods, string_types):
+        raise TypeError('Allowed methods have to be iterables of strings, '
+                        'for example: @app.route(..., methods=["POST"])')
+    methods = set(item.upper() for item in methods)
+
+    # Methods that should always be added
+    required_methods = set(getattr(view_func, 'required_methods', ()))
+
+    # starting with Flask 0.8 the view_func object can disable and
+    # force-enable the automatic options handling.
+    provide_automatic_options = getattr(view_func,
+        'provide_automatic_options', None)
+
+    if provide_automatic_options is None:
+        if 'OPTIONS' not in methods:
+            provide_automatic_options = False
+            
+        else:
+            provide_automatic_options = True
+            required_methods.add('OPTIONS')
+
+    # Add the required methods now.
+    methods |= required_methods
+
+    rule = self.url_rule_class(rule, methods=methods, **options)
+    rule.provide_automatic_options = provide_automatic_options
+
+    self.url_map.add(rule)
+    if view_func is not None:
+        old_func = self.view_functions.get(endpoint)
+        if old_func is not None and old_func != view_func:
+            raise AssertionError('View function mapping is overwriting an '
+                                 'existing endpoint function: %s' % endpoint)
+        self.view_functions[endpoint] = view_func
+
+
+
+
+
+Flask.add_url_rule=add_url_rule_no_options
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
 logging=os.environ['RAAS_LOGGING']
 CORS(app)
 
-class PetSchema(Schema):
-    class Meta:
-        fields = ('name', 'category', 'size')
+ 
 
 
 def bootstrap_app():
@@ -38,15 +145,11 @@ def hello():
     return "This is the s-prov service"
 
 
-
-
-    
-
  
 # Thomas
 # Insert sequences of provenance documents, these can be bundles or lineage. The documents can be in JSON or JSON-LD. Format adaptation for storage purposes is handled by the acquisition function.
 @app.route("/workflowexecutions/insert", methods=['POST'])
-@use_kwargs({'prov': fields.Str()})
+@use_kwargs({'prov': fields.Str(description="JSON document with one of more provenance documents (currently supports the format accepted in the s-ProvFlowMongoDB implementation)")})
 @doc(tags=['acquisition'], description='Bulk insert of bundle or lineage documents in JSON format. These must be provided as encoded stirng in a POST request')
 def insert_provenance(**kwargs):
         
@@ -61,7 +164,7 @@ def insert_provenance(**kwargs):
 
 #Update of the user's description of a provenance bundle document. This allow users to explore and improve the description of a run depending from their findings.
 @app.route("/workflowexecutions/<runid>/edit", methods=['POST'])
-@use_kwargs({'doc': fields.Str(required=True)})
+@use_kwargs({'doc': fields.Str(required=True,description="json document with a description property with the updated text")})
 @doc(tags=['acquisition'], description='Update of the description of a workflow execution. Users can improve this information in free-tex')
 def wfexec_description_edit(runid,**kwargs):
         
@@ -86,44 +189,42 @@ def delete_workflow_run(runid):
 #Extract documents from the bundle collection by the \id{run\_id} of a \emph{WFExecution} 
 
 
-paging ={ 'start': fields.Int(required=True),
-          'limit': fields.Int(required=True)
+paging ={ 'start': fields.Int(required=True,description="index of the starting item"),
+          'limit': fields.Int(required=True,description="max number of items expected")
           }
 
  
 queryargsbasic = {
-             'terms': fields.Str(),
-             'maxvalues': fields.Str(),
-             'minvalues': fields.Str(),
-             'wasAssociatedWith': fields.Str(),
-             'mode': fields.Str(),
-             'rformat': fields.Str(missing="json")
+             'terms': fields.Str(description="csv list of metadata or parameter terms. These relate positionally to the maxvalues and the minvalues"),
+             'maxvalues': fields.Str(description="csv list of metadata or parameters maxvalues. These relate positionally to the terms and the minvalues"),
+             'minvalues': fields.Str(description="csv list of metadata or parameters minvalues. These relate positionally to the terms and the minvalues"),
+             'wasAssociatedWith': fields.Str(description="csv list of Components involved in the Workflow's Execution"),
+             'mode': fields.Str(description="execution mode of the workflow in case it support different kind of concrete mappings (eg. mpi, simple, multiprocess, etc.."),
+             'rformat': fields.Str(missing="json",description="unimplemented: format of the response payload (json,json-ld)")
               }
 
-queryargsnp = {'usernames': fields.Str(),
-             'terms': fields.Str(),
-             'maxvalues': fields.Str(),
-             'minvalues': fields.Str(),
-             'wasAssociatedWith': fields.Str(),
-             'functionNames' : fields.Str(),
-             'clusters' : fields.Str(),
+queryargsnp = {'usernames': fields.Str(description="csv list of users the Workflows Executons are associated with"),
+             'terms': fields.Str(description="csv list of metadata or parameter terms. These relate positionally to the maxvalues and the minvalues"),
+             'maxvalues': fields.Str(description="csv list of metadata or parameters maxvalues. These relate positionally to the terms and the minvalues"),
+             'minvalues': fields.Str(description="csv list of metadata or parameters minvalues. These relate positionally to the terms and the minvalues"),
+             'wasAssociatedWith': fields.Str(description="csv lis of Components involved in the Workflow Executions"),
+             'functionNames' : fields.Str(description="csv list of functions that are executed by at least one workflow's components"),
+             'clusters' : fields.Str(description="csv list of clusters that describe and group one or more workflow's component"),
              'types': fields.Str(),
-             'mode': fields.Str(),
-             'formats': fields.Str(),
-             'rformat': fields.Str(missing="json")
+             'mode': fields.Str(description="execution mode of the workflow in case it support different kind of concrete mappings (eg. mpi, simple, multiprocess, etc.."),
+             'formats': fields.Str(description="csv list of data formats (eg. mime-types)"),
+             'rformat': fields.Str(missing="json",description="unimplemented: format of the response payload (json,json-ld)")
               }
 
 
-queryargsnpdata = {'usernames': fields.Str(),
-             'terms': fields.Str(),
-             'maxvalues': fields.Str(),
-             'minvalues': fields.Str(),
-             'functionNames' : fields.Str(),
-             'clusters' : fields.Str(),
-             'types': fields.Str(),
-             'mode': fields.Str(),
-             'formats': fields.Str(),
-             'rformat': fields.Str(missing="json")
+queryargsnpdata = {'usernames': fields.Str(description="csv list of users the Workflows Executons are associated with"),
+             'terms': fields.Str(description="csv list of metadata or parameter terms. These relate positionally to the maxvalues and the minvalues"),
+             'maxvalues': fields.Str(description="csv list of metadata or parameters maxvalues. These relate positionally to the terms and the minvalues"),
+             'minvalues': fields.Str(description="csv list of metadata or parameters minvalues. These relate positionally to the terms and the minvalues"),
+             'functionNames' : fields.Str(description="csv list of functions the Data was generated with"),
+             'types': fields.Str(description="csv list of data types"),
+             'formats': fields.Str(description="csv list of data formats (eg. mime-types)"),
+             'rformat': fields.Str(missing="json",description="unimplemented: format of the response payload (json,json-ld)")
               }
 
 queryargs =dict(queryargsnp,**paging)
@@ -198,8 +299,8 @@ def get_instances_monitoring(runid,**kwargs):
     response.headers['Content-type'] = 'application/json'    
     return response
 
-levelargsnp=dict({"level":fields.Str(required=True)})
-levelargs=dict({"level":fields.Str()},**paging)
+levelargsnp=dict({"level":fields.Str(required=True,description="level of depth in the data derivation graph, starting from the current Data")})
+levelargs=dict({"level":fields.Str(enum=["component", "instance", "invocation", "cluster"],description="level of aggregation of the monitoring information (component, instance, invocation, cluster)")},**paging)
  
 @app.route("/workflowexecutions/<runid>/showactivity")
 @use_kwargs(levelargs,locations=["querystring"])
@@ -227,7 +328,7 @@ def get_invocation_details(invocid):
 
 
 #Extract details about a single invocation or an instance by specifying their $id$.
-associatefor=dict({"wasAssociateFor":fields.Str()},**paging)
+associatefor=dict({"wasAssociateFor":fields.Str(description='cvs list of runIds the instance was wasAssociateFor (when more instances are reused in multiple workflow executions)')},**paging)
 @app.route("/instances/<instid>")
 @use_kwargs(associatefor,locations=["querystring"])
 @doc(tags=['lineage'], description='Extract details about a single instance or component by specifying its id. The returning document will indicate the changes that occurred, reporting the first invocation affected. It support the specification of a list of runIds the instance was wasAssociateFor, considering that the same instance could be used across multiple runs')
@@ -256,7 +357,7 @@ def getComponentDetails(compid, **kwargs):
         return response
 
 
-@app.route("/data/<data_id>")
+@app.route("/data/<data_id>",methods=['GET'])
 @doc(tags=['lineage'], description='Extract Data and their DataGranules by the Data id')
 def get_data_item(data_id): 
        
@@ -264,10 +365,14 @@ def get_data_item(data_id):
     response.headers['Content-type'] = 'application/json'       
     return response
 
+#get_data_item.provide_automatic_options = False
+#get_data_item.methods = ['GET']
+#app.add_url_rule("/data/<data_id>", get_data_item)
+
 # Thomas
 #The data is selected by specifying its id or a $query\_string$. Query parameters allow to search by \emph{attribution}, \emph{generation} and by combining more metadata terms with their \emph{value-ranges}. Attribution will match all entities of the S-PROV model such as \emph{ComponentInstances}, \emph{Components}, \emph{prov:Person},  while generation will consider \emph{Invocation} and \emph{WorkflowExecution}.
-dataargs=dict({'wasGeneratedBy':fields.Str(),
-               'wasAttributedTo':fields.Str()},**queryargsnpdata)
+dataargs=dict({'wasGeneratedBy':fields.Str(description='the id of the Invocation that generated the Data'),
+               'wasAttributedTo':fields.Str(description='csv list of Component or Component Instances involved in the generation of the Data')},**queryargsnpdata)
 
 dataargs =dict(dataargs,**paging)
 
@@ -343,9 +448,9 @@ def was_derived_from(data_id,**kwargs):
 
 # Thomas
 #Returns a list of metadata terms that can be suggested based on their appearance within a list of runs, users, or for the whole provenance archive
-termsargs=dict({'runIds':fields.Str(),
-                'usernames':fields.Str(),
-                'aggregationLevel':fields.Str()})
+termsargs=dict({'runIds':fields.Str(description="csv list of run ids"),
+                'usernames':fields.Str(description="csv list of usernames"),
+                'aggregationLevel':fields.Str(enum=['all', 'runId','username'], description="set whether the terms need to be aggreagated by runId, username or across the whole collection (all)")})
 
 @app.route("/terms")
 @use_kwargs(termsargs,locations=["querystring"])
@@ -376,13 +481,12 @@ def get_data_granule_terms(**kwargs):
 
         return response
 
-summaryargs=dict({'runId':fields.Str(),
-                  'groupby':fields.Str(),
-                  'clusters':fields.Str(),
-                  'mintime':fields.Str(),
-                  'maxtime':fields.Str(),
-                  'minidx':fields.Int(),
-                  'maxidx':fields.Int()
+summaryargs=dict({'runId':fields.Str(description='the id of the run to be analysed'),
+                  'groupby':fields.Str(description='express the grouping of the returned data'),
+                  'mintime':fields.Str(description='minimum start time of the Invocation'),
+                  'maxtime':fields.Str(description='maximum start time of the Invocation'),
+                  'minidx':fields.Int(description='minimum iteration index of an Invocation'),
+                  'maxidx':fields.Int(description='maximum iteration index of an Invocation')
 
                   },**levelargsnp)
 
@@ -400,7 +504,7 @@ def summaries_handler_workflow(**kwargs):
 # Thomas check value-range level
 # Extract information about the reuse and exchange of data between workflow executions, users and infrastructures, based terms and values' ranges. These Additional properties, such as workflow's type or (\id{prov:type})  can be also extracted
 
-colargs=dict(dict({'groupby':fields.Str()},**queryargsnp),**levelargsnp)
+colargs=dict(dict({'groupby':fields.Str(description='express the grouping of the returned data')},**queryargsnp),**levelargsnp)
 
 @app.route("/summaries/collaborative")
 @use_kwargs(colargs,locations=["querystring"])
@@ -425,7 +529,7 @@ def summaries_handler_collab(**kwargs):
 
 
 
-exportprov=dict({'format':fields.Str(enum=['rdf', 'json','xml','provn']),'rdfout':fields.Str(missing='trig',enum=['xml', 'n3', 'nt', 'trix','trig','turtle']),'creator':fields.Str()})
+exportprov=dict({'format':fields.Str(description="export format of the PROV document returned",enum=['rdf', 'json','xml','provn']),'rdfout':fields.Str(missing='trig',description="export rdf format of the PROV document returned",enum=['xml', 'n3', 'nt', 'trix','trig','turtle']),'creator':fields.Str(description="the name of the user requesting the export")})
 exportdata=dict(exportprov,**levelargsnp)
 # EXPORT to PROV methods
 
@@ -451,7 +555,7 @@ def export_data_provenance(data_id,**kwargs):
         response.headers['Content-type'] = 'application/octet-streams' 
     return response
 
-queryargsanc=dict(dict({'ids':fields.Str()},**queryargsbasic),**levelargsnp)
+queryargsanc=dict(dict({'ids':fields.Str(description="csv list of ids that needs to be filtered based on the query string parameters")},**queryargsbasic),**levelargsnp)
 @app.route("/data/filterOnAncestor", methods=['POST'])
 @use_kwargs(queryargsanc)
 @doc(tags=['lineage'], description='Filter a list of data ids based on the existence of at least one ancestor in their data dependency graph, according to a list of metadata terms and their min and max values-ranges. Maximum depth level and mode of the search can also be indicated (mode ::= (OR | AND)')
@@ -555,7 +659,7 @@ app.config.update({
         title='s-prov',
         version='v1',
         plugins=['apispec.ext.marshmallow'],
-         schemes=['http','https'],
+        schemes=['http','https'],
         description="S-ProvFlow provenance API - Provenance framework for storage and access of data-intensive streaming lineage. It offers a a web API and a range of dedicated visualisation tools and a provenance model (S-PROV) which utilises and extends PROV and ProvONE model"
     
     ),

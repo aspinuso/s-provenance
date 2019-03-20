@@ -12,30 +12,35 @@
         "description": "The data is selected by specifying a query string. Query parameters allow to search by attribution to a component or to an implementation, generation by a workflow execution and by combining more metadata and parameters terms with their min and max valuesranges. Mode of the search can also be indicated (mode ::= (OR | AND). It will apply to the search upon metadata and parameters values-ranges", 
         "parameters": [
           {
+            "description": "csv list of users the Workflows Executons are associated with", 
             "in": "query", 
             "name": "usernames", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of metadata or parameter terms. These relate positionally to the maxvalues and the minvalues", 
             "in": "query", 
             "name": "terms", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of functions the Data was generated with", 
             "in": "query", 
             "name": "functionNames", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of Component or Component Instances involved in the generation of the Data", 
             "in": "query", 
             "name": "wasAttributedTo", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of metadata or parameters minvalues. These relate positionally to the terms and the minvalues", 
             "in": "query", 
             "name": "minvalues", 
             "required": false, 
@@ -43,12 +48,14 @@
           }, 
           {
             "default": "json", 
+            "description": "unimplemented: format of the response payload (json,json-ld)", 
             "in": "query", 
             "name": "rformat", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "index of the starting item", 
             "format": "int32", 
             "in": "query", 
             "name": "start", 
@@ -56,6 +63,7 @@
             "type": "integer"
           }, 
           {
+            "description": "max number of items expected", 
             "format": "int32", 
             "in": "query", 
             "name": "limit", 
@@ -63,132 +71,28 @@
             "type": "integer"
           }, 
           {
-            "in": "query", 
-            "name": "mode", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "formats", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "clusters", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
+            "description": "csv list of metadata or parameters maxvalues. These relate positionally to the terms and the minvalues", 
             "in": "query", 
             "name": "maxvalues", 
             "required": false, 
             "type": "string"
           }, 
           {
-            "in": "query", 
-            "name": "types", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "wasGeneratedBy", 
-            "required": false, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "lineage"
-        ]
-      }, 
-      "options": {
-        "description": "The data is selected by specifying a query string. Query parameters allow to search by attribution to a component or to an implementation, generation by a workflow execution and by combining more metadata and parameters terms with their min and max valuesranges. Mode of the search can also be indicated (mode ::= (OR | AND). It will apply to the search upon metadata and parameters values-ranges", 
-        "parameters": [
-          {
-            "in": "query", 
-            "name": "usernames", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "terms", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "functionNames", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "wasAttributedTo", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "minvalues", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "default": "json", 
-            "in": "query", 
-            "name": "rformat", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "format": "int32", 
-            "in": "query", 
-            "name": "start", 
-            "required": true, 
-            "type": "integer"
-          }, 
-          {
-            "format": "int32", 
-            "in": "query", 
-            "name": "limit", 
-            "required": true, 
-            "type": "integer"
-          }, 
-          {
-            "in": "query", 
-            "name": "mode", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
+            "description": "csv list of data formats (eg. mime-types)", 
             "in": "query", 
             "name": "formats", 
             "required": false, 
             "type": "string"
           }, 
           {
-            "in": "query", 
-            "name": "clusters", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "maxvalues", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
+            "description": "csv list of data types", 
             "in": "query", 
             "name": "types", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "the id of the Invocation that generated the Data", 
             "in": "query", 
             "name": "wasGeneratedBy", 
             "required": false, 
@@ -202,53 +106,6 @@
       }
     }, 
     "/data/filterOnAncestor": {
-      "options": {
-        "description": "Filter a list of data ids based on the existence of at least one ancestor in their data dependency graph, according to a list of metadata terms and their min and max values-ranges. Maximum depth level and mode of the search can also be indicated (mode ::= (OR | AND)", 
-        "parameters": [
-          {
-            "in": "body", 
-            "name": "body", 
-            "required": false, 
-            "schema": {
-              "properties": {
-                "ids": {
-                  "type": "string"
-                }, 
-                "level": {
-                  "type": "string"
-                }, 
-                "maxvalues": {
-                  "type": "string"
-                }, 
-                "minvalues": {
-                  "type": "string"
-                }, 
-                "mode": {
-                  "type": "string"
-                }, 
-                "rformat": {
-                  "default": "json", 
-                  "type": "string"
-                }, 
-                "terms": {
-                  "type": "string"
-                }, 
-                "wasAssociatedWith": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "level"
-              ], 
-              "type": "object"
-            }
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "lineage"
-        ]
-      }, 
       "post": {
         "description": "Filter a list of data ids based on the existence of at least one ancestor in their data dependency graph, according to a list of metadata terms and their min and max values-ranges. Maximum depth level and mode of the search can also be indicated (mode ::= (OR | AND)", 
         "parameters": [
@@ -259,28 +116,36 @@
             "schema": {
               "properties": {
                 "ids": {
+                  "description": "csv list of ids that needs to be filtered based on the query string parameters", 
                   "type": "string"
                 }, 
                 "level": {
+                  "description": "level of depth in the data derivation graph, starting from the current Data", 
                   "type": "string"
                 }, 
                 "maxvalues": {
+                  "description": "csv list of metadata or parameters maxvalues. These relate positionally to the terms and the minvalues", 
                   "type": "string"
                 }, 
                 "minvalues": {
+                  "description": "csv list of metadata or parameters minvalues. These relate positionally to the terms and the minvalues", 
                   "type": "string"
                 }, 
                 "mode": {
+                  "description": "execution mode of the workflow in case it support different kind of concrete mappings (eg. mpi, simple, multiprocess, etc..", 
                   "type": "string"
                 }, 
                 "rformat": {
                   "default": "json", 
+                  "description": "unimplemented: format of the response payload (json,json-ld)", 
                   "type": "string"
                 }, 
                 "terms": {
+                  "description": "csv list of metadata or parameter terms. These relate positionally to the maxvalues and the minvalues", 
                   "type": "string"
                 }, 
                 "wasAssociatedWith": {
+                  "description": "csv list of Components involved in the Workflow's Execution", 
                   "type": "string"
                 }
               }, 
@@ -312,21 +177,6 @@
         "tags": [
           "lineage"
         ]
-      }, 
-      "options": {
-        "description": "Extract Data and their DataGranules by the Data id", 
-        "parameters": [
-          {
-            "in": "path", 
-            "name": "data_id", 
-            "required": true, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "lineage"
-        ]
       }
     }, 
     "/data/{data_id}/derivedData": {
@@ -334,27 +184,7 @@
         "description": "Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element's data dependencies. The number of traversal steps is provided as a parameter (level).", 
         "parameters": [
           {
-            "in": "query", 
-            "name": "level", 
-            "required": true, 
-            "type": "string"
-          }, 
-          {
-            "in": "path", 
-            "name": "data_id", 
-            "required": true, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "lineage"
-        ]
-      }, 
-      "options": {
-        "description": "Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element's data dependencies. The number of traversal steps is provided as a parameter (level).", 
-        "parameters": [
-          {
+            "description": "level of depth in the data derivation graph, starting from the current Data", 
             "in": "query", 
             "name": "level", 
             "required": true, 
@@ -378,51 +208,43 @@
         "description": "Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace", 
         "parameters": [
           {
+            "description": "export format of the PROV document returned", 
+            "enum": [
+              "rdf", 
+              "json", 
+              "xml", 
+              "provn"
+            ], 
             "in": "query", 
             "name": "format", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "default": "trig", 
+            "description": "export rdf format of the PROV document returned", 
+            "enum": [
+              "xml", 
+              "n3", 
+              "nt", 
+              "trix", 
+              "trig", 
+              "turtle"
+            ], 
+            "in": "query", 
+            "name": "rdfout", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "description": "the name of the user requesting the export", 
             "in": "query", 
             "name": "creator", 
             "required": false, 
             "type": "string"
           }, 
           {
-            "in": "query", 
-            "name": "level", 
-            "required": true, 
-            "type": "string"
-          }, 
-          {
-            "in": "path", 
-            "name": "data_id", 
-            "required": true, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "export"
-        ]
-      }, 
-      "options": {
-        "description": "Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace", 
-        "parameters": [
-          {
-            "in": "query", 
-            "name": "format", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "creator", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
+            "description": "level of depth in the data derivation graph, starting from the current Data", 
             "in": "query", 
             "name": "level", 
             "required": true, 
@@ -446,27 +268,7 @@
         "description": "Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element's data dependencies. The number of traversal steps is provided as a parameter (level).", 
         "parameters": [
           {
-            "in": "query", 
-            "name": "level", 
-            "required": true, 
-            "type": "string"
-          }, 
-          {
-            "in": "path", 
-            "name": "data_id", 
-            "required": true, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "lineage"
-        ]
-      }, 
-      "options": {
-        "description": "Starting from a specific data entity of the data dependency is possible to navigate through the derived data or backwards across the element's data dependencies. The number of traversal steps is provided as a parameter (level).", 
-        "parameters": [
-          {
+            "description": "level of depth in the data derivation graph, starting from the current Data", 
             "in": "query", 
             "name": "level", 
             "required": true, 
@@ -490,6 +292,7 @@
         "description": "Extract details about a single instance or component by specifying its id. The returning document will indicate the changes that occurred, reporting the first invocation affected. It support the specification of a list of runIds the instance was wasAssociateFor, considering that the same instance could be used across multiple runs", 
         "parameters": [
           {
+            "description": "index of the starting item", 
             "format": "int32", 
             "in": "query", 
             "name": "start", 
@@ -497,6 +300,7 @@
             "type": "integer"
           }, 
           {
+            "description": "max number of items expected", 
             "format": "int32", 
             "in": "query", 
             "name": "limit", 
@@ -504,41 +308,7 @@
             "type": "integer"
           }, 
           {
-            "in": "query", 
-            "name": "wasAssociateFor", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "path", 
-            "name": "instid", 
-            "required": true, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "lineage"
-        ]
-      }, 
-      "options": {
-        "description": "Extract details about a single instance or component by specifying its id. The returning document will indicate the changes that occurred, reporting the first invocation affected. It support the specification of a list of runIds the instance was wasAssociateFor, considering that the same instance could be used across multiple runs", 
-        "parameters": [
-          {
-            "format": "int32", 
-            "in": "query", 
-            "name": "start", 
-            "required": true, 
-            "type": "integer"
-          }, 
-          {
-            "format": "int32", 
-            "in": "query", 
-            "name": "limit", 
-            "required": true, 
-            "type": "integer"
-          }, 
-          {
+            "description": "cvs list of runIds the instance was wasAssociateFor (when more instances are reused in multiple workflow executions)", 
             "in": "query", 
             "name": "wasAssociateFor", 
             "required": false, 
@@ -572,21 +342,6 @@
         "tags": [
           "lineage"
         ]
-      }, 
-      "options": {
-        "description": "Extract details about a single invocation by specifying its id", 
-        "parameters": [
-          {
-            "in": "path", 
-            "name": "invocid", 
-            "required": true, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "lineage"
-        ]
       }
     }, 
     "/summaries/collaborative": {
@@ -594,36 +349,42 @@
         "description": "Extract information about the reuse and exchange of data between workflow executions based on terms' valuesranges and a group of users. The API method allows for inclusive or exclusive (mode ::= (OR j AND) queries on the terms' values. As above, additional details, such as running infrastructure, type and name of the workflow can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views", 
         "parameters": [
           {
+            "description": "csv lis of Components involved in the Workflow Executions", 
             "in": "query", 
             "name": "wasAssociatedWith", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of users the Workflows Executons are associated with", 
             "in": "query", 
             "name": "usernames", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of metadata or parameter terms. These relate positionally to the maxvalues and the minvalues", 
             "in": "query", 
             "name": "terms", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of functions that are executed by at least one workflow's components", 
             "in": "query", 
             "name": "functionNames", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "level of depth in the data derivation graph, starting from the current Data", 
             "in": "query", 
             "name": "level", 
             "required": true, 
             "type": "string"
           }, 
           {
+            "description": "csv list of metadata or parameters minvalues. These relate positionally to the terms and the minvalues", 
             "in": "query", 
             "name": "minvalues", 
             "required": false, 
@@ -631,30 +392,35 @@
           }, 
           {
             "default": "json", 
+            "description": "unimplemented: format of the response payload (json,json-ld)", 
             "in": "query", 
             "name": "rformat", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of metadata or parameters maxvalues. These relate positionally to the terms and the minvalues", 
             "in": "query", 
             "name": "maxvalues", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of data formats (eg. mime-types)", 
             "in": "query", 
             "name": "formats", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of clusters that describe and group one or more workflow's component", 
             "in": "query", 
             "name": "clusters", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "express the grouping of the returned data", 
             "in": "query", 
             "name": "groupby", 
             "required": false, 
@@ -667,94 +433,7 @@
             "type": "string"
           }, 
           {
-            "in": "query", 
-            "name": "mode", 
-            "required": false, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "summaries"
-        ]
-      }, 
-      "options": {
-        "description": "Extract information about the reuse and exchange of data between workflow executions based on terms' valuesranges and a group of users. The API method allows for inclusive or exclusive (mode ::= (OR j AND) queries on the terms' values. As above, additional details, such as running infrastructure, type and name of the workflow can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views", 
-        "parameters": [
-          {
-            "in": "query", 
-            "name": "wasAssociatedWith", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "usernames", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "terms", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "functionNames", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "level", 
-            "required": true, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "minvalues", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "default": "json", 
-            "in": "query", 
-            "name": "rformat", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "maxvalues", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "formats", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "clusters", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "groupby", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "types", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
+            "description": "execution mode of the workflow in case it support different kind of concrete mappings (eg. mpi, simple, multiprocess, etc..", 
             "in": "query", 
             "name": "mode", 
             "required": false, 
@@ -772,42 +451,42 @@
         "description": "Produce a detailed overview of the distribution of the computation, reporting the size of data movements between the workflow components, their instances or invocations across worker nodes, depending on the specified granularity level. Additional information, such as process pid, worker, instance or component of the workflow (depending on the level of granularity) can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views", 
         "parameters": [
           {
+            "description": "level of depth in the data derivation graph, starting from the current Data", 
             "in": "query", 
             "name": "level", 
             "required": true, 
             "type": "string"
           }, 
           {
+            "description": "minimum start time of the Invocation", 
             "in": "query", 
             "name": "mintime", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "express the grouping of the returned data", 
             "in": "query", 
             "name": "groupby", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "the id of the run to be analysed", 
             "in": "query", 
             "name": "runId", 
             "required": false, 
             "type": "string"
           }, 
           {
-            "in": "query", 
-            "name": "clusters", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
+            "description": "maximum start time of the Invocation", 
             "in": "query", 
             "name": "maxtime", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "maximum iteration index of an Invocation", 
             "format": "int32", 
             "in": "query", 
             "name": "maxidx", 
@@ -815,65 +494,7 @@
             "type": "integer"
           }, 
           {
-            "format": "int32", 
-            "in": "query", 
-            "name": "minidx", 
-            "required": false, 
-            "type": "integer"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "summaries"
-        ]
-      }, 
-      "options": {
-        "description": "Produce a detailed overview of the distribution of the computation, reporting the size of data movements between the workflow components, their instances or invocations across worker nodes, depending on the specified granularity level. Additional information, such as process pid, worker, instance or component of the workflow (depending on the level of granularity) can be selectively extracted by assigning these properties to a groupBy parameter. This will support the generation of grouped views", 
-        "parameters": [
-          {
-            "in": "query", 
-            "name": "level", 
-            "required": true, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "mintime", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "groupby", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "runId", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "clusters", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "maxtime", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "format": "int32", 
-            "in": "query", 
-            "name": "maxidx", 
-            "required": false, 
-            "type": "integer"
-          }, 
-          {
+            "description": "minimum iteration index of an Invocation", 
             "format": "int32", 
             "in": "query", 
             "name": "minidx", 
@@ -892,45 +513,26 @@
         "description": "Return a list of discoverable metadata terms based on their appearance for a list of runIds, usernames, or for the whole provenance archive. Terms are returned indicating their type (when consistently used), min and max values and their number occurrences within the scope of the search", 
         "parameters": [
           {
+            "description": "set whether the terms need to be aggreagated by runId, username or across the whole collection (all)", 
+            "enum": [
+              "all", 
+              "runId", 
+              "username"
+            ], 
             "in": "query", 
             "name": "aggregationLevel", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of usernames", 
             "in": "query", 
             "name": "usernames", 
             "required": false, 
             "type": "string"
           }, 
           {
-            "in": "query", 
-            "name": "runIds", 
-            "required": false, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "lineage"
-        ]
-      }, 
-      "options": {
-        "description": "Return a list of discoverable metadata terms based on their appearance for a list of runIds, usernames, or for the whole provenance archive. Terms are returned indicating their type (when consistently used), min and max values and their number occurrences within the scope of the search", 
-        "parameters": [
-          {
-            "in": "query", 
-            "name": "aggregationLevel", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "usernames", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
+            "description": "csv list of run ids", 
             "in": "query", 
             "name": "runIds", 
             "required": false, 
@@ -948,30 +550,35 @@
         "description": "Extract documents from the bundle collection according to a query string which may include usernames, type of the workflow, the components the run wasAssociatedWith and their implementations. Data results' metadata and parameters can also be queried by specifying the terms and their min and max values-ranges and data formats. Mode of the search can also be indicated (mode ::= (OR j AND). It will apply to the search upon metadata and parameters values of each run", 
         "parameters": [
           {
+            "description": "csv lis of Components involved in the Workflow Executions", 
             "in": "query", 
             "name": "wasAssociatedWith", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of users the Workflows Executons are associated with", 
             "in": "query", 
             "name": "usernames", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of metadata or parameter terms. These relate positionally to the maxvalues and the minvalues", 
             "in": "query", 
             "name": "terms", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of functions that are executed by at least one workflow's components", 
             "in": "query", 
             "name": "functionNames", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of metadata or parameters minvalues. These relate positionally to the terms and the minvalues", 
             "in": "query", 
             "name": "minvalues", 
             "required": false, 
@@ -979,12 +586,14 @@
           }, 
           {
             "default": "json", 
+            "description": "unimplemented: format of the response payload (json,json-ld)", 
             "in": "query", 
             "name": "rformat", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "index of the starting item", 
             "format": "int32", 
             "in": "query", 
             "name": "start", 
@@ -992,6 +601,7 @@
             "type": "integer"
           }, 
           {
+            "description": "max number of items expected", 
             "format": "int32", 
             "in": "query", 
             "name": "limit", 
@@ -999,18 +609,21 @@
             "type": "integer"
           }, 
           {
+            "description": "csv list of metadata or parameters maxvalues. These relate positionally to the terms and the minvalues", 
             "in": "query", 
             "name": "maxvalues", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of data formats (eg. mime-types)", 
             "in": "query", 
             "name": "formats", 
             "required": false, 
             "type": "string"
           }, 
           {
+            "description": "csv list of clusters that describe and group one or more workflow's component", 
             "in": "query", 
             "name": "clusters", 
             "required": false, 
@@ -1023,96 +636,7 @@
             "type": "string"
           }, 
           {
-            "in": "query", 
-            "name": "mode", 
-            "required": false, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "discovery"
-        ]
-      }, 
-      "options": {
-        "description": "Extract documents from the bundle collection according to a query string which may include usernames, type of the workflow, the components the run wasAssociatedWith and their implementations. Data results' metadata and parameters can also be queried by specifying the terms and their min and max values-ranges and data formats. Mode of the search can also be indicated (mode ::= (OR j AND). It will apply to the search upon metadata and parameters values of each run", 
-        "parameters": [
-          {
-            "in": "query", 
-            "name": "wasAssociatedWith", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "usernames", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "terms", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "functionNames", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "minvalues", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "default": "json", 
-            "in": "query", 
-            "name": "rformat", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "format": "int32", 
-            "in": "query", 
-            "name": "start", 
-            "required": true, 
-            "type": "integer"
-          }, 
-          {
-            "format": "int32", 
-            "in": "query", 
-            "name": "limit", 
-            "required": true, 
-            "type": "integer"
-          }, 
-          {
-            "in": "query", 
-            "name": "maxvalues", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "formats", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "clusters", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "query", 
-            "name": "types", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
+            "description": "execution mode of the workflow in case it support different kind of concrete mappings (eg. mpi, simple, multiprocess, etc..", 
             "in": "query", 
             "name": "mode", 
             "required": false, 
@@ -1126,28 +650,6 @@
       }
     }, 
     "/workflowexecutions/insert": {
-      "options": {
-        "description": "Bulk insert of bundle or lineage documents in JSON format. These must be provided as encoded stirng in a POST request", 
-        "parameters": [
-          {
-            "in": "body", 
-            "name": "body", 
-            "required": false, 
-            "schema": {
-              "properties": {
-                "prov": {
-                  "type": "string"
-                }
-              }, 
-              "type": "object"
-            }
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "acquisition"
-        ]
-      }, 
       "post": {
         "description": "Bulk insert of bundle or lineage documents in JSON format. These must be provided as encoded stirng in a POST request", 
         "parameters": [
@@ -1158,6 +660,7 @@
             "schema": {
               "properties": {
                 "prov": {
+                  "description": "JSON document with one of more provenance documents (currently supports the format accepted in the s-ProvFlowMongoDB implementation)", 
                   "type": "string"
                 }
               }, 
@@ -1176,39 +679,36 @@
         "description": "Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace", 
         "parameters": [
           {
+            "default": "trig", 
+            "description": "export rdf format of the PROV document returned", 
+            "enum": [
+              "xml", 
+              "n3", 
+              "nt", 
+              "trix", 
+              "trig", 
+              "turtle"
+            ], 
+            "in": "query", 
+            "name": "rdfout", 
+            "required": false, 
+            "type": "string"
+          }, 
+          {
+            "description": "the name of the user requesting the export", 
             "in": "query", 
             "name": "creator", 
             "required": false, 
             "type": "string"
           }, 
           {
-            "in": "query", 
-            "name": "format", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "path", 
-            "name": "run_id", 
-            "required": true, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "export"
-        ]
-      }, 
-      "options": {
-        "description": "Export of provenance information PROV-XML or RDF format. The S-PROV information returned covers the whole workflow execution or is restricted to a single data element. In the latter case, the graph is returned by following the derivations within and across runs. A level parameter allows to indicate the depth of the resulting trace", 
-        "parameters": [
-          {
-            "in": "query", 
-            "name": "creator", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
+            "description": "export format of the PROV document returned", 
+            "enum": [
+              "rdf", 
+              "json", 
+              "xml", 
+              "provn"
+            ], 
             "in": "query", 
             "name": "format", 
             "required": false, 
@@ -1257,39 +757,9 @@
         "tags": [
           "discovery"
         ]
-      }, 
-      "options": {
-        "description": "Extract documents from the bundle collection by the runid of a WFExecution. The method will return input data and infomation about the components and the libraries used for the specific run", 
-        "parameters": [
-          {
-            "in": "path", 
-            "name": "runid", 
-            "required": true, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "discovery"
-        ]
       }
     }, 
     "/workflowexecutions/{runid}/delete": {
-      "options": {
-        "description": "Delete a workflow execution trace, including its bundle and all its lineage documents", 
-        "parameters": [
-          {
-            "in": "path", 
-            "name": "runid", 
-            "required": true, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "acquisition"
-        ]
-      }, 
       "post": {
         "description": "Delete a workflow execution trace, including its bundle and all its lineage documents", 
         "parameters": [
@@ -1307,37 +777,6 @@
       }
     }, 
     "/workflowexecutions/{runid}/edit": {
-      "options": {
-        "description": "Update of the description of a workflow execution. Users can improve this information in free-tex", 
-        "parameters": [
-          {
-            "in": "body", 
-            "name": "body", 
-            "required": false, 
-            "schema": {
-              "properties": {
-                "doc": {
-                  "type": "string"
-                }
-              }, 
-              "required": [
-                "doc"
-              ], 
-              "type": "object"
-            }
-          }, 
-          {
-            "in": "path", 
-            "name": "runid", 
-            "required": true, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "acquisition"
-        ]
-      }, 
       "post": {
         "description": "Update of the description of a workflow execution. Users can improve this information in free-tex", 
         "parameters": [
@@ -1348,6 +787,7 @@
             "schema": {
               "properties": {
                 "doc": {
+                  "description": "json document with a description property with the updated text", 
                   "type": "string"
                 }
               }, 
@@ -1375,6 +815,7 @@
         "description": "Extract detailed information related to the activity related to a WFExecution (id). The result-set can be grouped by invocations, instances or components (parameter level) and shows progress, anomalies (such as exceptions or systems' and users messages), occurrence of changes and the rapid availability of accessible data bearing intermediate results. This method can also be used for runtime monitoring", 
         "parameters": [
           {
+            "description": "index of the starting item", 
             "format": "int32", 
             "in": "query", 
             "name": "start", 
@@ -1382,6 +823,7 @@
             "type": "integer"
           }, 
           {
+            "description": "max number of items expected", 
             "format": "int32", 
             "in": "query", 
             "name": "limit", 
@@ -1389,41 +831,13 @@
             "type": "integer"
           }, 
           {
-            "in": "query", 
-            "name": "level", 
-            "required": false, 
-            "type": "string"
-          }, 
-          {
-            "in": "path", 
-            "name": "runid", 
-            "required": true, 
-            "type": "string"
-          }
-        ], 
-        "responses": {}, 
-        "tags": [
-          "monitor"
-        ]
-      }, 
-      "options": {
-        "description": "Extract detailed information related to the activity related to a WFExecution (id). The result-set can be grouped by invocations, instances or components (parameter level) and shows progress, anomalies (such as exceptions or systems' and users messages), occurrence of changes and the rapid availability of accessible data bearing intermediate results. This method can also be used for runtime monitoring", 
-        "parameters": [
-          {
-            "format": "int32", 
-            "in": "query", 
-            "name": "start", 
-            "required": true, 
-            "type": "integer"
-          }, 
-          {
-            "format": "int32", 
-            "in": "query", 
-            "name": "limit", 
-            "required": true, 
-            "type": "integer"
-          }, 
-          {
+            "description": "level of aggregation of the monitoring information (component, instance, invocation, cluster)", 
+            "enum": [
+              "component", 
+              "instance", 
+              "invocation", 
+              "cluster"
+            ], 
             "in": "query", 
             "name": "level", 
             "required": false, 
