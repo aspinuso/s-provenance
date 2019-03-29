@@ -281,9 +281,11 @@ def toW3Cprov(ling,bundl,format='xml',mode="run",bundle_type=None,bundle_creator
                     #else:
                     #    print "EXisTS"
                     #    c1=entities["Data_"+x["DerivedFromDatasetID"]] 
-                           
-                    bundle.used(var['Invocation_'+trace["iterationId"]], var["Data_"+x["DerivedFromDatasetID"]], identifier=var["used_"+trace["iterationId"]+"_"+x["DerivedFromDatasetID"]])
-
+                    
+                    if 'port' in x:
+                        bundle.used(var['Invocation_'+trace["iterationId"]], var["Data_"+x["DerivedFromDatasetID"]], identifier=var["used_"+trace["iterationId"]+"_"+x["DerivedFromDatasetID"]], other_attributes={provone['hadInPort']:x['port']})
+                    else:
+                        bundle.used(var['Invocation_'+trace["iterationId"]], var["Data_"+x["DerivedFromDatasetID"]], identifier=var["used_"+trace["iterationId"]+"_"+x["DerivedFromDatasetID"]])
 
 
             'adding entities to the document as output metadata'
@@ -317,9 +319,11 @@ def toW3Cprov(ling,bundl,format='xml',mode="run",bundle_type=None,bundle_creator
                     entities[var["Data_"+x["id"]]]=1
 
                  
-                    
-                    bundle.wasGeneratedBy(var["Data_"+x["id"]], var["Invocation_"+trace["iterationId"]], identifier=var["wgb_"+x["id"]])
-                
+                    if 'port' in x:
+                        bundle.wasGeneratedBy(var["Data_"+x["id"]], var["Invocation_"+trace["iterationId"]], identifier=var["wgb_"+x["id"]],other_attributes={provone['hadOutPort']:x['port']})
+                    else:
+                        bundle.wasGeneratedBy(var["Data_"+x["id"]], var["Invocation_"+trace["iterationId"]], identifier=var["wgb_"+x["id"]])
+
                     if 'port' in x and (x['port']=='state' or x['port']=='_d4p_state'):
                         state=bundle.collection(var["StateCollection_"+trace["instanceId"]])
                         bundle.hadMember(state,c1)
