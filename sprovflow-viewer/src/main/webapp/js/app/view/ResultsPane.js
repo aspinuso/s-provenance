@@ -225,7 +225,7 @@ var wasDerivedFromDephtree = function(data, graph, parent) {
     'shape': 'dot',
     'radius': 19,
     'alpha': 1,
-    'data': {'runId':data['s-prov:Data']["prov:wasGeneratedBy"]["s-prov:WFExecution"]["@id"],'location':data['s-prov:Data']['prov:location']},
+    'data': {'runId':data['s-prov:Data']["prov:wasGeneratedBy"]["s-prov:WFExecution"]["@id"],'location':data['s-prov:Data']['prov:atLocation']},
     mass: 2
   });
 
