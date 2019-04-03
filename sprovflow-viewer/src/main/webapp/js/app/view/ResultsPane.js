@@ -487,10 +487,10 @@ Ext.define('CF.view.WorkflowOpenByRunID', {
         activityStore.setProxy({
           type: 'ajax',
           // OLD API => url: PROV_SERVICE_BASEURL + 'activities/' + encodeURIComponent(form.findField("runId").getValue(false).trim())+'?method=aggregate',
-          url: PROV_SERVICE_BASEURL + '/workflowexecutions/'+encodeURIComponent(form.findField("runId").getValue(false).trim())+'/showactivity',
+          url: PROV_SERVICE_BASEURL + '/workflowexecutions/'+encodeURIComponent(form.findField("runId").getValue(false).trim())+'/showactivity?level='+mon_level,
           
           reader: {
-            rootProperty: 'runIds',
+            rootProperty: '@graph',
             totalProperty: 'totalCount'
           },
           simpleSortMode: true
